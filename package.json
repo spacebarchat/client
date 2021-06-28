@@ -9,10 +9,10 @@
         "eject": "expo eject"
     },
     "dependencies": {
-        "discord.js": "^12.5.3",
         "expo": "~41.0.1",
         "expo-screen-orientation": "~3.1.0",
         "expo-status-bar": "~1.0.4",
+        "fosscord.js": "github:fosscord/fosscord.js",
         "hoist-non-react-statics": "^3.3.2",
         "native-base": "^3.0.2",
         "react": "^17.0.1",
