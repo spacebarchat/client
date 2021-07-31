@@ -12,7 +12,7 @@ export default function () {
                 <Button colorScheme="danger">Danger</Button>
             </HStack>
 
-            <Heading size="md" marginTop={5}>
+            <Heading size="md" marginTop="5pt">
                 Sizes
             </Heading>
             <HStack space={3} alignItems="center">
@@ -22,7 +22,7 @@ export default function () {
                 <Button size="lg">Large</Button>
             </HStack>
 
-            <Heading size="md" marginTop={5}>
+            <Heading size="md" marginTop="5pt">
                 Variants
             </Heading>
             <HStack space={3} alignItems="center">
@@ -33,7 +33,7 @@ export default function () {
                 <Button variant="unstyled">Unstyled</Button>
             </HStack>
 
-            <Heading size="md" marginTop={5}>
+            <Heading size="md" marginTop="5pt">
                 States
             </Heading>
             <HStack space={3} alignItems="center">

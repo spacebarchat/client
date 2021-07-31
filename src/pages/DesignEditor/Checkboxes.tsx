@@ -3,7 +3,7 @@ import { Box, Checkbox, Heading, HStack } from "native-base";
 
 export default function () {
     return (
-        <Box marginTop={5}>
+        <Box marginTop="5pt">
             <Heading size="2xl">Checkboxes</Heading>
 
             <HStack space={5}>
@@ -15,20 +15,20 @@ export default function () {
                 <Checkbox accessibilityLabel="dummy" value="" />
             </HStack>
 
-            <Heading size="md" marginTop={5}>
+            <Heading size="md" marginTop="5pt">
                 Labels
             </Heading>
-            <HStack size="md" space={5}>
+            <HStack size="md" space="xs">
                 <Checkbox defaultIsChecked value="">
                     One
                 </Checkbox>
                 <Checkbox value="">Two</Checkbox>
             </HStack>
 
-            <Heading size="md" marginTop={5}>
+            <Heading size="md" marginTop="5pt">
                 Disabled
             </Heading>
-            <HStack space={5}>
+            <HStack space="xs">
                 <Checkbox value="" isDisabled defaultIsChecked>
                     One
                 </Checkbox>

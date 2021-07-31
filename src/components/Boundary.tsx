@@ -10,7 +10,7 @@ export default function ({ children }: { children: ReactNode }) {
     return (
         <Box height="100%" backgroundColor={theme.colors.backgroundColor[400]}>
             <StatusBar></StatusBar>
-            <Box safeArea margin="5">
+            <Box safeArea margin="5pt">
                 <KeyboardAvoidingView behavior="padding">
                     {children}
                 </KeyboardAvoidingView>

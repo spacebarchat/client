@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import Theme from "./components/Theme";
 import Routes from "./components/Routes";
 import Boundary from "./components/Boundary";
-import { Client } from "fosscord.js";
-const client = new Client();
+import ErrorBoundary from "./components/ErrorBoundary";
+// import { Client } from "discord.js";
+// const client = new Client();
 
 export default function App() {
-    return (
-        <Theme>
-            <Boundary>
-                <Routes></Routes>
-            </Boundary>
-        </Theme>
-    );
+	return (
+		<ErrorBoundary>
+			<Theme>
+				<Boundary>
+					<Routes></Routes>
+				</Boundary>
+			</Theme>
+		</ErrorBoundary>
+	);
 }
