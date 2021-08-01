@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import "react-native-gesture-handler";
 import Theme from "./components/Theme";
 import Routes from "./components/Routes";
 import Boundary from "./components/Boundary";

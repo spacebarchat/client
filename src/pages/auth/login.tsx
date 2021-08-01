@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
 // import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-import { Box, Text, Heading, VStack, FormControl, Input, Button, HStack } from "native-base";
+import { Box, Text, Heading, VStack, FormControl, Input, Button, HStack, ScrollView } from "native-base";
 import { Link } from "../../util/Router";
 
 //TODO: Sociallmedia Icons
@@ -13,6 +13,7 @@ export default function App() {
 	const [password, setPassword] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
 	return (
+		<ScrollView bounces={false}>
 		<Box p={2} w="80%" mx="auto">
 			<VStack space={2} mt={5} direction="row">
 				<Heading size="lg">{t("login")}</Heading>
@@ -47,9 +48,9 @@ export default function App() {
 						{t("login")}
 					</Button>
 
-					<HStack justifyContent="center" alignItems="center">
-						{/* <Icon as={Ionicons} name="home" /> */}
-						{/* <IconButton
+						<HStack justifyContent="center" alignItems="center">
+							{/* <Icon as={Ionicons} name="home" /> */}
+							{/* <IconButton
 								icon={"facebook"}
 								variant="unstyled"
 								startIcon={
@@ -68,16 +69,17 @@ export default function App() {
 									<Icon as={<MaterialCommunityIcons name="github" />} color="muted.700" size="sm" />
 								}
 							/> */}
+						</HStack>
+					</VStack>
+					<HStack justifyContent="center">
+						<Link to="/register">
+							<Text color="primary.500" bold={true} fontSize="sm">
+								{t("registerNotice")}
+							</Text>
+						</Link>
 					</HStack>
 				</VStack>
-				<HStack justifyContent="center">
-					<Link to="/register">
-						<Text color="primary.500" bold={true} fontSize="sm">
-							{t("registerNotice")}
-						</Text>
-					</Link>
-				</HStack>
-			</VStack>
-		</Box>
-	);
+			</Box>
+		</ScrollView>
+		);
 }

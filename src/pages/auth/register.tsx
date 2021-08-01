@@ -13,6 +13,7 @@ import {
 	IconButton,
 	HStack,
 	Divider,
+	ScrollView,
 } from "native-base";
 import { Link } from "../../util/Router";
 
@@ -27,30 +28,29 @@ export default function () {
 	const [errorMessage, setErrorMessage] = useState("");
 
 	return (
-		<Box p={2} w="80%" mx="auto">
-			<VStack space={2} mt={5} width="100%" direction="row">
-				<Heading size="lg">{t("register")}</Heading>
-				<FormControl>
-					<FormControl.Label _text={{ fontSize: "sm", fontWeight: 600 }}>
-						{t("email")}
-					</FormControl.Label>
-					<Input onChangeText={(t) => setEmail(t)} />
-				</FormControl>
-				<FormControl>
-					<FormControl.Label _text={{ fontSize: "sm", fontWeight: 600 }}>
-						{t("username")}
-					</FormControl.Label>
-					<Input onChangeText={(t) => setUsername(t)} />
-				</FormControl>
-				<FormControl>
-					<FormControl.Label _text={{ fontSize: "sm", fontWeight: 600 }}>
-						{t("password")}
-					</FormControl.Label>
-					<Input type="password" onChangeText={(t) => setPassword(t)}></Input>
-				</FormControl>
-				<VStack space={2} mt={5}>
-					<Button>{t("submit")}</Button>
-					{/* 
+		<ScrollView bounces={false}>
+			<Box p={2} w="80%" mx="auto">
+				<VStack space={2} mt={5} width="100%" direction="row">
+					<Heading size="lg">{t("register")}</Heading>
+					<FormControl>
+						<FormControl.Label _text={{ fontSize: "sm", fontWeight: 600 }}>{t("email")}</FormControl.Label>
+						<Input onChangeText={(t) => setEmail(t)} />
+					</FormControl>
+					<FormControl>
+						<FormControl.Label _text={{ fontSize: "sm", fontWeight: 600 }}>
+							{t("username")}
+						</FormControl.Label>
+						<Input onChangeText={(t) => setUsername(t)} />
+					</FormControl>
+					<FormControl>
+						<FormControl.Label _text={{ fontSize: "sm", fontWeight: 600 }}>
+							{t("password")}
+						</FormControl.Label>
+						<Input type="password" onChangeText={(t) => setPassword(t)}></Input>
+					</FormControl>
+					<VStack space={2} mt={5}>
+						<Button>{t("submit")}</Button>
+						{/* 
 						<HStack justifyContent="center" alignItem="center">
 							<IconButton
 								variant="unstyled"
@@ -72,15 +72,16 @@ export default function () {
 							/>
 						</HStack>
 							*/}
+					</VStack>
+					<HStack justifyContent="center">
+						<Link to="/login">
+							<Text color="primary.500" bold={true} fontSize="sm">
+								{t("loginNotice")}
+							</Text>
+						</Link>
+					</HStack>
 				</VStack>
-				<HStack justifyContent="center">
-					<Link to="/login">
-						<Text color="primary.500" bold={true} fontSize="sm">
-							{t("loginNotice")}
-						</Text>
-					</Link>
-				</HStack>
-			</VStack>
-		</Box>
+			</Box>
+		</ScrollView>
 	);
 }
