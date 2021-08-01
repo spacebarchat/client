@@ -19,11 +19,13 @@ export default function App() {
 					<FormControl.Label _text={{ fontSize: "sm", fontWeight: 600 }}>
 						{t("emailTelephone")}
 					</FormControl.Label>
-					<Input onChange={(t) => setUsername(t.target.text)} />
+					<Input onChangeText={(t) => setUsername(t)} />
 				</FormControl>
 				<FormControl mb={5}>
-					<FormControl.Label _text={{ fontSize: "sm", fontWeight: 600 }}>{t("password")}</FormControl.Label>
-					<Input type="password" />
+					<FormControl.Label _text={{ fontSize: "sm", fontWeight: 600 }}>
+						{t("password")}
+					</FormControl.Label>
+					<Input type="password" onChangeText={(t) => setPassword(t)} />
 					<Link
 						_text={{ fontSize: "xs", fontWeight: "700", color: "primary.500" }}
 						alignSelf="flex-end"
@@ -62,7 +64,10 @@ export default function App() {
 					</HStack>
 				</VStack>
 				<HStack justifyContent="center">
-					<Link _text={{ color: "primary.500", bold: true, fontSize: "sm" }} href="/register">
+					<Link
+						_text={{ color: "primary.500", bold: true, fontSize: "sm" }}
+						href="/register"
+					>
 						{t("registerNotice")}
 					</Link>
 				</HStack>
