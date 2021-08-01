@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 // import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-import { Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack } from "native-base";
+import { Box, Text, Heading, VStack, FormControl, Input, Button, HStack } from "native-base";
+import { Link } from "../../util/Router";
 
 //TODO: Sociallmedia Icons
 
@@ -17,19 +18,17 @@ export default function App() {
 			<VStack space={2} mt={5}>
 				<FormControl>
 					<FormControl.Label _text={{ fontSize: "sm", fontWeight: 600 }}>
-						{t("emailTelephone")}
+						<Text>{t("emailTelephone")}</Text>
 					</FormControl.Label>
-					<Input onChange={(t) => setUsername(t.target.text)} />
+					<Input onChangeText={(t) => setUsername(t)} />
 				</FormControl>
 				<FormControl mb={5}>
 					<FormControl.Label _text={{ fontSize: "sm", fontWeight: 600 }}>{t("password")}</FormControl.Label>
 					<Input type="password" />
-					<Link
-						_text={{ fontSize: "xs", fontWeight: "700", color: "primary.500" }}
-						alignSelf="flex-end"
-						mt={1}
-					>
-						{t("forgotPassword")}
+					<Link to="/forgot-password">
+						<Text fontSize="xs" fontWeight="700" color="primary.500">
+							{t("forgotPassword")}
+						</Text>
 					</Link>
 				</FormControl>
 				<VStack space={2}>
@@ -62,8 +61,10 @@ export default function App() {
 					</HStack>
 				</VStack>
 				<HStack justifyContent="center">
-					<Link _text={{ color: "primary.500", bold: true, fontSize: "sm" }} href="/register">
-						{t("registerNotice")}
+					<Link to="/register">
+						<Text color="primary.500" bold={true} fontSize="sm">
+							{t("registerNotice")}
+						</Text>
 					</Link>
 				</HStack>
 			</VStack>

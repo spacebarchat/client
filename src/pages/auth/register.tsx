@@ -8,13 +8,13 @@ import {
 	VStack,
 	FormControl,
 	Input,
-	Link,
 	Button,
 	Icon,
 	IconButton,
 	HStack,
 	Divider,
 } from "native-base";
+import { Link } from "../../util/Router";
 
 //TODO: Sociallmedia Icons
 
@@ -63,8 +63,10 @@ export default function () {
 							*/}
 				</VStack>
 				<HStack justifyContent="center">
-					<Link _text={{ color: "primary.500", bold: true, fontSize: "sm" }} href="/login ">
-						{t("loginNotice")}
+					<Link to="/login">
+						<Text color="primary.500" bold={true} fontSize="sm">
+							{t("loginNotice")}
+						</Text>
 					</Link>
 				</HStack>
 			</VStack>
