@@ -1,7 +1,7 @@
-discord.js forken -> fosscord.js
+discord.js fork -> fosscord.js
 	- login
 	- register
-	- cache mit react kompatibel machen
+	- make cache compatible with react 
 
 Client pages:
 	✓ themes

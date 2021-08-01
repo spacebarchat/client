@@ -39,6 +39,7 @@ export default function ({ children }: { children: ReactNode }) {
 					},
 					baseStyle: {
 						flexWrap: "wrap",
+						width: "100%",
 					},
 				},
 				Text: {
@@ -50,6 +51,16 @@ export default function ({ children }: { children: ReactNode }) {
 				Heading: {
 					baseStyle: {
 						color: "text",
+					},
+				},
+				Input: {
+					baseStyle: {
+						width: "100%",
+					},
+				},
+				FormControl: {
+					baseStyle: {
+						width: "100%",
 					},
 				},
 			},
