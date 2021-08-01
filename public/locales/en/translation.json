@@ -1,0 +1,21 @@
+{
+	"rateLimited": "Please wait {{seconds}} seconds",
+	"offline": "You are offline, please connect to the internet",
+	"serverOffline": "The server is not reachable, please try again after a minute",
+	"discordCORSIssue": "It isn't possible to access Discord.com from a third party website, please download the application instead (coming soon)",
+	"friends": "Friends",
+	"friendsSearchPlaceholder": "Find or start a conversation",
+	"addServer": "Add a server",
+	"upload": "Upload",
+	"serverName": "Server name",
+	"addServerNotice": "If you continue, you accept the chart of the server's network.",
+	"add": "Add",
+	"edit": "Edit",
+	"delete": "Delete",
+	"guild": "a server",
+	"this": "this",
+	"a": "a",
+	"home": "Home",
+	"channel": "channel",
+	"createCategory": "Create a category"
+}

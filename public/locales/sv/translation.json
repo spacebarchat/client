@@ -1,0 +1,11 @@
+{
+	"rateLimited": "Vänligen vänta {{seconds}} sekunder",
+	"offline": "Du är offline, vänligen anslut till internet",
+	"serverOffline": "Servern kan inte nås, försök igen efter en minut",
+	"discordCORSIssue": "Det är inte möjligt att komma åt Discord.com från en tredje parts webbplats, vänligen ladda ner programmet istället (kommer snart)",
+	"addServer": "Add a server",
+	"upload": "Upload",
+	"serverName": "Server name",
+	"addServerNotice": "If you continue, you accept the chart of the server's network.",
+	"add": "Add"
+}

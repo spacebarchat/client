@@ -1,0 +1,11 @@
+{
+	"rateLimited": "Wacht alstublieft {{seconds}} seconden",
+	"offline": "U bent offline, maak verbinding met het internet",
+	"serverOffline": "De server is niet bereikbaar, probeer het na een minuut opnieuw",
+	"discordCORSIssue": "Het is niet mogelijk om toegang te krijgen tot Discord.com via een website van een derde partij, gelieve de applicatie te downloaden (binnenkort beschikbaar)",
+	"addServer": "Add a server",
+	"upload": "Upload",
+	"serverName": "Server name",
+	"addServerNotice": "If you continue, you accept the chart of the server's network.",
+	"add": "Add"
+}

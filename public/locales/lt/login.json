@@ -1,0 +1,12 @@
+{
+	"emailTelephone": "El. pašto adresas ar telefono numeris",
+	"password": "Slaptažodis",
+	"forgotPassword": "Pamiršote savo slaptažodį?",
+	"login": "Login",
+	"registerNotice": "Neturite paskyros?",
+	"register": "Registruotis",
+	"captchaRequired": "Prašome pirma išspręsti captcha",
+	"captchaTitle": "Tikrinime, ar nesate robotas",
+	"mfa": "Enter Auth/Backup Code",
+	"mfaPlaceholder": "6-digit authentication code/8-digit backup code"
+}

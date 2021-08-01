@@ -1,0 +1,12 @@
+{
+	"emailTelephone": "E-mail nebo telefonní číslo",
+	"password": "Heslo",
+	"forgotPassword": "Zapomněli jste heslo?",
+	"login": "Přihlásit se",
+	"registerNotice": "Nemáte účet?",
+	"register": "Registrovat se",
+	"captchaRequired": "Nejdříve vyřešte captcha",
+	"captchaTitle": "Kontrolujte, zda jste robot",
+	"mfa": "Zadejte kód autentizace/zálohy",
+	"mfaPlaceholder": "6místný ověřovací kód/8místný záložní kód"
+}

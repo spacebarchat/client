@@ -1,0 +1,11 @@
+{
+	"rateLimited": "请等待 {{seconds}} 秒",
+	"offline": "您处于离线状态，请连接到网络",
+	"serverOffline": "服务器不可达，请在一分钟后重试",
+	"discordCORSIssue": "无法从第三方网站访问 Discord.com，请下载应用程序(即将到来)",
+	"addServer": "Add a server",
+	"upload": "Upload",
+	"serverName": "Server name",
+	"addServerNotice": "If you continue, you accept the chart of the server's network.",
+	"add": "Add"
+}

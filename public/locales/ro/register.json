@@ -1,0 +1,13 @@
+{
+	"register": "Inregistrare",
+	"login": "Autentificare",
+	"email": "E-mail",
+	"username": "Nume utilizator",
+	"password": "Parolă",
+	"dateOfBirth": "Data naşterii",
+	"network": "reţea",
+	"consent": "Sunt de acord cu termenii serviciului acestui {{link}}",
+	"submit": "Continuă",
+	"loginNotice": "Ai deja un cont?",
+	"captchaRequired": "Vă rugăm să rezolvați mai întâi captcha"
+}

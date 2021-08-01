@@ -1,0 +1,14 @@
+{
+	"discover": "Discover",
+	"explore": "探索",
+	"add": "追加",
+	"search": "検索",
+	"network": "Network",
+	"chooseNetwork": "ネットワークを選択",
+	"findNetwork": "ネットワークを検索",
+	"findPlaceholder": "コミュニティを探索",
+	"addNetwork": "ネットワークを追加",
+	"addNotice": "ここに新しいインスタンスを追加することができます",
+	"setupNotice": "新しいインスタンスをセットアップするには、セットアップガイドをご覧ください: 近日公開予定",
+	"addPlaceholder": "例: https://fosscod.com"
+}

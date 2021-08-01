@@ -1,0 +1,12 @@
+{
+	"emailTelephone": "Sähköposti tai puhelinnumero",
+	"password": "Salasana",
+	"forgotPassword": "Unohditko salasanasi?",
+	"login": "Kirjaudu",
+	"registerNotice": "Eikö sinulla ole tiliä?",
+	"register": "Rekisteröidy",
+	"captchaRequired": "Ratkaise captcha ensin",
+	"captchaTitle": "Tarkistetaan, jos olet robotti",
+	"mfa": "Syötä Todennus/Varmuuskopio Koodi",
+	"mfaPlaceholder": "6-numeroinen tunnistuskoodi / 8-numeroinen varmuuskopio koodi"
+}

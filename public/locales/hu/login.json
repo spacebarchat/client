@@ -1,0 +1,12 @@
+{
+	"emailTelephone": "Email vagy telefonszám",
+	"password": "Jelszó",
+	"forgotPassword": "Elfelejtetted a jelszavad?",
+	"login": "Bejelentkezés",
+	"registerNotice": "Nincs fiókod?",
+	"register": "Regisztráció",
+	"captchaRequired": "Kérlek old meg a captchat először",
+	"captchaTitle": "Ellenőrizzük, hogy robot vagy-e",
+	"mfa": "Add meg Hitelesítő/Biztonsági Kódod",
+	"mfaPlaceholder": "6 karakteres hitelesítő kód/8 karakteres biztonsági kód"
+}

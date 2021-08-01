@@ -1,0 +1,14 @@
+{
+	"discover": "Upptäck",
+	"explore": "Utforska",
+	"add": "Lägg till",
+	"search": "Sök",
+	"network": "Nätverk",
+	"chooseNetwork": "Välj nätverk",
+	"findNetwork": "Hitta nätverk",
+	"findPlaceholder": "Utforska gemenskaper",
+	"addNetwork": "Lägg till nätverk",
+	"addNotice": "Du kan lägga till nya nätverk här",
+	"setupNotice": "För att skapa ett nytt nätverk ta en titt på vår installationsguide: kommer snart",
+	"addPlaceholder": "Till exempel https://fosscord.com"
+}

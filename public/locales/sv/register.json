@@ -1,0 +1,13 @@
+{
+	"register": "Registrera",
+	"login": "Logga in",
+	"email": "E-post",
+	"username": "Användarnamn",
+	"password": "Lösenord",
+	"dateOfBirth": "Födelsedatum",
+	"network": "nätverk",
+	"consent": "Jag godkänner användarvillkoren för detta nätverk",
+	"submit": "Fortsätt",
+	"loginNotice": "Har du redan ett konto?",
+	"captchaRequired": "Vänligen lösa captchan först"
+}

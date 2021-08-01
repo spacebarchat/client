@@ -1,0 +1,13 @@
+{
+	"register": "登録",
+	"login": "ログイン",
+	"email": "Eメールアドレス",
+	"username": "ユーザー名",
+	"password": "パスワード",
+	"dateOfBirth": "誕生日",
+	"network": "ネットワーク",
+	"consent": "この {{link}} の利用規約に同意します",
+	"submit": "続ける",
+	"loginNotice": "既にアカウントをお持ちですか？",
+	"captchaRequired": "CAPTCHAを最初に解決してください"
+}

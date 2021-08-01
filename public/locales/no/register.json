@@ -1,0 +1,13 @@
+{
+	"register": "Registrer",
+	"login": "Innlogging",
+	"email": "E-post",
+	"username": "Brukernavn",
+	"password": "Passord",
+	"dateOfBirth": "Fødselsdato",
+	"network": "nettverk",
+	"consent": "Jeg godtar brukervilkårene for denne {{link}}",
+	"submit": "Fortsett",
+	"loginNotice": "Har du allerede en konto?",
+	"captchaRequired": "Vennligst løs captcha først"
+}

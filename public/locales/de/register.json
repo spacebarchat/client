@@ -1,0 +1,13 @@
+{
+	"register": "Registrieren",
+	"login": "Anmelden",
+	"email": "E-Mail",
+	"username": "Benutzername",
+	"password": "Passwort",
+	"dateOfBirth": "Geburtsdatum",
+	"network": "netzwerk",
+	"consent": "Ich stimme den Nutzungsbedingungen dieses Netzwerks zu",
+	"submit": "Weiter",
+	"loginNotice": "Hast du schon ein Konto?",
+	"captchaRequired": "Bitte löse zuerst das Captcha"
+}

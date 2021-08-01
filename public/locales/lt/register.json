@@ -1,0 +1,13 @@
+{
+	"register": "Registruotis",
+	"login": "Login",
+	"email": "El. paštas",
+	"username": "Username",
+	"password": "Slaptažodis",
+	"dateOfBirth": "Gimimo data",
+	"network": "tinklas",
+	"consent": "Sutinku su šio tinklo paslaugų teikimo sąlygomis",
+	"submit": "Tęsti",
+	"loginNotice": "Jau turite paskyrą?",
+	"captchaRequired": "Prašome pirma išspręsti captcha"
+}

@@ -1,0 +1,11 @@
+{
+	"rateLimited": "Odota {{seconds}} sekuntia",
+	"offline": "Olet offline-tilassa, ole hyvä ja yhdistä internetiin",
+	"serverOffline": "Palvelin ei ole käytettävissä, yritä uudelleen minuutin kuluttua",
+	"discordCORSIssue": "Ei ole mahdollista käyttää Discord.comia kolmannen osapuolen sivustosta, lataa sovellus sen sijaan (tulossa pian)",
+	"addServer": "Add a server",
+	"upload": "Upload",
+	"serverName": "Server name",
+	"addServerNotice": "If you continue, you accept the chart of the server's network.",
+	"add": "Add"
+}

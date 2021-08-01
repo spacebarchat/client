@@ -1,0 +1,14 @@
+{
+	"discover": "Löydä",
+	"explore": "Tutki",
+	"add": "Lisää",
+	"search": "Etsi",
+	"network": "Network",
+	"chooseNetwork": "Valitse Verkko",
+	"findNetwork": "Etsi Verkkoja",
+	"findPlaceholder": "Tutki yhteisöjä",
+	"addNetwork": "Lisää Verkko",
+	"addNotice": "Voit lisätä uusia instansseja tähän",
+	"setupNotice": "Ottaaksesi käyttöön uuden instanssin katsomaan meidän asennusohjettamme: tulossa pian",
+	"addPlaceholder": "Esimerkiksi https://fosscord.com"
+}

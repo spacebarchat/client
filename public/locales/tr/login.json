@@ -1,0 +1,12 @@
+{
+	"emailTelephone": "Eposta adresi veya telefon numarası",
+	"password": "Şifre",
+	"forgotPassword": "Şifreni mi unuttun?",
+	"login": "Giriş yap",
+	"registerNotice": "Hesabın yok mu?",
+	"register": "Kayıt ol",
+	"captchaRequired": "Lütfen önce doğrulamayı çözün",
+	"captchaTitle": "Robot olup olmadığınız kontrol ediliyor",
+	"mfa": "Doğrulama/Yedek Kodunuzu Giriniz",
+	"mfaPlaceholder": "6 haneli doğrulama kodu/8 haneli yedek kodu"
+}

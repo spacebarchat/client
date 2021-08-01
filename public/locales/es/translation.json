@@ -1,0 +1,11 @@
+{
+	"rateLimited": "Por favor, espera {{seconds}} segundos",
+	"offline": "Está desconectado, por favor conéctese a internet",
+	"serverOffline": "El servidor no está disponible, por favor inténtalo de nuevo después de un minuto",
+	"discordCORSIssue": "No es posible acceder a Discord.com desde un sitio web de terceros, por favor descargue la aplicación en su lugar (próximamente)",
+	"addServer": "Add a server",
+	"upload": "Upload",
+	"serverName": "Server name",
+	"addServerNotice": "If you continue, you accept the chart of the server's network.",
+	"add": "Add"
+}

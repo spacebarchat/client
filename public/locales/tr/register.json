@@ -1,0 +1,13 @@
+{
+	"register": "Kayıt Ol",
+	"login": "Giriş Yap",
+	"email": "Eposta",
+	"username": "Kullanıcı Adı",
+	"password": "Şifre",
+	"dateOfBirth": "Doğum tarihi",
+	"network": "ağ",
+	"consent": "Bu ağın kullanım koşullarını kabul ediyorum",
+	"submit": "Devam et",
+	"loginNotice": "Zaten hesabın var mı?",
+	"captchaRequired": "Lütfen önce doğrulamayı çözün"
+}

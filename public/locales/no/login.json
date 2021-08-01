@@ -1,0 +1,12 @@
+{
+	"emailTelephone": "E-post eller telefonnummer",
+	"password": "Passord",
+	"forgotPassword": "Glemt passord?",
+	"login": "Innlogging",
+	"registerNotice": "Har du ikke en konto?",
+	"register": "Registrer",
+	"captchaRequired": "Vennligst løs captcha først",
+	"captchaTitle": "Sjekker om du er en robot",
+	"mfa": "Skriv inn Auth/Backup kode",
+	"mfaPlaceholder": "6-sifret autentiseringskode /8-sifret sikkerhetskode"
+}

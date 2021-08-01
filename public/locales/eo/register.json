@@ -1,0 +1,13 @@
+{
+	"register": "Registriĝo",
+	"login": "Ensaluti",
+	"email": "Retpoŝtadreso",
+	"username": "Uzantnomo",
+	"password": "Pasvorto",
+	"dateOfBirth": "Dato de Naskiĝo",
+	"network": "reto",
+	"consent": "Mi akceptas regulojn de servadon de ĉi tiu reto",
+	"submit": "Daŭrigi",
+	"loginNotice": "Jam havas konton?",
+	"captchaRequired": "Bonvolu solvi la kaptĉon"
+}

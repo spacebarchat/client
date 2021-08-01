@@ -1,0 +1,11 @@
+{
+	"rateLimited": "Lütfen {{seconds}} saniye bekleyiniz",
+	"offline": "Çevrimdışısın, lütfen internete bağlan",
+	"serverOffline": "Sunucuya erişilemiyor, lütfen bir dakika sonra tekrar deneyin",
+	"discordCORSIssue": "Üçüncü parti sitelerden Discord.com ile iletişim kurulamaz, lütfen uygulamayı indirin (yakında geliyor)",
+	"addServer": "Add a server",
+	"upload": "Upload",
+	"serverName": "Server name",
+	"addServerNotice": "If you continue, you accept the chart of the server's network.",
+	"add": "Add"
+}

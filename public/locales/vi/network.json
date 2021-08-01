@@ -1,0 +1,14 @@
+{
+	"discover": "Discover",
+	"explore": "Explore",
+	"add": "Add",
+	"search": "Search",
+	"network": "Network",
+	"chooseNetwork": "Choose Network",
+	"findNetwork": "Find Networks",
+	"findPlaceholder": "Explore communities",
+	"addNetwork": "Add Network",
+	"addNotice": "You can add new networks here",
+	"setupNotice": "To setup a new network have a look at our setup guide: coming soon",
+	"addPlaceholder": "For example https://fosscord.com"
+}

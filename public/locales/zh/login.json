@@ -1,0 +1,12 @@
+{
+	"emailTelephone": "电子邮件或电话号码",
+	"password": "密码",
+	"forgotPassword": "忘记密码？",
+	"login": "登录",
+	"registerNotice": "没有账户？",
+	"register": "注册",
+	"captchaRequired": "请先解决验证码",
+	"captchaTitle": "检查您是否是机器人",
+	"mfa": "输入作者/备份代码",
+	"mfaPlaceholder": "6位数字身份验证码/8位数备份代码"
+}

@@ -1,0 +1,21 @@
+{
+	"rateLimited": "Veuillez patienter {{seconds}} secondes",
+	"offline": "Vous êtes hors ligne, veuillez vous connecter à internet",
+	"serverOffline": "Le serveur n'est pas joignable, veuillez réessayer après une minute",
+	"discordCORSIssue": "Il n'est pas possible d'accéder à Discord.com à partir d'un site Web tiers, veuillez télécharger l'application (à venir)",
+	"friends": "Amis",
+	"friendsSearchPlaceholder": "Chercher ou commencer une conversation",
+	"addServer": "Ajouter un serveur",
+	"upload": "Envoyer",
+	"serverName": "Nom du serveur",
+	"addServerNotice": "Si vous continuez, vous acceptez le charte du réseau du serveur.",
+	"add": "Ajouter",
+	"edit": "Éditer",
+	"delete": "Supprimer",
+	"guild": "un serveur",
+	"this": "ce",
+	"a": "un",
+	"home": "Accueil",
+	"channel": "salon",
+	"createCategory": "Créer une catégorie"
+}

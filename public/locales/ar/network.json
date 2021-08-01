@@ -1,0 +1,14 @@
+{
+	"discover": "اكتشف",
+	"explore": "استكشف",
+	"add": "إضافة",
+	"search": "البحث",
+	"network": "شبكة الإتصال",
+	"chooseNetwork": "اختر الشبكة",
+	"findNetwork": "البحث عن الشبكات",
+	"findPlaceholder": "استكشاف المجتمعات",
+	"addNetwork": "إضافة شبكة",
+	"addNotice": "يمكنك إضافة شبكات جديدة هنا",
+	"setupNotice": "لإعداد شبكة جديدة ، ألق نظرة على دليل الإعداد الخاص بنا: قريبًا",
+	"addPlaceholder": "على سبيل المثال https://fosscord.com"
+}

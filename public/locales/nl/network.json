@@ -1,0 +1,14 @@
+{
+	"discover": "Ontdek",
+	"explore": "Verken",
+	"add": "Toevoegen",
+	"search": "Zoeken",
+	"network": "Netwerk",
+	"chooseNetwork": "Kies netwerk",
+	"findNetwork": "Netwerken zoeken",
+	"findPlaceholder": "Ontdek gemeenschappen",
+	"addNetwork": "Voeg netwerk toe",
+	"addNotice": "Je kunt hier nieuwe instanties toevoegen",
+	"setupNotice": "Om een nieuwe instantie in te stellen heb je een kijkje in onze installatiehandleiding: binnenkort",
+	"addPlaceholder": "Bijvoorbeeld https://fosscord.com"
+}

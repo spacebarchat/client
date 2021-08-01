@@ -1,0 +1,11 @@
+{
+	"rateLimited": "Моля, изчакайте {{seconds}} секунди",
+	"offline": "Офлайн сте, моля, свържете се с интернет",
+	"serverOffline": "Сървърът не е наличен, моля, опитайте отново след около минута",
+	"discordCORSIssue": "Достъпът от трета страна до Discord.com е неосъществен, вместо това изтеглете приложението (очаквайте скоро)",
+	"addServer": "Add a server",
+	"upload": "Upload",
+	"serverName": "Server name",
+	"addServerNotice": "If you continue, you accept the chart of the server's network.",
+	"add": "Add"
+}

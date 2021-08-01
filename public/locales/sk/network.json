@@ -1,0 +1,14 @@
+{
+	"discover": "Objaviť",
+	"explore": "Preskúmať",
+	"add": "Pridať",
+	"search": "Hľadať",
+	"network": "Sieť",
+	"chooseNetwork": "Vybrať sieť",
+	"findNetwork": "Hladať Sieť",
+	"findPlaceholder": "Preskúmať komunity",
+	"addNetwork": "Pridať Sieť",
+	"addNotice": "Tu môžete pridať nové siete",
+	"setupNotice": "Ak chcete nastaviť novú sieť, pozrite si nášho sprievodcu nastavením: už čoskoro",
+	"addPlaceholder": "Napríklad https://fosscord.com"
+}

@@ -1,0 +1,12 @@
+{
+	"emailTelephone": "E-mail sau număr de telefon",
+	"password": "Parolă",
+	"forgotPassword": "Ți-ai uitat parola?",
+	"login": "Autentificare",
+	"registerNotice": "Nu ai un cont?",
+	"register": "Înregistrare",
+	"captchaRequired": "Vă rugăm să rezolvați mai întâi captcha",
+	"captchaTitle": "Se verifică dacă ești un robot",
+	"mfa": "Introdu codul autorului/copiei de rezervă",
+	"mfaPlaceholder": "Cod de rezervă/copie de rezervă de 6 cifre"
+}

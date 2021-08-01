@@ -1,0 +1,13 @@
+{
+	"register": "Regisztráció",
+	"login": "Bejelentkezés",
+	"email": "Email",
+	"username": "Felhasználónév",
+	"password": "Jelszó",
+	"dateOfBirth": "Születési dátum",
+	"network": "hálózat",
+	"consent": "Elfogadom a hálózat felhasználási feltételeit",
+	"submit": "Folytatás",
+	"loginNotice": "Van már fiókod?",
+	"captchaRequired": "Kérlek old meg a captchat először"
+}

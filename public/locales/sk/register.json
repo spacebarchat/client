@@ -1,0 +1,13 @@
+{
+	"register": "Registrácia",
+	"login": "Prihlásenie",
+	"email": "Email",
+	"username": "Používateľské meno",
+	"password": "Heslo",
+	"dateOfBirth": "Dátum narodenia",
+	"network": "sieť",
+	"consent": "Súhlasím s podmienkami služby tejto siete",
+	"submit": "Pokračovať",
+	"loginNotice": "Už máte účet?",
+	"captchaRequired": "Najprv prosím vyriešte captcha"
+}

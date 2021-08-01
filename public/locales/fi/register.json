@@ -1,0 +1,13 @@
+{
+	"register": "Rekisteröidy",
+	"login": "Kirjaudu",
+	"email": "Sähköposti",
+	"username": "Käyttäjätunnus",
+	"password": "Salasana",
+	"dateOfBirth": "Syntymäaika ja -aika",
+	"network": "verkko",
+	"consent": "Hyväksyn tämän {{link}} palvelun ehdot",
+	"submit": "Jatka",
+	"loginNotice": "Onko sinulla jo tili?",
+	"captchaRequired": "Ratkaise captcha ensin"
+}

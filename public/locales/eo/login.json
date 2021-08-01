@@ -1,0 +1,12 @@
+{
+	"emailTelephone": "Retpoŝto aŭ telefona numbero",
+	"password": "Pasvorto",
+	"forgotPassword": "Ĉu forgesis vian pasvorton?",
+	"login": "Ensaluti",
+	"registerNotice": "Ne havas konton?",
+	"register": "Registriĝo",
+	"captchaRequired": "Bonvolu solvi la kaptĉon",
+	"captchaTitle": "Kontrolas se vi estas roboto",
+	"mfa": "Eniri Aŭte-a/Sekurkopia kodo",
+	"mfaPlaceholder": "Ses-cifera aŭtentikiga kodo/Okcifera Sekurkopia kodo"
+}

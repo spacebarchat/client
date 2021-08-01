@@ -1,0 +1,11 @@
+{
+	"rateLimited": "Prašome palaukti {{seconds}} sekundžių",
+	"offline": "You are offline, please connect to the internet",
+	"serverOffline": "Serveris nepasiekiamas, po minutės bandykite dar kartą",
+	"discordCORSIssue": "Neįmanoma pasiekti Discord.com iš trečiosios šalies svetainės, atsisiųskite programą (netrukus)",
+	"addServer": "Add a server",
+	"upload": "Upload",
+	"serverName": "Server name",
+	"addServerNotice": "If you continue, you accept the chart of the server's network.",
+	"add": "Add"
+}

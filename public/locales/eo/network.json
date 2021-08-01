@@ -1,0 +1,14 @@
+{
+	"discover": "Esplori",
+	"explore": "Esplori",
+	"add": "Aldoni",
+	"search": "Serĉi",
+	"network": "Reto",
+	"chooseNetwork": "Elekti Reton",
+	"findNetwork": "Trovi Retojn",
+	"findPlaceholder": "Esplori kominutojn",
+	"addNetwork": "Aldoni Reto",
+	"addNotice": "Vi povas aldoni novaj retoj tiu",
+	"setupNotice": "To setup a new network have a look at our setup guide: coming soon",
+	"addPlaceholder": "For example https://fosscord.com"
+}

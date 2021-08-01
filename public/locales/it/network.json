@@ -1,0 +1,14 @@
+{
+	"discover": "Scopri",
+	"explore": "Esplora",
+	"add": "Aggiungi",
+	"search": "Cerca",
+	"network": "Servers",
+	"chooseNetwork": "Seleziona il server",
+	"findNetwork": "Trova dei server",
+	"findPlaceholder": "Esplora server",
+	"addNetwork": "Aggiungi server",
+	"addNotice": "Puoi aggiungere nuovi server qui",
+	"setupNotice": "Per configurare una nuovo server dai un'occhiata alla nostra guida di installazione: in arrivo",
+	"addPlaceholder": "Per esempio https://fosscord.com"
+}

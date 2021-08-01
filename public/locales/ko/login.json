@@ -1,0 +1,12 @@
+{
+	"emailTelephone": "이메일 또는 전화번호",
+	"password": "비밀번호",
+	"forgotPassword": "비밀번호를 잊어버렸습니까?",
+	"login": "로그인",
+	"registerNotice": "계정이 없으신가요?",
+	"register": "회원가입",
+	"captchaRequired": "자동 로그인 방지 시스템 캡챠를 통과하세요.",
+	"captchaTitle": "당신이 로봇인지 확인합니다",
+	"mfa": "Auth/Backup 코드를 입력하세요",
+	"mfaPlaceholder": "6-digit authentication code/8-digit backup code"
+}

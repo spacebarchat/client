@@ -1,0 +1,12 @@
+{
+	"emailTelephone": "E-mail of telefoonnummer",
+	"password": "Wachtwoord",
+	"forgotPassword": "Wachtwoord vergeten?",
+	"login": "Aanmelden",
+	"registerNotice": "Nog geen account?",
+	"register": "Registreren",
+	"captchaRequired": "Gelieve de captcha eerst op te lossen",
+	"captchaTitle": "Controleren of je een robot bent",
+	"mfa": "Auteur/back-up code invoeren",
+	"mfaPlaceholder": "6-cijferige authenticatie code/8-cijferig back-up code"
+}

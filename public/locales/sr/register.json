@@ -1,0 +1,13 @@
+{
+	"register": "Register",
+	"login": "Login",
+	"email": "Email",
+	"username": "Username",
+	"password": "Password",
+	"dateOfBirth": "Date of birth",
+	"network": "network",
+	"consent": "I agree to the terms of service of this network",
+	"submit": "Continue",
+	"loginNotice": "Already have an account?",
+	"captchaRequired": "Please solve the captcha first"
+}

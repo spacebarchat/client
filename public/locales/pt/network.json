@@ -1,0 +1,14 @@
+{
+	"discover": "Pendentes",
+	"explore": "EXPLORAR",
+	"add": "Adicionar",
+	"search": "Pesquisa",
+	"network": "Rede",
+	"chooseNetwork": "Escolher rede",
+	"findNetwork": "Encontrar redes",
+	"findPlaceholder": "Explorar comunidades",
+	"addNetwork": "Adicionar rede",
+	"addNotice": "Você pode adicionar novas redes aqui",
+	"setupNotice": "Para configurar uma nova rede dê uma olhada em nosso guia de configuração: em breve",
+	"addPlaceholder": "Por exemplo, https://fosscord.com"
+}

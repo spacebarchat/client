@@ -1,0 +1,11 @@
+{
+	"rateLimited": "Калі ласка, пачакайце {{seconds}} секунд",
+	"offline": "Вы знаходзіцеся ў аўтаномным рэжыме, калі ласка, падключыцеся да iнтэрнэту",
+	"serverOffline": "Сервер недаступны, калі ласка, паўтарыце спробу праз хвіліну",
+	"discordCORSIssue": "Немагчыма атрымаць доступ да Discord.com са старонняга вэб-сайта, замест гэтага загрузіце прыкладанне (з'явіцца ў бліжэйшы час)",
+	"addServer": "Add a server",
+	"upload": "Upload",
+	"serverName": "Server name",
+	"addServerNotice": "If you continue, you accept the chart of the server's network.",
+	"add": "Add"
+}

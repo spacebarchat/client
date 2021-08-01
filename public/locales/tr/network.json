@@ -1,0 +1,14 @@
+{
+	"discover": "Keşfet",
+	"explore": "Gez",
+	"add": "Ekle",
+	"search": "Ara",
+	"network": "Ağ",
+	"chooseNetwork": "Ağ Seç",
+	"findNetwork": "Ağları Bul",
+	"findPlaceholder": "Toplulukları keşfet",
+	"addNetwork": "Ağ Ekle",
+	"addNotice": "Buradan yeni ağlar ekleyebilirsin",
+	"setupNotice": "Yeni bir ağ kurmak için kurulum talimatlarımıza bakın: yakında geliyor",
+	"addPlaceholder": "Örneğin https://fosscord.com"
+}

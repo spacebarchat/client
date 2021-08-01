@@ -1,0 +1,11 @@
+{
+	"rateLimited": "Vă rugăm așteptați {{seconds}} secunde",
+	"offline": "Ești offline, te rugăm să te conectezi la internet",
+	"serverOffline": "Serverul nu este accesibil, încercați din nou după un minut",
+	"discordCORSIssue": "Nu este posibil să accesezi Discord.com de pe un site terț, te rugăm să descarci aplicația (în curând)",
+	"addServer": "Add a server",
+	"upload": "Upload",
+	"serverName": "Server name",
+	"addServerNotice": "If you continue, you accept the chart of the server's network.",
+	"add": "Add"
+}

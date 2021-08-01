@@ -1,0 +1,14 @@
+{
+	"discover": "Atrasti",
+	"explore": "Naršyti",
+	"add": "Pridėti",
+	"search": "Ieškoti",
+	"network": "Tinklas",
+	"chooseNetwork": "Pasirinkti Tinklą",
+	"findNetwork": "Rasti Tinklų",
+	"findPlaceholder": "Naršykite bendruomenes",
+	"addNetwork": "Pridėti Tinklą",
+	"addNotice": "Čia galite pridėti naujų tinklų",
+	"setupNotice": "To setup a new network have a look at our setup guide: coming soon",
+	"addPlaceholder": "Pavyzdžiui https://fosscord.com"
+}

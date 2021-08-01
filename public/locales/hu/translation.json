@@ -1,0 +1,11 @@
+{
+	"rateLimited": "Kérlek várj {{seconds}} másodpercet",
+	"offline": "Offline vagy jelenleg, kérlek csatlakozz az internetre",
+	"serverOffline": "A szerver nem elérhető, kérlek próbáld újra pár percel később",
+	"discordCORSIssue": "Discord.com elérése nem lehetséges harmadik fél weboldaláról, kérlek töltsd le az alkalmazást inkább (hamarosan)",
+	"addServer": "Add a server",
+	"upload": "Upload",
+	"serverName": "Server name",
+	"addServerNotice": "If you continue, you accept the chart of the server's network.",
+	"add": "Add"
+}

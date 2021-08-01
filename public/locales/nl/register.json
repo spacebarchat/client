@@ -1,0 +1,13 @@
+{
+	"register": "Registreren",
+	"login": "Aanmelden",
+	"email": "E-mailadres",
+	"username": "Gebruikersnaam",
+	"password": "Wachtwoord",
+	"dateOfBirth": "Geboorte datum",
+	"network": "Netwerk",
+	"consent": "Ik ga akkoord met de gebruiksvoorwaarden van deze {{link}}",
+	"submit": "Doorgaan",
+	"loginNotice": "Heeft u al een account?",
+	"captchaRequired": "Gelieve de captcha eerst op te lossen"
+}

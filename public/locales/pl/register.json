@@ -1,0 +1,13 @@
+{
+	"register": "Rejestracja",
+	"login": "Logowanie",
+	"email": "E-mail",
+	"username": "Nazwa użytkownika",
+	"password": "Hasło",
+	"dateOfBirth": "Data urodzenia",
+	"network": "sieć",
+	"consent": "Akceptuję warunki korzystania z tego {{link}}",
+	"submit": "Kontynuuj",
+	"loginNotice": "Masz już konto?",
+	"captchaRequired": "Proszę najpierw rozwiązać captcha"
+}

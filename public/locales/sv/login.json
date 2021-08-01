@@ -1,0 +1,12 @@
+{
+	"emailTelephone": "E-post eller telefonnummer",
+	"password": "Lösenord",
+	"forgotPassword": "Glömt ditt lösenord?",
+	"login": "Logga in",
+	"registerNotice": "Har du inget konto?",
+	"register": "Registrera",
+	"captchaRequired": "Vänligen lösa captchan först",
+	"captchaTitle": "Kontrollerar om du är en robot",
+	"mfa": "Ange autentiserings- eller säkerhetskopieringskod",
+	"mfaPlaceholder": "6-siffrig autentiseringskod/8-siffrig säkerhetskod"
+}

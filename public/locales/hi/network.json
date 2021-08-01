@@ -1,0 +1,14 @@
+{
+	"discover": "डिस्कवर",
+	"explore": "अन्वेषण करो",
+	"add": "जोड़ो",
+	"search": "खोज",
+	"network": "नेटवर्क",
+	"chooseNetwork": "नेटवर्क चुनें",
+	"findNetwork": "नेटवर्क खोजें",
+	"findPlaceholder": "दल खोजें",
+	"addNetwork": "नेटवर्क जोड़ें",
+	"addNotice": "आप यहां नया नेटवर्क जोड़ सकते हैं",
+	"setupNotice": "नया नेटवर्क सेटअप करने के लिए हमारे सेटअप गाइड पर एक नज़र डिजीये - जल्द ही आ रहा है",
+	"addPlaceholder": "उदाहरण के लिए https;//fosscord.com"
+}

@@ -1,0 +1,12 @@
+{
+	"emailTelephone": "Eメールまたは電話番号",
+	"password": "パスワード",
+	"forgotPassword": "パスワードをお忘れですか？",
+	"login": "ログイン",
+	"registerNotice": "アカウントをお持ちでないですか？",
+	"register": "登録",
+	"captchaRequired": "CAPTCHAを最初に解決してください",
+	"captchaTitle": "あなたがロボットかどうかを確認しています",
+	"mfa": "認証コード/バックアップコードを入力",
+	"mfaPlaceholder": "6桁の認証コード/8桁のバックアップコード"
+}

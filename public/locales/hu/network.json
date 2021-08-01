@@ -1,0 +1,14 @@
+{
+	"discover": "Felfedez",
+	"explore": "Felfedez",
+	"add": "Hozzáad",
+	"search": "Keresés",
+	"network": "Hálózat",
+	"chooseNetwork": "Hálózat kiválasztása",
+	"findNetwork": "Keress Hálózatokat",
+	"findPlaceholder": "Fedezz fel közösségeket",
+	"addNetwork": "Hálózat hozzáadása",
+	"addNotice": "Itt tudsz új hálózatokat hozzáadni",
+	"setupNotice": "Hálózat beállításához tekintsd meg az útmutatónkat: hamarosan",
+	"addPlaceholder": "Példa https://fosscord.com"
+}

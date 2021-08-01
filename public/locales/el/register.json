@@ -1,0 +1,13 @@
+{
+	"register": "Εγγραφή",
+	"login": "Είσοδος",
+	"email": "E-mail",
+	"username": "Όνομα Χρήστη",
+	"password": "Κωδικός",
+	"dateOfBirth": "Ημερομηνία γέννησης",
+	"network": "δίκτυο",
+	"consent": "Συμφωνώ με τους όρους χρήσης αυτού του {{link}}",
+	"submit": "Συνέχεια",
+	"loginNotice": "Έχετε ήδη λογαριασμό?",
+	"captchaRequired": "Παρακαλώ λύστε πρώτα το captcha"
+}

@@ -1,0 +1,11 @@
+{
+	"rateLimited": "{{seconds}} 秒お待ちください",
+	"offline": "オフラインです。インターネットに接続してください。",
+	"serverOffline": "サーバーに接続できません。1分後にもう一度お試しください。",
+	"discordCORSIssue": "サードパーティのウェブサイトからDiscord.comにアクセスすることはできません。代わりにアプリケーションをダウンロードしてください（近日公開予定）",
+	"addServer": "Add a server",
+	"upload": "Upload",
+	"serverName": "Server name",
+	"addServerNotice": "If you continue, you accept the chart of the server's network.",
+	"add": "Add"
+}

@@ -1,0 +1,14 @@
+{
+	"discover": "Пізнавайте",
+	"explore": "Дослідити",
+	"add": "Додати",
+	"search": "Пошук",
+	"network": "Мережа",
+	"chooseNetwork": "Оберіть мережу",
+	"findNetwork": "Знайти мережі",
+	"findPlaceholder": "Огляд спільнот",
+	"addNetwork": "Додати мережу",
+	"addNotice": "Ви можете додати нові екземпляри тут",
+	"setupNotice": "Щоб налаштувати новий екземпляр, перегляньте наш посібник із установки: coming soon",
+	"addPlaceholder": "Наприклад, https://fosscord.com"
+}
