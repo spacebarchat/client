@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
 // import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { Box, Text, Heading, VStack, FormControl, Input, Button, HStack } from "native-base";
@@ -11,7 +12,6 @@ export default function App() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
-
 	return (
 		<Box p={2} w="80%" mx="auto">
 			<VStack space={2} mt={5} direction="row">
@@ -37,7 +37,15 @@ export default function App() {
 					<Heading color="red.400" size="xs">
 						{errorMessage}
 					</Heading>
-					<Button colorScheme="primary">{t("login")}</Button>
+					<Button
+						colorScheme="primary"
+						onPress={() => {
+							AsyncStorage.setItem("accessToken", "test");
+							//TODO: Reload
+						}}
+					>
+						{t("login")}
+					</Button>
 
 					<HStack justifyContent="center" alignItems="center">
 						{/* <Icon as={Ionicons} name="home" /> */}
