@@ -5,6 +5,6 @@ discord.js fork -> fosscord.js
 
 Client pages:
 	✓ themes
-	- login
-	- register
+	✓ login
+	✓ register
 	- home
