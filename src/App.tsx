@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import React, { useState } from "react";
 import Theme from "./components/Theme";
 import Routes from "./components/Routes";
