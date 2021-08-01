@@ -8,13 +8,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 // import LanguageDetector from "i18next-browser-languagedetector";
 const allLanguages = {
 	en_login: () => import("../assets/locales/en/login.json"),
-	en_network: import("../assets/locales/en/network.json"),
-	en_register: import("../assets/locales/en/register.json"),
-	en_translation: import("../assets/locales/en/translation.json"),
-	de_login: import("../assets/locales/de/login.json"),
-	de_network: import("../assets/locales/de/network.json"),
-	de_register: import("../assets/locales/de/register.json"),
-	de_translatino: import("../assets/locales/de/translation.json"),
+	en_network: () => import("../assets/locales/en/network.json"),
+	en_register: () => import("../assets/locales/en/register.json"),
+	en_translation: () => import("../assets/locales/en/translation.json"),
+	de_login: () => import("../assets/locales/de/login.json"),
+	de_network: () => import("../assets/locales/de/network.json"),
+	de_register: () => import("../assets/locales/de/register.json"),
+	de_translation: () => import("../assets/locales/de/translation.json"),
 };
 
 AsyncStorage.getItem("language").then((lng) => {
@@ -25,15 +25,20 @@ AsyncStorage.getItem("language").then((lng) => {
 
 i18n.use(
 	resourcesToBackend((language, namespace, callback) => {
-		// @ts-ignore
-		// import(`../assets/locales/${language}/${namespace}.json`)
-		allLanguages[language + "_" + namespace]
-			.then((resources: any) => {
-				callback(null, resources);
-			})
-			.catch((error: any) => {
-				callback(error, null);
-			});
+		try {
+			// import(`../assets/locales/${language}/${namespace}.json`)
+			// @ts-ignore
+			allLanguages[language + "_" + namespace]()
+				.then((resources: any) => {
+					callback(null, resources);
+				})
+				.catch((error: any) => {
+					callback(error, null);
+				});
+		} catch (e) {
+			const error = new Error("Language: " + language + " with namespace " + namespace + " not found");
+			callback(error, null);
+		}
 	})
 )
 	// .use(i18nHttpBackend)
