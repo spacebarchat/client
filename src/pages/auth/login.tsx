@@ -23,8 +23,10 @@ export default function App() {
 					<Input onChangeText={(t) => setUsername(t)} />
 				</FormControl>
 				<FormControl mb={5}>
-					<FormControl.Label _text={{ fontSize: "sm", fontWeight: 600 }}>{t("password")}</FormControl.Label>
-					<Input type="password" />
+					<FormControl.Label _text={{ fontSize: "sm", fontWeight: 600 }}>
+						{t("password")}
+					</FormControl.Label>
+					<Input type="password" onChangeText={(t) => setPassword(t)} />
 					<Link to="/forgot-password">
 						<Text fontSize="xs" fontWeight="700" color="primary.500">
 							{t("forgotPassword")}
