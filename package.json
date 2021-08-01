@@ -29,7 +29,9 @@
 		"react-native-svg": "^12.1.1",
 		"react-native-web": "^0.17.1",
 		"react-router-dom": "^5.2.0",
-		"react-router-native": "^5.2.0"
+		"react-router-native": "^5.2.0",
+		"styled-components": "^5.3.0",
+		"styled-system": "^5.1.5"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.9",
