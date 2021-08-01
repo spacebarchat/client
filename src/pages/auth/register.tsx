@@ -21,10 +21,9 @@ import { Link } from "../../util/Router";
 export default function () {
 	const { t } = useTranslation("register");
 	return (
-		<Box flex={1} p={2} w="90%" mx="auto">
-			<Heading size="lg">{t("register")}</Heading>
-
-			<VStack space={2} mt={5} width="100%">
+		<Box p={2} w="80%" mx="auto">
+			<VStack space={2} mt={5} width="100%" direction="row">
+				<Heading size="lg">{t("register")}</Heading>
 				<FormControl>
 					<FormControl.Label _text={{ fontSize: "sm", fontWeight: 600 }}>{t("email")}</FormControl.Label>
 					<Input />

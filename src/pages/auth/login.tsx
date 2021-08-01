@@ -14,11 +14,11 @@ export default function App() {
 
 	return (
 		<Box p={2} w="80%" mx="auto">
-			<Heading size="lg">{t("login")}</Heading>
-			<VStack space={2} mt={5}>
+			<VStack space={2} mt={5} direction="row">
+				<Heading size="lg">{t("login")}</Heading>
 				<FormControl>
 					<FormControl.Label _text={{ fontSize: "sm", fontWeight: 600 }}>
-						<Text>{t("emailTelephone")}</Text>
+						{t("emailTelephone")}
 					</FormControl.Label>
 					<Input onChangeText={(t) => setUsername(t)} />
 				</FormControl>
@@ -31,7 +31,7 @@ export default function App() {
 						</Text>
 					</Link>
 				</FormControl>
-				<VStack space={2}>
+				<VStack space={2} mt={5}>
 					<Heading color="red.400" size="xs">
 						{errorMessage}
 					</Heading>
