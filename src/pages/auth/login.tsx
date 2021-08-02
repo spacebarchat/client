@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
 import { Box, Text, Heading, VStack, FormControl, Input, Button, HStack, ScrollView } from "native-base";
 import { Link } from "../../util/Router";
+import DevSettings from "../../components/DevSettings";
 
 //TODO: Sociallmedia Icons
 
@@ -41,7 +42,7 @@ export default function App() {
 							colorScheme="primary"
 							onPress={() => {
 								AsyncStorage.setItem("accessToken", "test");
-								//TODO: Reload
+								DevSettings.reload();
 							}}
 						>
 							{t("login")}

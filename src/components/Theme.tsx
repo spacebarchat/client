@@ -39,7 +39,6 @@ export default function ({ children }: { children: ReactNode }) {
 					},
 					baseStyle: {
 						flexWrap: "wrap",
-						width: "100%",
 					},
 				},
 				Text: {

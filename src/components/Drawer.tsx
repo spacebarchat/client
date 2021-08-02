@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useRef } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DrawerLayout from "react-native-gesture-handler/DrawerLayout";
-import { Box, HamburgerIcon, Text } from "native-base";
-import { Dimensions } from "react-native";
+import { Box, Button, HamburgerIcon, HStack, Icon, IconButton, Text, VStack } from "native-base";
+import { Dimensions, useWindowDimensions } from "react-native";
 import KitchenSink from "../pages/DesignEditor/KitchenSink";
+import DevSettings from "./DevSettings";
 
 // AsyncStorage.removeItem("accessToken");
 
-export default ({ children }: any) => {
-	const width = Dimensions.get("window").width * 0.75;
+export default () => {
+	const width = useWindowDimensions().width * 0.75;
+	const drawer = useRef(null);
 
 	return (
 		<DrawerLayout
@@ -25,6 +27,7 @@ export default ({ children }: any) => {
 			)}
 		>
 			<DrawerLayout
+				ref={drawer}
 				overlayColor="transparent"
 				edgeWidth={200}
 				drawerWidth={width}
@@ -32,14 +35,27 @@ export default ({ children }: any) => {
 				drawerPosition={DrawerLayout.positions.Left}
 				drawerType="slide"
 				renderNavigationView={() => (
-					<Box style={{ borderColor: "white", borderWidth: 1, height: "100%" }}>
+					<VStack style={{ borderColor: "white", borderWidth: 1, height: "100%" }}>
 						<Text>left drawer content</Text>
-					</Box>
+						<Button
+							onPress={() => {
+								AsyncStorage.removeItem("accessToken");
+								DevSettings.reload();
+							}}
+						>
+							Logout
+						</Button>
+					</VStack>
 				)}
 			>
-				<Box style={{ borderColor: "white", borderWidth: 1, height: "100%" }}>
-					<HamburgerIcon />
-				</Box>
+				<HStack bg="#6200ee" px={1} py={3} justifyContent="space-between" alignItems="center">
+					<HStack space={4} alignItems="center">
+						<IconButton onPress={() => drawer.current?.openDrawer()} icon={<HamburgerIcon />} />
+						<Text color="white" fontSize={20} fontWeight="bold">
+							Home
+						</Text>
+					</HStack>
+				</HStack>
 			</DrawerLayout>
 		</DrawerLayout>
 	);

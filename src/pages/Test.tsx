@@ -2,10 +2,9 @@ import React from "react";
 import { Box, StatusBar, KeyboardAvoidingView, Text, Button } from "native-base";
 import { Link } from "../util/Router";
 
-export default function ({ navigation }: any) {
+export default function () {
 	return (
 		<Box>
-			<Button onPress={() => navigation.openDrawer()}>Open Drawer</Button>
 			<Link to="/login">
 				<Text>Login</Text>
 			</Link>
