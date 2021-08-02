@@ -3,6 +3,7 @@ import { Router, Switch, Route } from "../util/Router";
 import { Box, Button } from "native-base";
 import ErrorBoundary from "./ErrorBoundary";
 import TestPage from "../pages/Test";
+import ChannelMessagesPage from "../pages/channel/messages";
 import LoginPage from "../pages/auth/login";
 import RegisterPage from "../pages/auth/register";
 // import { Icon } from "native-base";
@@ -24,6 +25,7 @@ export default function () {
 				<Router>
 					<Switch>
 						<Route exact path="/" component={TestPage}></Route>
+						<Route exact path="/channel/:id/messages" component={ChannelMessagesPage}></Route>
 						<Route exact path="/login" component={LoginPage}></Route>
 						<Route exact path="/register" component={RegisterPage}></Route>
 					</Switch>

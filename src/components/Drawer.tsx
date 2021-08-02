@@ -1,44 +1,44 @@
 import React from "react";
-import {
-	createDrawerNavigator,
-	DrawerContentScrollView,
-	DrawerItem,
-	DrawerItemList,
-} from "@react-navigation/drawer";
-import { NavigationContainer } from "@react-navigation/native";
-import Routes from "./Routes";
-import Test from "../pages/Test";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import DrawerLayout from "react-native-gesture-handler/DrawerLayout";
+import { Box, Text } from "native-base";
 
-const Drawer = createDrawerNavigator();
-
-function DrawerButton(props: any) {
-	return (
-		<DrawerContentScrollView {...props}>
-			<DrawerItemList {...props} />
-			<DrawerItem
-				label="Ausloggen"
-				onPress={() => {
-					AsyncStorage.removeItem("accessToken");
-					//TODO: Reload
-				}}
-			/>
-		</DrawerContentScrollView>
-	);
-}
+// AsyncStorage.removeItem("accessToken");
 
 export default ({ children }: any) => {
 	return (
-		<NavigationContainer>
-			<Drawer.Navigator
-				initialRouteName="Home"
-				drawerContent={(props) => <DrawerButton {...props} />}
+		<DrawerLayout
+			drawerWidth={300}
+			edgeWidth={200}
+			overlayColor="transparent"
+			// @ts-ignore
+			drawerPosition={DrawerLayout.positions.Right}
+			drawerType="slide"
+			drawerBackgroundColor="#ddd"
+			renderNavigationView={() => (
+				<Box>
+					<Text>I am in the drawer!</Text>
+				</Box>
+			)}
+			onDrawerSlide={(status) => console.log(status)}
+		>
+			<DrawerLayout
+				overlayColor="transparent"
+				edgeWidth={200}
+				drawerWidth={300}
+				// @ts-ignore
+				drawerPosition={DrawerLayout.positions.Left}
+				drawerType="slide"
+				drawerBackgroundColor="#ddd"
+				renderNavigationView={() => (
+					<Box>
+						<Text>I am in the drawer!</Text>
+					</Box>
+				)}
+				onDrawerSlide={(status) => console.log(status)}
 			>
-				<Drawer.Screen name="Home" component={Test} />
-				{/* //TODO: Acces Token zum ausloggen löschen */}
-				{/* <Drawer.Screen name="Ausloggen" /> */}
-				{/* <Drawer.Screen name="Notifications" component={NotificationsScreen} /> */}
-			</Drawer.Navigator>
-		</NavigationContainer>
+				<Text>Hello, it's second</Text>
+			</DrawerLayout>
+		</DrawerLayout>
 	);
 };

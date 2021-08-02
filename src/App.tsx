@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import "react-native-gesture-handler";
 import Theme from "./components/Theme";
 import Routes from "./components/Routes";
 import Boundary from "./components/Boundary";
 import ErrorBoundary from "./components/ErrorBoundary";
 // import "./Client";
 import "./util/i18n";
-import "react-native-gesture-handler";
 import Drawer from "./components/Drawer";
 
 export default function App() {
@@ -19,7 +17,10 @@ export default function App() {
 	return (
 		<Theme>
 			<Boundary>
-				<ErrorBoundary>{accessToken ? <Drawer /> : <Routes></Routes>}</ErrorBoundary>
+				<ErrorBoundary>
+					{/* {accessToken ? <Drawer /> : <Routes></Routes>} */}
+					<Drawer />
+				</ErrorBoundary>
 			</Boundary>
 		</Theme>
 	);
