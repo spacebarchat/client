@@ -25,7 +25,7 @@ export default function () {
 			>
 				<Router>
 					<Switch>
-						<Route exact path="/" component={KitchenSink}></Route>
+						<Route exact path="/" component={TestPage}></Route>
 						<Route
 							exact
 							path="/channel/:id/messages"
