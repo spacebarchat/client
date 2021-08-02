@@ -17,10 +17,7 @@ export default function App() {
 	return (
 		<Theme>
 			<Boundary>
-				<ErrorBoundary>
-					{/* {accessToken ? <Drawer /> : <Routes></Routes>} */}
-					<Drawer />
-				</ErrorBoundary>
+				<ErrorBoundary>{accessToken ? <Drawer /> : <Routes></Routes>}</ErrorBoundary>
 			</Boundary>
 		</Theme>
 	);
