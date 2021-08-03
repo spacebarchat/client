@@ -2,31 +2,19 @@ import { Box, FlatList, Heading, HStack, Image, Pressable, Text } from "native-b
 import React from "react";
 
 import exampleMessages from "../../assets/data/exampleMessages.json";
+import { relativeTime } from "../../util/Time";
 
 export default function messages() {
-	return (
-		<Box>
-			<FlatList
-				data={exampleMessages}
-				keyExtractor={(item) => item.id}
-				renderItem={renderMessage}
-			></FlatList>
-		</Box>
-	);
+	return <FlatList data={exampleMessages} keyExtractor={(item) => item.id} renderItem={renderMessage}></FlatList>;
 }
 
 export function renderMessage({ index, item, seperators }: any) {
 	const time = new Date(item.timestamp);
 	console.log({ item, time });
 	return (
-		<Box
-			style={{ borderColor: "white", borderWidth: 1, height: "100%", width: "100%" }}
-			key={item.id}
-		>
+		<Box style={{ borderColor: "white", borderWidth: 1, height: "100%", width: "100%" }} key={item.id}>
 			<Heading size="md">{item.author.username}</Heading>
-			<Heading size="xs">
-				{time.getDate() + "." + String(time.getMonth() + 1) + "." + time.getFullYear()}
-			</Heading>
+			<Heading size="xs">{relativeTime(item.timestamp)}</Heading>
 			<Text>{item.content && item.content}</Text>
 			<Text>{item.embeds && item.embeds.map((x: any) => <></>)}</Text>
 			{item.attachments &&
