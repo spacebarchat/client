@@ -34,7 +34,7 @@ export default () => {
 			drawerPosition={DrawerLayout.positions.Right}
 			drawerType="slide"
 			renderNavigationView={() => (
-				<Box style={{ borderColor: "white", borderWidth: 1, height: "100%" }}>
+				<Box>
 					<Text>right drawer content</Text>
 				</Box>
 			)}
