@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DrawerLayout from "react-native-gesture-handler/DrawerLayout";
@@ -22,8 +22,20 @@ import FosscordLogo from "../assets/images/icon_round_256_blue.png";
 import { FaCogs, FaSingOutAlt, FaUserCircle, FaUsers } from "../assets/images/icons";
 
 export default () => {
-	const width = useWindowDimensions().width * 0.75;
-	const drawer = useRef(null);
+	const leftDrawer = useRef(null);
+	const rightDrawer = useRef(null);
+	const window = useWindowDimensions();
+	const [destopModus, setDestopModus] = useState(false);
+
+	useEffect(() => {
+		if (window.width > 801) {
+			setDestopModus(true);
+			//@ts-ignore
+			leftDrawer.current?.openDrawer();
+		}
+	}, []);
+
+	const width = !destopModus ? window.width * 0.75 : window.width * 0.15;
 
 	return (
 		<DrawerLayout
@@ -40,13 +52,12 @@ export default () => {
 			)}
 		>
 			<DrawerLayout
-				ref={drawer}
+				ref={leftDrawer}
 				overlayColor="transparent"
 				edgeWidth={200}
 				drawerWidth={width}
-				// @ts-ignore
 				drawerPosition={DrawerLayout.positions.Left}
-				drawerType="slide"
+				drawerType={!destopModus && "slide"}
 				renderNavigationView={() => (
 					<VStack style={{ borderColor: "white", borderWidth: 1, height: "100%" }}>
 						<HStack>
@@ -142,10 +153,12 @@ export default () => {
 					alignItems="center"
 				>
 					<HStack space={4} alignItems="center">
-						<IconButton
-							onPress={() => drawer.current?.openDrawer()}
-							icon={<HamburgerIcon />}
-						/>
+						{!destopModus && (
+							<IconButton
+								onPress={() => leftDrawer.current?.openDrawer()}
+								icon={<HamburgerIcon />}
+							/>
+						)}
 						<Text color="white" fontSize={20} fontWeight="bold">
 							Home
 						</Text>
