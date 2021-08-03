@@ -5,8 +5,8 @@ import { Box, Button, HamburgerIcon, HStack, Icon, IconButton, Text, VStack } fr
 import { Dimensions, useWindowDimensions } from "react-native";
 import KitchenSink from "../pages/DesignEditor/KitchenSink";
 import DevSettings from "./DevSettings";
-import Sidebar from "../pages/channel/Sidebar";
-
+import ChannelSidebar from "../pages/channel/sidebar";
+import GuildSidebar from "../pages/guild/sidebar";
 // AsyncStorage.removeItem("accessToken");
 
 export default () => {
@@ -37,8 +37,10 @@ export default () => {
 				drawerType="slide"
 				renderNavigationView={() => (
 					<VStack style={{ borderColor: "white", borderWidth: 1, height: "100%" }}>
-						{/* channelList */}
-						<Sidebar />
+						<HStack>
+							<GuildSidebar />
+							<ChannelSidebar />
+						</HStack>
 						<Button
 							onPress={() => {
 								AsyncStorage.removeItem("accessToken");

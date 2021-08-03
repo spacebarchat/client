@@ -23,6 +23,9 @@ const Sidebar = () => {
 	function renderChannels(d: Array<Object>, props?: any) {
 		return (
 			<FlatList
+				style={{
+					flexGrow: 0,
+				}}
 				data={d}
 				renderItem={({ item }) => (
 					<Box
@@ -32,8 +35,6 @@ const Sidebar = () => {
 						style={{
 							flexDirection: "row",
 							alignItems: "center",
-							borderBottomWidth: 1,
-							borderBottomColor: "grey",
 						}}
 					>
 						{item.icon === "text" ? <FaHashtag size="18px" /> : null}
@@ -50,9 +51,11 @@ const Sidebar = () => {
 	return (
 		<Box
 			w="80%"
+			h="100%"
 			style={{
 				flexDirection: "column",
 				justifyContent: "flex-start",
+				alignItems: "flex-start",
 				borderLeftWidth: 1,
 				borderLeftColor: "grey",
 			}}
@@ -70,16 +73,12 @@ const Sidebar = () => {
 							flexDirection: "column",
 							justifyContent: "flex-start",
 							alignItems: "flex-start",
-							borderBottomWidth: 1,
-							borderBottomColor: "grey",
 						}}
 					>
 						<Pressable
 							style={{
 								flexDirection: "row",
 								alignItems: "center",
-								borderBottomWidth: 1,
-								borderBottomColor: "grey",
 							}}
 							onPress={() => {
 								const d = [...data];
