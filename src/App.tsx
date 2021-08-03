@@ -4,7 +4,7 @@ import Theme from "./components/Theme";
 import Routes from "./components/Routes";
 import Boundary from "./components/Boundary";
 import ErrorBoundary from "./components/ErrorBoundary";
-// import "./Client";
+import "./Client";
 import "./util/i18n";
 import Drawer from "./components/Drawer";
 

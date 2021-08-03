@@ -2,11 +2,8 @@ import React, { useRef } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DrawerLayout from "react-native-gesture-handler/DrawerLayout";
 import { Box, Button, HamburgerIcon, HStack, Icon, IconButton, Text, VStack } from "native-base";
-import { Dimensions, useWindowDimensions } from "react-native";
-import KitchenSink from "../pages/DesignEditor/KitchenSink";
+import { useWindowDimensions } from "react-native";
 import DevSettings from "./DevSettings";
-
-// AsyncStorage.removeItem("accessToken");
 
 export default () => {
 	const width = useWindowDimensions().width * 0.75;
@@ -21,7 +18,7 @@ export default () => {
 			drawerPosition={DrawerLayout.positions.Right}
 			drawerType="slide"
 			renderNavigationView={() => (
-				<Box style={{ borderColor: "white", borderWidth: 1, height: "100%" }}>
+				<Box>
 					<Text>right drawer content</Text>
 				</Box>
 			)}
@@ -35,7 +32,7 @@ export default () => {
 				drawerPosition={DrawerLayout.positions.Left}
 				drawerType="slide"
 				renderNavigationView={() => (
-					<VStack style={{ borderColor: "white", borderWidth: 1, height: "100%" }}>
+					<VStack>
 						<Text>left drawer content</Text>
 						<Button
 							onPress={() => {
@@ -48,9 +45,13 @@ export default () => {
 					</VStack>
 				)}
 			>
-				<HStack bg="#6200ee" px={1} py={3} justifyContent="space-between" alignItems="center">
+				<HStack bg="#5f00ee" px={1} py={3} justifyContent="space-between" alignItems="center">
 					<HStack space={4} alignItems="center">
-						<IconButton onPress={() => drawer.current?.openDrawer()} icon={<HamburgerIcon />} />
+						<IconButton
+							// @ts-ignore
+							onPress={() => drawer.current?.openDrawer({ speed: 1000, velocity: 0 })}
+							icon={<HamburgerIcon />}
+						/>
 						<Text color="white" fontSize={20} fontWeight="bold">
 							Home
 						</Text>
