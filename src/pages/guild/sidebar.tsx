@@ -18,9 +18,9 @@ const Sidebar = () => {
 	];
 
 	return (
-		<Box h="100%">
+		<Box height="100%">
 			<FlatList
-				style={{ flexGrow: 0 }}
+				style={{ flexGrow: 0, height: "100%" }}
 				m={1}
 				data={data}
 				renderItem={({ item }) => (

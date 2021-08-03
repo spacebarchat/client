@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { List, Heading, Box, Center, NativeBaseProvider, HStack, Text } from "native-base";
+import { List, Heading, Box, Center, NativeBaseProvider, HStack, Text, ScrollView } from "native-base";
 import { FlatList } from "native-base";
 import { FaChevronDown, FaHashtag, FaVolumeUp } from "../../assets/images/icons";
 import { Pressable } from "react-native";
@@ -23,6 +23,7 @@ const Sidebar = () => {
 	function renderChannels(d: Array<Object>, props?: any) {
 		return (
 			<FlatList
+				bounces={false}
 				style={{
 					flexGrow: 0,
 				}}
@@ -60,48 +61,51 @@ const Sidebar = () => {
 				borderLeftColor: "grey",
 			}}
 		>
-			{renderChannels(data.filter((x) => !x.parent_id && x.type !== "category"))}
+			<ScrollView persistentScrollbar>
+				{renderChannels(data.filter((x) => !x.parent_id && x.type !== "category"))}
 
-			<FlatList
-				data={data.filter((x) => x.type === "category")}
-				renderItem={({ item }) => (
-					<Box
-						key={item.id}
-						px={5}
-						py={1}
-						style={{
-							flexDirection: "column",
-							justifyContent: "flex-start",
-							alignItems: "flex-start",
-						}}
-					>
-						<Pressable
+				<FlatList
+					bounces={false}
+					data={data.filter((x) => x.type === "category")}
+					renderItem={({ item }) => (
+						<Box
+							key={item.id}
+							px={5}
+							py={1}
 							style={{
-								flexDirection: "row",
-								alignItems: "center",
-							}}
-							onPress={() => {
-								const d = [...data];
-								const i = d.find((x) => x.id === item.id);
-								i.collapsed = !i.collapsed;
-								setData(d);
+								flexDirection: "column",
+								justifyContent: "flex-start",
+								alignItems: "flex-start",
 							}}
 						>
-							<FaChevronDown
-								size="18px"
-								style={item.collapsed && { transform: [{ rotate: "-90deg" }] }}
-							/>
-							<Text mx={1}>{item.name}</Text>
-						</Pressable>
-						{!item.collapsed &&
-							renderChannels(
-								data.filter((x: any) => x.parent_id === item.id),
-								{ ml: 2, id: "category" + item.id }
-							)}
-					</Box>
-				)}
-				keyExtractor={(item) => item.id}
-			/>
+							<Pressable
+								style={{
+									flexDirection: "row",
+									alignItems: "center",
+								}}
+								onPress={() => {
+									const d = [...data];
+									const i = d.find((x) => x.id === item.id);
+									i.collapsed = !i.collapsed;
+									setData(d);
+								}}
+							>
+								<FaChevronDown
+									size="18px"
+									style={item.collapsed && { transform: [{ rotate: "-90deg" }] }}
+								/>
+								<Text mx={1}>{item.name}</Text>
+							</Pressable>
+							{!item.collapsed &&
+								renderChannels(
+									data.filter((x: any) => x.parent_id === item.id),
+									{ ml: 2, id: "category" + item.id }
+								)}
+						</Box>
+					)}
+					keyExtractor={(item) => item.id}
+				/>
+			</ScrollView>
 		</Box>
 	);
 };
