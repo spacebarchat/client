@@ -8,6 +8,7 @@ import GuildSidebar from "../pages/guild/sidebar";
 import { useDesktop } from "../util/MediaQuery";
 import TabBar from "./TabBar";
 import Messages from "../pages/channel/messages";
+import Friends from "../pages/friends";
 
 export default () => {
 	const leftDrawer = useRef(null);
@@ -55,17 +56,27 @@ export default () => {
 						</Box>
 					)}
 				>
-					<HStack bg="#6200ee" px={1} py={3} justifyContent="space-between" alignItems="center">
+					<HStack
+						bg="#6200ee"
+						px={1}
+						py={3}
+						justifyContent="space-between"
+						alignItems="center"
+					>
 						<HStack space={4} alignItems="center">
 							{!destopModus && (
-								<IconButton onPress={() => leftDrawer.current?.openDrawer()} icon={<HamburgerIcon />} />
+								<IconButton
+									onPress={() => leftDrawer.current?.openDrawer()}
+									icon={<HamburgerIcon />}
+								/>
 							)}
 							<Text color="white" fontSize={20} fontWeight="bold">
 								Home
 							</Text>
 						</HStack>
 					</HStack>
-					<Messages />
+					{/* Content */}
+					<Friends />
 				</DrawerLayout>
 			</DrawerLayout>
 		</>
