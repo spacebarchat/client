@@ -20,22 +20,21 @@ import GuildSidebar from "../pages/guild/sidebar";
 // AsyncStorage.removeItem("accessToken");
 import FosscordLogo from "../assets/images/icon_round_256_blue.png";
 import { FaCogs, FaSingOutAlt, FaUserCircle, FaUsers } from "../assets/images/icons";
+import { useDesktop } from "../util/MediaQuery";
 
 export default () => {
 	const leftDrawer = useRef(null);
 	const rightDrawer = useRef(null);
 	const window = useWindowDimensions();
-	const [destopModus, setDestopModus] = useState(false);
+	const [destopModus, setDestopModus] = useState(useDesktop());
 
 	useEffect(() => {
-		if (window.width > 801) {
-			setDestopModus(true);
-			//@ts-ignore
+		if (destopModus) {
 			leftDrawer.current?.openDrawer();
 		}
 	}, []);
 
-	const width = !destopModus ? window.width * 0.75 : window.width * 0.15;
+	const width = !destopModus ? window.width * 0.75 : 250;
 
 	return (
 		<DrawerLayout
