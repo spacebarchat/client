@@ -21,6 +21,7 @@ import GuildSidebar from "../pages/guild/sidebar";
 import FosscordLogo from "../assets/images/icon_round_256_blue.png";
 import { FaCogs, FaSingOutAlt, FaUserCircle, FaUsers } from "../assets/images/icons";
 import { useDesktop } from "../util/MediaQuery";
+import Messages from "../pages/channel/messages";
 
 export default () => {
 	const leftDrawer = useRef(null);
@@ -163,6 +164,7 @@ export default () => {
 						</Text>
 					</HStack>
 				</HStack>
+				<Messages />
 			</DrawerLayout>
 		</DrawerLayout>
 	);
