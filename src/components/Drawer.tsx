@@ -26,7 +26,7 @@ export default () => {
 	const leftDrawer = useRef(null);
 	const rightDrawer = useRef(null);
 	const window = useWindowDimensions();
-	const [destopModus, setDestopModus] = useState(useDesktop());
+	const destopModus = useDesktop();
 
 	useEffect(() => {
 		if (destopModus) {
