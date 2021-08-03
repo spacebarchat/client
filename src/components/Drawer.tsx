@@ -7,6 +7,7 @@ import GuildSidebar from "../pages/guild/sidebar";
 // AsyncStorage.removeItem("accessToken");
 import { useDesktop } from "../util/MediaQuery";
 import TabBar from "./TabBar";
+import Messages from "../pages/channel/messages";
 
 export default () => {
 	const leftDrawer = useRef(null);
@@ -64,6 +65,7 @@ export default () => {
 							</Text>
 						</HStack>
 					</HStack>
+					<Messages />
 				</DrawerLayout>
 			</DrawerLayout>
 		</>

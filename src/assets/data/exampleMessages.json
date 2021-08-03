@@ -102,8 +102,16 @@
 			{ "emoji": { "id": null, "name": "\u2705" }, "count": 42, "me": false },
 			{ "emoji": { "id": "835472905512943666", "name": "kekwait" }, "count": 8, "me": false },
 			{ "emoji": { "id": null, "name": "\u274c" }, "count": 3, "me": false },
-			{ "emoji": { "id": "842852983695212564", "name": "fosscord" }, "count": 8, "me": false },
-			{ "emoji": { "id": "842852982973268008", "name": "fosscord_black" }, "count": 4, "me": false }
+			{
+				"emoji": { "id": "842852983695212564", "name": "fosscord" },
+				"count": 8,
+				"me": false
+			},
+			{
+				"emoji": { "id": "842852982973268008", "name": "fosscord_black" },
+				"count": 4,
+				"me": false
+			}
 		]
 	}
 ]
