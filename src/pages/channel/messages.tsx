@@ -32,7 +32,9 @@ export function renderMessage({ index, item, seperators }: any) {
 					{item.reactions.map((x: any) => {
 						return (
 							<Box mx={2}>
-								<Pressable>{x.emoji.id ? x.emoji.id : x.emoji.name}</Pressable>
+								<Pressable>
+									<Text>{x.emoji.id ? x.emoji.id : x.emoji.name}</Text>
+								</Pressable>
 								<Text>{x.count}</Text>
 							</Box>
 						);
@@ -43,9 +45,7 @@ export function renderMessage({ index, item, seperators }: any) {
 				item.embeds.map((embed: any) => {
 					return (
 						<Box>
-							<Heading size="xl">
-								<a>{embed.title}</a>
-							</Heading>
+							<Heading size="xl">{embed.title}</Heading>
 							<Text>{embed.description}</Text>
 						</Box>
 					);
