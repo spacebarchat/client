@@ -4,6 +4,9 @@ import DrawerLayout from "react-native-gesture-handler/DrawerLayout";
 import { Box, Button, HamburgerIcon, HStack, Icon, IconButton, Text, VStack } from "native-base";
 import { useWindowDimensions } from "react-native";
 import DevSettings from "./DevSettings";
+import ChannelSidebar from "../pages/channel/sidebar";
+import GuildSidebar from "../pages/guild/sidebar";
+// AsyncStorage.removeItem("accessToken");
 
 export default () => {
 	const width = useWindowDimensions().width * 0.75;
@@ -32,8 +35,11 @@ export default () => {
 				drawerPosition={DrawerLayout.positions.Left}
 				drawerType="slide"
 				renderNavigationView={() => (
-					<VStack>
-						<Text>left drawer content</Text>
+					<VStack style={{ borderColor: "white", borderWidth: 1, height: "100%" }}>
+						<HStack>
+							<GuildSidebar />
+							<ChannelSidebar />
+						</HStack>
 						<Button
 							onPress={() => {
 								AsyncStorage.removeItem("accessToken");
@@ -45,13 +51,9 @@ export default () => {
 					</VStack>
 				)}
 			>
-				<HStack bg="#5f00ee" px={1} py={3} justifyContent="space-between" alignItems="center">
+				<HStack bg="#6200ee" px={1} py={3} justifyContent="space-between" alignItems="center">
 					<HStack space={4} alignItems="center">
-						<IconButton
-							// @ts-ignore
-							onPress={() => drawer.current?.openDrawer({ speed: 1000, velocity: 0 })}
-							icon={<HamburgerIcon />}
-						/>
+						<IconButton onPress={() => drawer.current?.openDrawer()} icon={<HamburgerIcon />} />
 						<Text color="white" fontSize={20} fontWeight="bold">
 							Home
 						</Text>
