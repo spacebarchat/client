@@ -1,16 +1,41 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DrawerLayout from "react-native-gesture-handler/DrawerLayout";
-import { Box, Button, HamburgerIcon, HStack, Icon, IconButton, Text, VStack } from "native-base";
-import { useWindowDimensions } from "react-native";
+import {
+	Box,
+	Button,
+	HamburgerIcon,
+	HStack,
+	Icon,
+	IconButton,
+	Text,
+	Tooltip,
+	VStack,
+} from "native-base";
+import { Pressable, useWindowDimensions } from "react-native";
 import DevSettings from "./DevSettings";
 import ChannelSidebar from "../pages/channel/sidebar";
 import GuildSidebar from "../pages/guild/sidebar";
 // AsyncStorage.removeItem("accessToken");
+import FosscordLogo from "../assets/images/icon_round_256_blue.png";
+import { FaCogs, FaSingOutAlt, FaUserCircle, FaUsers } from "../assets/images/icons";
 
 export default () => {
-	const width = useWindowDimensions().width * 0.75;
-	const drawer = useRef(null);
+	const leftDrawer = useRef(null);
+	const rightDrawer = useRef(null);
+	const window = useWindowDimensions();
+	const [destopModus, setDestopModus] = useState(false);
+
+	useEffect(() => {
+		if (window.width > 801) {
+			setDestopModus(true);
+			//@ts-ignore
+			leftDrawer.current?.openDrawer();
+		}
+	}, []);
+
+	const width = !destopModus ? window.width * 0.75 : window.width * 0.15;
 
 	return (
 		<DrawerLayout
@@ -27,33 +52,113 @@ export default () => {
 			)}
 		>
 			<DrawerLayout
-				ref={drawer}
+				ref={leftDrawer}
 				overlayColor="transparent"
 				edgeWidth={200}
 				drawerWidth={width}
-				// @ts-ignore
 				drawerPosition={DrawerLayout.positions.Left}
-				drawerType="slide"
+				drawerType={!destopModus && "slide"}
 				renderNavigationView={() => (
 					<VStack style={{ borderColor: "white", borderWidth: 1, height: "100%" }}>
 						<HStack>
 							<GuildSidebar />
 							<ChannelSidebar />
 						</HStack>
-						<Button
-							onPress={() => {
-								AsyncStorage.removeItem("accessToken");
-								DevSettings.reload();
+						<HStack
+							w="100%"
+							style={{
+								position: "absolute",
+								bottom: 0,
+								justifyContent: "space-around",
+								borderTopColor: "grey",
+								borderTopWidth: 1,
 							}}
+							p={1}
 						>
-							Logout
-						</Button>
+							{/* Home */}
+							<Tooltip label={"Home"} placement={"top"}>
+								<Pressable>
+									<Image
+										style={{
+											width: 40,
+											height: 40,
+										}}
+										source={FosscordLogo}
+										mx={1}
+									/>
+								</Pressable>
+							</Tooltip>
+							{/* Friends */}
+							<Tooltip label={"Friends"} placement={"top"}>
+								<Pressable>
+									<FaUsers
+										style={{
+											width: 40,
+											height: 40,
+										}}
+										mx={1}
+									/>
+								</Pressable>
+							</Tooltip>
+							{/* Profil */}
+							<Tooltip label={"Profile"} placement={"top"}>
+								<Pressable>
+									<FaUserCircle
+										style={{
+											width: 40,
+											height: 40,
+										}}
+										mx={1}
+									/>
+								</Pressable>
+							</Tooltip>
+							{/* Einstellungen */}
+							<Tooltip label={"Settings"} placement={"top"}>
+								<Pressable>
+									<FaCogs
+										style={{
+											width: 40,
+											height: 40,
+										}}
+										mx={1}
+									/>
+								</Pressable>
+							</Tooltip>
+							{/* Logout */}
+							<Tooltip label={"Logout"} placement={"top"}>
+								<Pressable
+									onPress={() => {
+										AsyncStorage.removeItem("accessToken");
+										DevSettings.reload();
+									}}
+								>
+									<FaSingOutAlt
+										style={{
+											width: 40,
+											height: 40,
+										}}
+										mx={1}
+									/>
+								</Pressable>
+							</Tooltip>
+						</HStack>
 					</VStack>
 				)}
 			>
-				<HStack bg="#6200ee" px={1} py={3} justifyContent="space-between" alignItems="center">
+				<HStack
+					bg="#6200ee"
+					px={1}
+					py={3}
+					justifyContent="space-between"
+					alignItems="center"
+				>
 					<HStack space={4} alignItems="center">
-						<IconButton onPress={() => drawer.current?.openDrawer()} icon={<HamburgerIcon />} />
+						{!destopModus && (
+							<IconButton
+								onPress={() => leftDrawer.current?.openDrawer()}
+								icon={<HamburgerIcon />}
+							/>
+						)}
 						<Text color="white" fontSize={20} fontWeight="bold">
 							Home
 						</Text>

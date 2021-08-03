@@ -19,7 +19,6 @@
 		"@sapphire/async-queue": "^1.1.4",
 		"@types/react-router-dom": "^5.1.8",
 		"@types/react-router-native": "^5.1.1",
-		"discord.js": "^12.4.0",
 		"fosscord.js": "github:fosscord/fosscord.js",
 		"i18n": "^0.13.3",
 		"i18next": "^20.3.5",
