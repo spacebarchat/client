@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DrawerLayout from "react-native-gesture-handler/DrawerLayout";
 import { Box, HamburgerIcon, HStack, Icon, IconButton, Text, Tooltip, VStack } from "native-base";
 import { useWindowDimensions } from "react-native";
@@ -9,8 +9,10 @@ import { useDesktop } from "../util/MediaQuery";
 import TabBar from "./TabBar";
 import Messages from "../pages/channel/messages";
 import Friends from "../pages/friends";
+import SettingsModal from "../pages/settings/modal";
 
 export default () => {
+	const [settingsModal, setSettingsModal] = useState(false);
 	const leftDrawer = useRef(null);
 	const rightDrawer = useRef(null);
 	const window = useWindowDimensions();
@@ -52,7 +54,7 @@ export default () => {
 								<GuildSidebar />
 								<ChannelSidebar />
 							</HStack>
-							<TabBar></TabBar>
+							<TabBar setOpen={setSettingsModal} />
 						</Box>
 					)}
 				>
@@ -76,7 +78,7 @@ export default () => {
 						</HStack>
 					</HStack>
 					{/* Content */}
-					<Friends />
+					<SettingsModal open={settingsModal} setOpen={setSettingsModal} />
 				</DrawerLayout>
 			</DrawerLayout>
 		</>

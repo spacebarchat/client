@@ -1,12 +1,13 @@
-import React from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { HStack, Tooltip } from "native-base";
 import { Image, Pressable } from "react-native";
 import FosscordLogo from "../assets/images/icon_round_256_blue.png";
 import { FaCogs, FaSingOutAlt, FaUserCircle, FaUsers } from "../assets/images/icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DevSettings from "./DevSettings";
+import SettingsModal from "../pages/settings/modal";
 
-export default function () {
+export default function ({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }) {
 	return (
 		<HStack
 			w="100%"
@@ -17,6 +18,7 @@ export default function () {
 			}}
 			p={1}
 		>
+			{/* <SettingsModal open={settingsModal} setOpen={setSettingsModal} /> */}
 			{/* Home */}
 			<Tooltip label={"Home"} placement={"top"}>
 				<Pressable>
@@ -56,7 +58,7 @@ export default function () {
 			</Tooltip>
 			{/* Settings */}
 			<Tooltip label={"Settings"} placement={"top"}>
-				<Pressable>
+				<Pressable onPress={() => setOpen(true)}>
 					<FaCogs
 						style={{
 							width: 40,
