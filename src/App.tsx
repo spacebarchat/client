@@ -8,12 +8,15 @@ import ErrorBoundary from "./components/ErrorBoundary";
 // import "./Client";
 import "./util/i18n";
 import Drawer from "./components/Drawer";
+import { Platform } from "react-native";
 
 export default function App() {
 	const [accessToken, setAccessToken] = useState<string | null>();
 	useEffect(() => {
 		AsyncStorage.getItem("accessToken").then((x) => setAccessToken(x));
-		SplashScreen.hide();
+		if (Platform.OS === "android") {
+			SplashScreen.hide();
+		}
 	}, []);
 
 	return (
