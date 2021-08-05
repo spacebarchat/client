@@ -27,6 +27,7 @@ export default function ({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean
 							width: 40,
 							height: 40,
 						}}
+						// @ts-ignore
 						source={FosscordLogo}
 						mx={1}
 					/>

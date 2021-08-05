@@ -13,8 +13,8 @@ import SettingsModal from "../pages/settings/modal";
 
 export default () => {
 	const [settingsModal, setSettingsModal] = useState(false);
-	const leftDrawer = useRef(null);
-	const rightDrawer = useRef(null);
+	const leftDrawer = useRef<any>(null);
+	const rightDrawer = useRef<any>(null);
 	const window = useWindowDimensions();
 	const destopModus = useDesktop();
 
@@ -46,7 +46,9 @@ export default () => {
 					overlayColor="transparent"
 					edgeWidth={200}
 					drawerWidth={width}
+					// @ts-ignore
 					drawerPosition={DrawerLayout.positions.Left}
+					// @ts-ignore
 					drawerType={!destopModus && "slide"}
 					renderNavigationView={() => (
 						<Box style={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -58,19 +60,10 @@ export default () => {
 						</Box>
 					)}
 				>
-					<HStack
-						bg="#6200ee"
-						px={1}
-						py={3}
-						justifyContent="space-between"
-						alignItems="center"
-					>
+					<HStack bg="#6200ee" px={1} py={3} justifyContent="space-between" alignItems="center">
 						<HStack space={4} alignItems="center">
 							{!destopModus && (
-								<IconButton
-									onPress={() => leftDrawer.current?.openDrawer()}
-									icon={<HamburgerIcon />}
-								/>
+								<IconButton onPress={() => leftDrawer.current?.openDrawer()} icon={<HamburgerIcon />} />
 							)}
 							<Text color="white" fontSize={20} fontWeight="bold">
 								Home

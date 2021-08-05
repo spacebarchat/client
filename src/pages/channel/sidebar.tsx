@@ -86,6 +86,7 @@ const Sidebar = () => {
 								onPress={() => {
 									const d = [...data];
 									const i = d.find((x) => x.id === item.id);
+									// @ts-ignore
 									i.collapsed = !i.collapsed;
 									setData(d);
 								}}
