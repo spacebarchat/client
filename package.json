@@ -38,7 +38,6 @@
 		"react-native-reanimated": "^2.2.0",
 		"react-native-safe-area-context": "^3.2.0",
 		"react-native-screens": "^3.4.0",
-		"react-native-splash-screen": "^3.2.0",
 		"react-native-svg": "^12.1.1",
 		"react-native-web": "^0.17.1",
 		"react-router-dom": "^5.2.0",
