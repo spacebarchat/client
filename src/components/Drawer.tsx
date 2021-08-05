@@ -4,7 +4,7 @@ import { Box, HamburgerIcon, HStack, Icon, IconButton, Text, Tooltip, VStack } f
 import { useWindowDimensions } from "react-native";
 import ChannelSidebar from "../pages/channel/sidebar";
 import GuildSidebar from "../pages/guild/sidebar";
-// AsyncStorage.removeItem("accessToken");
+// AsyncStorage.removeItem("token");
 import { useDesktop } from "../util/MediaQuery";
 import TabBar from "./TabBar";
 import Messages from "../pages/channel/messages";

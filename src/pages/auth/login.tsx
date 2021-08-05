@@ -41,7 +41,7 @@ export default function App() {
 						<Button
 							colorScheme="primary"
 							onPress={() => {
-								AsyncStorage.setItem("accessToken", "test");
+								AsyncStorage.setItem("token", password);
 								DevSettings.reload();
 							}}
 						>

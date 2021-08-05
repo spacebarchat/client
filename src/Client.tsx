@@ -1,7 +1,4 @@
-// import { Client, ClientUser } from "fosscord.js/webpack/fosscord";
-// const Discord = require("discord.js/webpack/discord");
-// const Discord = require("fosscord.js/dist/index");
-import Discord, { Client } from "fosscord.js";
+import { Client } from "fosscord.js";
 
 const client = new Client({
 	intents: [

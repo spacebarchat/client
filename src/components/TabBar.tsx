@@ -73,7 +73,7 @@ export default function ({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean
 			<Tooltip label={"Logout"} placement={"top"}>
 				<Pressable
 					onPress={() => {
-						AsyncStorage.removeItem("accessToken");
+						AsyncStorage.removeItem("token");
 						DevSettings.reload();
 					}}
 				>
