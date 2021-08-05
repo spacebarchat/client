@@ -6,21 +6,4 @@
  android:layout_height="match_parent"
  android:background="@drawable/background_splash"
 >
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:rotationY="-"
-            android:text="Fosscord"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="48sp"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="169dp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

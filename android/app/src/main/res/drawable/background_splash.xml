@@ -5,6 +5,6 @@
 	android:layout_height="match_parent"
 	android:scaleType="fitCenter"
 	android:adjustViewBounds="true"
-	android:drawable="@mipmap/s"
+	android:drawable="@mipmap/background"
 	/>
 </layer-list>
