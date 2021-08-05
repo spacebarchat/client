@@ -1,10 +1,10 @@
 import { Box, FlatList, Avatar, Tooltip, Pressable } from "native-base";
 import React from "react";
-import client from "../../Client";
+import client from "../../client";
 import { useCache } from "../../util/useCache";
 
 const Sidebar = () => {
-	const guilds = useCache(client.guilds);
+	const guilds = useCache(client.guilds).array();
 
 	console.log(guilds);
 
@@ -13,7 +13,7 @@ const Sidebar = () => {
 			<FlatList
 				style={{ flexGrow: 0, height: "100%" }}
 				m={1}
-				data={guilds.array()}
+				data={guilds}
 				renderItem={({ item }) => (
 					<Pressable>
 						<Tooltip label={item.name} placement={"right"}>
@@ -22,9 +22,10 @@ const Sidebar = () => {
 								source={{
 									uri: item.iconURL({ size: 1024 }),
 								}}
+								_text={{ color: "white" }}
 								size={"sm"}
 							>
-								{item?.nameAcronym}
+								{!item.iconURL() && item?.nameAcronym}
 							</Avatar>
 						</Tooltip>
 					</Pressable>

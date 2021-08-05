@@ -21,10 +21,6 @@ const client = new Client({
 });
 export default client;
 
-// @ts-ignore
-globalThis.client = client;
-console.log(client);
-
 client.on("ready", () => console.log("ready " + client.user?.tag));
 client.on("message", (msg: any) => console.log(msg.content));
 client.on("raw", (event: any) => console.log(event));
