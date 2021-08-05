@@ -2,11 +2,11 @@ import { Box, FlatList, Avatar, Tooltip, Pressable } from "native-base";
 import React from "react";
 import client from "../../client";
 import { useCache } from "../../util/useCache";
+import { Link } from "../../util/Router";
+import { Guild } from "fosscord.js";
 
 const Sidebar = () => {
 	const guilds = useCache(client.guilds).array();
-
-	console.log(guilds);
 
 	return (
 		<Box height="100%">
@@ -14,13 +14,20 @@ const Sidebar = () => {
 				style={{ flexGrow: 0, height: "100%" }}
 				m={1}
 				data={guilds}
-				renderItem={({ item }) => (
-					<Pressable>
+				renderItem={({ item }: { item: Guild }) => (
+					<Link
+						to={`/channels/${item?.id}/${
+							item.channels.cache
+								.filter((x) => x.type === "GUILD_TEXT" && item.me?.permissionsIn(x).has("VIEW_CHANNEL"))
+								.first()?.id
+						}`}
+						key={item.id}
+					>
 						<Tooltip label={item.name} placement={"right"}>
 							<Avatar
 								my={1}
 								source={{
-									uri: item.iconURL({ size: 1024 }),
+									uri: item.iconURL({ size: 1024 }) as string,
 								}}
 								_text={{ color: "white" }}
 								size={"sm"}
@@ -28,7 +35,7 @@ const Sidebar = () => {
 								{!item.iconURL() && item?.nameAcronym}
 							</Avatar>
 						</Tooltip>
-					</Pressable>
+					</Link>
 				)}
 				keyExtractor={(item) => item.id}
 			/>

@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, ReactNode } from "react";
 import { Router, Switch, Route } from "../util/Router";
 import { Box, Button } from "native-base";
 import ErrorBoundary from "./ErrorBoundary";
@@ -12,7 +12,7 @@ import KitchenSink from "../pages/DesignEditor/KitchenSink";
 // const TestPage = lazy(() => import("../pages/Test"));
 const KitchenSinkPage = lazy(() => import("../pages/DesignEditor/KitchenSink"));
 
-export default function () {
+export default function ({ children }: { children?: ReactNode }) {
 	return (
 		<ErrorBoundary>
 			<Suspense
@@ -25,15 +25,12 @@ export default function () {
 			>
 				<Router>
 					<Switch>
-						<Route exact path="/" component={TestPage}></Route>
-						<Route
-							exact
-							path="/channel/:id/messages"
-							component={ChannelMessagesPage}
-						></Route>
+						<Route exact path="/" component={ChannelMessagesPage}></Route>
+						<Route exact path="/channels/:guild/:channel" component={ChannelMessagesPage}></Route>
 						<Route exact path="/login" component={LoginPage}></Route>
 						<Route exact path="/register" component={RegisterPage}></Route>
 					</Switch>
+					{children}
 				</Router>
 			</Suspense>
 		</ErrorBoundary>

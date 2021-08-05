@@ -1,73 +1,75 @@
-import React, { useState } from "react";
-import { List, Heading, Box, Center, NativeBaseProvider, HStack, Text, ScrollView } from "native-base";
+import React from "react";
+import { Box, Text, ScrollView, Center, VStack, HStack } from "native-base";
 import { FlatList } from "native-base";
 import { FaChevronDown, FaHashtag, FaVolumeUp } from "../../assets/images/icons";
 import { Pressable } from "react-native";
-import Animated, { useAnimatedStyle, withSpring } from "react-native-reanimated";
+import useForceUpdate from "../../util/useForceUpdate";
+import { Guild, GuildChannel, ThreadChannel } from "fosscord.js";
+import { Link } from "../../util/Router";
+import { useCache } from "../../util/useCache";
 
-const Sidebar = () => {
-	const [data, setData] = useState([
-		{ id: "1", name: "general", parent_id: "937839374384949", icon: "voice", type: "voice" },
-		{ id: "2", name: "general", parent_id: "937839374384949", icon: "voice", type: "voice" },
-		{ id: "3", name: "general", parent_id: "937839374384949", icon: "text", type: "text" },
-		{ id: "4", name: "general", parent_id: "", icon: "text", type: "text" },
-		{
-			id: "937839374384949",
-			name: "general",
-			icon: "category",
-			type: "category",
-			collapsed: false,
-		},
-	]);
+const Sidebar = ({ guild }: { guild: Guild }) => {
+	const forceUpdate = useForceUpdate();
 
-	function renderChannels(d: Array<Object>, props?: any) {
-		return (
-			<FlatList
-				bounces={false}
-				style={{
-					flexGrow: 0,
-				}}
-				data={d}
-				renderItem={({ item }) => (
-					<Box
-						key={item.id}
-						px={5}
-						py={1}
-						style={{
-							flexDirection: "row",
-							alignItems: "center",
-						}}
-					>
-						{item.icon === "text" ? <FaHashtag size="18px" /> : null}
-						{item.icon === "voice" ? <FaVolumeUp size="18px" /> : null}
-						<Text mx={1}>{item.name}</Text>
-					</Box>
-				)}
-				keyExtractor={(item) => item.id}
-				{...props}
-			/>
-		);
+	const data =
+		useCache(guild?.channels)
+			?.array()
+			.filter((x) => x.type === "GUILD_CATEGORY" || guild.me?.permissionsIn(x).has("VIEW_CHANNEL")) || [];
+
+	// @ts-ignore
+	globalThis.test = guild?.channels?.cache?.array();
+
+	function renderChannels(d: (GuildChannel | ThreadChannel)[]) {
+		return d.map((item) => (
+			<Link to={`/channels/${guild.id}/${item?.id}`} style={{ textDecoration: "none" }} key={item.id}>
+				<HStack px={5} py={1}>
+					{item.type === "GUILD_TEXT" && <FaHashtag size="18px" />}
+					{item.type === "GUILD_VOICE" && <FaVolumeUp size="18px" />}
+					<Text style={{ whiteSpace: "nowrap" }} mx={1}>
+						{item.name}
+					</Text>
+				</HStack>
+			</Link>
+		));
 	}
 
+	console.log(data);
+
 	return (
-		<Box
+		<VStack
 			w="80%"
 			h="100%"
 			style={{
-				flexDirection: "column",
+				flexDirection: "row",
 				justifyContent: "flex-start",
 				alignItems: "flex-start",
 				borderLeftWidth: 1,
 				borderLeftColor: "grey",
 			}}
 		>
-			<ScrollView persistentScrollbar>
-				{renderChannels(data.filter((x) => !x.parent_id && x.type !== "category"))}
+			<Box
+				style={{
+					width: "100%",
+					height: 30,
+					borderBottomColor: "grey",
+					borderBottomWidth: 2,
+				}}
+			>
+				<Center style={{ width: "100%", height: "100%" }}>
+					<Text>{guild?.name || "Server"}</Text>
+				</Center>
+			</Box>
+			<ScrollView height="100%" bounces={false} persistentScrollbar mt={2}>
+				{renderChannels(data.filter((x) => !x.parentId && x.type !== "GUILD_CATEGORY"))}
 
-				<FlatList
-					bounces={false}
-					data={data.filter((x) => x.type === "category")}
-					renderItem={({ item }) => (
+				{data
+					.filter((x) => x.type === "GUILD_CATEGORY")
+					.filter(
+						(category) =>
+							data.find((x) => x.parentId === category.id) ||
+							guild.me?.permissionsIn(category).has("MANAGE_CHANNELS")
+					)
+					.map((item) => (
 						<Box
 							key={item.id}
 							px={5}
@@ -84,30 +86,24 @@ const Sidebar = () => {
 									alignItems: "center",
 								}}
 								onPress={() => {
-									const d = [...data];
-									const i = d.find((x) => x.id === item.id);
+									const i = data.find((x) => x.id === item.id);
 									// @ts-ignore
 									i.collapsed = !i.collapsed;
-									setData(d);
+									forceUpdate();
 								}}
 							>
 								<FaChevronDown
 									size="18px"
+									// @ts-ignore
 									style={item.collapsed && { transform: [{ rotate: "-90deg" }] }}
 								/>
 								<Text mx={1}>{item.name}</Text>
 							</Pressable>
-							{!item.collapsed &&
-								renderChannels(
-									data.filter((x: any) => x.parent_id === item.id),
-									{ ml: 2, id: "category" + item.id }
-								)}
+							{item.collapsed == false && renderChannels(data.filter((x: any) => x.parentId === item.id))}
 						</Box>
-					)}
-					keyExtractor={(item) => item.id}
-				/>
+					))}
 			</ScrollView>
-		</Box>
+		</VStack>
 	);
 };
 

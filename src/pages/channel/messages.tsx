@@ -1,20 +1,42 @@
 import { Box, FlatList, Heading, HStack, Image, Pressable, Text } from "native-base";
-import React from "react";
-
-import exampleMessages from "../../assets/data/exampleMessages.json";
+import React, { useEffect } from "react";
+import { TextChannel } from "fosscord.js";
+import Drawer from "../../components/Drawer";
 import { relativeTime } from "../../util/Time";
+import client from "../../client";
+import { Message } from "fosscord.js";
 
-export default function messages() {
-	return <FlatList data={exampleMessages} keyExtractor={(item) => item.id} renderItem={renderMessage}></FlatList>;
+//TODO: Styling
+
+export default function ({ match }: any) {
+	const channel = client.channels.resolve(match.params.channel);
+	const guild = client.guilds.resolve(match.params.guild);
+
+	return (
+		<Drawer channel={channel} guild={guild}>
+			<RenderMessages channel={channel as TextChannel}></RenderMessages>
+		</Drawer>
+	);
 }
 
-export function renderMessage({ index, item, seperators }: any) {
-	const time = new Date(item.timestamp);
-	console.log({ item, time });
+function RenderMessages({ channel }: { channel: TextChannel }) {
+	const [messages, setMessages] = React.useState<Message[]>([]);
+
+	useEffect(() => {
+		channel?.messages?.fetch().then((msgs) => setMessages(msgs.array()));
+	}, [channel]);
+
+	if (!channel) return <Text>Please select a channel first</Text>;
+	if (channel?.type !== "GUILD_TEXT") return <Text>Wrong Channel type</Text>;
+
+	return <FlatList data={messages} keyExtractor={(item) => item.id} renderItem={renderMessage}></FlatList>;
+}
+
+export function renderMessage({ index, item, seperators }: { index: number; item: Message; seperators: any }) {
 	return (
 		<Box style={{ borderColor: "white", borderWidth: 1, height: "100%", width: "100%" }} key={item.id}>
 			<Heading size="md">{item.author.username}</Heading>
-			<Heading size="xs">{relativeTime(item.timestamp)}</Heading>
+			<Heading size="xs">{relativeTime(item.createdTimestamp)}</Heading>
 			<Text>{item.content && item.content}</Text>
 			<Text>{item.embeds && item.embeds.map((x: any) => <></>)}</Text>
 			{item.attachments &&
@@ -29,7 +51,7 @@ export function renderMessage({ index, item, seperators }: any) {
 				))}
 			{item.reactions && (
 				<HStack>
-					{item.reactions.map((x: any) => {
+					{item.reactions.cache?.map((x: any) => {
 						return (
 							<Box mx={2}>
 								<Pressable>

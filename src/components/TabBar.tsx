@@ -17,6 +17,7 @@ export default function ({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean
 				borderTopWidth: 1,
 			}}
 			p={1}
+			bg="backgroundColor.400"
 		>
 			{/* <SettingsModal open={settingsModal} setOpen={setSettingsModal} /> */}
 			{/* Home */}

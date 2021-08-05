@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
 import { Box, Text, Heading, VStack, FormControl, Input, Button, HStack, ScrollView } from "native-base";
-import { Link } from "../../util/Router";
+import { Link, useHistory } from "../../util/Router";
 import DevSettings from "../../components/DevSettings";
+import client from "../../client";
 
 //TODO: Sociallmedia Icons
 
@@ -12,6 +13,8 @@ export default function App() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
+	const history = useHistory();
+
 	return (
 		<ScrollView bounces={false}>
 			<Box p={2} w="80%" mx="auto">
@@ -41,8 +44,10 @@ export default function App() {
 						<Button
 							colorScheme="primary"
 							onPress={() => {
-								AsyncStorage.setItem("token", password);
-								DevSettings.reload();
+								const token = "Bot " + password;
+								AsyncStorage.setItem("token", token);
+								client.login(token).catch((e) => {});
+								history.push("/");
 							}}
 						>
 							{t("login")}
