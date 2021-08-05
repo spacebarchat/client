@@ -1,40 +1,33 @@
-import { Box, FlatList, Image, Tooltip } from "native-base";
+import { Box, FlatList, Avatar, Tooltip, Pressable } from "native-base";
 import React from "react";
+import client from "../../Client";
+import { useCache } from "../../util/useCache";
 
 const Sidebar = () => {
-	const data = [
-		{
-			id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-			title: "First Item",
-		},
-		{
-			id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-			title: "Second Item",
-		},
-		{
-			id: "58694a0f-3da1-471f-bd96-145571e29d72",
-			title: "Third Item",
-		},
-	];
+	const guilds = useCache(client.guilds);
+
+	console.log(guilds);
 
 	return (
 		<Box height="100%">
 			<FlatList
 				style={{ flexGrow: 0, height: "100%" }}
 				m={1}
-				data={data}
+				data={guilds.array()}
 				renderItem={({ item }) => (
-					<Tooltip label={item.title} placement={"right"}>
-						<Image
-							my={1}
-							source={{
-								uri: "https://cdn.discordapp.com/icons/806142446094385153/46c2cc29fb80bd6ce694e67d3580e5be.webp?size=128",
-							}}
-							borderRadius={100}
-							alt="Guild Icon"
-							size={"xs"}
-						/>
-					</Tooltip>
+					<Pressable>
+						<Tooltip label={item.name} placement={"right"}>
+							<Avatar
+								my={1}
+								source={{
+									uri: item.iconURL({ size: 1024 }),
+								}}
+								size={"sm"}
+							>
+								{item?.nameAcronym}
+							</Avatar>
+						</Tooltip>
+					</Pressable>
 				)}
 				keyExtractor={(item) => item.id}
 			/>
