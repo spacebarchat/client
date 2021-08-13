@@ -25,9 +25,7 @@ const Sidebar = ({ guild }: { guild: Guild }) => {
 				<HStack px={5} py={1}>
 					{item.type === "GUILD_TEXT" && <FaHashtag size="18px" />}
 					{item.type === "GUILD_VOICE" && <FaVolumeUp size="18px" />}
-					<Text style={{ whiteSpace: "nowrap" }} mx={1}>
-						{item.name}
-					</Text>
+					<Text mx={1}>{item.name}</Text>
 				</HStack>
 			</Link>
 		));

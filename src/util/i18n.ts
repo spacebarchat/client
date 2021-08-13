@@ -1,8 +1,13 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
-import * as RNLocalize from "react-native-localize";
+// import * as RNLocalize from "react-native-localize";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+var RNLocalize: any;
+try {
+	RNLocalize = require("react-native-localize");
+} catch (error) {}
 
 // import i18nHttpBackend from "i18next-http-backend";
 // import LanguageDetector from "i18next-browser-languagedetector";
@@ -18,9 +23,9 @@ const allLanguages = {
 };
 
 AsyncStorage.getItem("language").then((lng) => {
-	if (!lng) lng = RNLocalize.getLocales()[0].languageCode || "en";
+	if (!lng) lng = RNLocalize?.getLocales()[0].languageCode;
 
-	i18n.changeLanguage(lng);
+	i18n.changeLanguage(lng || "en");
 });
 
 i18n.use(

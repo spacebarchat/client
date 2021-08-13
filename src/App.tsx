@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Theme from "./components/Theme";
 import Routes from "./components/Routes";
 import Boundary from "./components/Boundary";
@@ -7,6 +7,7 @@ import "./util/i18n";
 import { InitClient } from "./client";
 import "./util/debug";
 import { State } from "./util/State";
+import { Text } from "native-base";
 
 export default function App() {
 	const [state, setWholeState] = useState({});

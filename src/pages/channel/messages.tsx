@@ -29,6 +29,7 @@ function RenderMessages({ channel }: { channel: TextChannel }) {
 	if (!channel) return <Text>Please select a channel first</Text>;
 	if (channel?.type !== "GUILD_TEXT") return <Text>Wrong Channel type</Text>;
 
+	// @ts-ignore
 	return <FlatList data={messages} keyExtractor={(item) => item.id} renderItem={renderMessage}></FlatList>;
 }
 
