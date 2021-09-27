@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "ES5",
+		"target": "esnext",
 		"module": "esnext",
 		"lib": ["es2017"],
 		"allowJs": true,
@@ -11,7 +11,7 @@
 		"moduleResolution": "node",
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
-		"skipLibCheck": false,
+		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"noFallthroughCasesInSwitch": true,
 		"resolveJsonModule": true

@@ -7,84 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
+		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
+		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		18DB758FA645A741464B7A79 /* libPods-fosscord-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 116564B8102924909EE100E1 /* libPods-fosscord-iOS.a */; };
 		5142014D2437B4B30078DB4F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5142014C2437B4B30078DB4F /* AppDelegate.m */; };
 		514201502437B4B30078DB4F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5142014F2437B4B30078DB4F /* ViewController.m */; };
 		514201522437B4B40078DB4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 514201512437B4B40078DB4F /* Assets.xcassets */; };
 		514201552437B4B40078DB4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 514201532437B4B40078DB4F /* Main.storyboard */; };
 		514201582437B4B40078DB4F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 514201572437B4B40078DB4F /* main.m */; };
-		7EB2896426C09AD500857428 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EB2896326C09AD500857428 /* AppKit.framework */; };
-		7EB2896626C09ADB00857428 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EB2896526C09ADB00857428 /* libxml2.tbd */; };
-		7EB2896926C09AE200857428 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EB2896826C09AE200857428 /* QuartzCore.framework */; };
-		7EB2896B26C09AE600857428 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EB2896A26C09AE600857428 /* CoreGraphics.framework */; };
-		9BD078210CADADAF96C805F0 /* libPods-fosscord-macOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 189D19D1D9C1B30D34D4BB7D /* libPods-fosscord-macOS.a */; };
+		F4A3EA3E3EDA6E4FEF8BC632 /* libPods-fosscord-macOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1070E700FBCEFCBBEA3D0BDA /* libPods-fosscord-macOS.a */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		7EB2894A26C09A9D00857428 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7EB2893F26C09A9D00857428 /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6639618E16145D0400E58CCA;
-			remoteInfo = "SVGKit-iOS";
-		};
-		7EB2894C26C09A9D00857428 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7EB2893F26C09A9D00857428 /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 55452BF119EC68A200B75A30;
-			remoteInfo = "SVGKit-iOS Tests";
-		};
-		7EB2894E26C09A9D00857428 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7EB2893F26C09A9D00857428 /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 825CDAAF1BDA4BC0003C1C12;
-			remoteInfo = "SVGKitFramework-iOS";
-		};
-		7EB2895026C09A9D00857428 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7EB2893F26C09A9D00857428 /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 825CDAB81BDA4BC0003C1C12;
-			remoteInfo = "SVGKitFramework-iOSTests";
-		};
-		7EB2895226C09A9D00857428 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7EB2893F26C09A9D00857428 /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 825CDAD31BDA4D38003C1C12;
-			remoteInfo = "SVGKitFramework-tvOS";
-		};
-		7EB2895426C09A9D00857428 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7EB2893F26C09A9D00857428 /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 825CDADC1BDA4D38003C1C12;
-			remoteInfo = "SVGKitFramework-tvOSTests";
-		};
-		7EB2895626C09A9D00857428 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7EB2893F26C09A9D00857428 /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 321EAA622171EC8700640504;
-			remoteInfo = "SVGKitFramework-OSX";
-		};
-		7EB2895826C09A9D00857428 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7EB2893F26C09A9D00857428 /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 32A1F09C21746F4700ABFCE1;
-			remoteInfo = "SVGKitFramework-OSXTests";
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
+		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		02422F9FB6FF5F34B4E63E6F /* Pods-Shared-fosscord-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shared-fosscord-macOS.debug.xcconfig"; path = "Target Support Files/Pods-Shared-fosscord-macOS/Pods-Shared-fosscord-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		033DA0009A1E884D01CB2BDC /* Pods-fosscord-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fosscord-macOS.release.xcconfig"; path = "Target Support Files/Pods-fosscord-macOS/Pods-fosscord-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		1130B85A0986A82F71366F7E /* Pods-fosscord-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fosscord-macOS.debug.xcconfig"; path = "Target Support Files/Pods-fosscord-macOS/Pods-fosscord-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		189D19D1D9C1B30D34D4BB7D /* libPods-fosscord-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-fosscord-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1B825F0457F5E9A87AE20A9F /* libPods-fosscord-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-fosscord-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1070E700FBCEFCBBEA3D0BDA /* libPods-fosscord-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-fosscord-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		116564B8102924909EE100E1 /* libPods-fosscord-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-fosscord-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* fosscord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fosscord.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = fosscord/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		38423A3E24576CBC00BC2EAC /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		3F4AF6487A077ADA328D28CE /* Pods-fosscord-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fosscord-macOS.debug.xcconfig"; path = "Target Support Files/Pods-fosscord-macOS/Pods-fosscord-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		514201492437B4B30078DB4F /* fosscord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fosscord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5142014B2437B4B30078DB4F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5142014C2437B4B30078DB4F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -95,36 +44,50 @@
 		514201562437B4B40078DB4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		514201572437B4B40078DB4F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		514201592437B4B40078DB4F /* fosscord.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = fosscord.entitlements; sourceTree = "<group>"; };
-		5800AB028578EBAAFF7EA16C /* Pods-fosscord-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fosscord-iOS.debug.xcconfig"; path = "Target Support Files/Pods-fosscord-iOS/Pods-fosscord-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		7EB2893F26C09A9D00857428 /* SVGKit-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "SVGKit-iOS.xcodeproj"; path = "../node_modules/@alloc/react-native-svgkit/SVGKit/SVGKit-iOS.xcodeproj"; sourceTree = "<group>"; };
-		7EB2896326C09AD500857428 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
-		7EB2896526C09ADB00857428 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/lib/libxml2.tbd; sourceTree = DEVELOPER_DIR; };
-		7EB2896826C09AE200857428 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
-		7EB2896A26C09AE600857428 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		970BD610DF4283179C42B904 /* Pods-fosscord-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fosscord-iOS.release.xcconfig"; path = "Target Support Files/Pods-fosscord-iOS/Pods-fosscord-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		9D272A8789C48D97F35EA7ED /* Pods-fosscord-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fosscord-macOS.release.xcconfig"; path = "Target Support Files/Pods-fosscord-macOS/Pods-fosscord-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		9D32DFD059D5DB6DDEF38881 /* Pods-Shared-fosscord-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shared-fosscord-iOS.debug.xcconfig"; path = "Target Support Files/Pods-Shared-fosscord-iOS/Pods-Shared-fosscord-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		A82DFB63B157C65E5D698CA2 /* Pods-Shared-fosscord-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shared-fosscord-iOS.release.xcconfig"; path = "Target Support Files/Pods-Shared-fosscord-iOS/Pods-Shared-fosscord-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		BD4A2A6107381B256891CCF7 /* Pods-fosscord-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fosscord-iOS.debug.xcconfig"; path = "Target Support Files/Pods-fosscord-iOS/Pods-fosscord-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		CE0E74F571E1F48FF00A8324 /* Pods-Shared-fosscord-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shared-fosscord-macOS.release.xcconfig"; path = "Target Support Files/Pods-Shared-fosscord-macOS/Pods-Shared-fosscord-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		E35AC455B4B85D068B920A24 /* Pods-fosscord-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fosscord-iOS.release.xcconfig"; path = "Target Support Files/Pods-fosscord-iOS/Pods-fosscord-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		13B07F8C1A680F5B00A75B9A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				18DB758FA645A741464B7A79 /* libPods-fosscord-iOS.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		514201462437B4B30078DB4F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7EB2896B26C09AE600857428 /* CoreGraphics.framework in Frameworks */,
-				7EB2896926C09AE200857428 /* QuartzCore.framework in Frameworks */,
-				7EB2896626C09ADB00857428 /* libxml2.tbd in Frameworks */,
-				7EB2896426C09AD500857428 /* AppKit.framework in Frameworks */,
-				9BD078210CADADAF96C805F0 /* libPods-fosscord-macOS.a in Frameworks */,
+				F4A3EA3E3EDA6E4FEF8BC632 /* libPods-fosscord-macOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		13B07FAE1A68108700A75B9A /* fosscord-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
+				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				13B07FB51A68108700A75B9A /* Images.xcassets */,
+				13B07FB61A68108700A75B9A /* Info.plist */,
+				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
+				13B07FB71A68108700A75B9A /* main.m */,
+			);
+			path = "fosscord-iOS";
+			sourceTree = "<group>";
+		};
 		1986A43FA6A91CFACDF0A798 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,10 +95,10 @@
 				A82DFB63B157C65E5D698CA2 /* Pods-Shared-fosscord-iOS.release.xcconfig */,
 				02422F9FB6FF5F34B4E63E6F /* Pods-Shared-fosscord-macOS.debug.xcconfig */,
 				CE0E74F571E1F48FF00A8324 /* Pods-Shared-fosscord-macOS.release.xcconfig */,
-				5800AB028578EBAAFF7EA16C /* Pods-fosscord-iOS.debug.xcconfig */,
-				E35AC455B4B85D068B920A24 /* Pods-fosscord-iOS.release.xcconfig */,
-				1130B85A0986A82F71366F7E /* Pods-fosscord-macOS.debug.xcconfig */,
-				033DA0009A1E884D01CB2BDC /* Pods-fosscord-macOS.release.xcconfig */,
+				BD4A2A6107381B256891CCF7 /* Pods-fosscord-iOS.debug.xcconfig */,
+				970BD610DF4283179C42B904 /* Pods-fosscord-iOS.release.xcconfig */,
+				3F4AF6487A077ADA328D28CE /* Pods-fosscord-macOS.debug.xcconfig */,
+				9D272A8789C48D97F35EA7ED /* Pods-fosscord-macOS.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -143,14 +106,10 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7EB2896A26C09AE600857428 /* CoreGraphics.framework */,
-				7EB2896826C09AE200857428 /* QuartzCore.framework */,
-				7EB2896526C09ADB00857428 /* libxml2.tbd */,
-				7EB2896326C09AD500857428 /* AppKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				1B825F0457F5E9A87AE20A9F /* libPods-fosscord-iOS.a */,
-				189D19D1D9C1B30D34D4BB7D /* libPods-fosscord-macOS.a */,
+				116564B8102924909EE100E1 /* libPods-fosscord-iOS.a */,
+				1070E700FBCEFCBBEA3D0BDA /* libPods-fosscord-macOS.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -172,25 +131,9 @@
 			path = "fosscord-macOS";
 			sourceTree = "<group>";
 		};
-		7EB2894026C09A9D00857428 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				7EB2894B26C09A9D00857428 /* libSVGKit-iOS.2.1.0.a */,
-				7EB2894D26C09A9D00857428 /* SVGKit-iOS Tests.xctest */,
-				7EB2894F26C09A9D00857428 /* SVGKit.framework */,
-				7EB2895126C09A9D00857428 /* SVGKitFramework-iOSTests.xctest */,
-				7EB2895326C09A9D00857428 /* SVGKit.framework */,
-				7EB2895526C09A9D00857428 /* SVGKitFramework-tvOSTests.xctest */,
-				7EB2895726C09A9D00857428 /* SVGKit.framework */,
-				7EB2895926C09A9D00857428 /* SVGKitFramework-OSXTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				7EB2893F26C09A9D00857428 /* SVGKit-iOS.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -199,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				5142014A2437B4B30078DB4F /* fosscord-macOS */,
+				13B07FAE1A68108700A75B9A /* fosscord-iOS */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
@@ -212,6 +156,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				13B07F961A680F5B00A75B9A /* fosscord.app */,
 				514201492437B4B30078DB4F /* fosscord.app */,
 			);
 			name = Products;
@@ -220,6 +165,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		13B07F861A680F5B00A75B9A /* fosscord-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "fosscord-iOS" */;
+			buildPhases = (
+				7BC40D98CAD1562CFD247217 /* [CP] Check Pods Manifest.lock */,
+				FD10A7F022414F080027D42C /* Start Packager */,
+				13B07F871A680F5B00A75B9A /* Sources */,
+				13B07F8C1A680F5B00A75B9A /* Frameworks */,
+				13B07F8E1A680F5B00A75B9A /* Resources */,
+				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				2656172C0B8FD4CDD19E6473 /* [CP] Embed Pods Frameworks */,
+				C86D511E4C0DBEF731A4391B /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "fosscord-iOS";
+			productName = fosscord;
+			productReference = 13B07F961A680F5B00A75B9A /* fosscord.app */;
+			productType = "com.apple.product-type.application";
+		};
 		514201482437B4B30078DB4F /* fosscord-macOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5142015A2437B4B40078DB4F /* Build configuration list for PBXNativeTarget "fosscord-macOS" */;
@@ -230,7 +197,7 @@
 				514201462437B4B30078DB4F /* Frameworks */,
 				514201472437B4B30078DB4F /* Resources */,
 				381D8A6E24576A4E00465D17 /* Bundle React Native code and images */,
-				06E37EB6BE4FB4F2A2A6B19F /* [CP] Copy Pods Resources */,
+				18652653D8A06DB3EA0DDF17 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -249,8 +216,12 @@
 			attributes = {
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
+					13B07F861A680F5B00A75B9A = {
+						LastSwiftMigration = 1120;
+					};
 					514201482437B4B30078DB4F = {
 						CreatedOnToolsVersion = 11.4;
+						DevelopmentTeam = 6L9MV38TFR;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -266,79 +237,24 @@
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 7EB2894026C09A9D00857428 /* Products */;
-					ProjectRef = 7EB2893F26C09A9D00857428 /* SVGKit-iOS.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
+				13B07F861A680F5B00A75B9A /* fosscord-iOS */,
 				514201482437B4B30078DB4F /* fosscord-macOS */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXReferenceProxy section */
-		7EB2894B26C09A9D00857428 /* libSVGKit-iOS.2.1.0.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libSVGKit-iOS.2.1.0.a";
-			remoteRef = 7EB2894A26C09A9D00857428 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7EB2894D26C09A9D00857428 /* SVGKit-iOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SVGKit-iOS Tests.xctest";
-			remoteRef = 7EB2894C26C09A9D00857428 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7EB2894F26C09A9D00857428 /* SVGKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SVGKit.framework;
-			remoteRef = 7EB2894E26C09A9D00857428 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7EB2895126C09A9D00857428 /* SVGKitFramework-iOSTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SVGKitFramework-iOSTests.xctest";
-			remoteRef = 7EB2895026C09A9D00857428 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7EB2895326C09A9D00857428 /* SVGKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SVGKit.framework;
-			remoteRef = 7EB2895226C09A9D00857428 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7EB2895526C09A9D00857428 /* SVGKitFramework-tvOSTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SVGKitFramework-tvOSTests.xctest";
-			remoteRef = 7EB2895426C09A9D00857428 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7EB2895726C09A9D00857428 /* SVGKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SVGKit.framework;
-			remoteRef = 7EB2895626C09A9D00857428 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7EB2895926C09A9D00857428 /* SVGKitFramework-OSXTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SVGKitFramework-OSXTests.xctest";
-			remoteRef = 7EB2895826C09A9D00857428 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
-
 /* Begin PBXResourcesBuildPhase section */
+		13B07F8E1A680F5B00A75B9A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		514201472437B4B30078DB4F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -351,14 +267,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		06E37EB6BE4FB4F2A2A6B19F /* [CP] Copy Pods Resources */ = {
+		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native code and images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native-macos/scripts/react-native-xcode.sh\n";
+		};
+		18652653D8A06DB3EA0DDF17 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-fosscord-macOS/Pods-fosscord-macOS-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core-macOS/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -389,6 +319,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2656172C0B8FD4CDD19E6473 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-fosscord-iOS/Pods-fosscord-iOS-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-fosscord-iOS/Pods-fosscord-iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		381D8A6E24576A4E00465D17 /* Bundle React Native code and images */ = {
@@ -427,9 +375,77 @@
 			shellPath = /bin/sh;
 			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native-macos/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native-macos/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
 		};
+		7BC40D98CAD1562CFD247217 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-fosscord-iOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C86D511E4C0DBEF731A4391B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-fosscord-iOS/Pods-fosscord-iOS-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core-iOS/AccessibilityResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-fosscord-iOS/Pods-fosscord-iOS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FD10A7F022414F080027D42C /* Start Packager */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Start Packager";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native-macos/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native-macos/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		13B07F871A680F5B00A75B9A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				13B07FC11A68108700A75B9A /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		514201452437B4B30078DB4F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -443,6 +459,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				13B07FB21A68108700A75B9A /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
 		514201532437B4B40078DB4F /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -454,16 +478,16 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		5142015B2437B4B40078DB4F /* Debug */ = {
+		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1130B85A0986A82F71366F7E /* Pods-fosscord-macOS.debug.xcconfig */;
+			baseConfigurationReference = BD4A2A6107381B256891CCF7 /* Pods-fosscord-iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = NO;
-				INFOPLIST_FILE = "fosscord-macos/Info.plist";
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = "fosscord-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -471,16 +495,43 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = fosscord;
-				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
-		5142015C2437B4B40078DB4F /* Release */ = {
+		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 033DA0009A1E884D01CB2BDC /* Pods-fosscord-macOS.release.xcconfig */;
+			baseConfigurationReference = 970BD610DF4283179C42B904 /* Pods-fosscord-iOS.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = "fosscord-iOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = fosscord;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		5142015B2437B4B40078DB4F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3F4AF6487A077ADA328D28CE /* Pods-fosscord-macOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = 6L9MV38TFR;
 				INFOPLIST_FILE = "fosscord-macos/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
@@ -489,7 +540,28 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.fosscord.client;
+				PRODUCT_NAME = fosscord;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5142015C2437B4B40078DB4F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9D272A8789C48D97F35EA7ED /* Pods-fosscord-macOS.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6L9MV38TFR;
+				INFOPLIST_FILE = "fosscord-macos/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fosscord.client;
 				PRODUCT_NAME = fosscord;
 				SDKROOT = macosx;
 			};
@@ -611,6 +683,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "fosscord-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				13B07F941A680F5B00A75B9A /* Debug */,
+				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5142015A2437B4B40078DB4F /* Build configuration list for PBXNativeTarget "fosscord-macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
