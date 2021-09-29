@@ -64,7 +64,7 @@ export default ({ children, channel, guild }: { children?: ReactNode; channel?: 
 								<IconButton onPress={() => leftDrawer.current?.openDrawer()} icon={<HamburgerIcon />} />
 							)}
 							<Text mx={2} color="white" fontSize={20} fontWeight="bold">
-								{channel?.name || "Channel"}
+								{(channel as any)?.name || "Channel"}
 							</Text>
 						</HStack>
 					</HStack>

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Box, Text, Heading, VStack, FormControl, Input, Button, HStack, ScrollView } from "native-base";
 import { Link, useHistory } from "../../util/Router";
 import DevSettings from "../../components/DevSettings";
-// import client from "../../client";
+import client from "../../client";
 
 //TODO: Sociallmedia Icons
 

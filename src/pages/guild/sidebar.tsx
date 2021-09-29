@@ -18,6 +18,7 @@ const Sidebar = () => {
 					<Link
 						to={`/channels/${item?.id}/${
 							item.channels.cache
+								// @ts-ignore
 								.filter((x) => x.type === "GUILD_TEXT" && item.me?.permissionsIn(x).has("VIEW_CHANNEL"))
 								.first()?.id
 						}`}

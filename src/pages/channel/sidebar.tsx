@@ -8,20 +8,20 @@ import { Guild, GuildChannel, ThreadChannel } from "fosscord.js";
 import { Link } from "../../util/Router";
 import { useCache } from "../../util/useCache";
 
-const Sidebar = ({ guild }: { guild: Guild }) => {
+const Sidebar = ({ guild }: { guild?: Guild }) => {
 	const forceUpdate = useForceUpdate();
 
 	const data =
 		useCache(guild?.channels)
 			?.array()
-			.filter((x) => x.type === "GUILD_CATEGORY" || guild.me?.permissionsIn(x).has("VIEW_CHANNEL")) || [];
+			.filter((x) => x.type === "GUILD_CATEGORY" || guild?.me?.permissionsIn(x).has("VIEW_CHANNEL")) || [];
 
 	// @ts-ignore
 	globalThis.test = guild?.channels?.cache?.array();
 
 	function renderChannels(d: (GuildChannel | ThreadChannel)[]) {
 		return d.map((item) => (
-			<Link to={`/channels/${guild.id}/${item?.id}`} style={{ textDecoration: "none" }} key={item.id}>
+			<Link to={`/channels/${guild?.id}/${item?.id}`} style={{ textDecoration: "none" }} key={item.id}>
 				<HStack px={5} py={1}>
 					{item.type === "GUILD_TEXT" && <FaHashtag size="18px" />}
 					{item.type === "GUILD_VOICE" && <FaVolumeUp size="18px" />}
@@ -65,7 +65,7 @@ const Sidebar = ({ guild }: { guild: Guild }) => {
 					.filter(
 						(category) =>
 							data.find((x) => x.parentId === category.id) ||
-							guild.me?.permissionsIn(category).has("MANAGE_CHANNELS")
+							guild?.me?.permissionsIn(category).has("MANAGE_CHANNELS")
 					)
 					.map((item) => (
 						<Box
@@ -97,7 +97,8 @@ const Sidebar = ({ guild }: { guild: Guild }) => {
 								/>
 								<Text mx={1}>{item.name}</Text>
 							</Pressable>
-							{item.collapsed == false && renderChannels(data.filter((x: any) => x.parentId === item.id))}
+							{(item as any).collapsed == false &&
+								renderChannels(data.filter((x: any) => x.parentId === item.id))}
 						</Box>
 					))}
 			</ScrollView>
