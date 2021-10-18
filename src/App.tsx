@@ -4,7 +4,7 @@ import Routes from "./components/Routes";
 import Boundary from "./components/Boundary";
 import ErrorBoundary from "./components/ErrorBoundary";
 import "./util/i18n";
-import { InitClient } from "./client";
+import { InitClient } from "./Client";
 import "./util/debug";
 import { State } from "./util/State";
 import { Text } from "native-base";

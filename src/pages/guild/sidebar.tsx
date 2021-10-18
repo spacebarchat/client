@@ -1,6 +1,6 @@
 import { Box, FlatList, Avatar, Tooltip, Pressable } from "native-base";
 import React from "react";
-import client from "../../client";
+import client from "../../Client";
 import { useCache } from "../../util/useCache";
 import { Link } from "../../util/Router";
 import { Guild } from "fosscord.js";
