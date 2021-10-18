@@ -18,6 +18,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* fosscordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* fosscordTests.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		B9B14C3BC9706CEBDBB85D0F /* libPods-fosscord-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 103A930DBDA72DCC44F898F0 /* libPods-fosscord-tvOS.a */; };
+		CE44FA6A270D05920092DFD3 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE44FA69270D05920092DFD3 /* test.swift */; };
 		D208DC624F80F77849D66A60 /* libPods-fosscord-fosscordTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5557CD57116BB4202B9F096 /* libPods-fosscord-fosscordTests.a */; };
 		E358520207D66EF67A13D2B3 /* libPods-fosscord-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E70638ECBEE3486ED0630644 /* libPods-fosscord-tvOSTests.a */; };
 /* End PBXBuildFile section */
@@ -63,6 +64,10 @@
 		87169FB79F5D1550EC9DC3CA /* libPods-fosscord.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-fosscord.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8EDB2FD75F83A283EBEA1D8 /* Pods-fosscord.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fosscord.release.xcconfig"; path = "Target Support Files/Pods-fosscord/Pods-fosscord.release.xcconfig"; sourceTree = "<group>"; };
 		BFFA3389C7045721BCA5E7CA /* Pods-fosscord-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fosscord-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-fosscord-tvOS/Pods-fosscord-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		CE44FA66270D05310092DFD3 /* libswiftWebKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftWebKit.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk/System/iOSSupport/usr/lib/swift/libswiftWebKit.tbd; sourceTree = DEVELOPER_DIR; };
+		CE44FA68270D05910092DFD3 /* fosscord-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "fosscord-Bridging-Header.h"; sourceTree = "<group>"; };
+		CE44FA69270D05920092DFD3 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = test.swift; path = fosscord/test.swift; sourceTree = "<group>"; };
+		CEC02C2C27062429001902F8 /* fosscord.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = fosscord.entitlements; path = fosscord/fosscord.entitlements; sourceTree = "<group>"; };
 		E5557CD57116BB4202B9F096 /* libPods-fosscord-fosscordTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-fosscord-fosscordTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E70638ECBEE3486ED0630644 /* libPods-fosscord-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-fosscord-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -125,6 +130,7 @@
 		13B07FAE1A68108700A75B9A /* fosscord */ = {
 			isa = PBXGroup;
 			children = (
+				CEC02C2C27062429001902F8 /* fosscord.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -132,6 +138,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				CE44FA69270D05920092DFD3 /* test.swift */,
+				CE44FA68270D05910092DFD3 /* fosscord-Bridging-Header.h */,
 			);
 			name = fosscord;
 			sourceTree = "<group>";
@@ -154,6 +162,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE44FA66270D05310092DFD3 /* libswiftWebKit.tbd */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				87169FB79F5D1550EC9DC3CA /* libPods-fosscord.a */,
@@ -296,7 +305,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 6L9MV38TFR;
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1300;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -462,7 +471,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-fosscord/Pods-fosscord-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -480,7 +489,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-fosscord-fosscordTests/Pods-fosscord-fosscordTests-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -607,6 +616,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				CE44FA6A270D05920092DFD3 /* test.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -648,6 +658,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 016BAEF4A3A03CBE426E586A /* Pods-fosscord-fosscordTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -671,6 +682,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2770648FB7E471B8F78C7E98 /* Pods-fosscord-fosscordTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = fosscordTests/Info.plist;
@@ -693,10 +705,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = fosscord/fosscord.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6L9MV38TFR;
 				ENABLE_BITCODE = NO;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				INFOPLIST_FILE = fosscord/Info.plist;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -705,9 +721,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fosscord.client;
 				PRODUCT_NAME = fosscord;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "fosscord-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -718,9 +736,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = fosscord/fosscord.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6L9MV38TFR;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				INFOPLIST_FILE = fosscord/Info.plist;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -729,8 +751,10 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fosscord.client;
 				PRODUCT_NAME = fosscord;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "fosscord-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
