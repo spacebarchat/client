@@ -10,8 +10,6 @@
 		"web": "react-scripts start",
 		"build:web": "react-scripts build",
 		"start": "react-native start",
-		"linux": "npm run linux:build && node linux/dist/",
-		"linux:build": "npx webpack --mode=development -c linux/webpack.config.js",
 		"test": "jest"
 	},
 	"dependencies": {
@@ -36,8 +34,8 @@
 		"nanocolors": "^0.2.12",
 		"native-base": "^3.2.0",
 		"node-wx-napi": "^0.0.1",
+		"proton-native": "^2.0.4",
 		"react": "16.13.1",
-		"react-devtools": "^4.0.0",
 		"react-dom": "16.13.1",
 		"react-i18next": "^11.12.0",
 		"react-native": "0.63.4",
@@ -62,12 +60,6 @@
 		"@babel/cli": "^7.4.4",
 		"@babel/core": "^7.4.4",
 		"@babel/node": "^7.2.2",
-		"@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining": "^7.15.4",
-		"@babel/plugin-proposal-class-properties": "^7.4.4",
-		"@babel/plugin-proposal-class-static-block": "^7.15.4",
-		"@babel/plugin-proposal-private-property-in-object": "^7.15.4",
-		"@babel/plugin-syntax-class-static-block": "^7.14.5",
-		"@babel/plugin-syntax-private-property-in-object": "^7.14.5",
 		"@babel/preset-env": "^7.4.4",
 		"@babel/preset-react": "^7.0.0",
 		"@babel/preset-stage-0": "^7.0.0",
@@ -87,12 +79,10 @@
 		"react-native-typescript-transformer": "^1.2.13",
 		"react-scripts": "^4.0.3",
 		"react-test-renderer": "16.13.1",
-		"ts-loader": "^9.2.6",
 		"typescript": "^4.4.3",
-		"webpack": "^5.58.2",
-		"webpack-cli": "^4.9.1",
-		"webpack-node-externals": "^1.7.2",
-		"ws": "^7.2.1"
+		"webpack": "^4.41.5",
+		"webpack-cli": "^3.3.10",
+		"webpack-node-externals": "^1.7.2"
 	},
 	"resolutions": {
 		"@types/react": "^16"
