@@ -1,143 +1,154 @@
 {
-  "name": "fosscord",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "mac": "npx react-native run-macos",
-    "windows": "npx react-native run-windows",
-    "web": "react-scripts start",
-    "build:web": "react-scripts build",
-    "start": "react-native start",
-    "test": "jest"
-  },
-  "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.15.8",
-    "@react-native-masked-view/masked-view": "^0.2.6",
-    "@react-navigation/native": "^6.0.4",
-    "@react-navigation/native-stack": "^6.2.2",
-    "@react-navigation/stack": "^6.0.9",
-    "@react-stately/tabs": "^3.0.1",
-    "@reduxjs/toolkit": "^1.6.1",
-    "babel-preset-react-app": "^10.0.0",
-    "fosscord.js": "^13.1.1-dev.t1633436519.4eec59e",
-    "i18next": "^21.1.1",
-    "i18next-resources-to-backend": "^1.0.0",
-    "native-base": "^3.2.0",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-i18next": "^11.12.0",
-    "react-native": "0.63.4",
-    "react-native-device-info": "^8.3.3",
-    "react-native-exception-handler": "^2.10.10",
-    "react-native-gesture-handler": "^1.10.3",
-    "react-native-localize": "^2.1.4",
-    "react-native-macos": "^0.63.38",
-    "react-native-safe-area-context": "^3.3.2",
-    "react-native-screens": "^3.7.2",
-    "react-native-svg": "^12.1.1",
-    "react-native-web": "0.14.13",
-    "react-native-windows": "0.63.39",
-    "react-redux": "^7.2.5",
-    "react-router-dom": "^5.3.0",
-    "react-router-native": "^5.2.1"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining": "^7.15.4",
-    "@babel/plugin-proposal-class-static-block": "^7.15.4",
-    "@babel/plugin-proposal-private-property-in-object": "^7.15.4",
-    "@babel/plugin-syntax-class-static-block": "^7.14.5",
-    "@babel/plugin-syntax-private-property-in-object": "^7.14.5",
-    "@babel/runtime": "^7.8.4",
-    "@types/jest": "^25.2.3",
-    "@types/node": "^16.7.8",
-    "@types/react": "^17.0.19",
-    "@types/react-dom": "^17.0.9",
-    "@types/react-native": "0.65.1",
-    "@types/react-router-dom": "^5.3.0",
-    "@types/react-router-native": "^5.1.1",
-    "@types/react-test-renderer": "^16.9.2",
-    "babel-jest": "^26.6.0",
-    "jest": "^25.1.0",
-    "metro-react-native-babel-preset": "^0.59.0",
-    "react-native-typescript-transformer": "^1.2.13",
-    "react-scripts": "^4.0.3",
-    "react-test-renderer": "16.13.1",
-    "typescript": "^4.4.3"
-  },
-  "resolutions": {
-    "@types/react": "^16"
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts"
-    ],
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "setupFilesAfterEnv": [],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jsdom",
-    "testRunner": "/Users/samuel/Documents/Dev/JavaScript/fosscord/client-nativeV2/fosscord/node_modules/jest-circus/runner.js",
-    "transform": {
-      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "modulePaths": [],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
-    ],
-    "watchPlugins": [
-      "jest-watch-typeahead/filename",
-      "jest-watch-typeahead/testname"
-    ],
-    "resetMocks": true
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  }
+	"name": "@fosscord/client",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"android": "react-native run-android",
+		"ios": "react-native run-ios",
+		"mac": "react-native run-macos",
+		"windows": "react-native run-windows",
+		"web": "react-scripts start",
+		"build:web": "react-scripts build",
+		"start": "react-native start",
+		"test": "jest"
+	},
+	"dependencies": {
+		"@react-aria/interactions": "^3.5.1",
+		"@react-aria/selection": "^3.5.1",
+		"@react-aria/ssr": "^3.0.3",
+		"@react-aria/utils": "^3.9.0",
+		"@react-native-async-storage/async-storage": "^1.15.8",
+		"@react-native-masked-view/masked-view": "^0.2.6",
+		"@react-navigation/native": "^6.0.4",
+		"@react-navigation/native-stack": "^6.2.2",
+		"@react-navigation/stack": "^6.0.9",
+		"@react-stately/checkbox": "^3.0.3",
+		"@react-stately/collections": "^3.3.3",
+		"@react-stately/slider": "^3.0.3",
+		"@react-stately/tabs": "^3.0.1",
+		"@react-stately/toggle": "^3.2.3",
+		"@reduxjs/toolkit": "^1.6.1",
+		"babel-preset-react-app": "^10.0.0",
+		"fosscord.js": "github:fosscord/fosscord.js",
+		"i18next": "^21.1.1",
+		"i18next-resources-to-backend": "^1.0.0",
+		"nanocolors": "^0.2.12",
+		"native-base": "^3.2.0",
+		"react": "16.13.1",
+		"react-dom": "16.13.1",
+		"react-i18next": "^11.12.0",
+		"react-native": "0.63.4",
+		"react-native-device-info": "^8.3.3",
+		"react-native-exception-handler": "^2.10.10",
+		"react-native-gesture-handler": "^1.10.3",
+		"react-native-localize": "^2.1.4",
+		"react-native-macos": "^0.63.38",
+		"react-native-safe-area-context": "^3.3.2",
+		"react-native-screens": "^3.7.2",
+		"react-native-svg": "^12.1.1",
+		"react-native-web": "0.14.13",
+		"react-redux": "^7.2.5",
+		"react-router-dom": "^5.3.0",
+		"react-router-native": "^5.2.1",
+		"redux": "^4.1.1",
+		"styled-components": "^5.3.1",
+		"styled-system": "^5.1.5"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.8.4",
+		"@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining": "^7.15.4",
+		"@babel/plugin-proposal-class-static-block": "^7.15.4",
+		"@babel/plugin-proposal-private-property-in-object": "^7.15.4",
+		"@babel/plugin-syntax-class-static-block": "^7.14.5",
+		"@babel/plugin-syntax-private-property-in-object": "^7.14.5",
+		"@babel/runtime": "^7.8.4",
+		"@types/jest": "^25.2.3",
+		"@types/node": "^16.7.8",
+		"@types/react": "^17.0.19",
+		"@types/react-dom": "^17.0.9",
+		"@types/react-native": "0.65.1",
+		"@types/react-router-dom": "^5.3.0",
+		"@types/react-router-native": "^5.1.1",
+		"@types/react-test-renderer": "^16.9.2",
+		"babel-jest": "^26.6.0",
+		"jest": "^25.1.0",
+		"metro-react-native-babel-preset": "^0.59.0",
+		"react-native-typescript-transformer": "^1.2.13",
+		"react-scripts": "^4.0.3",
+		"react-test-renderer": "16.13.1",
+		"typescript": "^4.4.3"
+	},
+	"resolutions": {
+		"@types/react": "^16"
+	},
+	"jest": {
+		"roots": [
+			"<rootDir>/src"
+		],
+		"collectCoverageFrom": [
+			"src/**/*.{js,jsx,ts,tsx}",
+			"!src/**/*.d.ts"
+		],
+		"setupFiles": [
+			"react-app-polyfill/jsdom"
+		],
+		"setupFilesAfterEnv": [],
+		"testMatch": [
+			"<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
+			"<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
+		],
+		"testEnvironment": "jsdom",
+		"testRunner": "/Users/samuel/Documents/Dev/JavaScript/fosscord/client-nativeV2/fosscord/node_modules/jest-circus/runner.js",
+		"transform": {
+			"^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
+			"^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+			"^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+		},
+		"transformIgnorePatterns": [
+			"[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
+			"^.+\\.module\\.(css|sass|scss)$"
+		],
+		"modulePaths": [],
+		"moduleNameMapper": {
+			"^react-native$": "react-native-web",
+			"^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+		},
+		"moduleFileExtensions": [
+			"web.js",
+			"js",
+			"web.ts",
+			"ts",
+			"web.tsx",
+			"tsx",
+			"json",
+			"web.jsx",
+			"jsx",
+			"node"
+		],
+		"watchPlugins": [
+			"jest-watch-typeahead/filename",
+			"jest-watch-typeahead/testname"
+		],
+		"resetMocks": true
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"babel": {
+		"presets": [
+			"react-app"
+		]
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	}
 }
