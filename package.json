@@ -5,8 +5,8 @@
 	"scripts": {
 		"android": "react-native run-android",
 		"ios": "react-native run-ios",
-		"mac": "npx react-native run-macos",
-		"windows": "npx react-native run-windows",
+		"mac": "react-native run-macos",
+		"windows": "react-native run-windows",
 		"web": "react-scripts start",
 		"build:web": "react-scripts build",
 		"start": "react-native start",
@@ -50,7 +50,9 @@
 		"react-redux": "^7.2.5",
 		"react-router-dom": "^5.3.0",
 		"react-router-native": "^5.2.1",
-		"redux": "^4.1.1"
+		"redux": "^4.1.1",
+		"styled-components": "^5.3.1",
+		"styled-system": "^5.1.5"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.8.4",

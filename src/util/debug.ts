@@ -1,5 +1,5 @@
 // @ts-nocheck
-import client from "../client";
+import client from "../Client";
 
 client.on("ready", () => {
 	globalThis.guild = client.guilds.cache.first();

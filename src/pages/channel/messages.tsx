@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { TextChannel } from "fosscord.js";
 import Drawer from "../../components/Drawer";
 import { relativeTime } from "../../util/Time";
-import client from "../../client";
+import client from "../../Client";
 import { Message } from "fosscord.js";
 
 //TODO: Styling
