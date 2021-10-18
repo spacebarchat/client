@@ -10,6 +10,8 @@
 		"web": "react-scripts start",
 		"build:web": "react-scripts build",
 		"start": "react-native start",
+		"linux": "npm run linux:build && node linux/dist/",
+		"linux:build": "npx webpack --mode=development -c linux/webpack.config.js",
 		"test": "jest"
 	},
 	"dependencies": {
@@ -29,12 +31,13 @@
 		"@react-stately/toggle": "^3.2.3",
 		"@reduxjs/toolkit": "^1.6.1",
 		"babel-preset-react-app": "^10.0.0",
-		"fosscord.js": "github:fosscord/fosscord.js",
 		"i18next": "^21.1.1",
 		"i18next-resources-to-backend": "^1.0.0",
 		"nanocolors": "^0.2.12",
 		"native-base": "^3.2.0",
+		"node-wx-napi": "^0.0.1",
 		"react": "16.13.1",
+		"react-devtools": "^4.0.0",
 		"react-dom": "16.13.1",
 		"react-i18next": "^11.12.0",
 		"react-native": "0.63.4",
@@ -52,15 +55,22 @@
 		"react-router-native": "^5.2.1",
 		"redux": "^4.1.1",
 		"styled-components": "^5.3.1",
-		"styled-system": "^5.1.5"
+		"styled-system": "^5.1.5",
+		"valence-native": "^0.0.1"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.8.4",
+		"@babel/cli": "^7.4.4",
+		"@babel/core": "^7.4.4",
+		"@babel/node": "^7.2.2",
 		"@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining": "^7.15.4",
+		"@babel/plugin-proposal-class-properties": "^7.4.4",
 		"@babel/plugin-proposal-class-static-block": "^7.15.4",
 		"@babel/plugin-proposal-private-property-in-object": "^7.15.4",
 		"@babel/plugin-syntax-class-static-block": "^7.14.5",
 		"@babel/plugin-syntax-private-property-in-object": "^7.14.5",
+		"@babel/preset-env": "^7.4.4",
+		"@babel/preset-react": "^7.0.0",
+		"@babel/preset-stage-0": "^7.0.0",
 		"@babel/runtime": "^7.8.4",
 		"@types/jest": "^25.2.3",
 		"@types/node": "^16.7.8",
@@ -71,12 +81,18 @@
 		"@types/react-router-native": "^5.1.1",
 		"@types/react-test-renderer": "^16.9.2",
 		"babel-jest": "^26.6.0",
+		"babel-loader": "^8.0.6",
 		"jest": "^25.1.0",
 		"metro-react-native-babel-preset": "^0.59.0",
 		"react-native-typescript-transformer": "^1.2.13",
 		"react-scripts": "^4.0.3",
 		"react-test-renderer": "16.13.1",
-		"typescript": "^4.4.3"
+		"ts-loader": "^9.2.6",
+		"typescript": "^4.4.3",
+		"webpack": "^5.58.2",
+		"webpack-cli": "^4.9.1",
+		"webpack-node-externals": "^1.7.2",
+		"ws": "^7.2.1"
 	},
 	"resolutions": {
 		"@types/react": "^16"
