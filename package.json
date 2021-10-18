@@ -5,8 +5,8 @@
 	"scripts": {
 		"android": "react-native run-android",
 		"ios": "react-native run-ios",
-		"mac": "npx react-native run-macos",
-		"windows": "npx react-native run-windows",
+		"mac": "react-native run-macos",
+		"windows": "react-native run-windows",
 		"web": "react-scripts start",
 		"build:web": "react-scripts build",
 		"start": "react-native start",
