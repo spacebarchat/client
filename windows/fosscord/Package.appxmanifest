@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="abd9ec62-37cd-497b-9316-002a9914f353"
-    Publisher="CN=user"
+    Name="4cf6530c-b77c-46e4-89aa-b603fe51ecc1"
+    Publisher="CN=samue"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="abd9ec62-37cd-497b-9316-002a9914f353" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="4cf6530c-b77c-46e4-89aa-b603fe51ecc1" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>fosscord</DisplayName>
-    <PublisherDisplayName>user</PublisherDisplayName>
+    <PublisherDisplayName>samue</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
