@@ -8,7 +8,9 @@ export default function App() {
 	return (
 		<NativeBaseProvider>
 			<SafeAreaView>
-				<Button onPress={() => NativeModules.DevMenu.show()}>Open Dev tools</Button>
+				<Button onPress={() => NativeModules.DevMenu.show()}>
+					Open Dev tools
+				</Button>
 			</SafeAreaView>
 		</NativeBaseProvider>
 	);

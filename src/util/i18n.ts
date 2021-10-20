@@ -41,7 +41,13 @@ i18n.use(
 					callback(error, null);
 				});
 		} catch (e) {
-			const error = new Error("Language: " + language + " with namespace " + namespace + " not found");
+			const error = new Error(
+				"Language: " +
+					language +
+					" with namespace " +
+					namespace +
+					" not found"
+			);
 			callback(error, null);
 		}
 	})

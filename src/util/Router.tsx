@@ -12,4 +12,15 @@ import {
 	useRouteMatch,
 } from "react-router-dom";
 
-export { Route, Router, Redirect, Link, Switch, matchPath, useHistory, useLocation, useParams, useRouteMatch };
+export {
+	Route,
+	Router,
+	Redirect,
+	Link,
+	Switch,
+	matchPath,
+	useHistory,
+	useLocation,
+	useParams,
+	useRouteMatch,
+};
