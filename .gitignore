@@ -5,3 +5,4 @@ build/
 Pods/
 android/.gradle/*
 dist/
+*.pfx
