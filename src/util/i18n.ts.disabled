@@ -23,7 +23,7 @@ const allLanguages = {
 };
 
 AsyncStorage.getItem("language").then((lng) => {
-	if (!lng) lng = RNLocalize?.getLocales()[0].languageCode;
+	if (!lng) lng = RNLocalize?.getLocales?.()[0].languageCode;
 
 	i18n.changeLanguage(lng || "en");
 });

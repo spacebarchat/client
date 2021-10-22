@@ -2,7 +2,7 @@ import { Button, NativeBaseProvider } from "native-base";
 import React, { useState } from "react";
 import { NativeModules } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import "./util/i18n";
+// import "./util/i18n.ts";
 
 export default function App() {
 	return (
