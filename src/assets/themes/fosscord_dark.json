@@ -1,0 +1,49 @@
+{
+	"colors": {
+		"primary": "#ff5f00",
+		"primaryAccent": "#ff5f00",
+		"text": "#f1f0f6",
+		"background": "#212121"
+	},
+	"components": {
+		"SafeAreaView": {
+			"baseStyle": {
+				"backgroundColor": "background"
+			}
+		},
+		"Button": {
+			"baseStyle": {
+				"backgroundColor": "primary",
+				"cursor": "pointer"
+			}
+		},
+		"View": {
+			"baseStyle": {
+				"backgroundColor": "background"
+			}
+		},
+		"Text": {
+			"baseStyle": {
+				"color": "text"
+			}
+		},
+		"Heading": {
+			"baseStyle": {
+				"color": "text"
+			}
+		},
+		"Input": {
+			"baseStyle": {
+				"color": "text"
+			},
+			"defaultProps": {
+				"_hover": {
+					"backgroundColor": "background"
+				},
+				"_focus": {
+					"borderColor": "text"
+				}
+			}
+		}
+	}
+}

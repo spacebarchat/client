@@ -6,7 +6,7 @@
       "es2017"
     ],
     "allowJs": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "noEmit": true,
     "isolatedModules": true,
     "strict": true,
