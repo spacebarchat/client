@@ -1,7 +1,10 @@
 {
 	"colors": {
-		"primary": "#ff5f00",
-		"primaryAccent": "#ff5f00",
+		"primary": {
+			"500": "#212121",
+			"600": "#1f1f1f",
+			"700": "#f1f0f6"
+		},
 		"text": "#f1f0f6",
 		"background": "#212121"
 	},
@@ -13,8 +16,17 @@
 		},
 		"Button": {
 			"baseStyle": {
-				"backgroundColor": "primary",
-				"cursor": "pointer"
+				"cursor": "pointer",
+				"borderWidth": 1,
+				"borderColor": "text",
+				"margin": "10px"
+			},
+			"defaultProps": {
+				"_pressed": {
+					"_text": {
+						"color": "background"
+					}
+				}
 			}
 		},
 		"View": {
@@ -24,7 +36,8 @@
 		},
 		"Text": {
 			"baseStyle": {
-				"color": "text"
+				"color": "text",
+				"fontSize": 40
 			}
 		},
 		"Heading": {
@@ -34,9 +47,18 @@
 		},
 		"Input": {
 			"baseStyle": {
-				"color": "text"
+				"color": "text",
+				"minHeight": 10,
+				"textAlignVertical": "center",
+				"display": "flex",
+				"justifyContent": "center",
+				"alignItems": "center",
+				"selectionColor": "text"
 			},
 			"defaultProps": {
+				"style": {
+					"fontSize": 15
+				},
 				"_hover": {
 					"backgroundColor": "background"
 				},

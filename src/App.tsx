@@ -1,28 +1,37 @@
 import { extendTheme, Heading, NativeBaseProvider } from "native-base";
 import React, { Suspense } from "react";
-import WindowsTheme from "./assets/themes/windows.json";
-import FosscordDarkTheme from "./assets/themes/fosscord_dark.json";
+import BasicDarkTheme from "./assets/themes/basic_dark.json";
 import { Router, Route } from "./util/Router";
-import Login from "./pages/Login";
-import { Text } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { NavigationContainer } from "@react-navigation/native";
 
 const LoginPage = React.lazy(() => import("./pages/Login"));
 
+// TODO: move in different file
+// TODO: check if theme has correct structure
+function normalizeTheme<T extends any>(theme: T): T {
+	const t = theme as any;
+	if (!theme) return theme;
+	if (!t.components) t.components = {};
+	t.components.KeyboardAvoidingView = t.components.SafeAreaView = t.components.View;
+
+	return theme;
+}
+
 export default function App() {
-	const theme = extendTheme(FosscordDarkTheme);
+	const theme = extendTheme(normalizeTheme(BasicDarkTheme));
 
 	return (
-		<SafeAreaProvider>
-			<NativeBaseProvider theme={theme}>
-				<SafeAreaView style={{ height: "100%" }}>
+		<NavigationContainer>
+			<SafeAreaProvider>
+				<NativeBaseProvider theme={theme}>
 					<Suspense fallback={<Heading>Loading...</Heading>}>
 						<Router>
 							<Route exact path="/" component={LoginPage}></Route>
 						</Router>
 					</Suspense>
-				</SafeAreaView>
-			</NativeBaseProvider>
-		</SafeAreaProvider>
+				</NativeBaseProvider>
+			</SafeAreaProvider>
+		</NavigationContainer>
 	);
 }

@@ -14,6 +14,8 @@ target 'fosscord' do
 
   pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
   target 'fosscordTests' do
     inherit! :complete
     # Pods for testing
