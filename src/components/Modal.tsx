@@ -13,13 +13,8 @@ export default function (props: Partial<ModalProps>) {
 		setOpen(false);
 		setTimeout(() => {
 			history.goBack();
-		}, 250);
+		}, 200);
 	}
-
-	useEffect(() => {
-		// reset open value to true
-		if (!open) setOpen(true);
-	}, [open]);
 
 	const children = props.children;
 	delete props.children;
@@ -29,8 +24,8 @@ export default function (props: Partial<ModalProps>) {
 		<Modal
 			style={{ margin: 0, justifyContent: "flex-end" }}
 			propagateSwipe={true}
-			useNativeDriver={true}
-			// swipeDirection={["down", "up"]}
+			useNativeDriver={false}
+			swipeDirection={["down", "up"]}
 			isVisible={open}
 			avoidKeyboard={true}
 			coverScreen={false}

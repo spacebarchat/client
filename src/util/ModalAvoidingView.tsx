@@ -2,6 +2,7 @@ import React from "react";
 import { View } from "native-base";
 import { container, relativeScreenHeight } from "./Styles";
 import KeyboardAvoidingView from "../components/KeyboardAvoidingView";
+import { Platform } from "react-native";
 
 export function ModalAvoidingView({ children }: any) {
 	return (
@@ -12,8 +13,9 @@ export function ModalAvoidingView({ children }: any) {
 				display: "flex",
 				alignItems: "center",
 				backgroundColor: "#212121",
-				height: "100%",
+				height: Platform.OS === "web" ? "100vh" : "100%",
 				width: "100%",
+				borderRadius: 20,
 			}}
 		>
 			<View style={[container(), { height: "100%", padding: 20, borderRadius: 20 }]}>{children}</View>

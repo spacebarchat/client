@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Box, Button, FormControl, Input, Text, View, VStack } from "native-base";
-import { Keyboard, SafeAreaView, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { Keyboard, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import Styles, { relativeScreenHeight, useMobile } from "../util/Styles";
 import KeyboardAvoidingView from "../components/KeyboardAvoidingView";
 import { useHistory } from "react-router";
@@ -20,7 +20,6 @@ export default function Login() {
 	const passwordElement = useRef<any>();
 
 	function openModal() {
-		console.log("open modal ...");
 		Keyboard.dismiss();
 		history.push("/instances/");
 	}
@@ -28,7 +27,7 @@ export default function Login() {
 	return (
 		<>
 			<KeyboardAvoidingView behavior="padding" style={Styles.h100}>
-				<SafeAreaView style={[Styles.h100, { alignItems: "center", display: "flex" }]}>
+				<Box safeArea style={[Styles.h100, { alignItems: "center", display: "flex" }]}>
 					<VStack
 						rounded={5}
 						style={{ width: "100%", maxWidth: 480, height: isMobile ? "100%" : undefined }}
@@ -48,10 +47,10 @@ export default function Login() {
 									<FormControl.Label>Instance</FormControl.Label>
 									<Box
 										width="100%"
-										height="45px"
+										height={10}
 										borderWidth="1"
 										borderColor="text"
-										padding="8px"
+										padding={3}
 										borderRadius="5"
 										display="flex"
 										justifyContent="center"
@@ -82,7 +81,7 @@ export default function Login() {
 						</View>
 						<Button style={{ margin: 10 }}>Login</Button>
 					</VStack>
-				</SafeAreaView>
+				</Box>
 			</KeyboardAvoidingView>
 		</>
 	);

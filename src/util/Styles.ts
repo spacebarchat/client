@@ -17,7 +17,7 @@ export function container() {
 	const width = useWindowDimensions().width;
 	if (width < 480) return { width: "100%" };
 	if (width > 480 && width < 801) return { maxWidth: width, width: "100%" };
-	return { width: 1200 };
+	return { maxWidth: 1200, width: "100%" };
 }
 
 export default styles;

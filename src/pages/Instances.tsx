@@ -1,4 +1,4 @@
-import { Box, Button, FlatList, FormControl, Heading, IconButton, Image, Input, Text, View } from "native-base";
+import { Box, Button, FlatList, FormControl, Heading, IconButton, Image, Input, ScrollView, Text, View } from "native-base";
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "../components/Modal";
 import Styles, { container, relativeScreenHeight } from "../util/Styles";
@@ -35,30 +35,34 @@ export default function Instances() {
 				data={instances}
 				horizontal={true}
 				renderItem={({ item }) => (
-					<Box
-						style={{
-							backgroundColor: "#1f1f1f",
-							display: "flex",
-							margin: 10,
-							padding: 10,
-							borderRadius: 10,
-							maxHeight: 200,
-							alignItems: "center",
-						}}
+					<TouchableWithoutFeedback
+					// TouchableWithoutFeedback is needed to fix scroll inside of modal https://github.com/react-native-modal/react-native-modal/issues/236
 					>
-						<Text fontSize="20">{item.name}</Text>
-						<Text fontSize="15">{item.description}</Text>
+						<Box
+							style={{
+								backgroundColor: "#1f1f1f",
+								display: "flex",
+								margin: 10,
+								padding: 10,
+								borderRadius: 10,
+								maxHeight: 200,
+								alignItems: "center",
+							}}
+						>
+							<Text fontSize="20">{item.name}</Text>
+							<Text fontSize="15">{item.description}</Text>
 
-						{item.image && (
-							<Image
-								style={{ width: 100, height: 100, marginTop: 10, borderRadius: 100 }}
-								source={{
-									uri: item.image,
-								}}
-								alt={item.name}
-							/>
-						)}
-					</Box>
+							{item.image && (
+								<Image
+									style={{ width: 100, height: 100, marginTop: 10, borderRadius: 100 }}
+									source={{
+										uri: item.image,
+									}}
+									alt={item.name}
+								/>
+							)}
+						</Box>
+					</TouchableWithoutFeedback>
 				)}
 			></FlatList>
 			<Heading style={{ marginTop: 10 }} size="lg">
