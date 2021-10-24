@@ -1,0 +1,40 @@
+[aria-modal="true"] {
+	position: relative;
+	transition: top 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+	/* top: 100% !important; */
+	transform: scale(0.9);
+	opacity: 0;
+}
+
+[aria-modal="true"] > div {
+	border-radius: 0 !important;
+}
+
+.modal-open [aria-modal="true"] {
+	/* top: 0% !important; */
+	transform: scale(1);
+	opacity: 1;
+}
+
+.modal-open #root {
+	transform: scale(0.9);
+}
+
+#root {
+	transition: transform 0.3s ease;
+	transform: scale(1);
+}
+
+html,
+body,
+#root,
+#root > div {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	background: #212121;
+}
+* {
+	user-select: none;
+}

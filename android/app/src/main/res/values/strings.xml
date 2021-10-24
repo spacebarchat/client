@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">fosscord</string>
+	<string name="app_name">fosscord</string>
+	<string moduleConfig="true" name="CodePushDeploymentKey">opEbqvhRggsHT8ejgpyK2bsFB5V4IvHaODkYQ</string>
 </resources>

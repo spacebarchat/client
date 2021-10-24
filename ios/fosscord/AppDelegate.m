@@ -4,7 +4,12 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
-//#ifdef FB_SONARKIT_ENABLED
+#import <CodePush/CodePush.h>
+#import <AppCenterReactNative.h>
+#import <AppCenterReactNativeCrashes.h>
+// #import <AppCenterReactNativeAnalytics.h>
+
+#ifdef FB_SONARKIT_ENABLED
 //#import <FlipperKit/FlipperClient.h>
 //#import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
 //#import <FlipperKitUserDefaultsPlugin/FKUserDefaultsPlugin.h>
@@ -21,7 +26,7 @@
 //  [client addPlugin:[[FlipperKitNetworkPlugin alloc] initWithNetworkAdapter:[SKIOSNetworkAdapter new]]];
 //  [client start];
 //}
-//#endif
+#endif
 
 @implementation AppDelegate
 
@@ -30,6 +35,10 @@
 //#ifdef FB_SONARKIT_ENABLED
 //  InitializeFlipper(application);
 //#endif
+
+  [AppCenterReactNative register];
+//   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
+  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
@@ -55,7 +64,7 @@
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 #else
-  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  return [CodePush bundleURL];
 #endif
 }
 

@@ -6,7 +6,8 @@
 			"700": "#f1f0f6"
 		},
 		"text": "#f1f0f6",
-		"background": "#212121"
+		"background": "#212121",
+		"backgroundAccent": "#1f1f1f"
 	},
 	"components": {
 		"SafeAreaView": {
@@ -18,8 +19,7 @@
 			"baseStyle": {
 				"cursor": "pointer",
 				"borderWidth": 1,
-				"borderColor": "text",
-				"margin": "10px"
+				"borderColor": "text"
 			},
 			"defaultProps": {
 				"_pressed": {
@@ -37,12 +37,15 @@
 		"Text": {
 			"baseStyle": {
 				"color": "text",
-				"fontSize": 40
+				"fontSize": 20
 			}
 		},
 		"Heading": {
 			"baseStyle": {
 				"color": "text"
+			},
+			"defaultProps": {
+				"size": "2xl"
 			}
 		},
 		"Input": {

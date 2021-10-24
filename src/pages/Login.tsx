@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
-import { Button, FormControl, Heading, Input, ScrollView, Select, Text, View, VStack, WarningOutlineIcon } from "native-base";
-import { Keyboard, SafeAreaView, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { Box, Button, FormControl, Input, Text, View, VStack } from "native-base";
+import { Keyboard, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import Styles, { relativeScreenHeight, useMobile } from "../util/Styles";
-import KeyboardAvoidingView from "../util/KeyboardAvoidingView";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import KeyboardAvoidingView from "../components/KeyboardAvoidingView";
+import { useHistory } from "react-router";
 
 const styles = StyleSheet.create({
 	formInputSection: {
@@ -11,71 +11,78 @@ const styles = StyleSheet.create({
 	},
 });
 
-const Stack = createNativeStackNavigator();
-
 export default function Login() {
+	const history = useHistory();
+
+	const isMobile = useMobile();
+
+	const emailElement = useRef<any>();
+	const passwordElement = useRef<any>();
+
+	function openModal() {
+		Keyboard.dismiss();
+		history.push("/instances/");
+	}
+
 	return (
-		<Stack.Navigator>
-			<Stack.Screen name="Test" component={() => <Text>Test</Text>}></Stack.Screen>
-			<Stack.Screen
-				name="Home"
-				component={() => {
-					const isMobile = useMobile();
-
-					const emailElement = useRef<any>();
-					const passwordElement = useRef<any>();
-
-					return (
-						<TouchableWithoutFeedback
-							onPress={(e: any) => {
-								if (["input", "label"].includes(e.target?.tagName?.toLowerCase())) return;
-
-								Keyboard.dismiss();
-							}}
-						>
-							<KeyboardAvoidingView behavior="padding" style={Styles.h100}>
-								<SafeAreaView style={[Styles.h100, { alignItems: "center", display: "flex" }]}>
-									<VStack
-										rounded={5}
-										style={{ width: "100%", maxWidth: 480, height: isMobile ? "100%" : undefined }}
-										top={isMobile ? 0 : relativeScreenHeight(10)}
-										justifyContent="space-between"
-										display="flex"
-										borderWidth={isMobile ? 0 : "1"}
+		<>
+			<KeyboardAvoidingView behavior="padding" style={Styles.h100}>
+				<Box safeArea style={[Styles.h100, { alignItems: "center", display: "flex" }]}>
+					<VStack
+						rounded={5}
+						style={{ width: "100%", maxWidth: 480, height: isMobile ? "100%" : undefined }}
+						top={isMobile ? 0 : relativeScreenHeight(10)}
+						justifyContent="space-between"
+						display="flex"
+						borderWidth={isMobile ? 0 : "1"}
+						borderColor="text"
+						p="5"
+					>
+						<View>
+							<TouchableWithoutFeedback onPress={openModal}>
+								<FormControl
+									// @ts-ignore
+									style={[styles.formInputSection, { outline: "none" }]}
+								>
+									<FormControl.Label>Instance</FormControl.Label>
+									<Box
+										width="100%"
+										height={10}
+										borderWidth="1"
 										borderColor="text"
-										p="5"
+										padding={3}
+										borderRadius="5"
+										display="flex"
+										justifyContent="center"
 									>
-										<View>
-											<FormControl style={styles.formInputSection}>
-												<FormControl.Label>Instance</FormControl.Label>
-												<Input placeholder="Select an instance" editable={false} focusable={false}></Input>
-											</FormControl>
-											<FormControl style={styles.formInputSection}>
-												<FormControl.Label>Email</FormControl.Label>
-												<Input
-													blurOnSubmit={false}
-													onSubmitEditing={() => {
-														passwordElement?.current?.focus();
-													}}
-													returnKeyType="next"
-													ref={emailElement}
-													type="email"
-													placeholder="Enter email"
-												/>
-											</FormControl>
-											<FormControl style={styles.formInputSection}>
-												<FormControl.Label>Password</FormControl.Label>
-												<Input ref={passwordElement} type="password" placeholder="Enter password" />
-											</FormControl>
-										</View>
-										<Button>Login</Button>
-									</VStack>
-								</SafeAreaView>
-							</KeyboardAvoidingView>
-						</TouchableWithoutFeedback>
-					);
-				}}
-			/>
-		</Stack.Navigator>
+										<Text fontSize={15} color="#a3a3a3">
+											Select an instance
+										</Text>
+									</Box>
+								</FormControl>
+							</TouchableWithoutFeedback>
+							<FormControl style={styles.formInputSection}>
+								<FormControl.Label>Email</FormControl.Label>
+								<Input
+									blurOnSubmit={false}
+									onSubmitEditing={() => {
+										passwordElement?.current?.focus();
+									}}
+									returnKeyType="next"
+									ref={emailElement}
+									type="email"
+									placeholder="Enter email"
+								/>
+							</FormControl>
+							<FormControl style={styles.formInputSection}>
+								<FormControl.Label>Password</FormControl.Label>
+								<Input ref={passwordElement} type="password" placeholder="Enter password" />
+							</FormControl>
+						</View>
+						<Button style={{ margin: 10 }}>Login</Button>
+					</VStack>
+				</Box>
+			</KeyboardAvoidingView>
+		</>
 	);
 }
