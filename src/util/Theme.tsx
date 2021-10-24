@@ -6,14 +6,7 @@ import { Link as NativeLink } from "../components/Router";
 if (NativeLink.defaultProps) {
 	// @ts-ignore
 	NativeLink.defaultProps.component = (props) => {
-		console.log(props);
-		return (
-			<Pressable
-				style={{ ...props.style, padding: 10, margin: 5, backgroundColor: "#000000", borderRadius: 5 }}
-				{...props}
-				children={() => <Text>{props.children}</Text>}
-			/>
-		);
+		return <Pressable style={{ ...props.style, padding: 10, margin: 5, backgroundColor: "#000000", borderRadius: 5 }} {...props} children={() => <Text>{props.children}</Text>} />;
 	};
 }
 
