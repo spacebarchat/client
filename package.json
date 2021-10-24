@@ -53,13 +53,18 @@
 		"@types/react-router-native": "^5.1.2",
 		"babel-jest": "^27.3.1",
 		"eslint": "^7.32.0",
+		"html-webpack-plugin": "^5.4.0",
 		"jest": "^27.3.1",
 		"metro-config": "^0.66.2",
 		"metro-react-native-babel-preset": "^0.66.2",
 		"patch-package": "^6.4.7",
 		"react-scripts": "^4.0.3",
 		"react-test-renderer": "17.0.2",
-		"typescript": "^4.4.3"
+		"typescript": "^4.4.3",
+		"webpack": "^5.59.1",
+		"webpack-cli": "^4.9.1",
+		"webpack-dev-middleware": "^5.2.1",
+		"webpack-dev-server": "^4.3.1"
 	},
 	"jest": {
 		"preset": "react-native"
