@@ -3,10 +3,11 @@ import { Box, Heading, Link as L } from "native-base";
 import Styles from "../util/Styles";
 import { Link } from "../components/Router";
 import { View } from "react-native";
+import { tailwind } from "../util/tailwind";
 
 export default function NotFound() {
 	return (
-		<Box safeArea style={[Styles.h100, { alignItems: "center", display: "flex" }]}>
+		<Box safeArea style={tailwind("bg-blue-500 h-full")}>
 			<Heading>Not found</Heading>
 			<View>
 				<Link to="/login">Login</Link>
