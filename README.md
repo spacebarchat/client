@@ -1,7 +1,7 @@
 <p align="center">
   <img width="100" src="https://raw.githubusercontent.com/fosscord/fosscord/master/assets/logo_big_transparent.png" />
 </p>
-<h1 align="center">Fosscord Client Native</h1>
+<h1 align="center">Fosscord Client</h1>
 
 <p>
   <a href="https://discord.gg/ZrnGQP6p3d">
