@@ -1,0 +1,10 @@
+{
+	"components": {
+		"Text": {
+			"baseStyle": {
+				"fontFamily": "system-ui",
+				"color": "white"
+			}
+		}
+	}
+}

@@ -1,6 +1,6 @@
 import { extendTheme, NativeBaseProvider, View } from "native-base";
 import React, { Suspense } from "react";
-import BasicDarkTheme from "./assets/themes/basic_dark.json";
+import FosscordTheme from "./assets/themes/fosscord_theme.json";
 import { Router, Route, Switch } from "./components/Router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ErrorBoundary } from "./components/ErrorBoundary";
@@ -14,7 +14,7 @@ const InstancesPage = React.lazy(() => import("./pages/Instances"));
 const NotFoundPage = React.lazy(() => import("./pages/NotFound"));
 
 export default function App() {
-	const theme = extendTheme(normalizeTheme(BasicDarkTheme));
+	const theme = extendTheme(normalizeTheme(FosscordTheme));
 	// TODO: suspense show spinning icon (only after a delay to prevent short flashes)
 
 	return (

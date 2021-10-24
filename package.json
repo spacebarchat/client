@@ -9,6 +9,7 @@
 		"windows": "react-native run-windows",
 		"web": "react-scripts start",
 		"build:web": "react-scripts build",
+		"build:theme": "node scripts/theme.js",
 		"start": "react-native start",
 		"test": "jest",
 		"lint": "eslint ."
