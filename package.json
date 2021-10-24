@@ -3,6 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
+		"postinstall": "patch-package",
 		"android": "react-native run-android",
 		"ios": "react-native run-ios",
 		"windows": "react-native run-windows",
@@ -15,20 +16,29 @@
 	"dependencies": {
 		"@react-navigation/native": "^6.0.6",
 		"@react-navigation/native-stack": "^6.2.5",
+		"@reduxjs/toolkit": "^1.6.2",
+		"modal-react-native-web": "^0.2.0",
 		"native-base": "^3.2.1",
 		"react": "17.0.2",
+		"react-dom": "^17.0.2",
 		"react-native": "^0.66.1",
+		"react-native-event-listeners": "^1.0.7",
+		"react-native-gesture-handler": "^1.10.3",
 		"react-native-media-query": "^1.0.9",
+		"react-native-modal": "^13.0.0",
 		"react-native-safe-area-context": "^3.3.2",
 		"react-native-screens": "^3.8.0",
 		"react-native-svg": "^12.1.1",
 		"react-native-web": "^0.17.5",
 		"react-native-windows": "^0.66.1",
+		"react-redux": "^7.2.5",
 		"react-router-dom": "^5.3.0",
-		"react-router-native": "^5.2.1"
+		"react-router-native": "^5.2.1",
+		"redux": "^4.1.1"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.9",
+		"@babel/preset-react": "^7.14.5",
 		"@babel/runtime": "^7.12.5",
 		"@react-native-community/eslint-config": "^2.0.0",
 		"@types/react": "^17.0.31",
@@ -40,6 +50,7 @@
 		"jest": "^27.3.1",
 		"metro-config": "^0.66.2",
 		"metro-react-native-babel-preset": "^0.66.2",
+		"patch-package": "^6.4.7",
 		"react-scripts": "^4.0.3",
 		"react-test-renderer": "17.0.2",
 		"typescript": "^4.4.3"

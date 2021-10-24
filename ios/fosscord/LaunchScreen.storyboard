@@ -17,24 +17,29 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Fosscord" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="23" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
-                                <rect key="frame" x="0.0" y="302" width="375" height="63"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="40"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="de7-OQ-T3A">
-                                <rect key="frame" x="84" y="154" width="207" height="107"/>
-                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5jP-eO-O9v">
+                                <rect key="frame" x="123.5" y="256.5" width="128" height="154"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="de7-OQ-T3A">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="95.5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="128" id="nC4-Vs-1u7"/>
+                                            <constraint firstAttribute="width" secondItem="de7-OQ-T3A" secondAttribute="height" multiplier="1024:767" id="qiy-GX-aHd"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fosscord" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="23" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
+                                        <rect key="frame" x="0.0" y="95.5" width="128" height="58.5"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="de7-OQ-T3A" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" id="Aqg-4w-A6H"/>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="GJd-Yh-RWb" secondAttribute="centerX" id="Q3B-4B-g5h"/>
-                            <constraint firstItem="de7-OQ-T3A" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="d4M-g3-ODu"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="bottom" multiplier="1/3" constant="1" id="moa-c2-u7t"/>
-                            <constraint firstItem="de7-OQ-T3A" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ta3-9g-Ae9"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" symbolic="YES" id="x7j-FC-K8j"/>
+                            <constraint firstItem="5jP-eO-O9v" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="5d6-yS-G0s"/>
+                            <constraint firstItem="5jP-eO-O9v" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="rgb-gc-aCl"/>
                         </constraints>
                     </view>
                 </viewController>

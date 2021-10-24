@@ -145,7 +145,7 @@
       "size" : "83.5x83.5"
     },
     {
-      "filename" : "1024.png",
+      "filename" : "logo-2.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"
@@ -257,7 +257,7 @@
       "subtype" : "45mm"
     },
     {
-      "filename" : "1024.png",
+      "filename" : "logo-1.png",
       "idiom" : "watch-marketing",
       "scale" : "1x",
       "size" : "1024x1024"
@@ -317,7 +317,7 @@
       "size" : "512x512"
     },
     {
-      "filename" : "1024.png",
+      "filename" : "logo.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "512x512"
