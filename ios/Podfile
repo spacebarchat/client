@@ -33,5 +33,9 @@ target 'fosscord' do
     react_native_post_install(installer)
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
     # flipper_post_install(installer)
+	path = installer.config.project_pods_root + 'RCT-Folly/folly/portability/Time.h'
+	text = File.read(path)
+	new_contents = text.gsub('typedef uint8_t clockid_t;','// typedef uint8_t clockid_t;')
+	File.open(path, "w") {|file| file.puts new_contents }
   end
 end

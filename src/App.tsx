@@ -1,7 +1,7 @@
-import { extendTheme, NativeBaseProvider } from "native-base";
+import { extendTheme, NativeBaseProvider, View } from "native-base";
 import React, { Suspense } from "react";
 import BasicDarkTheme from "./assets/themes/basic_dark.json";
-import { Router, Route } from "./components/Router";
+import { Router, Route, Switch } from "./components/Router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Provider } from "react-redux";
@@ -26,14 +26,21 @@ export default function App() {
 						config={{ strictMode: "off" }}
 						theme={theme}
 					>
-						<Suspense fallback={<></>}>
-							<Router>
-								<Route path="/login" component={LoginPage}></Route>
-								<Route path="/themes/editor" component={ThemesEditorPage}></Route>
-								<Route path="/instances/" component={InstancesPage}></Route>
-								<Route component={NotFoundPage}></Route>
-							</Router>
-						</Suspense>
+						<View style={{ width: "100%", height: "100%" }}>
+							<Suspense fallback={<></>}>
+								<Router>
+									<Switch>
+										<Route path="/login">
+											<Route path="/login" component={LoginPage}></Route>
+											<Route path="/login/instances" component={InstancesPage}></Route>
+										</Route>
+										<Route path="/instances" component={InstancesPage}></Route>
+										<Route path="/themes/editor" component={ThemesEditorPage}></Route>
+										<Route path="*" component={NotFoundPage}></Route>
+									</Switch>
+								</Router>
+							</Suspense>
+						</View>
 					</NativeBaseProvider>
 				</SafeAreaProvider>
 			</ErrorBoundary>

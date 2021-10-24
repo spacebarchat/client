@@ -21,7 +21,7 @@ export default function Login() {
 
 	function openModal() {
 		Keyboard.dismiss();
-		history.push("/instances/");
+		history.push("/login/instances/");
 	}
 
 	return (
@@ -79,7 +79,9 @@ export default function Login() {
 								<Input ref={passwordElement} type="password" placeholder="Enter password" />
 							</FormControl>
 						</View>
-						<Button style={{ margin: 10 }}>Login</Button>
+						<Button onPress={() => history.push("/")} style={{ margin: 10 }}>
+							Login
+						</Button>
 					</VStack>
 				</Box>
 			</KeyboardAvoidingView>

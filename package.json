@@ -19,6 +19,7 @@
 		"@reduxjs/toolkit": "^1.6.2",
 		"appcenter": "4.3.0",
 		"appcenter-crashes": "4.3.0",
+		"missing-native-js-functions": "^1.2.18",
 		"modal-react-native-web": "^0.2.0",
 		"native-base": "^3.2.1",
 		"react": "17.0.2",
