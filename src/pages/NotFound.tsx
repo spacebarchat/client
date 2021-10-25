@@ -7,12 +7,12 @@ import { tailwind } from "../util/tailwind";
 
 export default function NotFound() {
 	return (
-		<Box safeArea style={tailwind("bg-blue-500 h-full")}>
-			<Heading>Not found</Heading>
+		<Box safeArea style={tailwind("bg-blue-500 h-full px-6")}>
+			<Heading>Home</Heading>
 			<View>
-				<Link to="/login">Login</Link>
-				<Link to="/themes/editor">Theme Editor</Link>
-				<Link to="/instances">Instances</Link>
+				<Link to='/login'>Login</Link>
+				<Link to='/themes/editor'>Theme Editor</Link>
+				<Link to='/instances'>Instances</Link>
 			</View>
 		</Box>
 	);
