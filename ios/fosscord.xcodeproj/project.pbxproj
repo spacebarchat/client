@@ -13,7 +13,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A1A344F7AD9B0E8D9B79DFA7 /* libPods-fosscord.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2698759CE8D3821F54DAF1C9 /* libPods-fosscord.a */; };
-		CE6698A22724671500A05BF1 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = CE6698A12724671500A05BF1 /* logo.png */; };
+		CE1C87E72725E6DF00BF82C4 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1C87E62725E6DF00BF82C4 /* logo.png */; };
 		CEEE5A4C27257EF200454247 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEEE5A4B27257EF200454247 /* AppCenter-Config.plist */; };
 		F9CF96918790D418B5EACE89 /* libPods-fosscord-fosscordTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CDD43C8C6A9ED6BBCD5E50E /* libPods-fosscord-fosscordTests.a */; };
 /* End PBXBuildFile section */
@@ -45,7 +45,7 @@
 		8CDD43C8C6A9ED6BBCD5E50E /* libPods-fosscord-fosscordTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-fosscord-fosscordTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C117AF183B627944731B1BCF /* Pods-fosscord.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fosscord.release.xcconfig"; path = "Target Support Files/Pods-fosscord/Pods-fosscord.release.xcconfig"; sourceTree = "<group>"; };
 		CE0E07002724400C00C23C3E /* fosscord.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = fosscord.entitlements; path = fosscord/fosscord.entitlements; sourceTree = "<group>"; };
-		CE6698A12724671500A05BF1 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = fosscord/Images.xcassets/AppIcon.appiconset/logo.png; sourceTree = "<group>"; };
+		CE1C87E62725E6DF00BF82C4 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = fosscord/logo.png; sourceTree = "<group>"; };
 		CEEE5A4B27257EF200454247 /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "fosscord/AppCenter-Config.plist"; sourceTree = "<group>"; };
 		E0BF11C7E9AA3CD1315DD093 /* Pods-fosscord.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fosscord.debug.xcconfig"; path = "Target Support Files/Pods-fosscord/Pods-fosscord.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -91,8 +91,8 @@
 		13B07FAE1A68108700A75B9A /* fosscord */ = {
 			isa = PBXGroup;
 			children = (
+				CE1C87E62725E6DF00BF82C4 /* logo.png */,
 				CEEE5A4B27257EF200454247 /* AppCenter-Config.plist */,
-				CE6698A12724671500A05BF1 /* logo.png */,
 				CE0E07002724400C00C23C3E /* fosscord.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -248,7 +248,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE6698A22724671500A05BF1 /* logo.png in Resources */,
+				CE1C87E72725E6DF00BF82C4 /* logo.png in Resources */,
 				CEEE5A4C27257EF200454247 /* AppCenter-Config.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
@@ -459,6 +459,9 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = fosscord/fosscord.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6L9MV38TFR;
 				ENABLE_BITCODE = NO;
@@ -475,6 +478,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fosscord.client;
 				PRODUCT_NAME = fosscord;
+				PROVISIONING_PROFILE_SPECIFIER = Fosscord;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -491,8 +496,11 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = fosscord/fosscord.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6L9MV38TFR;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = fosscord/Info.plist;
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -506,6 +514,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fosscord.client;
 				PRODUCT_NAME = fosscord;
+				PROVISIONING_PROFILE_SPECIFIER = Fosscord;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,6";
