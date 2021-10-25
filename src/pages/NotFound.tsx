@@ -11,6 +11,7 @@ export default function NotFound() {
 			<Heading>Home</Heading>
 			<View>
 				<Link to='/login'>Login</Link>
+				<Link to='/register'>Register</Link>
 				<Link to='/themes/editor'>Theme Editor</Link>
 				<Link to='/instances'>Instances</Link>
 			</View>
