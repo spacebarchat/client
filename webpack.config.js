@@ -12,7 +12,7 @@ var babelLoader = {
 };
 
 module.exports = {
-	entry: ["./src/polyfills", "react-hot-loader/patch", "./index.web.js"],
+	entry: ["./src/polyfills", "react-hot-loader/patch", "./src/index.js"],
 	devServer: {
 		hot: true,
 	},
