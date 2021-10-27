@@ -24,9 +24,13 @@ module.exports = async () => {
 			]),
 		},
 		transformer: {
-			babelTransformerPath: require.resolve("react-native-css-transformer"),
-			experimentalImportSupport: false,
-			inlineRequires: true,
+			getTransformOptions: async () => ({
+				transform: {
+					experimentalImportSupport: false,
+					inlineRequires: false,
+				},
+			}),
+			babelTransformerPath: require.resolve("./scripts/rn-transformer.js"),
 		},
 	};
 };

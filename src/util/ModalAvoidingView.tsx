@@ -1,8 +1,7 @@
 import React from "react";
-import { View } from "native-base";
 import { container, relativeScreenHeight } from "./Styles";
 import KeyboardAvoidingView from "../components/KeyboardAvoidingView";
-import { Platform } from "react-native";
+import { Platform, View } from "react-native";
 
 export function ModalAvoidingView({ children }: any) {
 	return (

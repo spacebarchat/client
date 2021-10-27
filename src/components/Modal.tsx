@@ -1,9 +1,7 @@
-import { KeyboardAvoidingView } from "native-base";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Modal, { ModalProps } from "react-native-modal";
 import { useHistory } from "react-router";
 import { ModalAvoidingView } from "../util/ModalAvoidingView";
-import { relativeScreenHeight } from "../util/Styles";
 
 export default function (props: Partial<ModalProps>) {
 	const history = useHistory();

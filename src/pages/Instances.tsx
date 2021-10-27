@@ -1,13 +1,12 @@
-import { Box, Button, FlatList, FormControl, Heading, IconButton, Image, Input, ScrollView, Text, View } from "native-base";
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "../components/Modal";
-import Styles, { container, relativeScreenHeight } from "../util/Styles";
 import { useHistory } from "react-router";
-import { TouchableHighlight, TouchableWithoutFeedback } from "react-native";
+import { FlatList, Image, Text, TextInput, Pressable, View } from "react-native";
+import Button from "../components/Button";
 
 export default function Instances() {
 	const history = useHistory();
-	const [instances, setInstances] = useState([]);
+	const [instances, setInstances] = useState<any>([]);
 	const [error, setError] = useState();
 	const instanceInput = useRef<any>();
 
@@ -20,25 +19,23 @@ export default function Instances() {
 
 	return (
 		<Modal>
-			<View display="flex" justifyContent="space-between" flexDirection="row">
-				<Heading>Instances</Heading>
-				<TouchableWithoutFeedback onPress={() => history.goBack()}>
-					<Text fontSize="30">X</Text>
-				</TouchableWithoutFeedback>
+			<View style={{ display: "flex", justifyContent: "space-between", flexDirection: "row" }}>
+				<Text>Instances</Text>
+				<Pressable onPress={() => history.goBack()}>
+					<Text style={{ fontSize: 30 }}>X</Text>
+				</Pressable>
 			</View>
-			<Text color="red">{error}</Text>
-			<Heading style={{ marginTop: 10 }} size="lg">
-				Explore
-			</Heading>
+			<Text style={{ color: "red" }}>{error}</Text>
+			<Text style={{ marginTop: 10, fontSize: 30 }}>Explore</Text>
 			<FlatList
 				style={{ flexShrink: 1, flexGrow: 0, margin: 10 }}
 				data={instances}
 				horizontal={true}
 				renderItem={({ item }) => (
-					<TouchableWithoutFeedback
-					// TouchableWithoutFeedback is needed to fix scroll inside of modal https://github.com/react-native-modal/react-native-modal/issues/236
+					<Pressable
+					// Pressable is needed to fix scroll inside of modal https://github.com/react-native-modal/react-native-modal/issues/236
 					>
-						<Box
+						<View
 							style={{
 								backgroundColor: "#1f1f1f",
 								display: "flex",
@@ -49,8 +46,8 @@ export default function Instances() {
 								alignItems: "center",
 							}}
 						>
-							<Text fontSize="20">{item.name}</Text>
-							<Text fontSize="15">{item.description}</Text>
+							<Text style={{ fontSize: 20 }}>{item.name}</Text>
+							<Text style={{ fontSize: 15 }}>{item.description}</Text>
 
 							{item.image && (
 								<Image
@@ -58,21 +55,22 @@ export default function Instances() {
 									source={{
 										uri: item.image,
 									}}
-									alt={item.name}
 								/>
 							)}
-						</Box>
-					</TouchableWithoutFeedback>
+						</View>
+					</Pressable>
 				)}
 			></FlatList>
-			<Heading style={{ marginTop: 10 }} size="lg">
-				Manual
-			</Heading>
-			<FormControl style={{ marginBottom: 20, marginTop: 10 }}>
-				<FormControl.Label>Instance URL</FormControl.Label>
-				<Input style={{ flexGrow: 1 }} ref={instanceInput} type="url" placeholder="Enter instance url" />
-			</FormControl>
-			<Button style={{ margin: 0, marginBottom: 20 }}>Connect</Button>
+			<Text style={{ marginTop: 10, fontSize: 30 }}>Manual</Text>
+			<Text>Instance URL</Text>
+			<TextInput
+				style={{ flexGrow: 1 }}
+				ref={instanceInput}
+				keyboardType="url"
+				textContentType="URL"
+				placeholder="Enter instance url"
+			/>
+			<Button>Connect</Button>
 		</Modal>
 	);
 }

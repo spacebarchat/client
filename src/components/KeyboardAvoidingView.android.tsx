@@ -1,3 +1,3 @@
-import { View } from "native-base";
+import { View } from "react-native";
 
 export default View;
