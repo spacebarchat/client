@@ -19,6 +19,12 @@ declare module "react" {
 	}
 }
 
+declare module "react-native" {
+	interface ViewProps {
+		styleName?: string;
+	}
+}
+
 export default function App() {
 	// TODO: suspense show spinning icon (only after a delay to prevent short flashes)
 
