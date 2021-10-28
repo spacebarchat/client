@@ -1,6 +1,6 @@
 // @ts-nocheck
 import Modal from "modal-react-native-web";
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router";
 import { ModalAvoidingView } from "../util/ModalAvoidingView";
 

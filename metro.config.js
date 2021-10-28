@@ -10,12 +10,12 @@ const { getDefaultConfig } = require("metro-config");
 
 module.exports = async () => {
 	const {
-		resolver: { sourceExts },
+		resolver: { assetExts },
 	} = await getDefaultConfig();
 
 	return {
 		resolver: {
-			sourceExts: [...sourceExts, "css"],
+			assetExts: [...assetExts, "css"],
 			blockList: exclusionList([
 				// This stops "react-native run-windows" from causing the metro server to crash if its already running
 				new RegExp(`${path.resolve(__dirname, "windows").replace(/[/\\]/g, "/")}.*`),
@@ -30,7 +30,6 @@ module.exports = async () => {
 					inlineRequires: false,
 				},
 			}),
-			babelTransformerPath: require.resolve("./scripts/rn-transformer.js"),
 		},
 	};
 };

@@ -64,11 +64,9 @@ export default function Login() {
 					/>
 				</View>
 				<Text style={tailwind("text-gray-200 font-light mt-4 text-sm opacity-70")}>Forgot your password? </Text>
-				<View style={tailwind("mt-28 h-16 bg-primary rounded-xl")}>
-					<Button onPress={() => history.push("/")}>
-						<Text style={tailwind("font-semibold text-lg text-white")}>Login to fosscord.com</Text>
-					</Button>
-				</View>
+				<Button onPress={() => history.push("/")} style={tailwind("mt-28 h-16 bg-primary rounded-xl")}>
+					<Text style={tailwind("font-semibold text-lg text-white")}>Login to fosscord.com</Text>
+				</Button>
 			</KeyboardAvoidingView>
 		</>
 	);

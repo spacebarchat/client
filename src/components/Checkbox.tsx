@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Pressable, PressableProps } from "react-native";
 
 export default function Checkbox(props: { state?: boolean; onChange?: Function; defaultIsChecked?: boolean } & PressableProps) {

@@ -33,7 +33,13 @@ export class ErrorBoundary extends React.Component {
 						<Text style={{ fontSize: 10 }}>{this.state.error.componentStack}</Text>
 					</ScrollView>
 
-					<Button title="Reload" onPress={() => NativeModules?.DevSettings?.reload?.()} />
+					<Button
+						title="Reload"
+						onPress={() => {
+							// @ts-ignore
+							NativeModules?.DevSettings?.reload?.() || globalThis?.location?.reload?.();
+						}}
+					/>
 				</SafeAreaView>
 			);
 		}

@@ -1,5 +1,44 @@
+:root {
+	--primary: #007bff;
+	--background: #ffffff;
+	--text: #000000;
+}
+
+.view {
+	background-color: var(--background);
+}
+
 .button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.heading {
+	font-size: 45px;
+	text-align: center;
+	margin: 40px 0;
+	color: var(--text);
+}
+
+.link {
+	margin: 10px;
+	background-color: var(--primary);
+	border-radius: 5px;
+}
+
+.link .text {
+	margin: 10px;
+	color: white;
+}
+
+.text {
+	color: var(--text);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background: #000000;
+		--text: #ffffff;
+	}
 }

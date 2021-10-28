@@ -3,8 +3,8 @@ import { Pressable, PressableProps, Text } from "react-native";
 
 export default function Button(props: PressableProps = {}) {
 	return (
-		<Pressable {...props} styleName={props.styleName + " button"}>
-			<Text>{props.children}</Text>
+		<Pressable {...props} className="button">
+			<Text className="test">{props.children}</Text>
 		</Pressable>
 	);
 }

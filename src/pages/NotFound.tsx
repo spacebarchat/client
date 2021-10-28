@@ -7,8 +7,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function NotFound() {
 	return (
 		<SafeAreaView>
-			<View styleName="test" style={tailwind("h-full px-6")}>
-				<Text>Home</Text>
+			<View style={tailwind("h-full px-6")}>
+				<Text className="heading">Home</Text>
 				<View>
 					<Link to="/login">Login</Link>
 					<Link to="/register">Register</Link>
