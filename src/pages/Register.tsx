@@ -1,11 +1,15 @@
-import React, { useRef } from "react";
-import { Image, Keyboard, StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useRef, useState } from "react";
+import { Keyboard, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useMobile } from "../util/Styles";
-import KeyboardAvoidingView from "../components/KeyboardAvoidingView";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useHistory } from "react-router";
-import { tailwind } from "../util/tailwind";
 import Checkbox from "../components/Checkbox";
 import Button from "../components/Button";
+import Icon from "../assets/images/icon/1024.png";
+import Image from "../components/Image";
+import Input from "../components/Input";
+import { SafeAreaView } from "react-native-safe-area-context";
+import useSafeAreaStyle from "../util/useSafeAreaStyle";
 
 const styles = StyleSheet.create({
 	formInputSection: {
@@ -15,8 +19,6 @@ const styles = StyleSheet.create({
 
 export default function Login() {
 	const history = useHistory();
-
-	const isMobile = useMobile();
 
 	const emailElement = useRef<any>();
 	const usernameElement = useRef<any>();
@@ -28,51 +30,50 @@ export default function Login() {
 	}
 
 	return (
-		<>
-			<KeyboardAvoidingView behavior="padding" style={tailwind("h-full px-8 py-14")}>
-				<Image
-					source={{
-						uri: "https://github.com/fosscord/fosscord-client/blob/master/ios/fosscord/logo.png?raw=true",
-					}}
-					style={tailwind("mt-20 w-8 h-8")}
-				/>
-				<Text style={tailwind("text-white font-extrabold mt-12 text-4xl")}>Create an account now</Text>
-				<Text style={tailwind("text-gray-200 font-light mt-4 text-xl")}>Explore Instances</Text>
-				<View style={tailwind("mt-8")}>
-					<Text style={tailwind("text-white")}>Email</Text>
-					<TextInput
-						blurOnSubmit={false}
-						onSubmitEditing={() => {
-							passwordElement?.current?.focus();
-						}}
-						returnKeyType="next"
-						ref={emailElement}
-						textContentType="emailAddress"
-						keyboardType="email-address"
-						placeholder="Email"
-						style={tailwind("bg-gray-200 h-14 rounded-lg")}
-					/>
-				</View>
-				<View style={tailwind("mt-6")}>
-					<Text style={tailwind("text-white")}>Username</Text>
-					<TextInput ref={usernameElement} placeholder="Username" style={tailwind("bg-gray-200 h-14 rounded-lg")} />
-				</View>
-				<View style={tailwind("mt-6")}>
-					<Text style={tailwind("text-white")}>Password</Text>
-					<TextInput
-						ref={passwordElement}
-						textContentType="password"
-						placeholder="Password"
-						style={tailwind("bg-gray-200 h-14 rounded-lg")}
-					/>
-				</View>
-				<Checkbox style={tailwind("mt-6")} accessibilityLabel="tosCheckBox" defaultIsChecked>
-					<Text style={tailwind("text-white mt-6 ml-2")}>I accept the terms of use of this instance</Text>
-				</Checkbox>
-				<Button style={tailwind("mt-6 h-16 bg-primary rounded-xl")} onPress={() => history.push("/")}>
-					<Text style={tailwind("font-semibold text-lg text-white")}>Register on fosscord.com</Text>
-				</Button>
-			</KeyboardAvoidingView>
-		</>
+		<View className="register">
+			<View style={useSafeAreaStyle()}>
+				<KeyboardAwareScrollView bounces={false}>
+					<Image className="" style={{ width: 32, height: 32, position: "relative", opacity: 1 }} source={Icon} />
+					<Text className="heading">Create an account now</Text>
+					<Text className="heaidng">Explore Instances</Text>
+					<View>
+						<Text className="text-accent">Email</Text>
+						<Input
+							blurOnSubmit={false}
+							onSubmitEditing={() => {
+								usernameElement?.current?.focus();
+							}}
+							returnKeyType="next"
+							ref={emailElement}
+							textContentType="emailAddress"
+							keyboardType="email-address"
+							placeholder="Email"
+						/>
+					</View>
+					<View>
+						<Text className="text-accent">Username</Text>
+						<Input
+							blurOnSubmit={false}
+							onSubmitEditing={() => {
+								passwordElement?.current?.focus();
+							}}
+							returnKeyType="next"
+							ref={usernameElement}
+							placeholder="Username"
+						/>
+					</View>
+					<View>
+						<Text className="text-accent">Password</Text>
+						<Input ref={passwordElement} textContentType="password" placeholder="Password" />
+					</View>
+					<Checkbox accessibilityLabel="tosCheckBox" defaultIsChecked>
+						<Text>I accept the terms of use of this instance</Text>
+					</Checkbox>
+					<Button onPress={() => history.push("/")}>
+						<Text>Register on fosscord.com</Text>
+					</Button>
+				</KeyboardAwareScrollView>
+			</View>
+		</View>
 	);
 }

@@ -17,18 +17,45 @@ function matchSelector(node: Selector, selector: Selector) {
 	return false;
 }
 
-function matchSelection(stack: Selector[], selection: Selector[]): boolean {
-	if (selection.length > stack.length) return false; // rule can't match as the selector is longer as the real component path
-	// component matches selection and parent path -> return true
-	if (selection.length === 0) return true;
+function getTagName(tag: string) {
+	if (!tag) return "";
+	return tag.toLowerCase().replace("rct", "").replace("virtualtext", "text").replace("textinput", "input").replace("rnc", "");
+}
 
-	for (const [selectionI, selector] of selection.entries()) {
-		for (const [parentI, parent] of stack.entries()) {
-			if (selectionI > stack.length) break;
-			// check if any parent matches the selection
-			if (!matchSelector(parent, selector)) continue; // didn't match -> skip
-			return matchSelection(stack.slice(parentI + 1), selection.slice(selectionI + 1)); // parent matched path -> check further
+// force skip is used for > css operators and to skip if the next element does not match it
+function matchSelection(stack: Selector[], selection: Selector[], forceSkip?: boolean): boolean {
+	if (selection.length > stack.length) {
+		// rule can't match as the selector is longer as the real component path
+		return false;
+	}
+	if (selection.length === 0 && stack.length === 0) {
+		// component matches selection and parent path -> return true
+		return true;
+	}
+
+	const i = selection[1]?.tag === ">" ? 1 : 0;
+	const selector = selection[0];
+	if (!selector) return false;
+
+	for (const [parentI, parent] of stack.entries()) {
+		// selection is bigger than actual component path -> abort
+		if (selection.length - i > stack.length) return false;
+
+		// check if any parent matches the selection
+		if (!matchSelector(parent, selector)) {
+			if (forceSkip) return false;
+			continue;
 		}
+		if (forceSkip && selection.length !== stack.length) {
+			return false;
+		}
+
+		if (selection.length - i <= 1 && stack.length <= 1) {
+			// console.log("matched | " + parent.classes?.join(".") + " | " + selector.classes?.join("."));
+		}
+
+		// parent matched path -> check further | early return to skip unecessary checks
+		if (matchSelection(stack.slice(parentI + 1), selection.slice(i + 1), i === 1)) return true;
 	}
 
 	return false;
@@ -43,21 +70,26 @@ function StyleProxy(type: string, props: any, children: ReactNode[]) {
 		return R(type, props, ...children);
 	}
 
-	const tag = type.replace("RCT", "").toLowerCase();
+	const tag = getTagName(type);
 	props.className += " " + tag;
 	const stack = useContext(ComponentStack);
 	const classes = props.className?.split(" ") || [];
 	const element = { tag, classes, id: props.id };
 	const newStack = [...stack, element];
+	const start = Date.now();
+	// console.log("_________________");
 
-	console.log(tag);
-
+	// TODO: use react memo
 	// check recursivly if the selection path matches any parent path combinaten
 	const style = theme
 		.filter((rule) => rule.selectors?.some((selection) => matchSelection(newStack, selection)))
 		.map((x) => x.declarations)
 		.reverse()
 		.reduce((value, total) => ({ ...total, ...value }), {});
+
+	// console.log("styling took " + (Date.now() - start) + "ms");
+
+	// console.log(newStack.map((x) => x.classes.join(".")).join(" -> "));
 
 	return R(ComponentStack.Provider, { value: newStack }, R(type, { ...props, style: { ...style, ...props?.style } }, ...children));
 }
@@ -68,17 +100,24 @@ if (R.name === "createElementWithValidation") {
 		// @ts-ignore
 		React.createElement = function (type: any, props: any, ...children: ReactNode[]) {
 			if (!props) props = {};
-			if (!props.className) props.className = "";
-			if (type?.render?.displayName) {
-				props.className += " " + type.render.displayName.toLowerCase();
+			if (type?.render?.displayName && type?.render?.displayName !== "awd") {
+				if (!props.className) props.className = "";
+				props.className += " " + getTagName(type.render.displayName);
 			}
-			console.log(type, props);
 			return R(type, props, ...children);
 		};
 	} else {
 		// @ts-ignore
 		React.createElement = function (type: any, props: any, ...children: ReactNode[]) {
-			if (typeof type !== "string") return R(type, props, ...children);
+			if (
+				typeof type !== "string" ||
+				type === "RCTSinglelineTextInputView" ||
+				type == "RCTScrollContentView" ||
+				type == "RCTVirtualText" ||
+				type == "RCTScrollView"
+			)
+				return R(type, props, ...children);
+			// console.log("create", type, props.className);
 
 			return R(StyleProxy.bind(null, type, props, children));
 		};

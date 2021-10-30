@@ -7,7 +7,7 @@ index d3796b2..f4c5008 100644
    }
  
 +  if (props.className) {
-+    domProps.className = (domProps.className||"")+" "+props.className;
++    domProps.className = props.className;
 +  }
 +
    if (style) {

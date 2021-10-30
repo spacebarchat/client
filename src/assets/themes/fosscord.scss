@@ -1,0 +1,183 @@
+:root {
+	--primary: #ff5f00;
+	--background: #ffffff;
+	--text: #000000;
+	--text-accent: #1c1c1c;
+}
+
+.view {
+	background-color: var(--background);
+}
+
+.heading {
+	font-size: 45px;
+	color: var(--text);
+
+	&.title {
+		padding: 40px 0;
+		font-weight: 700;
+		text-align: center;
+	}
+
+	&.md {
+		font-size: 35px;
+	}
+
+	&.sm {
+		font-size: 25px;
+	}
+}
+
+.h-100 {
+	height: 100%;
+	width: 100%;
+}
+
+.flex {
+	display: flex;
+	flex-direction: column;
+}
+
+.center {
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.stretch {
+	justify-content: flex-start;
+	align-items: stretch;
+	text-align: left;
+}
+
+.link {
+	margin: 10px;
+	background-color: var(--primary);
+	border-radius: 5px;
+}
+
+.text {
+	color: var(--text);
+	font-family: Arial;
+	font-weight: 100;
+}
+
+.bg {
+	background-color: var(--background);
+}
+
+.text-accent {
+	color: var(--text-accent);
+}
+
+.link .text {
+	padding: 10px;
+	color: white;
+}
+
+.checkbox {
+	display: flex;
+	flex-direction: row;
+	padding: 20px;
+}
+
+.checkbox .state {
+	border: 1px solid var(--primary);
+	width: 15px;
+	height: 15px;
+	padding: 5px;
+	color: var(--primary);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background: #000000;
+		--text: #ffffff;
+		--text-accent: #b3b3b3;
+	}
+}
+
+.button {
+	@extend .flex;
+	@extend .center;
+	user-select: none;
+}
+
+.screen {
+	padding: 20px;
+}
+
+.container {
+	width: 100%;
+	padding: 0 15px;
+	margin: 0 auto;
+}
+
+@media (min-width: 576px) {
+	.container-sm,
+	.container {
+		max-width: 540px;
+	}
+}
+@media (min-width: 768px) {
+	.container-md,
+	.container-sm,
+	.container {
+		max-width: 720px;
+	}
+}
+@media (min-width: 992px) {
+	.container-lg,
+	.container-md,
+	.container-sm,
+	.container {
+		max-width: 960px;
+	}
+}
+@media (min-width: 1200px) {
+	.container-xl,
+	.container-lg,
+	.container-md,
+	.container-sm,
+	.container {
+		max-width: 1140px;
+	}
+}
+@media (min-width: 1400px) {
+	.container-xxl,
+	.container-xl,
+	.container-lg,
+	.container-md,
+	.container-sm,
+	.container {
+		max-width: 1320px;
+	}
+}
+
+.register {
+	@extend .h-100;
+	@extend .flex;
+	@extend .screen;
+	@extend .container;
+
+	max-width: 576px;
+
+	> .view {
+		@extend .flex;
+		@extend .stretch;
+
+		margin: 10px 0;
+		width: 100%;
+
+		.input {
+			height: 30px;
+			width: 100%;
+			background: var(--background);
+			outline: none;
+			border: none;
+		}
+	}
+}

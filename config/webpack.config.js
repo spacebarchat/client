@@ -365,7 +365,7 @@ module.exports = function (webpackEnv) {
 						// The preset includes JSX, Flow, TypeScript, and some ESnext features.
 						{
 							test: /\.(js|mjs|jsx|ts|tsx)$/,
-							include: paths.appSrc,
+							include: [paths.appSrc, path.resolve(paths.appNodeModules, "react-native-keyboard-aware-scroll-view")],
 							loader: require.resolve("babel-loader"),
 							options: {
 								// customize: require.resolve("@babel/preset-react/webpack-overrides"),

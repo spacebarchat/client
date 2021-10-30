@@ -1,7 +1,5 @@
 import parse from "./css";
 import transform from "css-to-react-native";
-import { PixelRatio } from "react-native";
-import { toPx } from "./MediaQuery";
 
 const SPLIT_CSS = /(?=[.#])/g;
 
@@ -53,8 +51,7 @@ export interface Rules {
 	type: string;
 }
 
-const CSS_VARIABLE = /var\(([\w-]+)\)/;
-const preDeclarations: any = {}; // used for :root css variables
+export var preDeclarations: any = {}; // used for :root css variables
 
 function handleRule(rule: Rule): Rules | undefined {
 	// @ts-ignore
@@ -76,15 +73,6 @@ function handleRule(rule: Rule): Rules | undefined {
 
 	rule.declarations?.forEach((decl: any) => {
 		if (!decl.property || !decl.value) return;
-		if (decl.property.startsWith("--")) {
-			console.log("set css variable", decl);
-			preDeclarations[decl.property] = decl.value;
-			return;
-		} else if (decl.value?.startsWith("var(")) {
-			const [_, val] = decl.value.match(CSS_VARIABLE);
-			console.log("css variable", val, decl.value, preDeclarations[val]);
-			decl.value = preDeclarations[val];
-		}
 
 		declarationsArray.push([decl.property, decl.value?.replace("!important", "")?.trim()]);
 	});
@@ -120,17 +108,7 @@ export function parseCSS(str: string): Rules[] {
 	const { stylesheet } = parse(str, { silent: true });
 	if (!stylesheet) return [];
 
-	const rules: Rules[] = stylesheet.rules
-		.sort((a: any, b: any) => {
-			if (a.selectors?.includes(":root")) return -1;
-			if (b.selectors?.includes(":root")) return 1;
-			if (a.rules?.[0]?.selectors?.includes(":root")) return -1;
-			if (b.rules?.[0]?.selectors?.includes(":root")) return 1;
-
-			return 0;
-		})
-		.map((r: Rule) => handleRule(r));
-	console.log(rules);
+	const rules: Rules[] = stylesheet.rules.map((r: Rule) => handleRule(r));
 
 	return rules;
 }

@@ -1,0 +1,26 @@
+diff --git a/node_modules/react-native-haptic-feedback/index.js b/node_modules/react-native-haptic-feedback/index.js
+index 083c4fc..5bf1e6c 100644
+--- a/node_modules/react-native-haptic-feedback/index.js
++++ b/node_modules/react-native-haptic-feedback/index.js
+@@ -6,14 +6,14 @@ const defaultOptions = {
+ }
+ 
+ class RNReactNativeHapticFeedback {
+-    static trigger = (type = 'selection', options = {}) => {
+-        const triggerOptions = createTriggerOptions(options)
++}
++RNReactNativeHapticFeedback.trigger = (type = 'selection', options = {}) => {
++    const triggerOptions = createTriggerOptions(options)
+ 
+-        try {
+-            NativeModules.RNReactNativeHapticFeedback.trigger(type, triggerOptions);
+-        } catch (err) {
+-            console.warn('RNReactNativeHapticFeedback is not available');
+-        }
++    try {
++        NativeModules.RNReactNativeHapticFeedback.trigger(type, triggerOptions);
++    } catch (err) {
++        console.warn('RNReactNativeHapticFeedback is not available');
+     }
+ }
+ 

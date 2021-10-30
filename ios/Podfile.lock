@@ -298,9 +298,8 @@ PODS:
     - React-perflogger (= 0.66.1)
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNScreens (3.8.0):
+  - RNReactNativeHapticFeedback (1.13.0):
     - React-Core
-    - React-RCTImage
   - RNSVG (12.1.1):
     - React
   - SSZipArchive (2.2.3)
@@ -343,7 +342,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNScreens (from `../node_modules/react-native-screens`)
+  - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -425,8 +424,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
-  RNScreens:
-    :path: "../node_modules/react-native-screens"
+  RNReactNativeHapticFeedback:
+    :path: "../node_modules/react-native-haptic-feedback"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   Yoga:
@@ -472,11 +471,11 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 33a949a51bec5f8a3c9e8d8092deb259600d761e
   ReactCommon: 620442811dc6f707b4bf5e3b27d4f19c12d5a821
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNScreens: 6e1ea5787989f92b0671049b808aef64fa1ef98c
+  RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 2b4a01651f42a32f82e6cef3830a3ba48088237f
 
-PODFILE CHECKSUM: b1f161e7940152ca920111bffc0986ee64739560
+PODFILE CHECKSUM: ee96f1fa8a3a3d84bcec93293e533af2c73fe60f
 
 COCOAPODS: 1.11.2

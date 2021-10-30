@@ -1,0 +1,13 @@
+diff --git a/node_modules/css-to-react-native/index.js b/node_modules/css-to-react-native/index.js
+index 0d6f377..c580c98 100644
+--- a/node_modules/css-to-react-native/index.js
++++ b/node_modules/css-to-react-native/index.js
+@@ -24,7 +24,7 @@ var matchString = function matchString(node) {
+ };
+ 
+ var hexColorRe = /^(#(?:[0-9a-f]{3,4}){1,2})$/i;
+-var cssFunctionNameRe = /^(rgba?|hsla?|hwb|lab|lch|gray|color)$/;
++var cssFunctionNameRe = /^(rgba?|hsla?|hwb|lab|lch|gray|color|var)$/;
+ 
+ var matchColor = function matchColor(node) {
+   if (node.type === 'word' && (hexColorRe.test(node.value) || node.value in cssColorKeywords || node.value === 'transparent')) {

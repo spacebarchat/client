@@ -1,13 +1,9 @@
 import React, { ReactNode } from "react";
-import { Pressable, Text, View } from "react-native";
 import { useHistory } from "react-router";
+import Button, { ButtonProps } from "./Button";
 
-export default function Link(props: { to: string; children: ReactNode }) {
+export default function Link(props: { to: string; children: ReactNode } & ButtonProps) {
 	const history = useHistory();
 
-	return (
-		<Pressable className="link" onPress={() => history.push(props.to)}>
-			<Text className="text">{props.children}</Text>
-		</Pressable>
-	);
+	return <Button className="link" onPress={() => history.push(props.to)} {...props}></Button>;
 }

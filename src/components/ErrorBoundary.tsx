@@ -25,7 +25,7 @@ export class ErrorBoundary extends React.Component {
 		if (this.state.hasError) {
 			// You can render any custom fallback UI
 			return (
-				<SafeAreaView style={{ height: "100%", width: "100%", display: "flex", flexDirection: "column" }}>
+				<SafeAreaView style={{ height: "100%", width: "100%", display: "flex", flexDirection: "column", backgroundColor: "white" }}>
 					<ScrollView style={{ flexGrow: 1 }}>
 						<Text style={{ fontSize: 20, color: "red" }}>Something went wrong.</Text>
 						<Text>{this.state.error?.toString()}</Text>

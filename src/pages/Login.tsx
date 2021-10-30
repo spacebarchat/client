@@ -3,9 +3,9 @@ import { Image, Keyboard, StyleSheet, Text, View } from "react-native";
 import { useMobile } from "../util/Styles";
 import KeyboardAvoidingView from "../components/KeyboardAvoidingView";
 import { useHistory } from "react-router";
-import { tailwind } from "../util/tailwind";
-import { TextInput } from "react-native-gesture-handler";
+import { ScrollView, TextInput } from "react-native-gesture-handler";
 import Button from "../components/Button";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const styles = StyleSheet.create({
 	formInputSection: {
@@ -27,19 +27,18 @@ export default function Login() {
 	}
 
 	return (
-		<>
-			<KeyboardAvoidingView behavior="padding" style={tailwind("h-full px-8 py-14")}>
+		<ScrollView className="login h-100">
+			<SafeAreaView>
 				<Image
 					source={{
 						uri: "https://github.com/fosscord/fosscord-client/blob/master/ios/fosscord/logo.png?raw=true",
 					}}
-					style={tailwind("mt-20 w-8 h-8")}
 				/>
-				<Text style={tailwind("text-white font-extrabold mt-12 text-4xl")}>Hey,{"\n"}Login now!</Text>
-				<Text style={tailwind("text-gray-200 font-light mt-4 text-xl")}>Explore Instances</Text>
-				<View style={tailwind("mt-14")}>
+				<Text>Hey,{"\n"}Login now!</Text>
+				<Text>Explore Instances</Text>
+				<View>
 					<Text>
-						<Text style={tailwind("text-white")}>Email</Text>
+						<Text>Email</Text>
 					</Text>
 					<TextInput
 						blurOnSubmit={false}
@@ -51,23 +50,17 @@ export default function Login() {
 						keyboardType="email-address"
 						textContentType="emailAddress"
 						placeholder="Email"
-						style={tailwind("bg-gray-200 h-14 rounded-lg")}
 					/>
 				</View>
-				<View style={tailwind("mt-6")}>
-					<Text style={tailwind("text-white")}>Password</Text>
-					<TextInput
-						ref={passwordElement}
-						textContentType="password"
-						placeholder="Password"
-						style={tailwind("bg-gray-200 h-14 rounded-lg")}
-					/>
+				<View>
+					<Text>Password</Text>
+					<TextInput ref={passwordElement} textContentType="password" placeholder="Password" />
 				</View>
-				<Text style={tailwind("text-gray-200 font-light mt-4 text-sm opacity-70")}>Forgot your password? </Text>
-				<Button onPress={() => history.push("/")} style={tailwind("mt-28 h-16 bg-primary rounded-xl")}>
-					<Text style={tailwind("font-semibold text-lg text-white")}>Login to fosscord.com</Text>
+				<Text>Forgot your password? </Text>
+				<Button onPress={() => history.push("/")}>
+					<Text>Login to fosscord.com</Text>
 				</Button>
-			</KeyboardAvoidingView>
-		</>
+			</SafeAreaView>
+		</ScrollView>
 	);
 }
