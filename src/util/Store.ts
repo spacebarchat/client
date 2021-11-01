@@ -1,8 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "../reducers/counter";
+import { instances } from "../reducers/instances";
+import { reducer as themes } from "../reducers/themes";
 
 export default configureStore({
 	reducer: {
-		counter: counterReducer,
+		[instances.reducerPath]: instances.reducer,
+		themes,
 	},
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(instances.middleware),
 });

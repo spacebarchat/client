@@ -16,7 +16,7 @@ export default function Checkbox(props: { state?: boolean; onChange?: Function; 
 					setActive(!active);
 				}}
 			>
-				<Text className="state">{active ? "✓" : "x"}</Text>
+				<Text className="checkbox-state">{active ? "✓" : "x"}</Text>
 			</Button>
 			<Text className="label">{props.children}</Text>
 		</View>

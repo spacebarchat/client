@@ -34,9 +34,9 @@ export default function Login() {
 			<View style={useSafeAreaStyle()}>
 				<KeyboardAwareScrollView bounces={false}>
 					<Image className="" style={{ width: 32, height: 32, position: "relative", opacity: 1 }} source={Icon} />
-					<Text className="heading">Create an account now</Text>
-					<Text className="heaidng">Explore Instances</Text>
-					<View>
+					<Text className="heading ">Create an account now</Text>
+					<Text style={{ marginBottom: 10 }}>Explore Instances</Text>
+					<View className="">
 						<Text className="text-accent">Email</Text>
 						<Input
 							blurOnSubmit={false}
@@ -50,7 +50,7 @@ export default function Login() {
 							placeholder="Email"
 						/>
 					</View>
-					<View>
+					<View className="">
 						<Text className="text-accent">Username</Text>
 						<Input
 							blurOnSubmit={false}
@@ -62,15 +62,15 @@ export default function Login() {
 							placeholder="Username"
 						/>
 					</View>
-					<View>
+					<View className="">
 						<Text className="text-accent">Password</Text>
 						<Input ref={passwordElement} textContentType="password" placeholder="Password" />
 					</View>
-					<Checkbox accessibilityLabel="tosCheckBox" defaultIsChecked>
+					<Checkbox className="" accessibilityLabel="tosCheckBox" defaultIsChecked>
 						<Text>I accept the terms of use of this instance</Text>
 					</Checkbox>
-					<Button onPress={() => history.push("/")}>
-						<Text>Register on fosscord.com</Text>
+					<Button className="" onPress={() => history.push("/")}>
+						Register on fosscord.com
 					</Button>
 				</KeyboardAwareScrollView>
 			</View>

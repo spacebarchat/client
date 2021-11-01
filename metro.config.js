@@ -15,7 +15,7 @@ module.exports = async () => {
 
 	return {
 		resolver: {
-			assetExts: [...assetExts, "css"],
+			assetExts: [...assetExts, "css", "scss"],
 			blockList: exclusionList([
 				// This stops "react-native run-windows" from causing the metro server to crash if its already running
 				new RegExp(`${path.resolve(__dirname, "windows").replace(/[/\\]/g, "/")}.*`),

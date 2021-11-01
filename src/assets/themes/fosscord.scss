@@ -10,6 +10,8 @@
 }
 
 .heading {
+	margin: 0px;
+	padding: 0px;
 	font-size: 45px;
 	color: var(--text);
 
@@ -50,10 +52,32 @@
 	text-align: left;
 }
 
-.link {
-	margin: 10px;
+.bg {
+	background-color: var(--background);
+}
+
+.bg-primary {
 	background-color: var(--primary);
+}
+
+.text-accent {
+	color: var(--text-accent);
+}
+
+.button {
+	@extend .flex;
+	@extend .center;
+	@extend .bg-primary;
+
+	user-select: none;
+	cursor: pointer;
 	border-radius: 5px;
+	margin: 10px;
+	padding: 10px;
+}
+
+.link {
+	@extend .button;
 }
 
 .text {
@@ -62,16 +86,7 @@
 	font-weight: 100;
 }
 
-.bg {
-	background-color: var(--background);
-}
-
-.text-accent {
-	color: var(--text-accent);
-}
-
-.link .text {
-	padding: 10px;
+.button-text {
 	color: white;
 }
 
@@ -81,7 +96,7 @@
 	padding: 20px;
 }
 
-.checkbox .state {
+.checkbox-state {
 	border: 1px solid var(--primary);
 	width: 15px;
 	height: 15px;
@@ -92,20 +107,6 @@
 	align-items: center;
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--background: #000000;
-		--text: #ffffff;
-		--text-accent: #b3b3b3;
-	}
-}
-
-.button {
-	@extend .flex;
-	@extend .center;
-	user-select: none;
-}
-
 .screen {
 	padding: 20px;
 }
@@ -114,6 +115,14 @@
 	width: 100%;
 	padding: 0 15px;
 	margin: 0 auto;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background: #000000;
+		--text: #ffffff;
+		--text-accent: #b3b3b3;
+	}
 }
 
 @media (min-width: 576px) {
@@ -157,27 +166,15 @@
 	}
 }
 
-.register {
-	@extend .h-100;
-	@extend .flex;
-	@extend .screen;
-	@extend .container;
+.input {
+	height: 30px;
+	width: 100%;
+	background: var(--background);
+	color: var(--text);
+	outline: none;
+	border: none;
+}
 
-	max-width: 576px;
-
-	> .view {
-		@extend .flex;
-		@extend .stretch;
-
-		margin: 10px 0;
-		width: 100%;
-
-		.input {
-			height: 30px;
-			width: 100%;
-			background: var(--background);
-			outline: none;
-			border: none;
-		}
-	}
+.register-view {
+	margin: 10px;
 }
