@@ -28,7 +28,9 @@
 html,
 body,
 #root,
-#root > div {
+#root > div,
+#root > div > div,
+#root > div > div > div {
 	padding: 0;
 	margin: 0;
 	width: 100%;

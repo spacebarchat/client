@@ -1,5 +1,5 @@
 import { parseCSS, preDeclarations } from "./CSSToRN";
-import React, { ReactNode, useContext, useEffect, useRef, useState } from "react";
+import React, { ReactElement, ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { Image, Platform, useColorScheme, useWindowDimensions } from "react-native";
 import { Rules, Selector } from "./CSSToRN";
 import { useAccessibilityInfo } from "./useAccessibilityInfo";
@@ -18,7 +18,7 @@ export const ComponentStack = React.createContext<Selector[]>([]);
 const CSS_VARIABLE = /var\(([\w-]+)\)/;
 let wasHotReloaded = false;
 
-export function Theme(props: { children: ReactNode }) {
+export function Themes(props: { children: ReactElement }) {
 	const dispatch = useDispatch();
 	const { width, height, fontScale, scale } = useWindowDimensions();
 	const orientation = useOrientation();
@@ -80,6 +80,7 @@ export function Theme(props: { children: ReactNode }) {
 				if (b.selectors?.find((s) => s.find((b) => b.tag === ":root"))) return 1;
 				return 0;
 			})
+			.sort((a, b) => Math.max(...(a.selectors?.map((x) => x.length) || [])) - Math.max(...(b.selectors?.map((x) => x.length) || [])))
 			.map((r, i) => {
 				let rule = { ...r, declarations: { ...r.declarations } };
 				Object.entries(rule.declarations || {})?.forEach(([key, value]) => {
@@ -105,7 +106,7 @@ export function Theme(props: { children: ReactNode }) {
 		calculateTheme();
 	}, [orientation, colorScheme, width, height]);
 
-	return <>{props.children}</>;
+	return props.children;
 }
 
 const R = React.createElement;
@@ -115,7 +116,7 @@ function matchSelector(node: Selector, selector: Selector) {
 
 	if (node.id === selector.id && selector.id) return true;
 	if ((node.tag === selector.tag && selector.tag) || selector.tag === "*") return true;
-	if (node.classes?.some((x) => selector.classes?.includes(x))) return true;
+	if (selector.classes?.every((x) => node.classes?.includes(x))) return true;
 
 	return false;
 }
@@ -129,43 +130,43 @@ function getTagName(tag: string) {
 }
 
 // force skip is used for > css operators and to skip if the next element does not match it
-// function matchSelection(stack: Selector[], selection: Selector[], forceSkip?: boolean): boolean {
-// 	if (selection.length > stack.length) {
-// 		// rule can't match as the selector is longer as the real component path
-// 		return false;
-// 	}
-// 	if (selection.length === 0 && stack.length === 0) {
-// 		// component matches selection and parent path -> return true
-// 		return true;
-// 	}
+function matchSelection(stack: Selector[], selection: Selector[], forceSkip?: boolean): boolean {
+	if (selection.length > stack.length) {
+		// rule can't match as the selector is longer as the real component path
+		return false;
+	}
+	if (selection.length === 0 && stack.length === 0) {
+		// component matches selection and parent path -> return true
+		return true;
+	}
 
-// 	const i = selection[1]?.tag === ">" ? 1 : 0;
-// 	const selector = selection[0];
-// 	if (!selector) return false;
+	const i = selection[1]?.tag === ">" ? 1 : 0;
+	const selector = selection[0];
+	if (!selector) return false;
 
-// 	for (const [parentI, parent] of stack.entries()) {
-// 		// selection is bigger than actual component path -> abort
-// 		if (selection.length - i > stack.length) return false;
+	for (const [parentI, parent] of stack.entries()) {
+		// selection is bigger than actual component path -> abort
+		if (selection.length - i > stack.length) return false;
 
-// 		// check if any parent matches the selection
-// 		if (!matchSelector(parent, selector)) {
-// 			if (forceSkip) return false;
-// 			continue;
-// 		}
-// 		if (forceSkip && selection.length !== stack.length) {
-// 			return false;
-// 		}
+		// check if any parent matches the selection
+		if (!matchSelector(parent, selector)) {
+			if (forceSkip) return false;
+			continue;
+		}
+		if (forceSkip && selection.length !== stack.length) {
+			return false;
+		}
 
-// 		if (selection.length - i <= 1 && stack.length <= 1) {
-// 			// console.log("matched | " + parent.classes?.join(".") + " | " + selector.classes?.join("."));
-// 		}
+		if (selection.length - i <= 1 && stack.length <= 1) {
+			// console.log("matched | " + parent.classes?.join(".") + " | " + selector.classes?.join("."));
+		}
 
-// 		// parent matched path -> check further | early return to skip unecessary checks
-// 		if (matchSelection(stack.slice(parentI + 1), selection.slice(i + 1), i === 1)) return true;
-// 	}
+		// parent matched path -> check further | early return to skip unecessary checks
+		if (matchSelection(stack.slice(parentI + 1), selection.slice(i + 1), i === 1)) return true;
+	}
 
-// 	return false;
-// }
+	return false;
+}
 
 function StyleProxy(type: string, props: any, children: ReactNode[]) {
 	if (!props) props = {};
@@ -180,25 +181,35 @@ function StyleProxy(type: string, props: any, children: ReactNode[]) {
 	const className = props.className + " " + tag;
 	const classes = className?.split(" ") || [];
 	const element = { tag, classes, id: props.id };
+	const stack = useContext(ComponentStack);
+	const newStack = [...stack, element];
 	const start = Date.now();
 
 	// console.log("_________________");
 	// TODO: use react memo
 	// check recursivly if the selection path matches any parent path combinaten
 	// console.log("styling took " + (Date.now() - start) + "ms");
-	// console.log(newStack.map((x) => x.classes.join(".")).join(" -> "), style);
 
 	// @ts-ignore
 
-	const style = theme
-		.filter((rule) => rule.selectors?.some((selectors) => matchSelector(selectors[0], element)))
-		.map((x) => x.declarations)
-		.reverse()
-		.reduce((value, total) => ({ ...total, ...value }), {});
+	const style =
+		theme
+			.filter((rule) => rule.selectors?.some((selection) => matchSelection(newStack, selection)))
+			.map((x) => x.declarations)
+			.reverse()
+			.reduce((value, total) => ({ ...total, ...value }), {}) || {};
+
+	// console.log(newStack.map((x) => x.classes?.join(".")).join(" -> "), style);
 
 	// console.log("use theme for", classes.join("."), style);
+	if (props.style?.padding) {
+		delete style.paddingLeft;
+		delete style.paddingRight;
+		delete style.paddingTop;
+		delete style.paddingBottom;
+	}
 
-	return R(type, { ...props, style: { ...style, ...props?.style }, className }, ...children);
+	return R(ComponentStack.Provider, { value: newStack }, R(type, { ...props, style: { ...style, ...props?.style } }, ...children));
 }
 
 // setting this in react-app-env.d.ts doesn't work
@@ -239,7 +250,8 @@ if (R.name === "createElementWithValidation") {
 				type === "RCTSinglelineTextInputView" ||
 				// type == "RCTVirtualText" ||
 				type == "RCTScrollContentView" ||
-				type == "RCTScrollView"
+				type == "RCTScrollView" ||
+				type?.includes?.("RNSVG")
 			) {
 				return R(type, props, ...children);
 			}

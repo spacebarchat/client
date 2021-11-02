@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useRef } from "react";
 import Slider from "../../components/Slider";
 import Welcome from "./Welcome";
 import Features from "./Features";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { View } from "react-native";
 
 export default function Introduction() {
 	return (
-		<SafeAreaView>
+		<View style={{ height: "100%" }}>
 			<Slider>
 				<Welcome />
 				<Features />
@@ -19,6 +20,6 @@ export default function Introduction() {
 				<Welcome />
 				<Features />
 			</Slider>
-		</SafeAreaView>
+		</View>
 	);
 }

@@ -1,65 +1,45 @@
-import React, { ReactNode, useEffect, useRef, useState } from "react";
-import { Animated, ScrollView, Text, useWindowDimensions, View } from "react-native";
-import { PanGestureHandler } from "react-native-gesture-handler";
+import React, { LegacyRef, ReactNode, useEffect, useRef, useState } from "react";
+import { ScrollView, ScrollViewProps, Text, useWindowDimensions, View } from "react-native";
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
-import Svg, { Circle } from "react-native-svg";
 
-export default function Slider(props: { children: ReactNode[] }) {
-	const { width, height } = useWindowDimensions();
+export default function Slider(props: ScrollViewProps & { children: ReactNode[] }) {
+	const { width } = useWindowDimensions();
+	const snapWidth = width * 1;
 
-	const [active, setActive] = useState(0);
-	const relativeX = useRef(new Animated.Value(0)).current;
-	const relativeY = useRef(new Animated.Value(0)).current;
-	const absY = useRef(new Animated.Value(0)).current;
-	const absX = useRef(new Animated.Value(0)).current;
-	const onPanGestureEvent = Animated.event([{ nativeEvent: { translationX: relativeX, translationY: relativeY, y: absY, x: absX } }], {
-		useNativeDriver: true,
-	});
+	const scroller = useRef<ScrollView>();
 
 	return (
-		<PanGestureHandler
-			onEnded={(e) => {
-				const x = e.nativeEvent.translationX as number;
-
-				let toValue = Math.abs(x) < width / 3 ? 0 : x > 0 ? width : -width;
-				if (active <= 0 && x > 0) toValue = 0;
-				if (active >= props.children.length - 1 && x < 0) toValue = 0;
-
-				Animated.spring(relativeX, {
-					toValue,
-					useNativeDriver: true,
-					restSpeedThreshold: 20,
-					restDisplacementThreshold: 5,
-					bounciness: 4,
-				}).start(() => {
-					// Animated.timing(relativeX, { toValue: 0, useNativeDriver: true, duration: 0 }).start();
-					setActive(toValue ? (x > 0 ? active - 1 : active + 1) : active);
-					relativeX.setValue(0);
-					console.log("done");
-					ReactNativeHapticFeedback.trigger("selection");
-				});
-			}}
-			onBegan={() => ReactNativeHapticFeedback.trigger("soft")}
-			onGestureEvent={onPanGestureEvent}
+		<ScrollView
+			// @ts-ignore
+			ref={scroller}
+			bounces={false}
+			snapToInterval={snapWidth}
+			snapToEnd
+			snapToStart
+			decelerationRate="fast"
+			disableIntervalMomentum
+			horizontal
+			style={{ height: "100%" }}
+			contentContainerStyle={{ height: "100%" }}
+			onScrollBeginDrag={() => ReactNativeHapticFeedback.trigger("soft")}
+			// onMomentumScrollEnd={() => ReactNativeHapticFeedback.trigger("selection")}
+			showsHorizontalScrollIndicator={false}
+			{...props}
 		>
-			<Animated.View style={{ width: "100%", height: "100%" }}>
-				{props.children.map((x: any, i: number) => (
-					<Animated.View
-						key={i}
-						style={{
-							position: "absolute",
-							left: 0,
-							top: 0,
-							height,
-							width,
-							transform: [{ translateX: width * (i - active) }, { translateX: i !== active ? relativeX : 0 }],
-							zIndex: i !== active ? 1 : 0,
-						}}
-					>
-						{x}
-					</Animated.View>
-				))}
-			</Animated.View>
-		</PanGestureHandler>
+			{props.children.map((x: any, i: number) => (
+				<View key={i} style={{ width: snapWidth }}>
+					{{
+						...x,
+						props: {
+							...x.props,
+							next: () => {
+								scroller.current?.scrollTo({ x: (i + 1) * snapWidth });
+								ReactNativeHapticFeedback.trigger("soft");
+							},
+						},
+					}}
+				</View>
+			))}
+		</ScrollView>
 	);
 }

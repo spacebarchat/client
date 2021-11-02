@@ -5,31 +5,43 @@
   --text-accent: #1c1c1c; }
 
 .view {
-  background-color: var(--background); }
+  background-color: transparent; }
+
+.text, .heading {
+  color: var(--text);
+  font-family: Arial;
+  font-weight: 400;
+  font-size: 18px; }
 
 .heading {
   margin: 0px;
   padding: 0px;
-  font-size: 45px;
+  font-size: 35px;
   color: var(--text); }
-  .heading.title {
-    padding: 40px 0;
-    font-weight: 700;
-    text-align: center; }
   .heading.md {
     font-size: 35px; }
   .heading.sm {
     font-size: 25px; }
 
+.title {
+  color: var(--text);
+  font-weight: 100;
+  padding: 40px 0;
+  text-align: center;
+  font-size: 45px; }
+
 .h-100 {
-  height: 100%;
+  height: 100%; }
+
+.w-100 {
   width: 100%; }
 
-.flex, .button, .link {
+.flex, .introduction.welcome, .button, .link {
   display: flex;
   flex-direction: column; }
 
-.center, .button, .link {
+.center, .introduction.features, .button, .link {
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center; }
@@ -39,7 +51,7 @@
   align-items: stretch;
   text-align: left; }
 
-.bg {
+.bg, .introduction.welcome {
   background-color: var(--background); }
 
 .bg-primary, .button, .link {
@@ -48,20 +60,46 @@
 .text-accent {
   color: var(--text-accent); }
 
+.introduction {
+  height: 100%; }
+
+.introduction.welcome {
+  align-items: center;
+  justify-content: space-between;
+  height: 100%; }
+  .introduction.welcome .header {
+    background-color: var(--primary);
+    width: 100%; }
+    .introduction.welcome .header .text, .introduction.welcome .header .heading {
+      color: white; }
+
+@media (orientation: landscape) {
+  .introduction.welcome .waves {
+    display: none; } }
+
+.introduction.features {
+  justify-content: space-between; }
+
+.elevated, .button.big, .big.link {
+  box-shadow: 0px 0px 5px #00000050; }
+
 .button, .link {
   user-select: none;
   cursor: pointer;
   border-radius: 5px;
   margin: 10px;
   padding: 10px; }
-
-.text {
-  color: var(--text);
-  font-family: Arial;
-  font-weight: 100; }
-
-.button-text {
-  color: white; }
+  .button .text, .link .text, .button .heading, .link .heading {
+    color: white; }
+  .button.big, .big.link {
+    margin: 15px;
+    padding: 15px; }
+    .button.big .text, .big.link .text, .button.big .heading, .big.link .heading {
+      font-size: 20px; }
+  .button.invert, .invert.link {
+    background-color: var(--background); }
+    .button.invert .text, .invert.link .text, .button.invert .heading, .invert.link .heading {
+      color: var(--primary); }
 
 .checkbox {
   display: flex;
@@ -88,7 +126,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #000000;
+    --background: #1c1c1c;
     --text: #ffffff;
     --text-accent: #b3b3b3; } }
 

@@ -6,20 +6,23 @@
 }
 
 .view {
-	background-color: var(--background);
+	background-color: transparent;
+}
+
+.text {
+	color: var(--text);
+	font-family: Arial;
+	font-weight: 400;
+	font-size: 18px;
 }
 
 .heading {
+	@extend .text;
+
 	margin: 0px;
 	padding: 0px;
-	font-size: 45px;
+	font-size: 35px;
 	color: var(--text);
-
-	&.title {
-		padding: 40px 0;
-		font-weight: 700;
-		text-align: center;
-	}
 
 	&.md {
 		font-size: 35px;
@@ -30,8 +33,19 @@
 	}
 }
 
+.title {
+	color: var(--text);
+	font-weight: 100;
+	padding: 40px 0;
+	text-align: center;
+	font-size: 45px;
+}
+
 .h-100 {
 	height: 100%;
+}
+
+.w-100 {
 	width: 100%;
 }
 
@@ -41,6 +55,7 @@
 }
 
 .center {
+	display: flex;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
@@ -64,6 +79,44 @@
 	color: var(--text-accent);
 }
 
+.introduction {
+	height: 100%;
+}
+
+.introduction.welcome {
+	@extend .flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 100%;
+	@extend .bg;
+
+	.header {
+		background-color: var(--primary);
+		width: 100%;
+
+		.text {
+			color: white;
+		}
+	}
+}
+
+@media (orientation: landscape) {
+	.introduction.welcome {
+		.waves {
+			display: none;
+		}
+	}
+}
+
+.introduction.features {
+	@extend .center;
+	justify-content: space-between;
+}
+
+.elevated {
+	box-shadow: 0px 0px 5px #00000050;
+}
+
 .button {
 	@extend .flex;
 	@extend .center;
@@ -74,20 +127,32 @@
 	border-radius: 5px;
 	margin: 10px;
 	padding: 10px;
+
+	.text {
+		color: white;
+	}
+
+	&.big {
+		@extend .elevated;
+		margin: 15px;
+		padding: 15px;
+
+		.text {
+			font-size: 20px;
+		}
+	}
+
+	&.invert {
+		background-color: var(--background);
+
+		.text {
+			color: var(--primary);
+		}
+	}
 }
 
 .link {
 	@extend .button;
-}
-
-.text {
-	color: var(--text);
-	font-family: Arial;
-	font-weight: 100;
-}
-
-.button-text {
-	color: white;
 }
 
 .checkbox {
@@ -119,7 +184,7 @@
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--background: #000000;
+		--background: #1c1c1c;
 		--text: #ffffff;
 		--text-accent: #b3b3b3;
 	}

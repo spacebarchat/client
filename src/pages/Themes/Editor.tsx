@@ -9,7 +9,7 @@ export default function ThemesEditor() {
 	return (
 		<KeyboardAvoidingView behavior="padding">
 			<SafeAreaView>
-				<Text className="heading">Theme editor</Text>
+				<Text className="title">Theme editor</Text>
 				<Link to="/">Home</Link>
 			</SafeAreaView>
 		</KeyboardAvoidingView>

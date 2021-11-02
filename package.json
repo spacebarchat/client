@@ -82,6 +82,7 @@
 		"react-native-safe-area-context": "^3.3.2",
 		"react-native-svg": "^12.1.1",
 		"react-native-web": "^0.17.5",
+		"react-native-webview": "^11.14.2",
 		"react-native-windows": "^0.66.1",
 		"react-redux": "^7.2.5",
 		"react-refresh": "^0.8.3",

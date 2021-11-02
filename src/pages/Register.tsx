@@ -34,8 +34,8 @@ export default function Login() {
 			<View style={useSafeAreaStyle()}>
 				<KeyboardAwareScrollView bounces={false}>
 					<Image className="" style={{ width: 32, height: 32, position: "relative", opacity: 1 }} source={Icon} />
-					<Text className="heading ">Create an account now</Text>
-					<Text style={{ marginBottom: 10 }}>Explore Instances</Text>
+					<Text className="title">Create an account now</Text>
+					<Text className="heading">Explore Instances</Text>
 					<View className="">
 						<Text className="text-accent">Email</Text>
 						<Input

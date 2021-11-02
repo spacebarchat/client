@@ -1,11 +1,30 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { ScrollView, Text, useWindowDimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Button from "../../components/Button";
+import Logo from "../../assets/images/icon/Logo";
+import Waves from "../../assets/images/Waves";
 
 export default function Welcome(props: any) {
 	return (
-		<View {...props} style={{ backgroundColor: "brown", height: "100%", ...props.style }}>
-			<Text className="heading">Welcome</Text>
-		</View>
+		<ScrollView bounces={false} contentContainerStyle={{ height: "100%" }}>
+			<View {...props} className="introduction welcome">
+				<View style={{ width: "100%", display: "flex", flexDirection: "column", flexGrow: 1 }}>
+					<SafeAreaView className="header">
+						<Logo width={80} color="white" style={{ marginTop: 80 }} />
+						<Text className="joinText" style={{ textAlign: "center", fontSize: 30, paddingTop: 50 }}>
+							Join the communication revolution
+						</Text>
+					</SafeAreaView>
+					<Waves />
+				</View>
+
+				<SafeAreaView>
+					<Button onPress={props.next} className="big">
+						Continue
+					</Button>
+				</SafeAreaView>
+			</View>
+		</ScrollView>
 	);
 }

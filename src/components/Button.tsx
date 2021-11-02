@@ -64,7 +64,7 @@ export default function Button(props: ButtonProps = {}) {
 				}, 650);
 			}}
 		>
-			<Text className="button-text">{props.children}</Text>
+			<Text className="text">{props.children}</Text>
 		</Animated.View>
 	);
 }
