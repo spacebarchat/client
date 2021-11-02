@@ -7,6 +7,7 @@ import Store from "./util/Store";
 import { Theme } from "./util/Theme";
 import { View } from "react-native";
 
+const Introduction = React.lazy(() => import("./pages/Introduction/index"));
 const LoginPage = React.lazy(() => import("./pages/Login"));
 const RegisterPage = React.lazy(() => import("./pages/Register"));
 const ThemesEditorPage = React.lazy(() => import("./pages/Themes/Editor"));
@@ -23,6 +24,7 @@ export default function App() {
 							<Suspense fallback={<></>}>
 								<Router>
 									<Switch>
+										<Route path="/introduction" component={Introduction}></Route>
 										<Route path="/login" component={LoginPage}></Route>
 										<Route path="/register" component={RegisterPage}></Route>
 										<Route path="/instances" component={InstancesPage}></Route>

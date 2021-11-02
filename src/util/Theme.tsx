@@ -22,7 +22,7 @@ export function Theme(props: { children: ReactNode }) {
 	const dispatch = useDispatch();
 	const { width, height, fontScale, scale } = useWindowDimensions();
 	const orientation = useOrientation();
-	const colorScheme = "dark" || useColorScheme();
+	const colorScheme = useColorScheme(); // "dark" ||
 	const accessibilityInfo = useAccessibilityInfo();
 	// TODO: suspense show spinning icon (only after a delay to prevent short flashes)
 
@@ -196,7 +196,7 @@ function StyleProxy(type: string, props: any, children: ReactNode[]) {
 		.reverse()
 		.reduce((value, total) => ({ ...total, ...value }), {});
 
-	console.log("use theme for", classes.join("."), style);
+	// console.log("use theme for", classes.join("."), style);
 
 	return R(type, { ...props, style: { ...style, ...props?.style }, className }, ...children);
 }
