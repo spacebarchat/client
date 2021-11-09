@@ -1,4 +1,5 @@
 <resources>
-	<string name="app_name">fosscord</string>
-	<string moduleConfig="true" name="CodePushDeploymentKey">opEbqvhRggsHT8ejgpyK2bsFB5V4IvHaODkYQ</string>
+    <string name="app_name">fosscord</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">opEbqvhRggsHT8ejgpyK2bsFB5V4IvHaODkYQ</string>
+    <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
 </resources>
