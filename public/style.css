@@ -42,3 +42,14 @@ body,
 	width: auto !important;
 	height: auto !important;
 }
+
+@media (prefers-color-scheme: dark) {
+	html,
+	body,
+	#root,
+	#root > div,
+	#root > div > div,
+	#root > div > div > div {
+		background: var(--background);
+	}
+}

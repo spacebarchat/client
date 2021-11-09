@@ -1,0 +1,13 @@
+diff --git a/node_modules/@react-native-community/cli-platform-android/native_modules.gradle b/node_modules/@react-native-community/cli-platform-android/native_modules.gradle
+index efc6c2e..a058d75 100644
+--- a/node_modules/@react-native-community/cli-platform-android/native_modules.gradle
++++ b/node_modules/@react-native-community/cli-platform-android/native_modules.gradle
+@@ -272,7 +272,7 @@ class ReactNativeModules {
+         reactNativeModuleConfig.put("androidSourceDir", androidConfig["sourceDir"])
+         reactNativeModuleConfig.put("packageInstance", androidConfig["packageInstance"])
+         reactNativeModuleConfig.put("packageImportPath", androidConfig["packageImportPath"])
+-        if (!androidConfig["buildTypes"].isEmpty()) {
++        if (androidConfig["buildTypes"] && !androidConfig["buildTypes"].isEmpty()) {
+           reactNativeModulesBuildVariants.put(nameCleansed, androidConfig["buildTypes"])
+         }
+         if(androidConfig.containsKey("dependencyConfiguration")) {
