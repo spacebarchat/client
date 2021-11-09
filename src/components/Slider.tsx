@@ -12,26 +12,25 @@ export default function Slider(props: ScrollViewProps & { children: ReactNode[] 
 		<ScrollView
 			// @ts-ignore
 			ref={scroller}
+			horizontal
 			bounces={false}
 			snapToInterval={snapWidth}
 			snapToEnd
 			snapToStart
 			decelerationRate="fast"
 			disableIntervalMomentum
-			horizontal
-			style={{ height: "100%" }}
-			contentContainerStyle={{ height: "100%" }}
 			onScrollBeginDrag={() => ReactNativeHapticFeedback.trigger("soft")}
-			// onMomentumScrollEnd={() => ReactNativeHapticFeedback.trigger("selection")}
+			onMomentumScrollEnd={() => ReactNativeHapticFeedback.trigger("selection")}
 			showsHorizontalScrollIndicator={false}
 			{...props}
 		>
 			{props.children.map((x: any, i: number) => (
-				<View key={i} style={{ width: snapWidth }}>
+				<View key={i} style={{ width: snapWidth, height: "100%" }}>
 					{{
 						...x,
 						props: {
 							...x.props,
+							key: i,
 							next: () => {
 								scroller.current?.scrollTo({ x: (i + 1) * snapWidth });
 								ReactNativeHapticFeedback.trigger("soft");

@@ -9,7 +9,7 @@ export default function Welcome(props: any) {
 	return (
 		<ScrollView bounces={false} contentContainerStyle={{ height: "100%" }}>
 			<View {...props} className="introduction welcome">
-				<View style={{ width: "100%", display: "flex", flexDirection: "column", flexGrow: 1 }}>
+				<View className="header">
 					<SafeAreaView className="header">
 						<Logo width={80} color="white" style={{ marginTop: 80 }} />
 						<Text className="joinText" style={{ textAlign: "center", fontSize: 30, paddingTop: 50 }}>
@@ -19,7 +19,7 @@ export default function Welcome(props: any) {
 					<Waves />
 				</View>
 
-				<SafeAreaView>
+				<SafeAreaView style={{}}>
 					<Button onPress={props.next} className="big">
 						Continue
 					</Button>

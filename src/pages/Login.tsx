@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { Image, Keyboard, StyleSheet, Text, View } from "react-native";
 import { useMobile } from "../util/Styles";
 import KeyboardAvoidingView from "../components/KeyboardAvoidingView";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import Button from "../components/Button";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 });
 
 export default function Login() {
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const isMobile = useMobile();
 
@@ -23,7 +23,7 @@ export default function Login() {
 
 	function openModal() {
 		Keyboard.dismiss();
-		history.push("/login/instances/");
+		navigate("/login/instances/");
 	}
 
 	return (
@@ -57,7 +57,7 @@ export default function Login() {
 					<TextInput ref={passwordElement} textContentType="password" placeholder="Password" />
 				</View>
 				<Text>Forgot your password? </Text>
-				<Button onPress={() => history.push("/")}>
+				<Button onPress={() => navigate("/")}>
 					<Text>Login to fosscord.com</Text>
 				</Button>
 			</SafeAreaView>

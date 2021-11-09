@@ -1,17 +1,17 @@
 // @ts-nocheck
 import Modal from "modal-react-native-web";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { ModalAvoidingView } from "../util/ModalAvoidingView";
 
 export default function (props: any = {}) {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const [open, setOpen] = useState(true);
 
 	function goBack() {
 		setOpen(false);
 		setTimeout(() => {
-			history.goBack();
+			navigate(-1);
 		}, 250);
 	}
 
