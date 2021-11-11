@@ -1,7 +1,7 @@
 #pragma once
 
 #include "App.xaml.g.h"
-#include "winrt/Microsoft.ReactNative.h"
+
 #include <CppWinRTIncludes.h>
 
 #ifdef USE_WINUI3
@@ -15,12 +15,11 @@ namespace winrt::fosscord::implementation
     struct App : AppT<App>
     {
         App() noexcept;
-        void OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs const&);
+        void OnLaunched(activation::LaunchActivatedEventArgs const&);
+        void OnActivated(Windows::ApplicationModel::Activation::IActivatedEventArgs const &e);
         void OnSuspending(IInspectable const&, Windows::ApplicationModel::SuspendingEventArgs const&);
-        void OnNavigationFailed(IInspectable const&, Windows::UI::Xaml::Navigation::NavigationFailedEventArgs const&);
-    
-        winrt::Microsoft::ReactNative::ReactNativeHost& Host() noexcept { return m_host; }
-    private:
-        winrt::Microsoft::ReactNative::ReactNativeHost m_host;
+        void OnNavigationFailed(IInspectable const&, xaml::Navigation::NavigationFailedEventArgs const&);
+      private:
+        using super = AppT<App>;
     };
 } // namespace winrt::fosscord::implementation

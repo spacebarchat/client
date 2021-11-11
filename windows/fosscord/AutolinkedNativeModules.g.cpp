@@ -6,6 +6,9 @@
 // Includes from react-native-code-push
 #include <winrt/Microsoft.CodePush.ReactNative.h>
 
+// Includes from react-native-webview
+#include <winrt/ReactNativeWebView.h>
+
 namespace winrt::Microsoft::ReactNative
 {
 
@@ -13,6 +16,8 @@ void RegisterAutolinkedNativeModulePackages(winrt::Windows::Foundation::Collecti
 { 
     // IReactPackageProviders from react-native-code-push
     packageProviders.Append(winrt::Microsoft::CodePush::ReactNative::ReactPackageProvider());
+    // IReactPackageProviders from react-native-webview
+    packageProviders.Append(winrt::ReactNativeWebView::ReactPackageProvider());
 }
 
 }

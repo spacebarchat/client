@@ -19,7 +19,9 @@ module.exports = async () => {
 			blockList: exclusionList([
 				// This stops "react-native run-windows" from causing the metro server to crash if its already running
 				new RegExp(`${path.resolve(__dirname, "windows").replace(/[/\\]/g, "/")}.*`),
-				// This prevents "react-native run-windows" from hitting: EBUSY: resource busy or locked, open msbuild.ProjectImports.zip
+				// This prevents "react-native run-windows" from hitting: EBUSY: resource busy or locked, open msbuild.ProjectImports.zip or other files produced by msbuild
+				new RegExp(`${path.resolve(__dirname, "windows")}/build/.*`),
+				new RegExp(`${path.resolve(__dirname, "windows")}/target/.*`),
 				/.*\.ProjectImports\.zip/,
 			]),
 		},
