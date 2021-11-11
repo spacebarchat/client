@@ -6,5 +6,9 @@
     <ProjectReference Include="$(ProjectDir)..\..\node_modules\react-native-code-push\windows\CodePush\CodePush.vcxproj">
       <Project>{a6b6216e-fa3f-45e2-9c8e-40023cce9132}</Project>
     </ProjectReference>
+    <!-- Projects from react-native-webview -->
+    <ProjectReference Include="$(ProjectDir)..\..\node_modules\react-native-webview\windows\ReactNativeWebView\ReactNativeWebView.vcxproj">
+      <Project>{729d9af8-cd9e-4427-9f6c-fb757e287729}</Project>
+    </ProjectReference>
   </ItemGroup>
 </Project>
