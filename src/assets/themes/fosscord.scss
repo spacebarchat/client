@@ -6,7 +6,7 @@
 }
 
 .view {
-	background-color: transparent;
+	background-color: var(--background);
 }
 
 .text {
@@ -93,15 +93,15 @@
 	.header {
 		background-color: var(--primary);
 		width: 100%;
+		@extend .flex;
+		flex-grow: 1;
 
 		.text {
 			color: white;
 		}
 	}
-}
 
-@media (orientation: landscape) {
-	.introduction.welcome {
+	@media (orientation: landscape) {
 		.waves {
 			display: none;
 		}
@@ -111,6 +111,21 @@
 .introduction.features {
 	@extend .center;
 	justify-content: space-between;
+
+	.list {
+		.feature {
+			@extend .flex;
+			align-items: center;
+
+			* {
+				text-align: center;
+			}
+
+			.name {
+				font-weight: 900;
+			}
+		}
+	}
 }
 
 .elevated {

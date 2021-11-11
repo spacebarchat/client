@@ -251,6 +251,8 @@ if (R.name === "createElementWithValidation") {
 				// type == "RCTVirtualText" ||
 				type == "RCTScrollContentView" ||
 				type == "RCTScrollView" ||
+				type == "AndroidHorizontalScrollView" ||
+				type == "AndroidHorizontalScrollContentView" ||
 				type?.includes?.("RNSVG")
 			) {
 				return R(type, props, ...children);

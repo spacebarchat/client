@@ -5,7 +5,7 @@
   --text-accent: #1c1c1c; }
 
 .view {
-  background-color: transparent; }
+  background-color: var(--background); }
 
 .text, .heading {
   color: var(--text);
@@ -36,7 +36,7 @@
 .w-100 {
   width: 100%; }
 
-.flex, .introduction.welcome, .button, .link {
+.flex, .introduction.welcome, .introduction.welcome .header, .introduction.features .list .feature, .button, .link {
   display: flex;
   flex-direction: column; }
 
@@ -69,16 +69,22 @@
   height: 100%; }
   .introduction.welcome .header {
     background-color: var(--primary);
-    width: 100%; }
+    width: 100%;
+    flex-grow: 1; }
     .introduction.welcome .header .text, .introduction.welcome .header .heading {
       color: white; }
-
-@media (orientation: landscape) {
-  .introduction.welcome .waves {
-    display: none; } }
+  @media (orientation: landscape) {
+    .introduction.welcome .waves {
+      display: none; } }
 
 .introduction.features {
   justify-content: space-between; }
+  .introduction.features .list .feature {
+    align-items: center; }
+    .introduction.features .list .feature * {
+      text-align: center; }
+    .introduction.features .list .feature .name {
+      font-weight: 900; }
 
 .elevated, .button.big, .big.link {
   box-shadow: 0px 0px 5px #00000050; }

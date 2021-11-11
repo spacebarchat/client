@@ -1,18 +1,23 @@
 diff --git a/node_modules/react-native-web/dist/modules/createDOMProps/index.js b/node_modules/react-native-web/dist/modules/createDOMProps/index.js
-index d3796b2..f4c5008 100644
+index d3796b2..d92b5c7 100644
 --- a/node_modules/react-native-web/dist/modules/createDOMProps/index.js
 +++ b/node_modules/react-native-web/dist/modules/createDOMProps/index.js
-@@ -408,6 +408,10 @@ var createDOMProps = function createDOMProps(elementType, props) {
-     domProps.className = className;
-   }
+@@ -404,8 +404,14 @@ var createDOMProps = function createDOMProps(elementType, props) {
+       className = _styleResolver$resolv.className,
+       style = _styleResolver$resolv.style;
  
-+  if (props.className) {
-+    domProps.className = props.className;
++  domProps.className = ""
++
+   if (className != null && className !== '') {
+-    domProps.className = className;
++    domProps.className += className;
 +  }
 +
++  if (props.className) {
++    domProps.className +=" "+ props.className
+   }
+ 
    if (style) {
-     domProps.style = style;
-   } // OTHER
 diff --git a/node_modules/react-native-web/dist/modules/pick/index.js b/node_modules/react-native-web/dist/modules/pick/index.js
 index 343cdb0..4531f7d 100644
 --- a/node_modules/react-native-web/dist/modules/pick/index.js

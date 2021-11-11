@@ -20,6 +20,8 @@ target 'fosscord' do
 
   pod 'RNReactNativeHapticFeedback', :path => '../node_modules/react-native-haptic-feedback'
 
+  pod 'CodePush', :path => '../node_modules/react-native-code-push'
+
   target 'fosscordTests' do
     inherit! :complete
     # Pods for testing

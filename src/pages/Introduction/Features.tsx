@@ -1,17 +1,24 @@
 import React from "react";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import Button from "../../components/Button";
 
 export default function Features(props: any) {
-	const history = useHistory();
+	const navigage = useNavigate();
 
 	return (
 		<SafeAreaView {...props} className="introduction features">
 			<Text className="title">Features</Text>
 
-			<Button onPress={() => history.push("/")} className="big">
+			<View className="list">
+				<View className="feature">
+					<Text className="image">⚙️</Text>
+					<Text className="name">Configurable</Text>
+				</View>
+			</View>
+
+			<Button onPress={() => navigage("/")} className="big">
 				Home
 			</Button>
 		</SafeAreaView>

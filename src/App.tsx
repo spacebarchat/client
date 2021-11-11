@@ -1,11 +1,15 @@
-import React, { Suspense } from "react";
-import { Router, Route, Switch } from "./components/Router";
+import React, { ReactElement, Suspense } from "react";
+import { Router, Route, Routes } from "./components/Router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Provider } from "react-redux";
 import Store from "./util/Store";
 import { Themes } from "./util/Themes";
-import { ScrollView, useWindowDimensions, View } from "react-native";
+import { View } from "react-native";
+import BackHandler from "./components/BackHandler";
+import { LogBox } from "react-native";
+
+LogBox.ignoreAllLogs();
 
 const Introduction = React.lazy(() => import("./pages/Introduction/index"));
 const LoginPage = React.lazy(() => import("./pages/Login"));
@@ -21,12 +25,14 @@ export default function App() {
 						<View style={{ width: "100%", height: "100%" }} className="bg">
 							<Suspense fallback={<></>}>
 								<Router>
-									<Switch>
-										<Route path="/introduction" component={Introduction}></Route>
-										<Route path="/login" component={LoginPage}></Route>
-										<Route path="/register" component={RegisterPage}></Route>
-										<Route path="*" component={NotFoundPage}></Route>
-									</Switch>
+									<BackHandler>
+										<Routes>
+											<Route path="/introduction" element={<Introduction />}></Route>
+											<Route path="/login" element={<LoginPage />}></Route>
+											<Route path="/register" element={<RegisterPage />}></Route>
+											<Route path="*" element={<NotFoundPage />}></Route>
+										</Routes>
+									</BackHandler>
 								</Router>
 							</Suspense>
 						</View>

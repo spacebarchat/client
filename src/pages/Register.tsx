@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Keyboard, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useMobile } from "../util/Styles";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import Checkbox from "../components/Checkbox";
 import Button from "../components/Button";
 import Icon from "../assets/images/icon/1024.png";
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 });
 
 export default function Login() {
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const emailElement = useRef<any>();
 	const usernameElement = useRef<any>();
@@ -26,7 +26,7 @@ export default function Login() {
 
 	function openModal() {
 		Keyboard.dismiss();
-		history.push("/login/instances/");
+		navigate("/login/instances/");
 	}
 
 	return (
@@ -69,7 +69,7 @@ export default function Login() {
 					<Checkbox className="" accessibilityLabel="tosCheckBox" defaultIsChecked>
 						<Text>I accept the terms of use of this instance</Text>
 					</Checkbox>
-					<Button className="" onPress={() => history.push("/")}>
+					<Button className="" onPress={() => navigate("/")}>
 						Register on fosscord.com
 					</Button>
 				</KeyboardAwareScrollView>

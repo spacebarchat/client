@@ -1,15 +1,4 @@
 import React from "react";
-import {
-	NativeRouter as Router,
-	Route,
-	Link,
-	Redirect,
-	Switch,
-	matchPath,
-	useHistory,
-	useLocation,
-	useParams,
-	useRouteMatch,
-} from "react-router-native";
+import { NativeRouter as Router, Routes, Route, Link, matchPath, useNavigate, useLocation, useParams } from "react-router-native";
 
-export { Route, Router, Link, Redirect, Switch, matchPath, useHistory, useLocation, useParams, useRouteMatch };
+export { Route, Router, Routes, Link, matchPath, useNavigate, useLocation, useParams };
