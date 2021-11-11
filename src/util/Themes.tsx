@@ -26,6 +26,8 @@ export function Themes(props: { children: ReactElement }) {
 	const accessibilityInfo = useAccessibilityInfo();
 	// TODO: suspense show spinning icon (only after a delay to prevent short flashes)
 
+	console.log(colorScheme);
+
 	function refetch() {
 		if (typeof FosscordTheme === "object") return;
 		fetch(Image.resolveAssetSource(FosscordTheme).uri)

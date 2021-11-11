@@ -259,6 +259,8 @@ PODS:
   - React-jsinspector (0.63.43)
   - react-native-safe-area-context (3.3.2):
     - React-Core
+  - react-native-webview (11.14.2):
+    - React-Core
   - React-RCTActionSheet (0.63.43):
     - React-Core/RCTActionSheetHeaders (= 0.63.43)
   - React-RCTAnimation (0.63.43):
@@ -323,6 +325,8 @@ PODS:
     - React-Core
   - RNReactNativeHapticFeedback (1.13.0):
     - React-Core
+  - RNSVG (12.1.1):
+    - React
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -370,6 +374,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native-macos/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native-macos/ReactCommon/jsinspector`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native-macos/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native-macos/Libraries/NativeAnimation`)
   - React-RCTBlob (from `../node_modules/react-native-macos/Libraries/Blob`)
@@ -382,6 +387,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native-macos/ReactCommon`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
+  - "RNSVG (from `../node_modules/@microsoft/react-native-svg-desktop`)"
   - Yoga (from `../node_modules/react-native-macos/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -446,6 +452,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-macos/ReactCommon/jsinspector"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-webview:
+    :path: "../node_modules/react-native-webview"
   React-RCTActionSheet:
     :path: "../node_modules/react-native-macos/Libraries/ActionSheetIOS"
   React-RCTAnimation:
@@ -470,6 +478,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNReactNativeHapticFeedback:
     :path: "../node_modules/react-native-haptic-feedback"
+  RNSVG:
+    :path: "../node_modules/@microsoft/react-native-svg-desktop"
   Yoga:
     :path: "../node_modules/react-native-macos/ReactCommon/yoga"
 
@@ -510,6 +520,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 91974adabf0f994eedd1455028ef15bd2db048cf
   React-jsinspector: 96981df4d10f63fb4eed4c14485af362e4c4f039
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
+  react-native-webview: cc4ac8f021a832dce2979e1f48c5595341dd2fb5
   React-RCTActionSheet: b196ffcbceca9116118ca18c0cc33f39ed04f691
   React-RCTAnimation: c8b2e1afe176af822789748e8a8175b7072bdd04
   React-RCTBlob: 611dbe18e056edd5365b18d91e1f829452bcc732
@@ -522,10 +533,11 @@ SPEC CHECKSUMS:
   ReactCommon: 68efb851b7557cae32b2785c16d38663904b1083
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
+  RNSVG: 369f5b1a64dea3abfda8f5e1f547c01357caedcc
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: dc381c5b6bf950564c2d6b92f39ffb04a6b1faaa
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 5e5a08573734bd42af467e62dc1814161d07adef
+PODFILE CHECKSUM: ebd2017f31f0810dc0efef2ab0a3f6a83b9c319d
 
 COCOAPODS: 1.11.2

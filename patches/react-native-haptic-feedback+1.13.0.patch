@@ -1,26 +1,59 @@
 diff --git a/node_modules/react-native-haptic-feedback/index.js b/node_modules/react-native-haptic-feedback/index.js
-index 083c4fc..5bf1e6c 100644
+index 083c4fc..64d1ba9 100644
 --- a/node_modules/react-native-haptic-feedback/index.js
 +++ b/node_modules/react-native-haptic-feedback/index.js
-@@ -6,14 +6,14 @@ const defaultOptions = {
- }
+@@ -1,32 +1,29 @@
+-import { NativeModules } from 'react-native';
++import { NativeModules } from "react-native";
  
- class RNReactNativeHapticFeedback {
+ const defaultOptions = {
+-    enableVibrateFallback: false,
+-    ignoreAndroidSystemSettings: false,
+-}
++	enableVibrateFallback: false,
++	ignoreAndroidSystemSettings: false,
++};
+ 
+-class RNReactNativeHapticFeedback {
 -    static trigger = (type = 'selection', options = {}) => {
 -        const triggerOptions = createTriggerOptions(options)
-+}
-+RNReactNativeHapticFeedback.trigger = (type = 'selection', options = {}) => {
-+    const triggerOptions = createTriggerOptions(options)
++class RNReactNativeHapticFeedback {}
++RNReactNativeHapticFeedback.trigger = (type = "selection", options = {}) => {
++	const triggerOptions = createTriggerOptions(options);
  
 -        try {
 -            NativeModules.RNReactNativeHapticFeedback.trigger(type, triggerOptions);
 -        } catch (err) {
 -            console.warn('RNReactNativeHapticFeedback is not available');
 -        }
-+    try {
-+        NativeModules.RNReactNativeHapticFeedback.trigger(type, triggerOptions);
-+    } catch (err) {
-+        console.warn('RNReactNativeHapticFeedback is not available');
-     }
- }
+-    }
+-}
++	try {
++		NativeModules.RNReactNativeHapticFeedback.trigger(type, triggerOptions);
++	} catch (err) {}
++};
  
+-const createTriggerOptions = options => {
+-    // if options is a boolean we're using an api <=1.6 and we should pass use it to set the enableVibrateFallback option
+-    if (typeof options === 'boolean') {
+-        return {
+-            ...defaultOptions,
+-            enableVibrateFallback: options
+-        }
+-    } else {
+-        return { ...defaultOptions, ...options }
+-    }
+-}
++const createTriggerOptions = (options) => {
++	// if options is a boolean we're using an api <=1.6 and we should pass use it to set the enableVibrateFallback option
++	if (typeof options === "boolean") {
++		return {
++			...defaultOptions,
++			enableVibrateFallback: options,
++		};
++	} else {
++		return { ...defaultOptions, ...options };
++	}
++};
+ 
+ export default RNReactNativeHapticFeedback;

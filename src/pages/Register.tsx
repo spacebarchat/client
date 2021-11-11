@@ -33,10 +33,10 @@ export default function Login() {
 		<View className="register">
 			<View style={useSafeAreaStyle()}>
 				<KeyboardAwareScrollView bounces={false}>
-					<Image className="" style={{ width: 32, height: 32, position: "relative", opacity: 1 }} source={Icon} />
+					<Image style={{ width: 32, height: 32, position: "relative", opacity: 1 }} source={Icon} />
 					<Text className="title">Create an account now</Text>
 					<Text className="heading">Explore Instances</Text>
-					<View className="">
+					<View>
 						<Text className="text-accent">Email</Text>
 						<Input
 							blurOnSubmit={false}
@@ -50,7 +50,7 @@ export default function Login() {
 							placeholder="Email"
 						/>
 					</View>
-					<View className="">
+					<View>
 						<Text className="text-accent">Username</Text>
 						<Input
 							blurOnSubmit={false}
@@ -62,16 +62,14 @@ export default function Login() {
 							placeholder="Username"
 						/>
 					</View>
-					<View className="">
+					<View>
 						<Text className="text-accent">Password</Text>
 						<Input ref={passwordElement} textContentType="password" placeholder="Password" />
 					</View>
-					<Checkbox className="" accessibilityLabel="tosCheckBox" defaultIsChecked>
+					<Checkbox accessibilityLabel="tosCheckBox" defaultIsChecked>
 						<Text>I accept the terms of use of this instance</Text>
 					</Checkbox>
-					<Button className="" onPress={() => navigate("/")}>
-						Register on fosscord.com
-					</Button>
+					<Button onPress={() => navigate("/")}>Register on fosscord.com</Button>
 				</KeyboardAwareScrollView>
 			</View>
 		</View>

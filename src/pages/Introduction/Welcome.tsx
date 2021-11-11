@@ -18,12 +18,6 @@ export default function Welcome(props: any) {
 					</SafeAreaView>
 					<Waves />
 				</View>
-
-				<SafeAreaView style={{}}>
-					<Button onPress={props.next} className="big">
-						Continue
-					</Button>
-				</SafeAreaView>
 			</View>
 		</ScrollView>
 	);

@@ -1,5 +1,5 @@
 import React, { ReactElement, Suspense } from "react";
-import { Router, Route, Routes } from "./components/Router";
+import { Router, Route } from "./components/Router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Provider } from "react-redux";
@@ -8,13 +8,9 @@ import { Themes } from "./util/Themes";
 import { View } from "react-native";
 import BackHandler from "./components/BackHandler";
 import { LogBox } from "react-native";
+import Routes from "./components/Routes";
 
 LogBox.ignoreAllLogs();
-
-const Introduction = React.lazy(() => import("./pages/Introduction/index"));
-const LoginPage = React.lazy(() => import("./pages/Login"));
-const RegisterPage = React.lazy(() => import("./pages/Register"));
-const NotFoundPage = React.lazy(() => import("./pages/NotFound"));
 
 export default function App() {
 	return (
@@ -26,12 +22,7 @@ export default function App() {
 							<Suspense fallback={<></>}>
 								<Router>
 									<BackHandler>
-										<Routes>
-											<Route path="/introduction" element={<Introduction />}></Route>
-											<Route path="/login" element={<LoginPage />}></Route>
-											<Route path="/register" element={<RegisterPage />}></Route>
-											<Route path="*" element={<NotFoundPage />}></Route>
-										</Routes>
+										<Routes />
 									</BackHandler>
 								</Router>
 							</Suspense>

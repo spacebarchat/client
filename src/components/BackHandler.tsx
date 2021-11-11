@@ -6,7 +6,7 @@ export default function BackHandler(props: { children?: ReactNode }) {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		const listener = BH.addEventListener("hardwareBackPress", function () {
+		const listener = BH?.addEventListener("hardwareBackPress", function () {
 			navigate(-1);
 			return true;
 		});

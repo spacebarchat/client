@@ -16,6 +16,7 @@
 	},
 	"dependencies": {
 		"@babel/core": "7.12.3",
+		"@microsoft/react-native-svg-desktop": "^12.1.1",
 		"@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
 		"@reduxjs/toolkit": "^1.6.2",
 		"@svgr/webpack": "5.5.0",

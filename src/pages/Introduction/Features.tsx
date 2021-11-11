@@ -17,10 +17,6 @@ export default function Features(props: any) {
 					<Text className="name">Configurable</Text>
 				</View>
 			</View>
-
-			<Button onPress={() => navigage("/")} className="big">
-				Home
-			</Button>
 		</SafeAreaView>
 	);
 }

@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
-import { Insets, Text, ViewProps } from "react-native";
+import { Insets, Platform, Text, View, ViewProps } from "react-native";
 import { GestureResponderEvent } from "react-native-modal";
 import Animated from "./Animated";
 
@@ -14,14 +14,14 @@ export interface ButtonProps extends ViewProps {
 
 export default function Button(props: ButtonProps = {}) {
 	const scaleAnim = useRef(new Animated.Value(1)).current;
+	// offset is used on macos, because scale is applied at the top left corner
+	const offset = useRef(new Animated.Value(0)).current;
 
 	return (
 		<Animated.View
 			style={{
-				transform: [{ scale: scaleAnim }],
+				transform: [{ scale: scaleAnim }, { translateX: offset }],
 			}}
-			{...props}
-			className={(props.className || "") + " button"}
 			onStartShouldSetResponder={() => true}
 			onResponderRelease={(event) => {
 				const isCanceled = timeout == null;
@@ -32,6 +32,12 @@ export default function Button(props: ButtonProps = {}) {
 					toValue: 1,
 					duration: 25,
 				}).start();
+				Animated.timing(offset, {
+					useNativeDriver: true,
+					toValue: 0,
+					duration: 25,
+				}).start();
+
 				if (!isCanceled) props.onPress?.(event);
 			}}
 			isTVSelectable={true}
@@ -41,11 +47,20 @@ export default function Button(props: ButtonProps = {}) {
 			onResponderStart={(event) => {
 				clearTimeout(timeout);
 				ReactNativeHapticFeedback.trigger("selection");
+
 				Animated.timing(scaleAnim, {
 					useNativeDriver: true,
 					toValue: 0.99,
 					duration: 25,
 				}).start();
+				if (Platform.OS === "macos") {
+					Animated.timing(offset, {
+						useNativeDriver: true,
+						toValue: 5,
+						duration: 25,
+					}).start();
+				}
+
 				timeout = setTimeout(() => {
 					timeout = null;
 					ReactNativeHapticFeedback.trigger("notificationWarning");
@@ -61,10 +76,27 @@ export default function Button(props: ButtonProps = {}) {
 							duration: 25,
 						}),
 					]).start();
+
+					if (Platform.OS === "macos") {
+						Animated.sequence([
+							Animated.timing(offset, {
+								useNativeDriver: true,
+								toValue: -5,
+								duration: 25,
+							}),
+							Animated.timing(offset, {
+								useNativeDriver: true,
+								toValue: 0,
+								duration: 25,
+							}),
+						]).start();
+					}
 				}, 650);
 			}}
 		>
-			<Text className="text">{props.children}</Text>
+			<View className={(props.className || "") + " button"} {...(props as any)}>
+				<Text className="text">{props.children}</Text>
+			</View>
 		</Animated.View>
 	);
 }
