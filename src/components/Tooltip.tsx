@@ -29,6 +29,7 @@ export default function Tooltip(props: { children: ReactNode; tooltip: ReactNode
 						left: 0,
 						top: 0,
 						borderRadius: 10,
+						minHeight: "100%",
 						width: "100%",
 						display: "flex",
 						justifyContent: "center",
