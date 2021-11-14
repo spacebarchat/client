@@ -33,7 +33,7 @@ export default function (props: Partial<ModalProps>) {
 			onSwipeComplete={goBack}
 			{...props}
 		>
-			<ModalAvoidingView>{children}</ModalAvoidingView>
+			<ModalAvoidingView onKeyDown={(event: any) => console.log(event)}>{children}</ModalAvoidingView>
 		</Modal>
 	);
 }

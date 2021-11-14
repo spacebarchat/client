@@ -94,7 +94,7 @@ export default function Button(props: ButtonProps = {}) {
 				}, 650);
 			}}
 		>
-			<View className={(props.className || "") + " button"} {...(props as any)}>
+			<View {...(props as any)} className={(props.className || "") + " button"}>
 				<Text className="text">{props.children}</Text>
 			</View>
 		</Animated.View>

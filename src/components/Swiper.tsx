@@ -1,35 +1,49 @@
 import React, { LegacyRef, ReactNode, useEffect, useRef, useState } from "react";
-import { SafeAreaView, ScrollView, ScrollViewProps, Text, useWindowDimensions, View } from "react-native";
+import { Platform, SafeAreaView, ScrollView, ScrollViewProps, Text, useWindowDimensions, View } from "react-native";
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 import Button from "./Button";
 
-let page = 0;
+let x = 0;
 
-export default React.forwardRef(function Slider(props: ScrollViewProps & { children: ReactNode[]; footer: any }, ref: any) {
+export default React.forwardRef(function Slider(
+	props: ScrollViewProps & {
+		children: ReactNode[];
+		footer: any;
+	},
+	ref: any
+) {
 	const { width } = useWindowDimensions();
 	const snapWidth = width * 1;
 
 	const scroller = useRef<ScrollView>();
 
-	function scrollNext(_: any, i?: number) {
-		if (page >= props.children.length - 1) return;
-		scroller.current?.scrollTo({ x: (page + 1) * snapWidth });
-		ReactNativeHapticFeedback.trigger("soft");
-		console.log(page + 1);
-	}
-
 	const Footer = props.footer;
+
+	useEffect(() => {
+		x = 0;
+	}, []);
+
+	function next() {
+		x += snapWidth;
+		scroller.current?.scrollTo({ x });
+		ReactNativeHapticFeedback.trigger("soft");
+	}
 
 	return (
 		<View style={{ height: "100%", ...(props.style as any) }}>
 			<ScrollView
+				onScroll={(e) => {
+					x = e.nativeEvent.contentOffset.x;
+					props.onScroll?.(e);
+				}}
 				// @ts-ignore
 				ref={scroller || ref}
-				onScroll={(event) => (page = Math.floor(event.nativeEvent.contentOffset.x / snapWidth))}
 				scrollEventThrottle={0}
-				alwaysBounceVertical={false}
 				horizontal
 				bounces={false}
+				scrollEnabled={true}
+				alwaysBounceHorizontal={false}
+				alwaysBounceVertical={false}
 				snapToInterval={snapWidth}
 				snapToEnd
 				snapToStart
@@ -38,22 +52,17 @@ export default React.forwardRef(function Slider(props: ScrollViewProps & { child
 				onScrollBeginDrag={() => ReactNativeHapticFeedback.trigger("soft")}
 				onMomentumScrollEnd={() => ReactNativeHapticFeedback.trigger("selection")}
 				showsHorizontalScrollIndicator={false}
+				style={{ height: "100%" }}
+				contentContainerStyle={{ height: "100%" }}
 				{...props}
 			>
 				{props.children.map((x: any, i: number) => (
 					<View key={i} style={{ width: snapWidth, height: "100%" }}>
-						{{
-							...x,
-							props: {
-								...x.props,
-								key: i,
-								next: scrollNext.bind(null, null, i),
-							},
-						}}
+						{x}
 					</View>
 				))}
 			</ScrollView>
-			{Footer && <Footer next={scrollNext} />}
+			{Footer && <Footer next={next} />}
 		</View>
 	);
 });

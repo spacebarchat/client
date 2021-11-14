@@ -22,6 +22,8 @@ target 'fosscord' do
 
   pod 'CodePush', :path => '../node_modules/react-native-code-push'
 
+  pod 'RNCursor', :path => '../node_modules/react-native-cursor'
+
   target 'fosscordTests' do
     inherit! :complete
     # Pods for testing

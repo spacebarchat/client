@@ -36,13 +36,6 @@ export interface Position {
 	line?: number;
 	column?: number;
 }
-
-export interface Selector {
-	tag?: string;
-	id?: string;
-	classes?: string[];
-}
-
 export interface Rules {
 	selectors?: Selector[][];
 	declarations?: Record<string, string | number>;

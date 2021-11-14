@@ -1,8 +1,18 @@
 :root {
 	--primary: #ff5f00;
 	--background: #ffffff;
+	--background-accent: #e9e9e9;
 	--text: #000000;
 	--text-accent: #1c1c1c;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background: #1c1c1c;
+		--background-accent: #151515;
+		--text: #ffffff;
+		--text-accent: #b3b3b3;
+	}
 }
 
 .view {
@@ -85,20 +95,21 @@
 
 .introduction.welcome {
 	@extend .flex;
+	@extend .bg;
+
 	align-items: center;
 	justify-content: space-between;
 	height: 100%;
-	@extend .bg;
+	width: 100%;
+	background-color: var(--primary);
+	flex-grow: 1;
+	justify-content: center;
+	align-items: center;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
 
-	.header {
-		background-color: var(--primary);
-		width: 100%;
-		@extend .flex;
-		flex-grow: 1;
-
-		.text {
-			color: white;
-		}
+	.text {
+		color: white;
 	}
 
 	@media (orientation: landscape) {
@@ -109,20 +120,46 @@
 }
 
 .introduction.features {
-	@extend .center;
-	justify-content: space-between;
-
 	.list {
+		max-width: 500px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+
 		.feature {
 			@extend .flex;
 			align-items: center;
+			width: 50%;
+			padding: 15px;
 
-			* {
-				text-align: center;
+			.tooltip {
+				padding: 10px;
+				font-size: 15px;
+				min-height: 100%;
+				background-color: var(--background);
 			}
 
-			.name {
-				font-weight: 900;
+			.wrapper {
+				box-shadow: 2px 2px 8px #000000ad;
+				width: 100%;
+				border-radius: 5px;
+
+				* {
+					text-align: center;
+				}
+
+				.image {
+					margin-bottom: 10px;
+					padding: 10px;
+					padding-bottom: 0;
+				}
+
+				.name {
+					font-weight: 900;
+					padding: 10px;
+					padding-top: 0;
+				}
 			}
 		}
 	}
@@ -166,6 +203,10 @@
 	}
 }
 
+.button:hover {
+	background-color: #dd5800;
+}
+
 .link {
 	@extend .button;
 }
@@ -195,14 +236,6 @@
 	width: 100%;
 	padding: 0 15px;
 	margin: 0 auto;
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--background: #1c1c1c;
-		--text: #ffffff;
-		--text-accent: #b3b3b3;
-	}
 }
 
 @media (min-width: 576px) {

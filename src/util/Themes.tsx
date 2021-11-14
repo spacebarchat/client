@@ -9,6 +9,7 @@ import FosscordTheme from "../assets/themes/fosscord.css";
 import { matchQuery } from "./MediaQuery";
 import { useDispatch, useSelector } from "react-redux";
 import themes from "../reducers/themes";
+import "missing-native-js-functions";
 
 (global as any).themeCache = [];
 
@@ -22,11 +23,9 @@ export function Themes(props: { children: ReactElement }) {
 	const dispatch = useDispatch();
 	const { width, height, fontScale, scale } = useWindowDimensions();
 	const orientation = useOrientation();
-	const colorScheme = useColorScheme(); // "dark" ||
+	const colorScheme = "dark" || useColorScheme(); //
 	const accessibilityInfo = useAccessibilityInfo();
 	// TODO: suspense show spinning icon (only after a delay to prevent short flashes)
-
-	console.log(colorScheme);
 
 	function refetch() {
 		if (typeof FosscordTheme === "object") return;
@@ -99,6 +98,7 @@ export function Themes(props: { children: ReactElement }) {
 
 		// console.log("final computed theme:", temp, (global as any).themeCache);
 		(global as any).theme = temp;
+		// console.log(temp.map((x) => x.selectors?.map((s) => s.map((c) => "." + c.classes?.join(".")).join(" ")).join(", ")).join("\n"));
 
 		dispatch(themes.set(temp));
 	}
@@ -118,7 +118,7 @@ function matchSelector(node: Selector, selector: Selector) {
 
 	if (node.id === selector.id && selector.id) return true;
 	if ((node.tag === selector.tag && selector.tag) || selector.tag === "*") return true;
-	if (selector.classes?.every((x) => node.classes?.includes(x))) return true;
+	if (selector.classes?.every((x) => node.classes?.includes(x.split(":")[0]))) return true;
 
 	return false;
 }
@@ -182,21 +182,36 @@ function StyleProxy(type: string, props: any, children: ReactNode[]) {
 	const tag = getTagName(type);
 	const className = props.className + " " + tag;
 	const classes = className?.split(" ") || [];
-	const element = { tag, classes, id: props.id };
 	const stack = useContext(ComponentStack);
+	const [hovered, setHovered] = useState(false);
+	const [pressed, setPressed] = useState(false);
+	const element = { tag, classes, id: props.id };
 	const newStack = [...stack, element];
-	const start = Date.now();
 
+	// const start = Date.now();
 	// console.log("_________________");
 	// TODO: use react memo
 	// check recursivly if the selection path matches any parent path combinaten
 	// console.log("styling took " + (Date.now() - start) + "ms");
 
 	// @ts-ignore
+	let hasHoverSelector: boolean | undefined = false;
+	let hasActiveSelector: boolean | undefined = false;
+
+	const rules = theme.filter((rule) =>
+		rule.selectors?.some((selection) => {
+			if (matchSelection(newStack, selection)) {
+				hasHoverSelector = hasHoverSelector || selection.some((s) => s.classes?.last()?.includes(":hover"));
+				hasActiveSelector = hasActiveSelector || selection.some((s) => s.classes?.last()?.includes(":active"));
+				if (hasActiveSelector && !pressed) return false;
+				if (hasHoverSelector && !hovered) return false;
+				return true;
+			}
+		})
+	);
 
 	const style =
-		theme
-			.filter((rule) => rule.selectors?.some((selection) => matchSelection(newStack, selection)))
+		rules
 			.map((x) => x.declarations)
 			.reverse()
 			.reduce((value, total) => ({ ...total, ...value }), {}) || {};
@@ -204,14 +219,28 @@ function StyleProxy(type: string, props: any, children: ReactNode[]) {
 	// console.log(newStack.map((x) => x.classes?.join(".")).join(" -> "), style);
 
 	// console.log("use theme for", classes.join("."), style);
-	if (props.style?.padding) {
-		delete style.paddingLeft;
-		delete style.paddingRight;
-		delete style.paddingTop;
-		delete style.paddingBottom;
-	}
 
-	return R(ComponentStack.Provider, { value: newStack }, R(type, { ...props, style: { ...style, ...props?.style } }, ...children));
+	const hovers = hasHoverSelector
+		? {
+				// @ts-ignore
+				onMouseEnter: () => setHovered(true) || props.onMouseEnter?.(), // @ts-ignore
+				onMouseLeave: () => setHovered(false) || props.onMouseLeave?.(),
+		  }
+		: {};
+
+	const pressers = hasActiveSelector
+		? {
+				// @ts-ignore
+				onPress: () => console.log("pressed in"), // @ts-ignore
+				onPressOut: () => setPressed(false) || props.onPressOut?.(),
+		  }
+		: {};
+
+	return R(
+		ComponentStack.Provider,
+		{ value: newStack },
+		R(type, { ...props, ...hovers, ...pressers, style: { ...style, ...props?.style } }, ...children)
+	);
 }
 
 // setting this in react-app-env.d.ts doesn't work
@@ -259,8 +288,6 @@ if (R.name === "createElementWithValidation") {
 			) {
 				return R(type, props, ...children);
 			}
-
-			// console.log("create", type.displayName, type, props, children);
 
 			return R(StyleProxy.bind(null, type, props, children));
 		};
