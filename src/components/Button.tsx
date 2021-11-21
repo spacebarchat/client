@@ -10,6 +10,7 @@ let timeout: any;
 export interface ButtonProps extends ViewProps {
 	onPress?: null | ((event: GestureResponderEvent) => void) | undefined;
 	hitSlop?: null | Insets | number | undefined;
+	loading?: boolean;
 }
 
 export default function Button(props: ButtonProps = {}) {
@@ -19,6 +20,7 @@ export default function Button(props: ButtonProps = {}) {
 
 	return (
 		<Animated.View
+			className={"button-wrapper"}
 			style={{
 				transform: [{ scale: scaleAnim }, { translateX: offset }],
 			}}
@@ -41,8 +43,6 @@ export default function Button(props: ButtonProps = {}) {
 				if (!isCanceled) props.onPress?.(event);
 			}}
 			isTVSelectable={true}
-			focusable={true}
-			accessible={true}
 			hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
 			onResponderStart={(event) => {
 				clearTimeout(timeout);
@@ -94,8 +94,8 @@ export default function Button(props: ButtonProps = {}) {
 				}, 650);
 			}}
 		>
-			<View {...(props as any)} className={(props.className || "") + " button"}>
-				<Text className="text">{props.children}</Text>
+			<View accessible={true} focusable={true} {...(props as any)} className={(props.className || "") + " button"}>
+				<Text className="text">{props.loading ? "Loading ..." : props.children}</Text>
 			</View>
 		</Animated.View>
 	);

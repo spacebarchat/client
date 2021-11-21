@@ -8,10 +8,7 @@ import Waves from "../../assets/images/Waves";
 export default function Welcome(props: any) {
 	return (
 		<View {...props} className="introduction welcome">
-			<Logo width={80} color="white" />
-			<Text className="joinText" style={{ textAlign: "center", fontSize: 30, paddingTop: 50 }}>
-				Join the communication revolution
-			</Text>
+			<Logo width={70} color="white" />
 		</View>
 	);
 }

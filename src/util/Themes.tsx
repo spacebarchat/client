@@ -23,7 +23,7 @@ export function Themes(props: { children: ReactElement }) {
 	const dispatch = useDispatch();
 	const { width, height, fontScale, scale } = useWindowDimensions();
 	const orientation = useOrientation();
-	const colorScheme = "dark" || useColorScheme(); //
+	const colorScheme = useColorScheme(); //"dark" ||
 	const accessibilityInfo = useAccessibilityInfo();
 	// TODO: suspense show spinning icon (only after a delay to prevent short flashes)
 
@@ -108,6 +108,8 @@ export function Themes(props: { children: ReactElement }) {
 		calculateTheme();
 	}, [orientation, colorScheme, width, height]);
 
+	console.log("rerender themes");
+
 	return props.children;
 }
 
@@ -128,7 +130,7 @@ function getTagName(tag: string) {
 	if ((tag as any)?.displayName) tag = (tag as any).displayName;
 	if (typeof tag === "object") return "";
 
-	return tag.toLowerCase().replace("rct", "").replace("virtualtext", "text").replace("textinput", "input").replace("rnc", "");
+	return tag.toLowerCase().replace("rct", "").replace("rnc", "").replace("virtualtext", "text").replace("textinput", "input");
 }
 
 // force skip is used for > css operators and to skip if the next element does not match it
@@ -187,6 +189,8 @@ function StyleProxy(type: string, props: any, children: ReactNode[]) {
 	const [pressed, setPressed] = useState(false);
 	const element = { tag, classes, id: props.id };
 	const newStack = [...stack, element];
+
+	// console.log("render component");
 
 	// const start = Date.now();
 	// console.log("_________________");
@@ -262,7 +266,7 @@ if (R.name === "createElementWithValidation") {
 		// @ts-ignore
 		React.createElement = function (type: any, props: any, ...children: ReactNode[]) {
 			if (!props) props = {};
-			if (type?.render?.displayName && type?.render?.displayName !== "awd") {
+			if (type?.render?.displayName) {
 				if (!props.className) props.className = "";
 				props.className += " " + getTagName(type.render.displayName);
 			}
@@ -276,16 +280,8 @@ if (R.name === "createElementWithValidation") {
 				forward = Symbol.keyFor(type?.["$$typeof"]) === "react.forward_ref" && type.displayName === "View";
 			} catch (error) {}
 
-			if (
-				(typeof type !== "string" && !forward) ||
-				type === "RCTSinglelineTextInputView" ||
-				// type == "RCTVirtualText" ||
-				type == "RCTScrollContentView" ||
-				type == "RCTScrollView" ||
-				type == "AndroidHorizontalScrollView" ||
-				type == "AndroidHorizontalScrollContentView" ||
-				type?.includes?.("RNSVG")
-			) {
+			if (type !== "RCTView" && type !== "RCTText") {
+				// console.log(type, props?.className);
 				return R(type, props, ...children);
 			}
 

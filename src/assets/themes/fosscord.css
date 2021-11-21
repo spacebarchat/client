@@ -12,9 +12,6 @@
     --text: #ffffff;
     --text-accent: #b3b3b3; } }
 
-.view {
-  background-color: var(--background); }
-
 .text, .heading {
   color: var(--text);
   font-family: Arial;
@@ -59,11 +56,19 @@
   align-items: stretch;
   text-align: left; }
 
+.muted {
+  color: var(--text-accent);
+  font-size: 15px;
+  font-weight: 300; }
+
 .bg, .introduction.welcome {
   background-color: var(--background); }
 
 .bg-primary, .button, .link {
   background-color: var(--primary); }
+
+.primary {
+  color: var(--primary); }
 
 .text-accent {
   color: var(--text-accent); }
@@ -88,6 +93,15 @@
     .introduction.welcome .waves {
       display: none; } }
 
+.introduction.features .text, .introduction.features .heading {
+  text-align: center; }
+
+.introduction.features .title {
+  padding-bottom: 20px; }
+
+.introduction.features .subtitle {
+  padding-bottom: 20px; }
+
 .introduction.features .list {
   max-width: 500px;
   margin: 0 auto;
@@ -101,14 +115,21 @@
     .introduction.features .list .feature .tooltip {
       padding: 10px;
       font-size: 15px;
-      min-height: 100%;
-      background-color: var(--background); }
-    .introduction.features .list .feature .wrapper {
-      box-shadow: 2px 2px 8px #000000ad;
       width: 100%;
-      border-radius: 5px; }
-      .introduction.features .list .feature .wrapper * {
-        text-align: center; }
+      background-color: var(--background-accent);
+      border-radius: 10px;
+      min-height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center; }
+    .introduction.features .list .feature .wrapper {
+      background: var(--background-accent);
+      width: 100%;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center; }
       .introduction.features .list .feature .wrapper .image {
         margin-bottom: 10px;
         padding: 10px;
@@ -117,6 +138,34 @@
         font-weight: 900;
         padding: 10px;
         padding-top: 0; }
+
+.page.login,
+.page.register {
+  height: 100%;
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 0 15px;
+  display: flex; }
+  .page.login .entry,
+  .page.register .entry {
+    padding: 10px 0; }
+  .page.login .forgot-password,
+  .page.register .forgot-password {
+    margin-bottom: 10px; }
+  .page.login .submit,
+  .page.register .submit {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end; }
+    @media (min-width: 576px) {
+      .page.login .submit,
+      .page.register .submit {
+        flex-grow: 0; } }
+    .page.login .submit .button, .page.login .submit .link,
+    .page.register .submit .button,
+    .page.register .submit .link {
+      margin: 0; }
 
 .elevated, .button.big, .big.link {
   box-shadow: 0px 0px 5px #00000050; }
@@ -201,12 +250,25 @@
     max-width: 1320px; } }
 
 .input {
-  height: 30px;
+  min-height: 30px;
   width: 100%;
-  background: var(--background);
+  margin: 5px 0;
   color: var(--text);
-  outline: none;
-  border: none; }
+  border: none;
+  background: var(--background-accent);
+  padding: 10px;
+  border-radius: 5px; }
+  .input:focus-visible {
+    outline-offset: 0; }
 
-.register-view {
-  margin: 10px; }
+*:focus-visible {
+  outline: solid var(--primary) 2px;
+  border-radius: 5px;
+  outline-offset: 2px; }
+
+.label {
+  margin-bottom: 5px;
+  color: var(--text-accent);
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 900; }
