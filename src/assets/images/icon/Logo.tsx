@@ -1,6 +1,6 @@
 import React from "react";
 import { Platform, Text, View, ViewProps } from "react-native";
-import Svg, { Path, SvgProps } from "react-native-svg";
+// import Svg, { Path, SvgProps } from "react-native-svg";
 import Image from "../../../components/Image";
 import FosscordLogo from "./icon.svg";
 
@@ -19,9 +19,11 @@ export default function Logo(props: ViewProps & { fontSize?: number; width?: num
 				width: undefined,
 			}}
 		>
+			{/*
 			{Platform.OS === "windows" ? (
-				<Image style={{ width: props.width || 50, height: props.width || 50 }} source={FosscordLogo} />
-			) : (
+			*/}
+			<Image style={{ width: props.width || 50, height: props.width || 50 }} source={FosscordLogo} />
+			{/* ) : (
 				<Svg width={props.width || 50} height={props.width || 50} viewBox="0 0 1778.84 1778.84">
 					<Path
 						fill={props.color || "#ff5f00"}
@@ -29,7 +31,7 @@ export default function Logo(props: ViewProps & { fontSize?: number; width?: num
 						transform="translate(-1747.97 -1765.51)"
 					/>
 				</Svg>
-			)}
+			)} */}
 			<Text style={{ fontSize: props.fontSize || 50, marginLeft: 30 }}>Fosscord</Text>
 		</View>
 	);
