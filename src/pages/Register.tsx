@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Keyboard, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
-import { useMobile } from "../util/Styles";
+import { Keyboard, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useNavigate } from "react-router";
 import Checkbox from "../components/Checkbox";
@@ -10,6 +9,8 @@ import Image from "../components/Image";
 import Input from "../components/Input";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useSafeAreaStyle from "../util/useSafeAreaStyle";
+import KeyboardAvoidingView from "../components/KeyboardAvoidingView";
+import TextInput from "../components/TextInput";
 
 const styles = StyleSheet.create({
 	formInputSection: {
@@ -30,48 +31,40 @@ export default function Login() {
 	}
 
 	return (
-		<View className="register">
-			<View style={useSafeAreaStyle()}>
-				<KeyboardAwareScrollView bounces={false}>
-					<Image style={{ width: 32, height: 32, position: "relative", opacity: 1 }} source={Icon} />
-					<Text className="title">Create an account now</Text>
-					<Text className="heading">Explore Instances</Text>
-					<View>
-						<Text className="text-accent">Email</Text>
-						<Input
-							blurOnSubmit={false}
-							onSubmitEditing={() => {
-								usernameElement?.current?.focus();
-							}}
-							returnKeyType="next"
-							ref={emailElement}
-							textContentType="emailAddress"
-							keyboardType="email-address"
-							placeholder="Email"
-						/>
-					</View>
-					<View>
-						<Text className="text-accent">Username</Text>
-						<Input
-							blurOnSubmit={false}
-							onSubmitEditing={() => {
-								passwordElement?.current?.focus();
-							}}
-							returnKeyType="next"
-							ref={usernameElement}
-							placeholder="Username"
-						/>
-					</View>
-					<View>
-						<Text className="text-accent">Password</Text>
-						<Input ref={passwordElement} textContentType="password" placeholder="Password" />
-					</View>
-					<Checkbox accessibilityLabel="tosCheckBox" defaultIsChecked>
-						<Text>I accept the terms of use of this instance</Text>
-					</Checkbox>
-					<Button onPress={() => navigate("/")}>Register on fosscord.com</Button>
-				</KeyboardAwareScrollView>
-			</View>
-		</View>
+		<ScrollView
+			keyboardShouldPersistTaps="always"
+			alwaysBounceVertical={false}
+			style={{ height: "100%", paddingHorizontal: 15, flex: 1, paddingBottom: 20 }}
+		>
+			<KeyboardAvoidingView scrollView safeArea behavior="padding" className="page register">
+				<Text className="title">Register</Text>
+				<View className="entry">
+					<Text className="label">Email</Text>
+					<TextInput
+						blurOnSubmit={false}
+						onSubmitEditing={() => {
+							passwordElement?.current?.focus();
+						}}
+						returnKeyType="next"
+						ref={emailElement}
+						keyboardType="email-address"
+						textContentType="emailAddress"
+						placeholder="Email"
+					/>
+				</View>
+				<View className="entry">
+					<Text className="label">Password</Text>
+					<TextInput ref={passwordElement} secureTextEntry textContentType="password" placeholder="Password" />
+				</View>
+				<Pressable onPress={() => navigate("/resetPassword")} className="forgot-password">
+					<Text className="muted">Reset password</Text>
+				</Pressable>
+				<View className="entry submit">
+					<Button onPress={() => navigate("/")}>
+						<Text>Register on fosscord.com</Text>
+					</Button>
+				</View>
+			</KeyboardAvoidingView>
+		</ScrollView>
 	);
 }

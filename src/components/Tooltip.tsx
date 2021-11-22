@@ -10,7 +10,8 @@ export default function Tooltip(props: { children: ReactNode; tooltip: ReactNode
 	return (
 		<>
 			<View
-				{...props}
+				// {...props}
+				className={props.className}
 				style={{ overflow: "visible" }}
 				onStartShouldSetResponder={() => true}
 				onLayout={(e) => (layout.current = e.nativeEvent.layout)}
@@ -22,6 +23,7 @@ export default function Tooltip(props: { children: ReactNode; tooltip: ReactNode
 				{props.children}
 
 				<Animated.View
+					className="tooltip"
 					onLayout={(e) => (tooltip.current = e.nativeEvent.layout)}
 					style={{
 						opacity,

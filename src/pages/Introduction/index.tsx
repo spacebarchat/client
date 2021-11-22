@@ -6,7 +6,7 @@ import Features from "./Features";
 import Button from "../../components/Button";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigate } from "react-router";
-import { useWindowDimensions, View } from "react-native";
+import { Text, useWindowDimensions, View } from "react-native";
 
 let page = 0;
 
@@ -26,7 +26,7 @@ export default function Introduction() {
 			onScroll={(event) => (page = Math.round(event.nativeEvent.contentOffset.x / width))}
 			footer={({ next }: any) => (
 				<View style={{ paddingBottom: insets.bottom }}>
-					<Button onPress={() => (page >= 2 ? navigate("/") : next())}>Continue</Button>
+					<Button onPress={() => (page >= 1 ? navigate("/") : next())}>Continue</Button>
 				</View>
 			)}
 		>

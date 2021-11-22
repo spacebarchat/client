@@ -73,12 +73,22 @@
 	text-align: left;
 }
 
+.muted {
+	color: var(--text-accent);
+	font-size: 15px;
+	font-weight: 300;
+}
+
 .bg {
 	background-color: var(--background);
 }
 
 .bg-primary {
 	background-color: var(--primary);
+}
+
+.primary {
+	color: var(--primary);
 }
 
 .text-accent {
@@ -116,6 +126,15 @@
 }
 
 .introduction.features {
+	.text {
+		text-align: center;
+	}
+	.title {
+		padding-bottom: 20px;
+	}
+	.subtitle {
+		padding-bottom: 20px;
+	}
 	.list {
 		max-width: 500px;
 		margin: 0 auto;
@@ -132,18 +151,24 @@
 			.tooltip {
 				padding: 10px;
 				font-size: 15px;
+				width: 100%;
+				background-color: var(--background-accent);
+				border-radius: 10px;
 				min-height: 100%;
-				background-color: var(--background);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				text-align: center;
 			}
 
 			.wrapper {
-				box-shadow: 2px 2px 8px #000000ad;
+				background: var(--background-accent);
+				// box-shadow: 2px 2px 8px #000000ad;
 				width: 100%;
 				border-radius: 5px;
-
-				* {
-					text-align: center;
-				}
+				display: flex;
+				justify-content: center;
+				align-items: center;
 
 				.image {
 					margin-bottom: 10px;
@@ -184,6 +209,38 @@
 				text-align: center;
 				font-weight: 300;
 			}
+		}
+	}
+}
+
+.page.login,
+.page.register {
+	height: 100%;
+	width: 100%;
+	max-width: 460px;
+	margin: 0 auto;
+	padding: 0 15px;
+	display: flex;
+
+	.entry {
+		padding: 10px 0;
+	}
+
+	.forgot-password {
+		margin-bottom: 10px;
+	}
+
+	.submit {
+		flex-grow: 1;
+		display: flex;
+		justify-content: flex-end;
+
+		@media (min-width: 576px) {
+			flex-grow: 0;
+		}
+
+		.button {
+			margin: 0;
 		}
 	}
 }
@@ -303,14 +360,30 @@
 }
 
 .input {
-	height: 30px;
+	min-height: 30px;
 	width: 100%;
-	background: var(--background);
+	margin: 5px 0;
 	color: var(--text);
-	outline: none;
 	border: none;
+	background: var(--background-accent);
+	padding: 10px;
+	border-radius: 5px;
+
+	&:focus-visible {
+		outline-offset: 0;
+	}
 }
 
-.register-view {
-	margin: 10px;
+*:focus-visible {
+	outline: solid var(--primary) 2px;
+	border-radius: 5px;
+	outline-offset: 2px;
+}
+
+.label {
+	margin-bottom: 5px;
+	color: var(--text-accent);
+	text-transform: uppercase;
+	font-size: 13px;
+	font-weight: 900;
 }

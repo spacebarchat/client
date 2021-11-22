@@ -7,8 +7,9 @@ import Tooltip from "../../components/Tooltip";
 export default function Features(props: any) {
 	return (
 		<SafeAreaView {...props} className="introduction features">
-			<ScrollView alwaysBounceVertical={false}>
+			<ScrollView alwaysBounceVertical={false} bounces={true}>
 				<Text className="title">Fosscord</Text>
+				<Text className="subtitle">Join the communication revolution</Text>
 
 				<View className="list">
 					<View className="feature">
