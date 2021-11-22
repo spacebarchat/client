@@ -3,7 +3,6 @@ import { Platform, ScrollView, Text, useWindowDimensions, View } from "react-nat
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../../components/Button";
 import Logo from "../../assets/images/icon/Logo";
-import Waves from "../../assets/images/Waves";
 
 export default function Welcome(props: any) {
 	return (
