@@ -15,10 +15,6 @@
 	}
 }
 
-.view {
-	background-color: var(--background);
-}
-
 .text {
 	color: var(--text);
 	font-family: Arial;
@@ -160,6 +156,33 @@
 					padding: 10px;
 					padding-top: 0;
 				}
+			}
+		}
+	}
+}
+
+.image div {
+	background-size: contain;
+}
+
+.page.instances {
+	.providers {
+		.provider {
+			background: var(--background-accent);
+			margin: 10px;
+			padding: 20px;
+			border-radius: 10px;
+
+			.image {
+				width: 100px;
+				height: 100px;
+			}
+
+			.text {
+				color: var(--text-accent);
+				margin-top: 10px;
+				text-align: center;
+				font-weight: 300;
 			}
 		}
 	}
