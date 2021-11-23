@@ -9,12 +9,12 @@ interface Instance {
 
 export const instances = createApi({
 	reducerPath: "instances",
-	baseQuery: fetchBaseQuery({ baseUrl: "https://pokeapi.co/api/v2/" }),
+	baseQuery: fetchBaseQuery({}),
 	endpoints: (builder) => ({
-		getPokemonByName: builder.query<Instance, string>({
-			query: (name) => `pokemon/${name}`,
+		getInstances: builder.query<Instance[], void>({
+			query: () => `https://raw.githubusercontent.com/fosscord/fosscord-community-instances/main/instances.json`,
 		}),
 	}),
 });
 
-export const { useGetPokemonByNameQuery } = instances;
+export const { useGetInstancesQuery } = instances;

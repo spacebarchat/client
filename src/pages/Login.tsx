@@ -22,8 +22,6 @@ export default function Login() {
 		navigate("/login/instances/");
 	}
 
-	console.log("rerender login");
-
 	return (
 		<ScrollView
 			keyboardShouldPersistTaps="always"

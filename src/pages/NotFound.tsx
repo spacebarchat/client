@@ -3,11 +3,9 @@ import Link from "../components/Link";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../components/Button";
-import { useGetPokemonByNameQuery } from "../reducers/instances";
+import {} from "../reducers/instances";
 
 export default function NotFound() {
-	const { data, error, isLoading } = useGetPokemonByNameQuery("bulbasaur");
-
 	return (
 		<SafeAreaView style={{ height: "100%", width: "100%", display: "flex", alignItems: "center", paddingHorizontal: 15 }}>
 			<View style={{ height: "100%", maxWidth: 360, width: "100%" }}>

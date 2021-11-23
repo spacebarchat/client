@@ -27,7 +27,6 @@ export default function KeyboardAvoidingView(props: KeyboardAvoidingViewProps) {
 				toValue: h - e.endCoordinates.screenY,
 				duration: 200,
 			}).start();
-			console.log("height", e.endCoordinates.screenY, h);
 		});
 		const close = Keyboard.addListener("keyboardWillHide", (e) => {
 			Animated.timing(height, { useNativeDriver: false, toValue: h, duration: 200 }).start();
