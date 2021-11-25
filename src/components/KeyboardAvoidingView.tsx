@@ -5,7 +5,6 @@ import useSafeAreaStyle from "../util/useSafeAreaStyle";
 export interface KeyboardAvoidingViewProps extends ViewProps {
 	behavior?: "height" | "position" | "padding" | undefined;
 	safeArea?: boolean;
-	scrollView?: boolean;
 }
 
 export default function KeyboardAvoidingView(props: KeyboardAvoidingViewProps) {

@@ -1,8 +1,7 @@
 import React, { useRef } from "react";
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
-import { Insets, Platform, Text, View, ViewProps } from "react-native";
+import { Animated, Insets, Platform, Text, View, ViewProps } from "react-native";
 import { GestureResponderEvent } from "react-native-modal";
-import Animated from "./Animated";
 
 let timeout: any;
 

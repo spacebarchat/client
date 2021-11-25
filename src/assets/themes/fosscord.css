@@ -142,19 +142,36 @@
 .image div {
   background-size: contain; }
 
-.page.instances .providers .provider {
-  background: var(--background-accent);
-  margin: 10px;
-  padding: 20px;
-  border-radius: 10px; }
-  .page.instances .providers .provider .image {
-    width: 100px;
-    height: 100px; }
-  .page.instances .providers .provider .text, .page.instances .providers .provider .heading {
-    color: var(--text-accent);
-    margin-top: 10px;
-    text-align: center;
-    font-weight: 300; }
+.page.instances {
+  display: flex;
+  height: 100%;
+  align-items: center; }
+  .page.instances .list {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 600px; }
+    .page.instances .list .entry {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      background: var(--background-accent);
+      margin: 10px;
+      padding: 15px 5px;
+      border-radius: 10px;
+      width: 135px; }
+      .page.instances .list .entry .image {
+        width: 60px;
+        height: 60px; }
+      .page.instances .list .entry > .text, .page.instances .list .entry > .heading {
+        color: var(--text-accent);
+        margin-top: 10px;
+        text-align: center;
+        font-weight: 300;
+        font-size: 15px;
+        word-break: break-word; }
 
 .page.login,
 .page.register {

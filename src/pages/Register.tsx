@@ -36,7 +36,7 @@ export default function Login() {
 			alwaysBounceVertical={false}
 			style={{ height: "100%", paddingHorizontal: 15, flex: 1, paddingBottom: 20 }}
 		>
-			<KeyboardAvoidingView scrollView safeArea behavior="padding" className="page register">
+			<KeyboardAvoidingView safeArea behavior="padding" className="page register">
 				<Text className="title">Register</Text>
 				<View className="entry">
 					<Text className="label">Email</Text>

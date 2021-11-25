@@ -3,7 +3,7 @@ import Link from "../components/Link";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../components/Button";
-import {} from "../reducers/instances";
+import Image from "../components/Image";
 
 export default function NotFound() {
 	return (
@@ -15,6 +15,7 @@ export default function NotFound() {
 					<Link to="/introduction">Introduction</Link>
 					<Link to="/login">Login</Link>
 					<Link to="/register">Register</Link>
+					<Link to="/instances">Instances</Link>
 					<Button>Test</Button>
 				</View>
 			</View>

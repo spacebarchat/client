@@ -13,7 +13,7 @@ if (Platform.OS === "macos") {
 	LoginPage = require("../pages/Login").default;
 	RegisterPage = require("../pages/Register").default;
 	NotFoundPage = require("../pages/NotFound").default;
-	InstancesPage = require("../pages/Instances").default;
+	InstancesPage = React.lazy(() => import("../pages/Instances"));
 } else {
 	Introduction = React.lazy(() => import("../pages/Introduction/index"));
 	LoginPage = React.lazy(() => import("../pages/Login"));

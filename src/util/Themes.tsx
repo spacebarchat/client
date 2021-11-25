@@ -130,7 +130,13 @@ function getTagName(tag: string) {
 	if ((tag as any)?.displayName) tag = (tag as any).displayName;
 	if (typeof tag === "object") return "";
 
-	return tag.toLowerCase().replace("rct", "").replace("rnc", "").replace("virtualtext", "text").replace("textinput", "input");
+	return tag
+		.toLowerCase()
+		.replace("rct", "")
+		.replace("rnc", "")
+		.replace("virtualtext", "text")
+		.replace("textinput", "input")
+		.replace("imageview", "image");
 }
 
 // force skip is used for > css operators and to skip if the next element does not match it
@@ -280,10 +286,10 @@ if (R.name === "createElementWithValidation") {
 				forward = Symbol.keyFor(type?.["$$typeof"]) === "react.forward_ref" && type.displayName === "View";
 			} catch (error) {}
 
-			if (type !== "RCTView" && type !== "RCTText") {
-				// console.log(type, props?.className);
+			if (type !== "RCTView" && type !== "RCTText" && type !== "RNCSafeAreaView" && type !== "RCTImageView") {
 				return R(type, props, ...children);
 			}
+			console.log(type, props?.className);
 
 			return R(StyleProxy.bind(null, type, props, children));
 		};

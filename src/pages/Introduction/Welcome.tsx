@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, ScrollView, Text, useWindowDimensions, View } from "react-native";
+import { Image, Platform, ScrollView, Text, useWindowDimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../../components/Button";
 import Logo from "../../assets/images/icon/Logo";

@@ -191,23 +191,40 @@
 }
 
 .page.instances {
-	.providers {
-		.provider {
+	display: flex;
+	height: 100%;
+	align-items: center;
+
+	.list {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		max-width: 600px;
+
+		.entry {
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
 			background: var(--background-accent);
 			margin: 10px;
-			padding: 20px;
+			padding: 15px 5px;
 			border-radius: 10px;
+			width: 135px;
 
 			.image {
-				width: 100px;
-				height: 100px;
+				width: 60px;
+				height: 60px;
 			}
 
-			.text {
+			> .text {
 				color: var(--text-accent);
 				margin-top: 10px;
 				text-align: center;
 				font-weight: 300;
+				font-size: 15px;
+				word-break: break-word;
 			}
 		}
 	}
