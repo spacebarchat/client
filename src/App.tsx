@@ -24,11 +24,11 @@ Platform.isMobile = Platform.OS === "ios" || Platform.OS === "android";
 
 export default function App() {
 	return (
-		<Provider store={Store}>
-			<SafeAreaProvider>
-				<Themes>
-					<ErrorBoundary>
-						<Router>
+		<Router>
+			<Provider store={Store}>
+				<SafeAreaProvider>
+					<Themes>
+						<ErrorBoundary>
 							<View style={{ width: "100%", height: "100%" }} className="bg">
 								<Suspense fallback={<></>}>
 									<BackHandler>
@@ -36,10 +36,10 @@ export default function App() {
 									</BackHandler>
 								</Suspense>
 							</View>
-						</Router>
-					</ErrorBoundary>
-				</Themes>
-			</SafeAreaProvider>
-		</Provider>
+						</ErrorBoundary>
+					</Themes>
+				</SafeAreaProvider>
+			</Provider>
+		</Router>
 	);
 }

@@ -6,12 +6,13 @@ export default forwardRef(function TextInput(props: TextInputProps, ref: any) {
 	const theme = useColorScheme();
 
 	return (
-		<View className="input">
+		// @ts-ignore
+		<View className="input" style={{ width: props.style?.width }}>
 			<Input
 				placeholderTextColor="grey"
 				hitSlop={{ bottom: 30, left: 30, right: 30, top: 30 }}
-				style={{ padding: 0, color: theme === "dark" ? "white" : "black" }}
 				ref={ref}
+				style={{ padding: 0, color: theme === "dark" ? "white" : "black" }}
 				{...props}
 			/>
 		</View>

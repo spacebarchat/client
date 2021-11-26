@@ -83,6 +83,10 @@
 	background-color: var(--background);
 }
 
+.bg-accent {
+	background-color: var(--background-accent);
+}
+
 .bg-primary {
 	background-color: var(--primary);
 }
@@ -97,32 +101,6 @@
 
 .introduction {
 	height: 100%;
-}
-
-.introduction.welcome {
-	@extend .flex;
-	@extend .bg;
-
-	align-items: center;
-	justify-content: space-between;
-	height: 100%;
-	width: 100%;
-	background-color: var(--primary);
-	flex-grow: 1;
-	justify-content: center;
-	align-items: center;
-	border-bottom-right-radius: 5px;
-	border-bottom-left-radius: 5px;
-
-	.text {
-		color: white;
-	}
-
-	@media (orientation: landscape) {
-		.waves {
-			display: none;
-		}
-	}
 }
 
 .introduction.features {
@@ -190,76 +168,10 @@
 	background-size: contain;
 }
 
-.page.instances {
-	display: flex;
-	height: 100%;
-	align-items: center;
-
-	.list {
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		max-width: 600px;
-
-		.entry {
-			display: flex;
-			align-items: center;
-			justify-content: space-around;
-			background: var(--background-accent);
-			margin: 10px;
-			padding: 15px 5px;
-			border-radius: 10px;
-			width: 135px;
-
-			.image {
-				width: 60px;
-				height: 60px;
-			}
-
-			> .text {
-				color: var(--text-accent);
-				margin-top: 10px;
-				text-align: center;
-				font-weight: 300;
-				font-size: 15px;
-				word-break: break-word;
-			}
-		}
-	}
-}
-
-.page.login,
-.page.register {
+.page {
 	height: 100%;
 	width: 100%;
-	max-width: 460px;
-	margin: 0 auto;
-	padding: 0 15px;
-	display: flex;
-
-	.entry {
-		padding: 10px 0;
-	}
-
-	.forgot-password {
-		margin-bottom: 10px;
-	}
-
-	.submit {
-		flex-grow: 1;
-		display: flex;
-		justify-content: flex-end;
-
-		@media (min-width: 576px) {
-			flex-grow: 0;
-		}
-
-		.button {
-			margin: 0;
-		}
-	}
+	@extend .bg;
 }
 
 .elevated {

@@ -24,7 +24,7 @@ export default function Logo(props: ViewProps & { fontSize?: number; width?: num
 				style={{ width: props.width || 50, height: props.width || 50 }}
 				source={props.color === "white" ? FosscordLogoWhite : FosscordLogo}
 			/>
-			<Text style={{ fontSize: props.fontSize || 50, marginLeft: 30 }}>Fosscord</Text>
+			<Text style={{ fontSize: props.fontSize || 50, marginLeft: 30, color: props.color }}>Fosscord</Text>
 		</View>
 	);
 }

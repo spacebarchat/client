@@ -23,7 +23,7 @@ export function Themes(props: { children: ReactElement }) {
 	const dispatch = useDispatch();
 	const { width, height, fontScale, scale } = useWindowDimensions();
 	const orientation = useOrientation();
-	const colorScheme = useColorScheme(); //"dark" ||
+	const colorScheme = "dark" || useColorScheme(); //
 	const accessibilityInfo = useAccessibilityInfo();
 	// TODO: suspense show spinning icon (only after a delay to prevent short flashes)
 
@@ -101,14 +101,13 @@ export function Themes(props: { children: ReactElement }) {
 		// console.log(temp.map((x) => x.selectors?.map((s) => s.map((c) => "." + c.classes?.join(".")).join(" ")).join(", ")).join("\n"));
 
 		dispatch(themes.set(temp));
+		console.log("rerender themes");
 	}
 
 	useEffect(() => {
 		// console.warn("recalculate");
-		calculateTheme();
+		// calculateTheme();
 	}, [orientation, colorScheme, width, height]);
-
-	console.log("rerender themes");
 
 	return props.children;
 }
@@ -165,10 +164,6 @@ function matchSelection(stack: Selector[], selection: Selector[], forceSkip?: bo
 		}
 		if (forceSkip && selection.length !== stack.length) {
 			return false;
-		}
-
-		if (selection.length - i <= 1 && stack.length <= 1) {
-			// console.log("matched | " + parent.classes?.join(".") + " | " + selector.classes?.join("."));
 		}
 
 		// parent matched path -> check further | early return to skip unecessary checks
@@ -289,7 +284,6 @@ if (R.name === "createElementWithValidation") {
 			if (type !== "RCTView" && type !== "RCTText" && type !== "RNCSafeAreaView" && type !== "RCTImageView") {
 				return R(type, props, ...children);
 			}
-			console.log(type, props?.className);
 
 			return R(StyleProxy.bind(null, type, props, children));
 		};

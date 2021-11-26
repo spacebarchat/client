@@ -6,7 +6,11 @@ import Logo from "../../assets/images/icon/Logo";
 
 export default function Welcome(props: any) {
 	return (
-		<View {...props} className="introduction welcome">
+		<View
+			{...props}
+			className="page welcome bg-primary"
+			style={{ alignItems: "center", justifyContent: "center", flexGrow: 1, borderBottomLeftRadius: 5, borderBottomRightRadius: 5 }}
+		>
 			<Logo width={70} color="white" />
 		</View>
 	);

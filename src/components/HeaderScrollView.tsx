@@ -18,7 +18,7 @@ export default function HeaderScrollView(props: HeaderScrollView) {
 				className="bg"
 				style={{
 					position: "absolute",
-					top: safeArea.top,
+					top: 0,
 					display: "flex",
 					alignItems: "center",
 					justifyContent: "center",
@@ -59,13 +59,6 @@ export default function HeaderScrollView(props: HeaderScrollView) {
 								scale: y.interpolate({
 									inputRange: [-100, 0],
 									outputRange: [1.2, 1],
-									extrapolate: "clamp",
-								}),
-							},
-							{
-								translateX: y.interpolate({
-									inputRange: [-100, 0],
-									outputRange: [30, 1],
 									extrapolate: "clamp",
 								}),
 							},

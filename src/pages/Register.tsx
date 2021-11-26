@@ -1,44 +1,33 @@
-import React, { useRef, useState } from "react";
-import { Keyboard, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useNavigate } from "react-router";
-import Checkbox from "../components/Checkbox";
-import Button from "../components/Button";
-import Icon from "../assets/images/icon/1024.png";
-import Image from "../components/Image";
-import Input from "../components/Input";
-import { SafeAreaView } from "react-native-safe-area-context";
-import useSafeAreaStyle from "../util/useSafeAreaStyle";
+import React, { useRef } from "react";
+import { Image, Keyboard, Pressable, ScrollView, StyleSheet, Text, View, TextInput as I } from "react-native";
 import KeyboardAvoidingView from "../components/KeyboardAvoidingView";
+import { useNavigate } from "react-router";
+import Button from "../components/Button";
 import TextInput from "../components/TextInput";
+import { useMobile } from "../util/Styles";
 
-const styles = StyleSheet.create({
-	formInputSection: {
-		padding: 10,
-	},
-});
-
-export default function Login() {
+export default function Register() {
 	const navigate = useNavigate();
 
 	const emailElement = useRef<any>();
-	const usernameElement = useRef<any>();
 	const passwordElement = useRef<any>();
+	const isMobile = useMobile();
 
 	function openModal() {
 		Keyboard.dismiss();
-		navigate("/login/instances/");
+		navigate("/register/instances/");
 	}
 
 	return (
 		<ScrollView
 			keyboardShouldPersistTaps="always"
 			alwaysBounceVertical={false}
-			style={{ height: "100%", paddingHorizontal: 15, flex: 1, paddingBottom: 20 }}
+			style={{ height: "100%" }}
+			contentContainerStyle={{ paddingHorizontal: 15, paddingBottom: 20, display: "flex", alignItems: "center", height: "100%" }}
 		>
-			<KeyboardAvoidingView safeArea behavior="padding" className="page register">
+			<KeyboardAvoidingView safeArea behavior="padding" className="page register" style={{ maxWidth: 460, flex: 1 }}>
 				<Text className="title">Register</Text>
-				<View className="entry">
+				<View style={{ paddingVertical: 10 }}>
 					<Text className="label">Email</Text>
 					<TextInput
 						blurOnSubmit={false}
@@ -52,15 +41,12 @@ export default function Login() {
 						placeholder="Email"
 					/>
 				</View>
-				<View className="entry">
+				<View style={{ paddingVertical: 10 }}>
 					<Text className="label">Password</Text>
 					<TextInput ref={passwordElement} secureTextEntry textContentType="password" placeholder="Password" />
 				</View>
-				<Pressable onPress={() => navigate("/resetPassword")} className="forgot-password">
-					<Text className="muted">Reset password</Text>
-				</Pressable>
-				<View className="entry submit">
-					<Button onPress={() => navigate("/")}>
+				<View style={{ paddingVertical: 10, flexGrow: isMobile ? 1 : 0, display: "flex", justifyContent: "flex-end" }}>
+					<Button style={{ margin: 0 }} onPress={() => navigate("/")}>
 						<Text>Register on fosscord.com</Text>
 					</Button>
 				</View>

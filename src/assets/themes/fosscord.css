@@ -41,7 +41,7 @@
 .w-100 {
   width: 100%; }
 
-.flex, .introduction.welcome, .introduction.features .list .feature, .button, .link {
+.flex, .introduction.features .list .feature, .button, .link {
   display: flex;
   flex-direction: column; }
 
@@ -61,8 +61,11 @@
   font-size: 15px;
   font-weight: 300; }
 
-.bg, .introduction.welcome {
+.bg, .page {
   background-color: var(--background); }
+
+.bg-accent {
+  background-color: var(--background-accent); }
 
 .bg-primary, .button, .link {
   background-color: var(--primary); }
@@ -75,23 +78,6 @@
 
 .introduction {
   height: 100%; }
-
-.introduction.welcome {
-  align-items: center;
-  justify-content: space-between;
-  height: 100%;
-  width: 100%;
-  background-color: var(--primary);
-  flex-grow: 1;
-  justify-content: center;
-  align-items: center;
-  border-bottom-right-radius: 5px;
-  border-bottom-left-radius: 5px; }
-  .introduction.welcome .text, .introduction.welcome .heading {
-    color: white; }
-  @media (orientation: landscape) {
-    .introduction.welcome .waves {
-      display: none; } }
 
 .introduction.features .text, .introduction.features .heading {
   text-align: center; }
@@ -142,64 +128,9 @@
 .image div {
   background-size: contain; }
 
-.page.instances {
-  display: flex;
+.page {
   height: 100%;
-  align-items: center; }
-  .page.instances .list {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    max-width: 600px; }
-    .page.instances .list .entry {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      background: var(--background-accent);
-      margin: 10px;
-      padding: 15px 5px;
-      border-radius: 10px;
-      width: 135px; }
-      .page.instances .list .entry .image {
-        width: 60px;
-        height: 60px; }
-      .page.instances .list .entry > .text, .page.instances .list .entry > .heading {
-        color: var(--text-accent);
-        margin-top: 10px;
-        text-align: center;
-        font-weight: 300;
-        font-size: 15px;
-        word-break: break-word; }
-
-.page.login,
-.page.register {
-  height: 100%;
-  width: 100%;
-  max-width: 460px;
-  margin: 0 auto;
-  padding: 0 15px;
-  display: flex; }
-  .page.login .entry,
-  .page.register .entry {
-    padding: 10px 0; }
-  .page.login .forgot-password,
-  .page.register .forgot-password {
-    margin-bottom: 10px; }
-  .page.login .submit,
-  .page.register .submit {
-    flex-grow: 1;
-    display: flex;
-    justify-content: flex-end; }
-    @media (min-width: 576px) {
-      .page.login .submit,
-      .page.register .submit {
-        flex-grow: 0; } }
-    .page.login .submit .button, .page.login .submit .link,
-    .page.register .submit .button,
-    .page.register .submit .link {
-      margin: 0; }
+  width: 100%; }
 
 .elevated, .button.big, .big.link {
   box-shadow: 0px 0px 5px #00000050; }

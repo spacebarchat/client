@@ -4,18 +4,14 @@ import KeyboardAvoidingView from "../components/KeyboardAvoidingView";
 import { useNavigate } from "react-router";
 import Button from "../components/Button";
 import TextInput from "../components/TextInput";
-
-const styles = StyleSheet.create({
-	formInputSection: {
-		padding: 10,
-	},
-});
+import { useMobile } from "../util/Styles";
 
 export default function Login() {
 	const navigate = useNavigate();
 
 	const emailElement = useRef<any>();
 	const passwordElement = useRef<any>();
+	const isMobile = useMobile();
 
 	function openModal() {
 		Keyboard.dismiss();
@@ -26,11 +22,12 @@ export default function Login() {
 		<ScrollView
 			keyboardShouldPersistTaps="always"
 			alwaysBounceVertical={false}
-			style={{ height: "100%", paddingHorizontal: 15, flex: 1, paddingBottom: 20 }}
+			style={{ height: "100%" }}
+			contentContainerStyle={{ paddingHorizontal: 15, paddingBottom: 20, display: "flex", alignItems: "center", height: "100%" }}
 		>
-			<KeyboardAvoidingView safeArea behavior="padding" className="page login">
+			<KeyboardAvoidingView safeArea behavior="padding" className="page login" style={{ maxWidth: 460, flex: 1 }}>
 				<Text className="title">Login</Text>
-				<View className="entry">
+				<View style={{ paddingVertical: 10 }}>
 					<Text className="label">Email</Text>
 					<TextInput
 						blurOnSubmit={false}
@@ -44,15 +41,15 @@ export default function Login() {
 						placeholder="Email"
 					/>
 				</View>
-				<View className="entry">
+				<View style={{ paddingVertical: 10 }}>
 					<Text className="label">Password</Text>
 					<TextInput ref={passwordElement} secureTextEntry textContentType="password" placeholder="Password" />
 				</View>
-				<Pressable onPress={() => navigate("/resetPassword")} className="forgot-password">
+				<Pressable style={{ marginBottom: 10 }} onPress={() => navigate("/resetPassword")} className="forgot-password">
 					<Text className="muted">Reset password</Text>
 				</Pressable>
-				<View className="entry submit">
-					<Button onPress={() => navigate("/")}>
+				<View style={{ paddingVertical: 10, flexGrow: isMobile ? 1 : 0, display: "flex", justifyContent: "flex-end" }}>
+					<Button style={{ margin: 0 }} onPress={() => navigate("/")}>
 						<Text>Login to fosscord.com</Text>
 					</Button>
 				</View>
