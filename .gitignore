@@ -6,3 +6,4 @@ Pods/
 android/.gradle/*
 dist/
 *.pfx
+*.log

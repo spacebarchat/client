@@ -5,19 +5,11 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Provider } from "react-redux";
 import Store from "./util/Store";
 import { Themes } from "./util/Themes";
-import { Keyboard, KeyboardAvoidingView, Platform, View } from "react-native";
+import { Keyboard, KeyboardAvoidingView, Platform, View, LogBox } from "react-native";
 import BackHandler from "./components/BackHandler";
-import { LogBox } from "react-native";
 import Routes from "./components/Routes";
 
 LogBox.ignoreAllLogs();
-
-declare module "react-native" {
-	interface PlatformStatic {
-		isDesktop?: boolean;
-		isMobile?: boolean;
-	}
-}
 
 Platform.isDesktop = Platform.OS === "macos" || Platform.OS === "windows";
 Platform.isMobile = Platform.OS === "ios" || Platform.OS === "android";

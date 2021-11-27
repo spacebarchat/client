@@ -11,7 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import themes from "../reducers/themes";
 import "missing-native-js-functions";
 
-(global as any).themeCache = [];
+const glob = globalThis as any;
+glob.themeCache = [];
 
 export const ThemeContext = React.createContext<Rules[]>([]);
 export const ComponentStack = React.createContext<Selector[]>([]);
@@ -33,7 +34,7 @@ export function Themes(props: { children: ReactElement }) {
 			.then((x) => x.text())
 			.then((x) => {
 				const start = Date.now();
-				(global as any).themeCache = parseCSS(x);
+				glob.themeCache = parseCSS(x);
 				// console.log("theme parsing took " + (Date.now() - start) + "ms");
 				calculateTheme();
 				// console.warn("wasHotReloaded");
@@ -51,7 +52,7 @@ export function Themes(props: { children: ReactElement }) {
 
 	function calculateTheme() {
 		let temp: Rules[] = [];
-		let themeCache = (global as any).themeCache as Rules[];
+		let themeCache = glob.themeCache as Rules[];
 		themeCache.forEach((x) => {
 			if (x.type !== "media") return true;
 			if (
@@ -96,8 +97,8 @@ export function Themes(props: { children: ReactElement }) {
 				return rule;
 			});
 
-		// console.log("final computed theme:", temp, (global as any).themeCache);
-		(global as any).theme = temp;
+		// console.log("final computed theme:", temp, (glob ).themeCache);
+		glob.theme = temp;
 		// console.log(temp.map((x) => x.selectors?.map((s) => s.map((c) => "." + c.classes?.join(".")).join(" ")).join(", ")).join("\n"));
 
 		dispatch(themes.set(temp));

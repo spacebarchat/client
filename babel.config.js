@@ -1,6 +1,10 @@
+// module.exports = {
+// 	presets: ["@babel/preset-react", "module:metro-react-native-babel-preset"],
+// 	plugins: [],
+// };
 module.exports = {
-	presets: ["@babel/preset-react", "module:metro-react-native-babel-preset"],
-	plugins: [],
+	presets: ["@babel/env", "@babel/react"],
+	plugins: ["@babel/plugin-proposal-class-properties"],
 };
 
 /*
