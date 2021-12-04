@@ -6,6 +6,7 @@
 
 #import <CodePush/CodePush.h>
 #import <AppCenterReactNative.h>
+// #import <AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeCrashes.h>
 // #import <AppCenterReactNativeAnalytics.h>
 
@@ -37,7 +38,7 @@
 //#endif
 
   [AppCenterReactNative register];
-//   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
+  // [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
