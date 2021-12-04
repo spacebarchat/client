@@ -8,19 +8,19 @@ var RegisterPage: any;
 var NotFoundPage: any;
 var InstancesPage: any;
 
-if (Platform.OS === "macos") {
-	Introduction = require("../pages/Introduction/index").default;
-	LoginPage = require("../pages/Login").default;
-	RegisterPage = require("../pages/Register").default;
-	NotFoundPage = require("../pages/NotFound").default;
-	InstancesPage = require("../pages/Instances").default;
-} else {
-	Introduction = React.lazy(() => import("../pages/Introduction/index"));
-	LoginPage = React.lazy(() => import("../pages/Login"));
-	RegisterPage = React.lazy(() => import("../pages/Register"));
-	NotFoundPage = React.lazy(() => import("../pages/NotFound"));
-	InstancesPage = React.lazy(() => import("../pages/Instances"));
-}
+// if (Platform.OS === "macos") {
+Introduction = require("../pages/Introduction/index").default;
+LoginPage = require("../pages/Login").default;
+RegisterPage = require("../pages/Register").default;
+NotFoundPage = require("../pages/NotFound").default;
+InstancesPage = require("../pages/Instances").default;
+// } else {
+// 	Introduction = React.lazy(() => import("../pages/Introduction/index"));
+// 	LoginPage = React.lazy(() => import("../pages/Login"));
+// 	RegisterPage = React.lazy(() => import("../pages/Register"));
+// 	NotFoundPage = React.lazy(() => import("../pages/NotFound"));
+// 	InstancesPage = React.lazy(() => import("../pages/Instances"));
+// }
 
 export default function Routes() {
 	return (

@@ -14,8 +14,9 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"noFallthroughCasesInSwitch": true,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"useDefineForClassFields": true,
+		"experimentalDecorators": true
 	},
-	"exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"],
-	"include": ["src", "tailwind.config.js"]
+	"include": ["src"]
 }

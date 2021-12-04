@@ -1,32 +1,31 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Platform, Text, useWindowDimensions, View } from "react-native";
-import instances, { Instance } from "../reducers/instances";
-import { useAppDispatch, useAppSelector } from "../util/Store";
 import Image from "../components/Image";
 import TextInput from "../components/TextInput";
 import Button from "../components/Button";
 import HeaderScrollView from "../components/HeaderScrollView";
 import KeyboardAvoidingView from "../components/KeyboardAvoidingView";
+import { observer } from "mobx-react";
+import { InstancesContext } from "../data/Instances";
+import { runInAction, toJS } from "mobx";
 
-export default function Instances() {
-	const [edit, setEdit] = useState(false);
-	const dispatch = useAppDispatch();
-	const data = useAppSelector((state) => state.instances.entities);
+export default observer(function Instances() {
+	const instances = useContext(InstancesContext);
 	const ref = useRef();
 	const text = useRef<string>();
 
 	useEffect(() => {
-		dispatch(instances.load());
+		if (instances.cache.length) return;
+		instances.load();
 	}, []);
 
 	function add() {
 		if (!text.current) return;
 		try {
 			let url = new URL(text.current);
-			console.log(url);
-			dispatch(instances.addOne({ name: url.host, url: text.current }));
-			setEdit(false);
-			console.log(text.current);
+			runInAction(() => {
+				instances.cache.push({ name: url.host, url: text.current });
+			});
 		} catch (error) {}
 	}
 
@@ -48,7 +47,7 @@ export default function Instances() {
 					}}
 					style={{ flexGrow: 1 }}
 				>
-					{Object.values(data).map((x) => (
+					{Object.values(instances.cache || {}).map((x) => (
 						<View
 							accessible
 							style={{
@@ -93,4 +92,4 @@ export default function Instances() {
 			</View>
 		</KeyboardAvoidingView>
 	);
-}
+});

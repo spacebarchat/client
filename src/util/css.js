@@ -1,6 +1,6 @@
 var commentre = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//g;
 
-module.exports = function (css, options) {
+export default function (css, options) {
 	options = options || {};
 
 	/**
@@ -561,7 +561,7 @@ module.exports = function (css, options) {
 	}
 
 	return addParent(stylesheet());
-};
+}
 
 /**
  * Trim `str`.

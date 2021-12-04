@@ -9,13 +9,6 @@ declare namespace NodeJS {
 	}
 }
 
-declare module "react-native" {
-	interface PlatformStatic {
-		isDesktop?: boolean;
-		isMobile?: boolean;
-	}
-}
-
 declare module "*.avif" {
 	const src: string;
 	export default src;

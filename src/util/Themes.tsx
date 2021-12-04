@@ -8,24 +8,24 @@ import { useOrientation } from "./useOrientation";
 import FosscordTheme from "../assets/themes/fosscord.css";
 import { matchQuery } from "./MediaQuery";
 import { useDispatch, useSelector } from "react-redux";
-import themes from "../reducers/themes";
 import "missing-native-js-functions";
+import { observer } from "mobx-react";
+import { ThemesContext } from "../data/Themes";
 
 const glob = globalThis as any;
 glob.themeCache = [];
 
-export const ThemeContext = React.createContext<Rules[]>([]);
 export const ComponentStack = React.createContext<Selector[]>([]);
 
 const CSS_VARIABLE = /var\(([\w-]+)\)/;
 let wasHotReloaded = false;
 
-export function Themes(props: { children: ReactElement }) {
-	const dispatch = useDispatch();
+export const Themes = observer(function Themes(props: { children: ReactElement }) {
 	const { width, height, fontScale, scale } = useWindowDimensions();
 	const orientation = useOrientation();
-	const colorScheme = "dark" || useColorScheme(); //
+	const colorScheme = "dark" || useColorScheme();
 	const accessibilityInfo = useAccessibilityInfo();
+	const [theme, setTheme] = useContext(ThemesContext);
 	// TODO: suspense show spinning icon (only after a delay to prevent short flashes)
 
 	function refetch() {
@@ -35,6 +35,7 @@ export function Themes(props: { children: ReactElement }) {
 			.then((x) => {
 				const start = Date.now();
 				glob.themeCache = parseCSS(x);
+				console.log(glob.themeCache, x);
 				// console.log("theme parsing took " + (Date.now() - start) + "ms");
 				calculateTheme();
 				// console.warn("wasHotReloaded");
@@ -101,17 +102,16 @@ export function Themes(props: { children: ReactElement }) {
 		glob.theme = temp;
 		// console.log(temp.map((x) => x.selectors?.map((s) => s.map((c) => "." + c.classes?.join(".")).join(" ")).join(", ")).join("\n"));
 
-		dispatch(themes.set(temp));
-		console.log("rerender themes");
+		setTheme(temp);
+		console.log("rerender themes", temp);
 	}
 
 	useEffect(() => {
-		// console.warn("recalculate");
-		// calculateTheme();
+		calculateTheme();
 	}, [orientation, colorScheme, width, height]);
 
 	return props.children;
-}
+});
 
 const R = React.createElement;
 
@@ -174,14 +174,11 @@ function matchSelection(stack: Selector[], selection: Selector[], forceSkip?: bo
 	return false;
 }
 
-function StyleProxy(type: string, props: any, children: ReactNode[]) {
+const StyleProxy = function (type: string, props: any, children: ReactNode[]) {
 	if (!props) props = {};
 	if (!props.className) props.className = "";
 
-	var theme = [] as Rules[];
-	try {
-		theme = useSelector((s: any) => s.themes) as Rules[];
-	} catch (error) {}
+	const [theme, setTheme] = useContext(ThemesContext);
 
 	const tag = getTagName(type);
 	const className = props.className + " " + tag;
@@ -191,8 +188,6 @@ function StyleProxy(type: string, props: any, children: ReactNode[]) {
 	const [pressed, setPressed] = useState(false);
 	const element = { tag, classes, id: props.id };
 	const newStack = [...stack, element];
-
-	// console.log("render component");
 
 	// const start = Date.now();
 	// console.log("_________________");
@@ -204,7 +199,7 @@ function StyleProxy(type: string, props: any, children: ReactNode[]) {
 	let hasHoverSelector: boolean | undefined = false;
 	let hasActiveSelector: boolean | undefined = false;
 
-	const rules = theme.filter((rule) =>
+	const rules = (theme as Rules[]).filter((rule) =>
 		rule.selectors?.some((selection) => {
 			if (matchSelection(newStack, selection)) {
 				hasHoverSelector = hasHoverSelector || selection.some((s) => s.classes?.last()?.includes(":hover"));
@@ -247,7 +242,7 @@ function StyleProxy(type: string, props: any, children: ReactNode[]) {
 		{ value: newStack },
 		R(type, { ...props, ...hovers, ...pressers, style: { ...style, ...props?.style } }, ...children)
 	);
-}
+};
 
 // setting this in react-app-env.d.ts doesn't work
 declare module "react" {

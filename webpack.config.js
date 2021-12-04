@@ -3,9 +3,11 @@ const webpack = require("webpack");
 const nodeExternals = require("webpack-node-externals");
 const spawn = require("child_process").spawn;
 
+process.env.NODE_ENV = "production";
+
 module.exports = (env, argv) => {
 	const config = {
-		mode: "development",
+		mode: "production",
 		entry: [__dirname + "/index.linux.js"],
 		target: "node",
 		output: {
@@ -20,7 +22,7 @@ module.exports = (env, argv) => {
 			rules: [
 				{
 					test: /\.(j|t)sx?$/,
-					exclude: /node_modules/,
+					// exclude: /node_modules/,
 					use: {
 						loader: "babel-loader",
 						options: {
@@ -72,9 +74,12 @@ module.exports = (env, argv) => {
 			},
 		},
 		externals: [
-			nodeExternals({
-				whitelist: ["webpack/hot/dev-server", "webpack/hot/poll?100"],
-			}),
+			// nodeExternals({
+			// whitelist:[
+			// "webpack/hot/dev-server",
+			// "webpack/hot/poll?100",
+			// ],
+			// }),
 		],
 	};
 
