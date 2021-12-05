@@ -1,8 +1,4 @@
 PODS:
-  - appcenter-analytics (4.3.0):
-    - AppCenter/Analytics (~> 4.0)
-    - AppCenterReactNativeShared (~> 4.0)
-    - React-Core
   - appcenter-core (4.3.0):
     - AppCenterReactNativeShared (~> 4.0)
     - React-Core
@@ -10,8 +6,6 @@ PODS:
     - AppCenter/Crashes (~> 4.0)
     - AppCenterReactNativeShared (~> 4.0)
     - React-Core
-  - AppCenter/Analytics (4.3.0):
-    - AppCenter/Core
   - AppCenter/Core (4.3.0)
   - AppCenter/Crashes (4.3.0):
     - AppCenter/Core
@@ -346,7 +340,6 @@ PODS:
   - Yoga (1.14.0)
 
 DEPENDENCIES:
-  - appcenter-analytics (from `../node_modules/appcenter-analytics/ios`)
   - appcenter-core (from `../node_modules/appcenter/ios`)
   - appcenter-crashes (from `../node_modules/appcenter-crashes/ios`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
@@ -401,8 +394,6 @@ SPEC REPOS:
     - SSZipArchive
 
 EXTERNAL SOURCES:
-  appcenter-analytics:
-    :path: "../node_modules/appcenter-analytics/ios"
   appcenter-core:
     :path: "../node_modules/appcenter/ios"
   appcenter-crashes:
@@ -488,7 +479,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppCenter: 883369ab78427b0561c688158d689dfe1f993ea9
-  appcenter-analytics: 2a8a55d2feba193c3c8a51b9902ef4757386414e
   appcenter-core: 0293b8aeee457a25b44323a311de49c29d9defa7
   appcenter-crashes: ad135405e148a9ed1c8bd169a9d2ea7bbaecd34c
   AppCenterReactNativeShared: a821c7287a296486889ef6339317b701febb0695

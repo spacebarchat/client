@@ -7,3 +7,4 @@ android/.gradle/*
 dist/
 *.pfx
 *.log
+*.hprof

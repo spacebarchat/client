@@ -8,7 +8,6 @@
 #import <AppCenterReactNative.h>
 // #import <AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeCrashes.h>
-// #import <AppCenterReactNativeAnalytics.h>
 
 #ifdef FB_SONARKIT_ENABLED
 //#import <FlipperKit/FlipperClient.h>

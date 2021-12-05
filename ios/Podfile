@@ -20,6 +20,8 @@ target 'fosscord' do
 
   pod 'CodePush', :path => '../node_modules/react-native-code-push'
 
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-async-storage/async-storage'
+
   target 'fosscordTests' do
     inherit! :complete
     # Pods for testing
