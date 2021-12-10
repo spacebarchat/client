@@ -298,44 +298,14 @@ PODS:
     - React-jsi (= 0.66.3)
     - React-logger (= 0.66.3)
     - React-perflogger (= 0.66.3)
-  - RNCAsyncStorage (1.15.13):
+  - RNCAsyncStorage (1.15.14):
     - React-Core
   - RNGestureHandler (1.10.3):
     - React-Core
   - RNReactNativeHapticFeedback (1.13.0):
     - React-Core
-  - RNReanimated (2.3.0-beta.4):
-    - DoubleConversion
-    - FBLazyVector
-    - FBReactNativeSpec
-    - glog
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
-    - React
-    - React-callinvoker
-    - React-Core
-    - React-Core/DevSupport
-    - React-Core/RCTWebSocket
-    - React-CoreModules
-    - React-cxxreact
-    - React-jsi
-    - React-jsiexecutor
-    - React-jsinspector
-    - React-RCTActionSheet
-    - React-RCTAnimation
-    - React-RCTBlob
-    - React-RCTImage
-    - React-RCTLinking
-    - React-RCTNetwork
-    - React-RCTSettings
-    - React-RCTText
-    - ReactCommon/turbomodule/core
-    - Yoga
   - RNSharedElement (0.8.3):
     - React-Core
-  - RNSVG (12.1.1):
-    - React
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
 
@@ -379,9 +349,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
-  - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNSharedElement (from `../node_modules/react-native-shared-element`)
-  - "RNSVG (from `../node_modules/@microsoft/react-native-svg-desktop`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -468,12 +436,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNReactNativeHapticFeedback:
     :path: "../node_modules/react-native-haptic-feedback"
-  RNReanimated:
-    :path: "../node_modules/react-native-reanimated"
   RNSharedElement:
     :path: "../node_modules/react-native-shared-element"
-  RNSVG:
-    :path: "../node_modules/@microsoft/react-native-svg-desktop"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -517,15 +481,13 @@ SPEC CHECKSUMS:
   React-RCTVibration: 50cfe7049167cfc7e83ac5542c6fff0c76791a9b
   React-runtimeexecutor: bbbdb3d8fcf327c6e2249ee71b6ef1764b7dc266
   ReactCommon: 9bac022ab71596f2b0fde1268272543184c63971
-  RNCAsyncStorage: ac55c090d35b880ac47a7807ab797854afc640ae
+  RNCAsyncStorage: ea6b5c280997b2b32a587793163b1f10e580c4f7
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
-  RNReanimated: 7444b78bb258a81ddb10fbf5578f5a4389d1a87b
   RNSharedElement: 381b5e33366513cc3f449f2dc3a42c5df0f54021
-  RNSVG: 369f5b1a64dea3abfda8f5e1f547c01357caedcc
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 32a18c0e845e185f4a2a66ec76e1fd1f958f22fa
 
-PODFILE CHECKSUM: 6645cb6727d82d8b71eab799d5a259329916b629
+PODFILE CHECKSUM: 0e54d768f36bc1243b0477c82ff5526043e59d81
 
 COCOAPODS: 1.11.2

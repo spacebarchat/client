@@ -18,6 +18,7 @@
 	},
 	"dependencies": {
 		"@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
+		"@react-native-async-storage/async-storage": "^1.15.14",
 		"@react-native-community/cli-platform-android": "^6.2.0",
 		"@reduxjs/toolkit": "^1.6.2",
 		"@svgr/webpack": "5.5.0",

@@ -13,13 +13,9 @@ target 'fosscord' do
   )
 
   pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
-
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
-
   pod 'RNReactNativeHapticFeedback', :path => '../node_modules/react-native-haptic-feedback'
-
   pod 'CodePush', :path => '../node_modules/react-native-code-push'
-
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-async-storage/async-storage'
 
   target 'fosscordTests' do
