@@ -137,9 +137,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* trant */ = {
+		13B07F861A680F5B00A75B9A /* fosscord */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "trant" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "fosscord" */;
 			buildPhases = (
 				4387882F5E6132AE049FD68A /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -153,7 +153,7 @@
 			);
 			dependencies = (
 			);
-			name = trant;
+			name = fosscord;
 			productName = fosscord;
 			productReference = 13B07F961A680F5B00A75B9A /* fosscord.app */;
 			productType = "com.apple.product-type.application";
@@ -184,7 +184,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* trant */,
+				13B07F861A680F5B00A75B9A /* fosscord */,
 			);
 		};
 /* End PBXProject section */
@@ -317,7 +317,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.trant;
+				PRODUCT_BUNDLE_IDENTIFIER = app.fosscord;
 				PRODUCT_NAME = fosscord;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
@@ -354,7 +354,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.trant;
+				PRODUCT_BUNDLE_IDENTIFIER = app.fosscord;
 				PRODUCT_NAME = fosscord;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
@@ -493,7 +493,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "trant" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "fosscord" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
