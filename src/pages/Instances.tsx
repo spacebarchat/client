@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Platform, Text, useWindowDimensions, View } from "react-native";
+import { Platform, Pressable, Text, useWindowDimensions, View } from "react-native";
 import Image from "../components/Image";
 import TextInput from "../components/TextInput";
 import Button from "../components/Button";
@@ -16,7 +16,9 @@ export default observer(function Instances() {
 
 	useEffect(() => {
 		if (instances.cache.length) return;
+		// setIntervalNow(() => {
 		instances.load();
+		// }, 1000);
 	}, []);
 
 	function add() {
@@ -36,6 +38,7 @@ export default observer(function Instances() {
 				style={{ height: "100%", flex: 1, alignItems: "center", flexDirection: "column", justifyContent: "center", maxWidth: 600 }}
 			>
 				<HeaderScrollView
+					keyboardShouldPersistTaps="always"
 					titleStyle={{ textAlign: "center", width: "100%" }}
 					title="Instances"
 					contentContainerStyle={{
@@ -48,7 +51,16 @@ export default observer(function Instances() {
 					style={{ flexGrow: 1 }}
 				>
 					{Object.values(instances.cache || {}).map((x) => (
-						<View
+						<Pressable
+							onPress={(e) => {
+								console.log("press", e);
+								runInAction(() => {
+									instances.cache.forEach((i) => {
+										i.selected = false;
+									});
+									x.selected = true;
+								});
+							}}
 							accessible
 							style={{
 								display: "flex",
@@ -59,9 +71,10 @@ export default observer(function Instances() {
 								borderRadius: 10,
 								width: 135,
 							}}
-							className="bg-accent"
+							className={"bg-accent " + (x.selected ? "border" : "")}
 							key={x!.name}
 						>
+							{console.log(x.selected)}
 							<Image
 								source={x?.image || "https://raw.githubusercontent.com/fosscord/fosscord/master/assets/logo.png"}
 								style={{ width: 60, height: 60 }}
@@ -69,7 +82,7 @@ export default observer(function Instances() {
 							<Text className="text-accent" style={{ textAlign: "center", fontWeight: "300", fontSize: 15, marginTop: 10 }}>
 								{x!.name}
 							</Text>
-						</View>
+						</Pressable>
 					))}
 				</HeaderScrollView>
 				<View style={{ backgroundColor: "transparent", padding: 10, width: "100%", display: "flex" }}>

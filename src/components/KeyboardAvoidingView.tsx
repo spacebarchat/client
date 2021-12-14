@@ -16,6 +16,7 @@ export default function KeyboardAvoidingView(props: KeyboardAvoidingViewProps) {
 	useEffect(() => {
 		if (Platform.OS === "android") return;
 		const show = Keyboard.addListener("keyboardWillShow", (e) => {
+			console.log(e.endCoordinates.screenY + safeArea.paddingBottom + ((props.style as any)?.paddingBottom || 0));
 			Animated.timing(height, {
 				useNativeDriver: false,
 				toValue: e.endCoordinates.screenY + safeArea.paddingBottom + ((props.style as any)?.paddingBottom || 0),
@@ -28,6 +29,7 @@ export default function KeyboardAvoidingView(props: KeyboardAvoidingViewProps) {
 			}).start();
 		});
 		const close = Keyboard.addListener("keyboardWillHide", (e) => {
+			console.log(e.endCoordinates.screenY);
 			Animated.timing(height, { useNativeDriver: false, toValue: h, duration: 200 }).start();
 
 			Animated.timing(padding, {
@@ -50,10 +52,5 @@ export default function KeyboardAvoidingView(props: KeyboardAvoidingViewProps) {
 	else if (props.behavior === "position") style.bottom = padding;
 	else if (props.behavior === "padding") style.paddingBottom = padding;
 
-	return (
-		<Animated.View
-			{...props}
-			style={{ ...safeArea, ...(props.style as any), ...style, minHeight: Platform.OS !== "android" ? "100%" : undefined }}
-		/>
-	);
+	return <Animated.View {...props} style={{ ...safeArea, ...(props.style as any), ...style }} />;
 }

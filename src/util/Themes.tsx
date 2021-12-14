@@ -1,5 +1,5 @@
 import { parseCSS, preDeclarations } from "./CSSToRN";
-import React, { ReactElement, ReactNode, useContext, useEffect, useRef, useState } from "react";
+import React, { Component, ReactElement, ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { Image, Platform, useColorScheme, useWindowDimensions } from "react-native";
 import { Rules, Selector } from "./CSSToRN";
 import { useAccessibilityInfo } from "./useAccessibilityInfo";
@@ -35,7 +35,6 @@ export const Themes = observer(function Themes(props: { children: ReactElement }
 			.then((x) => {
 				const start = Date.now();
 				glob.themeCache = parseCSS(x);
-				console.log(glob.themeCache, x);
 				// console.log("theme parsing took " + (Date.now() - start) + "ms");
 				calculateTheme();
 				// console.warn("wasHotReloaded");
@@ -48,6 +47,7 @@ export const Themes = observer(function Themes(props: { children: ReactElement }
 	}
 
 	useEffect(() => {
+		if (Platform.OS === "macos") return;
 		refetch();
 	}, []);
 
@@ -103,10 +103,11 @@ export const Themes = observer(function Themes(props: { children: ReactElement }
 		// console.log(temp.map((x) => x.selectors?.map((s) => s.map((c) => "." + c.classes?.join(".")).join(" ")).join(", ")).join("\n"));
 
 		setTheme(temp);
-		console.log("rerender themes", temp);
+		console.log("rerender themes");
 	}
 
 	useEffect(() => {
+		if (Platform.OS === "macos") return;
 		calculateTheme();
 	}, [orientation, colorScheme, width, height]);
 
@@ -130,13 +131,20 @@ function getTagName(tag: string) {
 	if ((tag as any)?.displayName) tag = (tag as any).displayName;
 	if (typeof tag === "object") return "";
 
-	return tag
-		.toLowerCase()
-		.replace("rct", "")
-		.replace("rnc", "")
-		.replace("virtualtext", "text")
-		.replace("textinput", "input")
-		.replace("imageview", "image");
+	switch (tag) {
+		case "div":
+			return "view";
+		case "img":
+			return "image";
+		default:
+			return tag
+				.toLowerCase()
+				.replace("rct", "")
+				.replace("rnc", "")
+				.replace("virtualtext", "text")
+				.replace("textinput", "input")
+				.replace("imageview", "image");
+	}
 }
 
 // force skip is used for > css operators and to skip if the next element does not match it
@@ -174,75 +182,91 @@ function matchSelection(stack: Selector[], selection: Selector[], forceSkip?: bo
 	return false;
 }
 
-const StyleProxy = function (type: string, props: any, children: ReactNode[]) {
-	if (!props) props = {};
-	if (!props.className) props.className = "";
+class StyleProxy extends Component {
+	state = { hovered: false, pressed: false };
+	element: { tag: string; classes: string[]; id?: string };
 
-	const [theme, setTheme] = useContext(ThemesContext);
+	constructor(public props: { component: string; className?: string; id?: string; style?: any; children?: ReactNode }) {
+		super(props);
+		const tag = getTagName(props.component);
+		const className = (props.className || "") + " " + tag;
+		this.element = { tag, classes: className.split(" "), id: props.id };
+	}
 
-	const tag = getTagName(type);
-	const className = props.className + " " + tag;
-	const classes = className?.split(" ") || [];
-	const stack = useContext(ComponentStack);
-	const [hovered, setHovered] = useState(false);
-	const [pressed, setPressed] = useState(false);
-	const element = { tag, classes, id: props.id };
-	const newStack = [...stack, element];
+	render() {
+		const start = Date.now();
+		console.log(this.props.className);
 
-	// const start = Date.now();
-	// console.log("_________________");
-	// TODO: use react memo
-	// check recursivly if the selection path matches any parent path combinaten
-	// console.log("styling took " + (Date.now() - start) + "ms");
+		return (
+			<ComponentStack.Consumer>
+				{(stack) => (
+					<ThemesContext.Consumer>
+						{([theme, setTheme]) => {
+							const newStack = [...stack, this.element];
+							let hasHoverSelector: boolean | undefined = false;
+							let hasActiveSelector: boolean | undefined = false;
 
-	// @ts-ignore
-	let hasHoverSelector: boolean | undefined = false;
-	let hasActiveSelector: boolean | undefined = false;
+							const rules = (theme as Rules[]).filter((rule) =>
+								rule.selectors?.some((selection) => {
+									if (matchSelection(newStack, selection)) {
+										hasHoverSelector = hasHoverSelector || selection.some((s) => s.classes?.last()?.includes(":hover"));
+										hasActiveSelector =
+											hasActiveSelector || selection.some((s) => s.classes?.last()?.includes(":active"));
+										if (hasActiveSelector && !this.state.pressed) return false;
+										if (hasHoverSelector && !this.state.hovered) return false;
+										return true;
+									}
+								})
+							);
 
-	const rules = (theme as Rules[]).filter((rule) =>
-		rule.selectors?.some((selection) => {
-			if (matchSelection(newStack, selection)) {
-				hasHoverSelector = hasHoverSelector || selection.some((s) => s.classes?.last()?.includes(":hover"));
-				hasActiveSelector = hasActiveSelector || selection.some((s) => s.classes?.last()?.includes(":active"));
-				if (hasActiveSelector && !pressed) return false;
-				if (hasHoverSelector && !hovered) return false;
-				return true;
-			}
-		})
-	);
+							const style =
+								rules
+									.map((x) => x.declarations)
+									.reverse()
+									.reduce((value, total) => ({ ...total, ...value }), {}) || {};
 
-	const style =
-		rules
-			.map((x) => x.declarations)
-			.reverse()
-			.reduce((value, total) => ({ ...total, ...value }), {}) || {};
+							const hovers = hasHoverSelector
+								? {
+										// @ts-ignore
+										onMouseEnter: () => this.setState({ hovered: true }) || this.props.onMouseEnter?.(), // @ts-ignore
+										onMouseLeave: () => this.setState({ hovered: false }) || this.props.onMouseLeave?.(),
+								  }
+								: {};
 
-	// console.log(newStack.map((x) => x.classes?.join(".")).join(" -> "), style);
+							const pressers = hasActiveSelector
+								? {
+										// @ts-ignore
+										onPress: () => this.setState({ pressed: true }) || props.onPressOut?.(), // @ts-ignore
+										onPressOut: () => this.setState({ pressed: false }) || props.onPressOut?.(),
+								  }
+								: {};
 
-	// console.log("use theme for", classes.join("."), style);
+							// console.log("styling took " + (Date.now() - start) + "ms");
+							// console.log(newStack.map((x) => x.classes?.join(".")).join(" -> "), style);
+							console.log("use theme for", this.element.classes.join("."), style);
 
-	const hovers = hasHoverSelector
-		? {
-				// @ts-ignore
-				onMouseEnter: () => setHovered(true) || props.onMouseEnter?.(), // @ts-ignore
-				onMouseLeave: () => setHovered(false) || props.onMouseLeave?.(),
-		  }
-		: {};
-
-	const pressers = hasActiveSelector
-		? {
-				// @ts-ignore
-				onPress: () => console.log("pressed in"), // @ts-ignore
-				onPressOut: () => setPressed(false) || props.onPressOut?.(),
-		  }
-		: {};
-
-	return R(
-		ComponentStack.Provider,
-		{ value: newStack },
-		R(type, { ...props, ...hovers, ...pressers, style: { ...style, ...props?.style } }, ...children)
-	);
-};
+							return (
+								<ComponentStack.Provider value={newStack}>
+									{R(
+										this.props.component,
+										{
+											...this.props,
+											...hovers,
+											...pressers,
+											style: { ...this.props?.style, ...style },
+											children: null,
+										},
+										this.props.children
+									)}
+								</ComponentStack.Provider>
+							);
+						}}
+					</ThemesContext.Consumer>
+				)}
+			</ComponentStack.Consumer>
+		);
+	}
+}
 
 // setting this in react-app-env.d.ts doesn't work
 declare module "react" {
@@ -258,30 +282,28 @@ declare module "react-native" {
 }
 
 // prevent override on web and recursion on hot reloading
-if (R.name === "createElementWithValidation") {
+if (R.name !== "test") {
 	if (Platform.OS === "web") {
 		// @ts-ignore
-		React.createElement = function (type: any, props: any, ...children: ReactNode[]) {
+		React.createElement = function test(type: any, props: any, ...children: ReactNode[]) {
 			if (!props) props = {};
-			if (type?.render?.displayName) {
+			if (type?.render?.displayName || typeof type === "string") {
 				if (!props.className) props.className = "";
-				props.className += " " + getTagName(type.render.displayName);
+				props.className += " " + getTagName(type?.render?.displayName || type);
 			}
 			return R(type, props, ...children);
 		};
 	} else {
 		// @ts-ignore
-		React.createElement = function (type: any, props: any, ...children: ReactNode[]) {
-			var forward = false;
-			try {
-				forward = Symbol.keyFor(type?.["$$typeof"]) === "react.forward_ref" && type.displayName === "View";
-			} catch (error) {}
-
+		React.createElement = function test(type: any, props: any, ...children: ReactNode[]) {
 			if (type !== "RCTView" && type !== "RCTText" && type !== "RNCSafeAreaView" && type !== "RCTImageView") {
 				return R(type, props, ...children);
 			}
 
-			return R(StyleProxy.bind(null, type, props, children));
+			return R(StyleProxy, { ...props, component: type }, ...children);
 		};
 	}
 }
+
+// @ts-ignore
+globalThis.react = React;

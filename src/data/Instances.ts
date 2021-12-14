@@ -9,6 +9,7 @@ export interface Instance {
 	description?: string;
 	image?: string;
 	official?: boolean;
+	selected?: boolean;
 }
 
 const defaultInstances = [
@@ -17,6 +18,7 @@ const defaultInstances = [
 		url: "https://discord.com",
 		image: "https://logodownload.org/wp-content/uploads/2017/11/discord-logo-0.png",
 		official: true,
+		selected: true,
 	},
 ] as Instance[];
 
@@ -32,7 +34,12 @@ export class Instances {
 	async load() {
 		this.cache = [
 			...defaultInstances,
-			...(await request("https://raw.githubusercontent.com/fosscord/fosscord-community-instances/main/instances.json")),
+			...(await request("https://raw.githubusercontent.com/fosscord/fosscord-community-instances/main/instances.json")).map(
+				(x: Instance) => {
+					x.selected = false;
+					return x;
+				}
+			),
 		];
 	}
 }

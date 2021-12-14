@@ -10,7 +10,6 @@ export interface HeaderScrollView extends ScrollViewProps {
 
 export default function HeaderScrollView(props: HeaderScrollView) {
 	const y = useRef(new Animated.Value(0)).current;
-	const safeArea = useSafeAreaInsets();
 
 	return (
 		<>
@@ -45,7 +44,6 @@ export default function HeaderScrollView(props: HeaderScrollView) {
 				alwaysBounceVertical={true}
 				bounces={true}
 				{...props}
-				scrollEventThrottle={16}
 				style={{ height: "100%", ...(props.style as any) }}
 				onScroll={Animated.event([{ nativeEvent: { contentOffset: { y } } }], { useNativeDriver: true })}
 			>

@@ -70,6 +70,9 @@
 .bg-primary, .button, .link {
   background-color: var(--primary); }
 
+.border {
+  border: 2px solid var(--primary); }
+
 .primary {
   color: var(--primary); }
 

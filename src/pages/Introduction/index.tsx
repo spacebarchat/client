@@ -25,7 +25,7 @@ export default function Introduction() {
 			ref={scroller}
 			onScroll={(event) => (page = Math.round(event.nativeEvent.contentOffset.x / width))}
 			footer={({ next }: any) => (
-				<View style={{ paddingBottom: insets.bottom }}>
+				<View style={{ paddingBottom: insets.bottom, maxWidth: 500, marginHorizontal: "auto", width: "100%" }}>
 					<Button onPress={() => (page >= 1 ? navigate("/") : next())}>Continue</Button>
 				</View>
 			)}

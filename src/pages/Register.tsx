@@ -5,10 +5,12 @@ import { useNavigate } from "react-router";
 import Button from "../components/Button";
 import TextInput from "../components/TextInput";
 import { useMobile } from "../util/Styles";
+import useSafeAreaStyle from "../util/useSafeAreaStyle";
 
 export default function Register() {
 	const navigate = useNavigate();
 
+	const { paddingBottom } = useSafeAreaStyle();
 	const emailElement = useRef<any>();
 	const passwordElement = useRef<any>();
 	const isMobile = useMobile();
@@ -45,7 +47,9 @@ export default function Register() {
 					<Text className="label">Password</Text>
 					<TextInput ref={passwordElement} secureTextEntry textContentType="password" placeholder="Password" />
 				</View>
-				<View style={{ paddingVertical: 10, flexGrow: isMobile ? 1 : 0, display: "flex", justifyContent: "flex-end" }}>
+				<View
+					style={{ paddingVertical: 10, paddingBottom, flexGrow: isMobile ? 1 : 0, display: "flex", justifyContent: "flex-end" }}
+				>
 					<Button style={{ margin: 0 }} onPress={() => navigate("/")}>
 						<Text>Register on fosscord.com</Text>
 					</Button>
