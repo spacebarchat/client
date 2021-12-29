@@ -25,17 +25,20 @@ We use [react-native](https://reactnative.dev/) to facilitate the native compone
 
 ## Building
 
-To build the project you have to install `yarn` (preferred) or `npm` .
+To build the project you have to install `yarn` (preferred) or `npm`.
 
-    ``` cd fosscord-client; yarn install ```
+     cd fosscord-client; yarn install 
 
 Then
 
-    ``` yarn run ```
+     yarn run 
 
 Select the platform you want to run.
 
 ## Contributing
 
-To contribute fork the repository then run the building instructions. (Choose web to test your changes.)
-
+### To contribute: 
+- Fork the repository
+- Run the building instructions. (Choose **web** to test your changes.)
+- Commit & Push.
+- Pull Request & Done!
