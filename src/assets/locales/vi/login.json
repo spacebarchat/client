@@ -1,12 +1,12 @@
 {
-	"emailTelephone": "Email or phone number",
-	"password": "Password",
-	"forgotPassword": "Forgot your password?",
-	"login": "Login",
-	"registerNotice": "Don't have an account?",
-	"register": "Register",
-	"captchaRequired": "Please solve the captcha first",
-	"captchaTitle": "Checking if you are a robot",
-	"mfa": "Enter Auth/Backup Code",
-	"mfaPlaceholder": "6-digit authentication code/8-digit backup code"
+	"emailTelephone": "Email hoặc số điện thoại",
+	"password": "Mật khẩu",
+	"forgotPassword": "Bạn quên mật khẩu à?",
+	"login": "Đăng nhập",
+	"registerNotice": "Bạn không có tài khoản ư?",
+	"register": "Đăng ký",
+	"captchaRequired": "Xin bạn hãy giải câu đố capcha này đã!",
+	"captchaTitle": "Xem bạn có phải con ro-bot hư hỏng không?",
+	"mfa": "Nhập mã xác thực/Mã sao lưu",
+	"mfaPlaceholder": "Mã xác thực 6 chữ số/Mã sao lưu 8 chữ số"
 }
