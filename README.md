@@ -22,3 +22,23 @@ This is the open source, discord-compatible, themeable and extendable native fos
 We use [react-native](https://reactnative.dev/) to facilitate the native components of the underlying operating system to give the user a native, performant and consistent experience across all platforms (web, windows, linux, android, macos, ios).
 
 **Notice**: react-native does **not** use web technologies (HTML, CSS) and is not a resource hogging technology unlike electron.
+
+## Building
+
+To build the project you have to install `yarn` (preferred) or `npm`.
+
+     cd fosscord-client; yarn install 
+
+Then
+
+     yarn run 
+
+Select the platform you want to run.
+
+## Contributing
+
+### To contribute: 
+- Fork the repository
+- Run the building instructions. (Choose **web** to test your changes.)
+- Commit & Push.
+- Pull Request & Done!
