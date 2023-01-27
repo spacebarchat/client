@@ -342,7 +342,7 @@
     "@babel/helper-plugin-utils" "^7.20.2"
     "@babel/plugin-syntax-class-static-block" "^7.14.5"
 
-"@babel/plugin-proposal-decorators@^7.12.9":
+"@babel/plugin-proposal-decorators@^7.12.9", "@babel/plugin-proposal-decorators@^7.20.13":
   version "7.20.13"
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-decorators/-/plugin-proposal-decorators-7.20.13.tgz#b6bea3b18e88443688fa7ed2cc06d2c60da9f4a7"
   integrity sha512-7T6BKHa9Cpd7lCueHBBzP0nkXNina+h5giOZw+a8ZpMfPFY19VjJAjIxyFHuWkhCWgL6QMqRiY/wB1fLXzm6Mw==
@@ -1102,6 +1102,14 @@
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
+
+"@callstack/react-theme-provider@^3.0.8":
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/@callstack/react-theme-provider/-/react-theme-provider-3.0.8.tgz#d0d7ac71e422133c5f7b78f4c4aa1bc57f156f50"
+  integrity sha512-5U231sYY2sqQOaELX0WBCn+iluV8bFaXIS7em03k4W5Xz0AhGvKlnpLIhDGFP8im/SvNW7/2XoR0BsClhn9t6Q==
+  dependencies:
+    deepmerge "^3.2.0"
+    hoist-non-react-statics "^3.3.0"
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
@@ -3814,7 +3822,7 @@ color-string@^1.5.3, color-string@^1.6.0, color-string@^1.9.0:
     color-name "^1.0.0"
     simple-swizzle "^0.2.2"
 
-color@^3.0.0:
+color@^3.0.0, color@^3.1.2:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/color/-/color-3.2.1.tgz#3544dc198caf4490c3ecc9a790b54fe9ff45e164"
   integrity sha512-aBl7dZI9ENN6fUGC7mWpMTPNHmWUSNan9tuWN6ahh5ZLNk9baLJOnSMlrQkHcrfFgz2/RigjUVAjdx36VcemKA==
@@ -8341,6 +8349,11 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
+mobx@^6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.7.0.tgz#2d805610fee1801fd015c54fd5400d2601aa3768"
+  integrity sha512-1kBLBdSNG2bA522HQdbsTvwAwYf9hq9FWxmlhX7wTsJUAI54907J+ozfGW+LoYUo06vjit748g6QH1AAGLNebw==
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/move-concurrently/-/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"
@@ -9919,6 +9932,20 @@ react-native-gradle-plugin@^0.70.3:
   version "0.70.3"
   resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.70.3.tgz#cbcf0619cbfbddaa9128701aa2d7b4145f9c4fc8"
   integrity sha512-oOanj84fJEXUg9FoEAQomA8ISG+DVIrTZ3qF7m69VQUJyOGYyDZmPqKcjvRku4KXlEH6hWO9i4ACLzNBh8gC0A==
+
+react-native-logs@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-logs/-/react-native-logs-5.0.1.tgz#53665919587b499e22f514e50cb6a834cedba1ce"
+  integrity sha512-30aQugeLFfcBEKd6U4I75SKc5q5fb9Qrwv0Vnsy3jwpC716xON9SxRbBEnxoPSDJjzK527r4zi+qYqzig6lPlQ==
+
+react-native-paper@^5.1.4:
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.1.4.tgz#952a2555bff021e7c919ac0fc1c1628d414d49a2"
+  integrity sha512-MpT7zmq/+bSXrKtjUHDKYadTSZvhE2d15oH+Sz77F+xq0/Xqwtg9aX3iHU4x0P92PRubRAbKiLkV0Qi9+beN7g==
+  dependencies:
+    "@callstack/react-theme-provider" "^3.0.8"
+    color "^3.1.2"
+    use-event-callback "^0.1.0"
 
 react-native-reanimated@~2.12.0:
   version "2.12.0"
@@ -11793,6 +11820,11 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
+use-event-callback@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/use-event-callback/-/use-event-callback-0.1.0.tgz#29d7ce996802935c5387e7d3b606cf316da3457f"
+  integrity sha512-5fTzY5UEXHMK5UR0NRkUz6TPfWmmX9fO8Tx3SnHrfMPdrQ7Rna0gDBy0r56SP68TwsP9DgwSBzeysCu3A/Z2NA==
+
 use-latest-callback@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/use-latest-callback/-/use-latest-callback-0.1.5.tgz#a4a836c08fa72f6608730b5b8f4bbd9c57c04f51"
@@ -12254,6 +12286,11 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
+
+wretch@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/wretch/-/wretch-2.4.1.tgz#713d55c2a05d87bb0f0bfb1cf26dbae112060320"
+  integrity sha512-jHJFJ968p/JNVrTZ+gJ1vZekk+3EkDsYHwamHLR+xMKur9vBv8lhBe2+XENbXQtygdO0JGtjRJeKc9xiuwW6lQ==
 
 write-file-atomic@^2.3.0:
   version "2.4.3"
