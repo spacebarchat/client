@@ -27,7 +27,7 @@ export default function RootScreen({
 
   if (Platform.isMobile) {
     return (
-      <Container flex style={styles.rootContainer}>
+      <Container displayFlex flexOne style={styles.rootContainer}>
         <Container horizontalCenter style={[styles.rootContentContainer]}>
           {/* Header, Branding */}
           <Container horizontalCenter style={styles.headingContainer}>
