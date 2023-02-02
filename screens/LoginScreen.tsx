@@ -15,14 +15,18 @@ import {
   TextInput,
 } from "react-native-paper";
 import Container from "../components/Container";
+import useLogger from "../hooks/useLogger";
 import { IAPILoginRequest, IAPILoginResponse } from "../interfaces/IAPILogin";
 import { DomainContext } from "../stores/DomainStore";
 import { RootStackScreenProps } from "../types";
 import Endpoints from "../utils/Endpoints";
+import { t } from "../utils/i18n";
 
 function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
   const dimensions = useWindowDimensions();
   const domain = useContext(DomainContext);
+  const logger = useLogger("LoginScreen");
+
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState<{
@@ -34,6 +38,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const handleSubmit = (e: GestureResponderEvent) => {
+    if (isLoading) return;
     e.preventDefault();
     setIsLoading(true);
     domain.rest
@@ -51,19 +56,35 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
         } else {
           // TODO: unexpected response
         }
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        setError({
+          email: e.message,
+        });
       });
-
-    // setTimeout(() => {
-    //   setIsLoading(false);
-    //   setError({
-    //     email: "Email or password is invalid.",
-    //     password: "Email or password is invalid.",
-    //   });
-    // }, 2000);
   };
 
   const handleBack = () => {
+    setIsLoading(true);
     navigation.goBack();
+  };
+
+  const handlePasswordReset = () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    if (!email || email == "") {
+      setError({
+        email: t("LoginScreen:errors.invalid_email_password") as string,
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    // TODO: password reset request
+    // TODO: show modal on success (/failure?)
+    logger.debug("handle password reset");
+    setIsLoading(false);
   };
 
   return (
@@ -96,10 +117,10 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
           {/* Header */}
           <Container testID="headerContainer" horizontalCenter>
             <Text variant="headlineSmall" style={{ fontWeight: "600" }}>
-              Welcome back!
+              {t("LoginScreen:core.title")}
             </Text>
             <Text variant="bodyLarge" style={{ fontWeight: "400" }}>
-              Login to Fosscord
+              {t("LoginScreen:core.subtitle")}
             </Text>
           </Container>
 
@@ -108,7 +129,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
             {/* Email */}
             <Container testID="emailWrapper">
               <TextInput
-                label="Email"
+                label={t("LoginScreen:core.label_email") as string}
                 textContentType="emailAddress"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
@@ -128,7 +149,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
             {/* Password */}
             <Container testID="passwordWrapper">
               <TextInput
-                label="Password"
+                label={t("LoginScreen:core.label_password") as string}
                 textContentType="password"
                 value={password}
                 onChangeText={(text) => setPassword(text)}
@@ -144,9 +165,9 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
                 {error.password}
               </HelperText>
               <Container testID="forgotPasswordContainer">
-                <Link to={{ screen: "ResetPassword" }} style={styles.link}>
-                  Forgot Password?
-                </Link>
+                <Text style={styles.link} onPress={handlePasswordReset}>
+                  {t("LoginScreen:core.forgot_password")}
+                </Text>
               </Container>
             </Container>
 
@@ -158,13 +179,15 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
               onPress={handleSubmit}
               style={{ marginVertical: 16 }}
             >
-              Log In
+              {t("LoginScreen:core.button_title")}
             </Button>
             {!Platform.isMobile && (
               <Container horizontalCenter row>
-                <Text style={{ marginRight: 5 }}>Need an account?</Text>
+                <Text style={{ marginRight: 5 }}>
+                  {t("LoginScreen:core.register_label")}
+                </Text>
                 <Link to={{ screen: "Register" }} style={styles.link}>
-                  Register
+                  {t("LoginScreen:core.register_link")}
                 </Link>
               </Container>
             )}
@@ -201,6 +224,7 @@ const styles = StyleSheet.create({
   },
   link: {
     color: "#7289da",
+    cursor: "pointer",
   },
 });
 

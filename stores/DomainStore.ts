@@ -5,6 +5,7 @@ import AccountStore from "./AccountStore";
 import BaseStore from "./BaseStore";
 
 export class DomainStore extends BaseStore {
+  @observable isI18NInitialized: boolean = false;
   @observable theme: string = "default";
   @observable account: AccountStore = new AccountStore();
   @observable isLoading: boolean = true;
@@ -23,6 +24,12 @@ export class DomainStore extends BaseStore {
   @action
   setLoading(isLoading: boolean) {
     this.isLoading = isLoading;
+  }
+
+  @action
+  setI18NInitialized() {
+    this.isI18NInitialized = true;
+    this.logger.debug("i18n initialized");
   }
 }
 

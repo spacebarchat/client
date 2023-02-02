@@ -3,6 +3,8 @@
   "compilerOptions": {
     "strict": true,
     "useDefineForClassFields": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "target": "ESNext",
+    "module": "ESNext"
   }
 }

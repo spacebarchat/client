@@ -17,7 +17,10 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "CFBundleAllowMixedLocalizations": true
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -27,6 +30,9 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
+    },
+    "locales": {
+      "en": "./locales/en.json"
     }
   }
 }
