@@ -1,5 +1,5 @@
 import { Link } from "@react-navigation/native";
-import React from "react";
+import React, { useContext } from "react";
 import {
   GestureResponderEvent,
   Platform,
@@ -15,26 +15,51 @@ import {
   TextInput,
 } from "react-native-paper";
 import Container from "../components/Container";
+import { IAPILoginRequest, IAPILoginResponse } from "../interfaces/IAPILogin";
+import { DomainContext } from "../stores/DomainStore";
 import { RootStackScreenProps } from "../types";
+import Endpoints from "../utils/Endpoints";
 
 function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
   const dimensions = useWindowDimensions();
+  const domain = useContext(DomainContext);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [error, setError] = React.useState({ email: "", password: "" });
+  const [error, setError] = React.useState<{
+    email?: string;
+    username?: string;
+    password?: string;
+    dob?: string;
+  }>({ email: "", password: "" });
   const [isLoading, setIsLoading] = React.useState(false);
 
   const handleSubmit = (e: GestureResponderEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-      setError({
-        email: "Email or password is invalid.",
-        password: "Email or password is invalid.",
+    domain.rest
+      .post<IAPILoginRequest, IAPILoginResponse>(Endpoints.LOGIN, {
+        login: email,
+        password,
+      })
+      .then((res) => {
+        if ("captcha_key" in res) {
+          // TODO: Handle captcha
+        } else if ("mfa" in res) {
+          // TODO: hanlde mfa
+        } else if ("token" in res) {
+          // TODO: handle success
+        } else {
+          // TODO: unexpected response
+        }
       });
-    }, 2000);
+
+    // setTimeout(() => {
+    //   setIsLoading(false);
+    //   setError({
+    //     email: "Email or password is invalid.",
+    //     password: "Email or password is invalid.",
+    //   });
+    // }, 2000);
   };
 
   const handleBack = () => {
@@ -49,7 +74,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
           styles.loginContainer,
           {
             minWidth: !Platform.isMobile
-              ? dimensions.width / 2.4
+              ? dimensions.width / 2.5
               : dimensions.width,
           },
         ]}
@@ -131,10 +156,18 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
               disabled={isLoading}
               loading={isLoading}
               onPress={handleSubmit}
-              style={{ marginTop: 16 }}
+              style={{ marginVertical: 16 }}
             >
               Log In
             </Button>
+            {!Platform.isMobile && (
+              <Container horizontalCenter row>
+                <Text style={{ marginRight: 5 }}>Need an account?</Text>
+                <Link to={{ screen: "Register" }} style={styles.link}>
+                  Register
+                </Link>
+              </Container>
+            )}
           </Container>
         </Container>
       </Surface>

@@ -6,6 +6,7 @@ interface ContainerProps extends ViewProps {
   horizontalCenter?: boolean;
   flexOne?: boolean;
   displayFlex?: boolean;
+  row?: boolean;
 }
 
 function Container(props: ContainerProps) {
@@ -18,6 +19,7 @@ function Container(props: ContainerProps) {
         props.displayFlex ? { display: "flex" } : undefined,
         props.verticalCenter ? { justifyContent: "center" } : undefined,
         props.horizontalCenter ? { alignItems: "center" } : undefined,
+        props.row ? { flexDirection: "row" } : undefined,
       ]}
     >
       {props.children}
