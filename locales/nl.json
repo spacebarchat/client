@@ -5,22 +5,22 @@
   },
   "LoginScreen": {
     "core": {
-      "title": "Welcome Back!",
+      "title": "Welkom Terug!",
       "subtitle": "Login to $t(common:app_name)",
       "label_email": "Email",
-      "label_password": "Password",
-      "button_title": "Log In",
-      "forgot_password": "Forgot Password?",
-      "register_label": "Need an account?",
-      "register_link": "Register"
+      "label_password": "Wachtwoord",
+      "button_title": "Log in",
+      "forgot_password": "Wachtwoord vergeten?",
+      "register_label": "Nog geen account?",
+      "register_link": "Registreren"
     },
     "errors": {
-      "invalid_email_password": "Invalid username or password."
+      "invalid_email_password": "Ongeldige gebruikersnaam of wachtwoord."
     }
   },
   "NotFoundScreen": {
-    "title": "This screen doesn't exist.",
-    "go_back": "Go back to the previous screen.",
-    "go_home": "Go to the home screen."
+    "title": "Dit scherm bestaat niet.",
+    "go_back": "Ga terug naar het vorige scherm.",
+    "go_home": "Ga naar het startscherm."
   }
 }
