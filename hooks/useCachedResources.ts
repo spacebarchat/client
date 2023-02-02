@@ -36,7 +36,7 @@ export default function useCachedResources() {
             domain.setI18NInitialized();
           })
           .catch((e) => {
-            logger.error("i18n init failed", e);
+            logger.warn("Something went wrong while initializing i18n:", e);
           });
 
         // Load fonts

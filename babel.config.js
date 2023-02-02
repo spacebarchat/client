@@ -7,6 +7,7 @@ module.exports = function (api) {
       "react-native-reanimated/plugin",
       ["@babel/plugin-proposal-decorators", { version: "legacy" }],
       ["@babel/plugin-proposal-class-properties", { loose: true }],
+      "macros",
     ],
     env: {
       production: {

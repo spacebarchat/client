@@ -16,6 +16,7 @@ import {
 } from "react-native-paper";
 import Container from "../components/Container";
 import { RootStackScreenProps } from "../types";
+import { t } from "../utils/i18n";
 
 function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
   const dimensions = useWindowDimensions();
@@ -39,10 +40,10 @@ function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
     setTimeout(() => {
       setIsLoading(false);
       setError({
-        email: "Email or password is invalid.",
-        username: "Email or password is invalid.",
-        password: "Email or password is invalid.",
-        dob: "Email or password is invalid.",
+        email: "this is a test error",
+        username: "this is a test error",
+        password: "this is a test error",
+        dob: "this is a test error",
       });
     }, 2000);
   };
@@ -81,7 +82,7 @@ function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
           {/* Header */}
           <Container testID="headerContainer" horizontalCenter>
             <Text variant="headlineSmall" style={{ fontWeight: "600" }}>
-              Create an account
+              {t("register:TITLE")}
             </Text>
           </Container>
 
@@ -90,7 +91,7 @@ function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
             {/* Email */}
             <Container testID="emailWrapper">
               <TextInput
-                label="Email"
+                label={t("register:LABEL_EMAIL") as string}
                 textContentType="emailAddress"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
@@ -109,7 +110,7 @@ function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
 
             <Container testID="usernameWrapper">
               <TextInput
-                label="Username"
+                label={t("register:LABEL_USERNAME") as string}
                 textContentType="username"
                 value={username}
                 onChangeText={(text) => setUsername(text)}
@@ -129,7 +130,7 @@ function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
             {/* Password */}
             <Container testID="passwordWrapper">
               <TextInput
-                label="Password"
+                label={t("register:LABEL_PASSWORD") as string}
                 textContentType="password"
                 value={password}
                 onChangeText={(text) => setPassword(text)}
@@ -150,7 +151,7 @@ function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
             {/* <Container testID="dobWrapper">
               </Container> */}
 
-            {/* Continue Button */}
+            {/* Create Account Button */}
             <Button
               mode="contained"
               disabled={isLoading}
@@ -158,12 +159,12 @@ function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
               onPress={handleSubmit}
               style={{ marginVertical: 16 }}
             >
-              Continue
+              {t("register:BUTTON_CREATE_ACCOUNT")}
             </Button>
             {!Platform.isMobile && (
               <Container horizontalCenter row>
                 <Link to={{ screen: "Login" }} style={styles.link}>
-                  Already have an account?
+                  {t("register:LINK_LOGIN")}
                 </Link>
               </Container>
             )}

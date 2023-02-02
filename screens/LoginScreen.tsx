@@ -75,7 +75,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
     setIsLoading(true);
     if (!email || email == "") {
       setError({
-        email: t("LoginScreen:errors.invalid_email_password") as string,
+        email: t("common:errors.INVALID_LOGIN") as string,
       });
       setIsLoading(false);
       return;
@@ -117,10 +117,10 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
           {/* Header */}
           <Container testID="headerContainer" horizontalCenter>
             <Text variant="headlineSmall" style={{ fontWeight: "600" }}>
-              {t("LoginScreen:core.title")}
+              {t("login:TITLE")}
             </Text>
             <Text variant="bodyLarge" style={{ fontWeight: "400" }}>
-              {t("LoginScreen:core.subtitle")}
+              {t("login:SUBTITLE")}
             </Text>
           </Container>
 
@@ -129,7 +129,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
             {/* Email */}
             <Container testID="emailWrapper">
               <TextInput
-                label={t("LoginScreen:core.label_email") as string}
+                label={t("login:LABEL_EMAIL") as string}
                 textContentType="emailAddress"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
@@ -149,7 +149,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
             {/* Password */}
             <Container testID="passwordWrapper">
               <TextInput
-                label={t("LoginScreen:core.label_password") as string}
+                label={t("login:LABEL_PASSWORD") as string}
                 textContentType="password"
                 value={password}
                 onChangeText={(text) => setPassword(text)}
@@ -166,7 +166,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
               </HelperText>
               <Container testID="forgotPasswordContainer">
                 <Text style={styles.link} onPress={handlePasswordReset}>
-                  {t("LoginScreen:core.forgot_password")}
+                  {t("login:LABEL_FORGOT_PASSWORD")}
                 </Text>
               </Container>
             </Container>
@@ -179,15 +179,15 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
               onPress={handleSubmit}
               style={{ marginVertical: 16 }}
             >
-              {t("LoginScreen:core.button_title")}
+              {t("login:BUTTON_LOGIN")}
             </Button>
             {!Platform.isMobile && (
               <Container horizontalCenter row>
                 <Text style={{ marginRight: 5 }}>
-                  {t("LoginScreen:core.register_label")}
+                  {t("login:NEED_ACCOUNT")}
                 </Text>
                 <Link to={{ screen: "Register" }} style={styles.link}>
-                  {t("LoginScreen:core.register_link")}
+                  {t("login:REGISTER")}
                 </Link>
               </Container>
             )}

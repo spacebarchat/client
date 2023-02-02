@@ -13,9 +13,11 @@ const i18n = {
         .use(translationLoader)
         .init(
           {
+            preload: config.supportedLocales,
             fallbackLng: config.fallback,
             ns: config.namespaces,
-            defaultNS: config.defaultNamespace,
+            load: "languageOnly",
+            compatibilityJSON: "v3",
             interpolation: {
               escapeValue: false,
               format(value, format) {
@@ -30,10 +32,11 @@ const i18n = {
             if (error) {
               return reject(error);
             }
-            date
-              .init(i18next.language)
-              .then(resolve)
-              .catch((error) => reject(error));
+            // date
+            //   .init(i18next.language)
+            //   .then(resolve)
+            //   .catch((error) => reject(error));
+            resolve(void 0);
           }
         );
     });

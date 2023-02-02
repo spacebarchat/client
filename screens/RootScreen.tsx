@@ -4,6 +4,7 @@ import { Button, Text } from "react-native-paper";
 import Container from "../components/Container";
 import { DomainContext } from "../stores/DomainStore";
 import { RootStackScreenProps } from "../types";
+import { t } from "../utils/i18n";
 
 export default function RootScreen({
   navigation,
@@ -35,10 +36,10 @@ export default function RootScreen({
               variant="headlineSmall"
               style={[styles.text, { fontWeight: "600" }]}
             >
-              Welcome to Fosscord
+              {t("root:WELCOME_TITLE_MOBILE")}
             </Text>
             <Text variant="bodyMedium" style={styles.text}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              {t("root:WELCOME_SUBTITLE_MOBILE")}
             </Text>
           </Container>
 
@@ -52,14 +53,14 @@ export default function RootScreen({
               style={styles.button}
               onPress={handleRegister}
             >
-              Register
+              {t("root:ACTION_MOBILE_REGISTER")}
             </Button>
             <Button
               mode="contained"
               style={styles.button}
               onPress={handleLogin}
             >
-              Log In
+              {t("root:ACTION_MOBILE_LOGIN")}
             </Button>
           </Container>
         </Container>
@@ -67,11 +68,7 @@ export default function RootScreen({
     );
   }
 
-  return (
-    <Container>
-      <Text variant="headlineLarge">Root</Text>
-    </Container>
-  );
+  return null;
 }
 
 const styles = StyleSheet.create({

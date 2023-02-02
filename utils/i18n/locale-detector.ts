@@ -1,12 +1,15 @@
 import * as Localization from "expo-localization";
 import { LanguageDetectorAsyncModule } from "i18next";
+import Logger from "../Logger";
 
 const languageDetector: LanguageDetectorAsyncModule = {
   type: "languageDetector",
   async: true,
   detect: (callback: (locale: string) => void) => {
-    callback(Localization.getLocales()[0].languageCode);
-    // callback("es"); // forcing a different locale, for testing
+    const localeCode = Localization.getLocales()[0].languageCode;
+    Logger.debug(`[LocaleDetector] Detected locale: ${localeCode}`);
+    callback(localeCode);
+    // callback("es_ES"); // forcing a different locale, for testing
   },
   init: () => {},
   cacheUserLanguage: () => {},

@@ -8,7 +8,7 @@ export default function NotFoundScreen({
 }: RootStackScreenProps<"NotFound">) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{t("NotFoundScreen:title")}</Text>
+      <Text style={styles.title}>{t("notfound:TITLE")}</Text>
       <TouchableRipple
         onPress={() =>
           navigation.canGoBack()
@@ -18,11 +18,7 @@ export default function NotFoundScreen({
         style={styles.link}
       >
         <Text style={styles.linkText}>
-          {t(
-            navigation.canGoBack()
-              ? "NotFoundScreen:go_back"
-              : "NotFoundScreen:go_home"
-          )}
+          {t(navigation.canGoBack() ? "notfound:GO_BACK" : "notfound:GO_HOME")}
         </Text>
       </TouchableRipple>
     </View>

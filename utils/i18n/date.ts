@@ -1,20 +1,21 @@
 import { FormatFunction } from "i18next";
 import moment from "moment";
-import * as config from "./i18n";
 
+// FIXME: see i18n tryImportMomentLocale
 const date: {
   init(locale: string): Promise<void>;
   format: FormatFunction;
 } = {
   init(locale) {
     return new Promise((resolve, reject) => {
-      config.supportedLocales[locale]
-        .momentLocaleLoader()
-        .then(() => {
-          moment.locale(locale);
-          return resolve();
-        })
-        .catch(reject);
+      resolve();
+      // config
+      //   .tryImportMomentLocale(locale)
+      //   .then(() => {
+      //     moment.locale(locale);
+      //     return resolve();
+      //   })
+      //   .catch(reject);
     });
   },
   format(date, format) {

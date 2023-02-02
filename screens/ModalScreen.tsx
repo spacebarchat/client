@@ -5,7 +5,7 @@ import { Text } from "react-native-paper";
 export default function ModalScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
+      <Text style={styles.title}>Test Modal</Text>
       <View style={styles.separator} />
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
