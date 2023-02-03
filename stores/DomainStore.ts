@@ -9,7 +9,7 @@ export class DomainStore extends BaseStore {
   @observable theme: string = "default";
   @observable account: AccountStore = new AccountStore();
   @observable isLoading: boolean = true;
-  public rest: REST = new REST("https://shitcord.lol"); // TODO:
+  public rest: REST = new REST("https://staging.fosscord.com");
 
   constructor() {
     super();
