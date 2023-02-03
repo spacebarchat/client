@@ -1,41 +1,57 @@
-import wretch, { Wretch } from "wretch";
-
 export default class REST {
   public baseUrl: string;
   private token?: string;
   public apiVersion: string;
-  private wretch: Wretch;
+  private headers: Record<string, any>;
 
   constructor(baseUrl: string, token?: string, apiVersion: string = "9") {
     this.baseUrl = baseUrl;
     this.token = token;
     this.apiVersion = apiVersion;
 
-    this.wretch = wretch(`${baseUrl}/api/v9`, {
-      headers: {
-        mode: "cors",
-        "User-Agent": `Fosscord-Client/1.0 (${process.platform} ${process.arch})`,
-        accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: this.token,
-      },
-    });
+    this.headers = {
+      mode: "cors",
+      "User-Agent": `Fosscord-Client/1.0 (${process.platform} ${process.arch})`,
+      accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: this.token,
+    };
+  }
+
+  private makeUrl(path: string) {
+    return `${this.baseUrl}/api/v${this.apiVersion}${path}`;
   }
 
   public setToken(token: string) {
     this.token = token;
-    this.wretch.headers({ Authorization: token });
+    this.headers = {
+      ...this.headers,
+      Authorization: this.token,
+    };
   }
 
   public async get<T>(path: string): Promise<T> {
     return new Promise((resolve, reject) => {
-      return this.wretch.get(path).json(resolve).catch(reject);
+      return fetch(this.makeUrl(path), {
+        method: "GET",
+        headers: this.headers,
+      })
+        .then((res) => res.json())
+        .then(resolve)
+        .catch(reject);
     });
   }
 
   public async post<T, U>(path: string, body: T): Promise<U> {
     return new Promise((resolve, reject) => {
-      return this.wretch.post(body, path).json(resolve).catch(reject);
+      return fetch(this.makeUrl(path), {
+        method: "POST",
+        headers: this.headers,
+        body: JSON.stringify(body),
+      })
+        .then((res) => res.json())
+        .then(resolve)
+        .catch(reject);
     });
   }
 }

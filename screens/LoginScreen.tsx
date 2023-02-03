@@ -1,5 +1,5 @@
 import { Link } from "@react-navigation/native";
-import React, { useContext } from "react";
+import React from "react";
 import {
   GestureResponderEvent,
   Platform,
@@ -10,12 +10,14 @@ import {
   Button,
   HelperText,
   IconButton,
+  Modal,
+  Portal,
   Surface,
   Text,
   TextInput,
-  useTheme,
 } from "react-native-paper";
 import Container from "../components/Container";
+import HCaptcha, { HCaptchaMessage } from "../components/HCaptcha";
 import useLogger from "../hooks/useLogger";
 import { IAPILoginRequest, IAPILoginResponse } from "../interfaces/IAPILogin";
 import { DomainContext } from "../stores/DomainStore";
@@ -25,9 +27,8 @@ import { t } from "../utils/i18n";
 
 function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
   const dimensions = useWindowDimensions();
-  const domain = useContext(DomainContext);
+  const domain = React.useContext(DomainContext);
   const logger = useLogger("LoginScreen");
-  const theme = useTheme();
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -38,25 +39,56 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
     dob?: string;
   }>({ email: "", password: "" });
   const [isLoading, setIsLoading] = React.useState(false);
+  const [captchaModalVisible, setCaptchaModalVisible] = React.useState(false);
+  const [captchaSiteKey, setCaptchaSiteKey] = React.useState<
+    string | undefined
+  >();
+  const [captchaKey, setCaptchaKey] = React.useState<string | undefined>();
 
-  const handleSubmit = (e: GestureResponderEvent) => {
-    if (isLoading) return;
-    e.preventDefault();
+  const hideCaptchaModal = () => setCaptchaModalVisible(false);
+  const showCaptchaModal = () => setCaptchaModalVisible(true);
+
+  const handleSubmit = (e?: GestureResponderEvent) => {
+    if (isLoading && !captchaKey) return;
+    e?.preventDefault();
     setIsLoading(true);
     domain.rest
       .post<IAPILoginRequest, IAPILoginResponse>(Endpoints.LOGIN, {
         login: email,
         password,
+        captcha_key: captchaKey,
       })
       .then((res) => {
+        // TODO: process field errors
+
         if ("captcha_key" in res) {
-          // TODO: Handle captcha
+          const { captcha_key, captcha_service, captcha_sitekey } = res;
+          if (captcha_key[0] === "captcha-required") {
+            if (captcha_service === "hcaptcha") {
+              logger.debug("hCaptcha required");
+              setCaptchaSiteKey(captcha_sitekey);
+              showCaptchaModal();
+            } else {
+              setError({
+                email: `Unhandled captcha_service ${captcha_service} `,
+              });
+              setIsLoading(false);
+            }
+          } else {
+            setError({
+              email: `Unhandled captcha_key ${captcha_key} `,
+            });
+            setIsLoading(false);
+          }
         } else if ("mfa" in res) {
           // TODO: hanlde mfa
+          logger.debug("mfa required");
         } else if ("token" in res) {
           // TODO: handle success
+          logger.debug("success");
         } else {
           // TODO: unexpected response
+          logger.debug("unexpected response");
         }
       })
       .catch((e) => {
@@ -89,8 +121,60 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
     setIsLoading(false);
   };
 
+  const onCaptchaMessage = (message: HCaptchaMessage) => {
+    const { event, data } = message;
+    switch (event) {
+      case "cancel":
+        logger.debug("[HCaptcha] Captcha cancelled by user");
+        hideCaptchaModal();
+        break;
+      case "close":
+        logger.debug("[HCaptcha] Captcha closed");
+        break;
+      case "challenge-expired":
+      case "data-expired":
+        logger.debug("[HCaptcha] Captcha expired");
+        hideCaptchaModal();
+        break;
+      case "open":
+        logger.debug("[HCaptcha] Captcha opened");
+        break;
+      case "error":
+        logger.error("[HCaptcha] Captcha error", error);
+        hideCaptchaModal();
+        break;
+      case "data":
+        logger.debug("[HCaptcha] Captcha data", data);
+        hideCaptchaModal();
+        setCaptchaKey(data);
+        break;
+    }
+  };
+
+  React.useEffect(() => {
+    if (!captchaKey) return;
+    logger.debug("captcha key", captchaKey);
+    setCaptchaSiteKey(undefined);
+
+    // resubmit the login request, it will have the captcha token now
+    handleSubmit();
+  }, [captchaKey]);
+
   return (
     <Container testID="mainContainer" horizontalCenter verticalCenter flexOne>
+      <Portal>
+        <Modal
+          visible={captchaModalVisible}
+          onDismiss={hideCaptchaModal}
+          style={styles.modalContainer}
+          contentContainerStyle={styles.modalContentContainer}
+        >
+          {captchaSiteKey && (
+            <HCaptcha siteKey={captchaSiteKey} onMessage={onCaptchaMessage} />
+          )}
+        </Modal>
+      </Portal>
+
       <Surface
         testID="innerContainer"
         style={[
@@ -192,6 +276,20 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
             >
               {t("login:BUTTON_LOGIN")}
             </Button>
+
+            {/* Login Button */}
+            <Button
+              mode="contained"
+              disabled={isLoading}
+              loading={isLoading}
+              onPress={() => {
+                showCaptchaModal();
+              }}
+              style={{ marginVertical: 16 }}
+              labelStyle={styles.buttonLabel}
+            >
+              Show Modal
+            </Button>
           </Container>
         </Container>
       </Surface>
@@ -228,6 +326,14 @@ const styles = StyleSheet.create({
     cursor: "pointer",
   },
   buttonLabel: { fontWeight: "400", fontSize: 16 },
+  modalContainer: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContentContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export default LoginScreen;

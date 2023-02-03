@@ -33,13 +33,13 @@ export type IAPIHCaptchaErrorCodes =
   | "sitekey-secret-mismatch";
 
 export interface IAPILoginResponseCaptchaRequiredRecaptcha {
-  captcha_key: [IAPIRecatchaErrorCodes];
+  captcha_key: ["captcha-required" & IAPIRecatchaErrorCodes];
   captcha_sitekey: string;
   captcha_service: "recaptcha";
 }
 
 export interface IAPILoginResponseCaptchaRequiredHCaptcha {
-  captcha_key: [IAPIHCaptchaErrorCodes];
+  captcha_key: ["captcha-required" & IAPIHCaptchaErrorCodes];
   captcha_sitekey: string;
   captcha_service: "hcaptcha";
 }
