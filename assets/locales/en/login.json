@@ -1,6 +1,5 @@
 {
-  "TITLE": "Welcome Back!",
-  "SUBTITLE": "Login to $t(common:APP_NAME)",
+  "TITLE": "Login to $t(common:APP_NAME)",
   "LABEL_EMAIL": "Email",
   "LABEL_PASSWORD": "Password",
   "BUTTON_LOGIN": "Log In",

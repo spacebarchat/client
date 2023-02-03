@@ -4,7 +4,7 @@ import {
   GestureResponderEvent,
   Platform,
   StyleSheet,
-  useWindowDimensions
+  useWindowDimensions,
 } from "react-native";
 import {
   Button,
@@ -12,7 +12,8 @@ import {
   IconButton,
   Surface,
   Text,
-  TextInput
+  TextInput,
+  useTheme,
 } from "react-native-paper";
 import Container from "../components/Container";
 import useLogger from "../hooks/useLogger";
@@ -26,6 +27,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
   const dimensions = useWindowDimensions();
   const domain = useContext(DomainContext);
   const logger = useLogger("LoginScreen");
+  const theme = useTheme();
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -119,9 +121,16 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
             <Text variant="headlineSmall" style={{ fontWeight: "600" }}>
               {t("login:TITLE")}
             </Text>
-            <Text variant="bodyLarge" style={{ fontWeight: "400" }}>
-              {t("login:SUBTITLE")}
-            </Text>
+            {!Platform.isMobile && (
+              <Link to={{ screen: "Register" }} style={styles.link}>
+                <Text
+                  variant="bodyLarge"
+                  style={[{ fontWeight: "400", marginRight: 5 }, styles.link]}
+                >
+                  {t("login:NEED_ACCOUNT")}
+                </Text>
+              </Link>
+            )}
           </Container>
 
           {/* Form */}
@@ -179,19 +188,10 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
               loading={isLoading}
               onPress={handleSubmit}
               style={{ marginVertical: 16 }}
+              labelStyle={styles.buttonLabel}
             >
               {t("login:BUTTON_LOGIN")}
             </Button>
-            {!Platform.isMobile && (
-              <Container horizontalCenter row>
-                <Text style={{ marginRight: 5 }}>
-                  {t("login:NEED_ACCOUNT")}
-                </Text>
-                <Link to={{ screen: "Register" }} style={styles.link}>
-                  {t("login:REGISTER")}
-                </Link>
-              </Container>
-            )}
           </Container>
         </Container>
       </Surface>
@@ -227,6 +227,7 @@ const styles = StyleSheet.create({
     color: "#7289da",
     cursor: "pointer",
   },
+  buttonLabel: { fontWeight: "400", fontSize: 16 },
 });
 
 export default LoginScreen;

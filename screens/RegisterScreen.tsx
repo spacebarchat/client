@@ -84,6 +84,16 @@ function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
             <Text variant="headlineSmall" style={{ fontWeight: "600" }}>
               {t("register:TITLE")}
             </Text>
+            {!Platform.isMobile && (
+              <Link to={{ screen: "Login" }} style={styles.link}>
+                <Text
+                  variant="bodyLarge"
+                  style={[{ fontWeight: "400", marginRight: 5 }, styles.link]}
+                >
+                  {t("register:LINK_LOGIN")}
+                </Text>
+              </Link>
+            )}
           </Container>
 
           {/* Form */}
@@ -159,16 +169,10 @@ function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
               loading={isLoading}
               onPress={handleSubmit}
               style={{ marginVertical: 16 }}
+              labelStyle={styles.buttonLabel}
             >
               {t("register:BUTTON_CREATE_ACCOUNT")}
             </Button>
-            {!Platform.isMobile && (
-              <Container horizontalCenter row>
-                <Link to={{ screen: "Login" }} style={styles.link}>
-                  {t("register:LINK_LOGIN")}
-                </Link>
-              </Container>
-            )}
           </Container>
         </Container>
       </Surface>
@@ -201,6 +205,7 @@ const styles = StyleSheet.create({
   link: {
     color: "#7289da",
   },
+  buttonLabel: { fontWeight: "400", fontSize: 16 },
 });
 
 export default RegisterScreen;

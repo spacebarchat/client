@@ -11,32 +11,13 @@ import {
 } from "@react-navigation/native";
 import merge from "deepmerge";
 
-// const tintColorLight = '#2f95dc';
-// const tintColorDark = '#fff';
-
-// export default {
-//   light: {
-//     text: '#000',
-//     background: '#fff',
-//     tint: tintColorLight,
-//     tabIconDefault: '#ccc',
-//     tabIconSelected: tintColorLight,
-//   },
-//   dark: {
-//     text: '#fff',
-//     background: '#000',
-//     tint: tintColorDark,
-//     tabIconDefault: '#ccc',
-//     tabIconSelected: tintColorDark,
-//   },
-// };
-
 const CustomLightTheme: MD3Theme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
     primary: "#FF5F00",
     secondary: "#FF3D00",
+    onPrimary: "#000000",
   },
 };
 
@@ -46,6 +27,7 @@ const CustomDarkTheme: MD3Theme = {
     ...MD3DarkTheme.colors,
     primary: "#FF5F00",
     secondary: "#FF3D00",
+    onPrimary: "#FFFFFF",
   },
 };
 
