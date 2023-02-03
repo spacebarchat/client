@@ -17,7 +17,7 @@ const CustomLightTheme: MD3Theme = {
     ...MD3LightTheme.colors,
     primary: "#FF5F00",
     secondary: "#FF3D00",
-    onPrimary: "#000000",
+    onPrimary: "#FFFFFF",
   },
 };
 
