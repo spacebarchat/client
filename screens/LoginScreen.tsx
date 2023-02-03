@@ -4,7 +4,7 @@ import {
   GestureResponderEvent,
   Platform,
   StyleSheet,
-  useWindowDimensions,
+  useWindowDimensions
 } from "react-native";
 import {
   Button,
@@ -12,7 +12,7 @@ import {
   IconButton,
   Surface,
   Text,
-  TextInput,
+  TextInput
 } from "react-native-paper";
 import Container from "../components/Container";
 import useLogger from "../hooks/useLogger";
@@ -151,6 +151,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
               <TextInput
                 label={t("login:LABEL_PASSWORD") as string}
                 textContentType="password"
+                secureTextEntry
                 value={password}
                 onChangeText={(text) => setPassword(text)}
                 style={styles.input}

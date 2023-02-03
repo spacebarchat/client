@@ -132,6 +132,7 @@ function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
               <TextInput
                 label={t("register:LABEL_PASSWORD") as string}
                 textContentType="password"
+                secureTextEntry
                 value={password}
                 onChangeText={(text) => setPassword(text)}
                 style={styles.input}
