@@ -26,7 +26,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.fosscord.client"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
@@ -94,6 +95,11 @@
       "vec": "./assets/locales/vec/common.json",
       "vi": "./assets/locales/vi/common.json",
       "zh": "./assets/locales/zh/common.json"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "14a0df67-7cde-44cd-8c5b-042fa1497c1c"
+      }
     }
   }
 }
