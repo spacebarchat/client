@@ -60,3 +60,12 @@ export type IAPILoginResponse =
   | IAPILoginResponseMFARequired
   | IAPILoginResponseCaptchaRequired
   | IAPILoginResponseSuccess;
+
+export interface IAPITOTPRequest {
+  code: string;
+  ticket: string;
+  gift_code_sku_id?: string | null;
+  login_source?: string | null;
+}
+
+export interface IAPIMFAResponse {} //  TODO:

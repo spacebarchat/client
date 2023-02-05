@@ -4,6 +4,8 @@
   "TERMS_OF_SERVICE_URL": "https://www.example.com/terms-of-service",
   "PRIVACY_POLICY_URL": "https://www.example.com/privacy-policy",
   "errors": {
-    "INVALID_LOGIN": "Invalid username or password."
+    "INVALID_LOGIN": "Invalid username or password.",
+    "INVALID_OTP": "Invalid two-factor authentication code.",
+    "UNKNOWN_ERROR": "Something's broken, sound the fire alarm!"
   }
 }

@@ -18,6 +18,7 @@ import {
 } from "react-native-paper";
 import Container from "../components/Container";
 import HCaptcha, { HCaptchaMessage } from "../components/HCaptcha";
+import MFAInput from "../components/MFAInput";
 import useLogger from "../hooks/useLogger";
 import { IAPILoginRequest, IAPILoginResponse } from "../interfaces/IAPILogin";
 import { DomainContext } from "../stores/DomainStore";
@@ -32,7 +33,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [error, setError] = React.useState<{
+  const [errors, setErrors] = React.useState<{
     email?: string;
     username?: string;
     password?: string;
@@ -44,6 +45,8 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
     string | undefined
   >();
   const [captchaKey, setCaptchaKey] = React.useState<string | undefined>();
+  const [shouldShowMFA, setShouldShowMFA] = React.useState(false);
+  const [mfaTicket, setMFATicket] = React.useState<string | undefined>();
 
   const hideCaptchaModal = () => setCaptchaModalVisible(false);
   const showCaptchaModal = () => setCaptchaModalVisible(true);
@@ -68,32 +71,49 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
               logger.debug("hCaptcha required");
               setCaptchaSiteKey(captcha_sitekey);
               showCaptchaModal();
-            } else {
-              setError({
-                email: `Unhandled captcha_service ${captcha_service} `,
-              });
-              setIsLoading(false);
+              return;
             }
-          } else {
-            setError({
-              email: `Unhandled captcha_key ${captcha_key} `,
+
+            setErrors({
+              email: `Unhandled captcha_service ${captcha_service} `,
             });
             setIsLoading(false);
+            return;
           }
+
+          setErrors({
+            email: `Unhandled captcha_key ${captcha_key} `,
+          });
+          setIsLoading(false);
+          return;
         } else if ("mfa" in res) {
-          // TODO: hanlde mfa
-          logger.debug("mfa required");
+          // TODO: handle webauthn
+          logger.debug("MFA Required");
+          setShouldShowMFA(true);
+          setMFATicket(res.ticket);
+          return;
         } else if ("token" in res) {
           // TODO: handle success
-          logger.debug("success");
+          logger.debug("success", res);
+          setIsLoading(false);
+          return;
         } else {
-          // TODO: unexpected response
-          logger.debug("unexpected response");
+          if ("message" in res) {
+            setErrors({
+              email: (res as any).message as string,
+            });
+            return;
+          }
+
+          setErrors({
+            email: t("common:errors.UNEXPECTED_ERROR") as string,
+          });
+          return;
         }
       })
       .catch((e) => {
         setIsLoading(false);
-        setError({
+        setErrors({
           email: e.message,
         });
       });
@@ -108,7 +128,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
     if (isLoading) return;
     setIsLoading(true);
     if (!email || email == "") {
-      setError({
+      setErrors({
         email: t("common:errors.INVALID_LOGIN") as string,
       });
       setIsLoading(false);
@@ -140,7 +160,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
         logger.debug("[HCaptcha] Captcha opened");
         break;
       case "error":
-        logger.error("[HCaptcha] Captcha error", error);
+        logger.error("[HCaptcha] Captcha error", errors);
         hideCaptchaModal();
         break;
       case "data":
@@ -151,14 +171,18 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
     }
   };
 
+  // Resubmit login request after captcha is completed
   React.useEffect(() => {
     if (!captchaKey) return;
-    logger.debug("captcha key", captchaKey);
     setCaptchaSiteKey(undefined);
 
-    // resubmit the login request, it will have the captcha token now
     handleSubmit();
   }, [captchaKey]);
+
+  if (shouldShowMFA && mfaTicket)
+    return (
+      <MFAInput close={() => setShouldShowMFA(false)} mfaTicket={mfaTicket} />
+    );
 
   return (
     <Container testID="mainContainer" horizontalCenter verticalCenter flexOne>
@@ -228,14 +252,14 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
                 onChangeText={(text) => setEmail(text)}
                 style={styles.input}
                 disabled={isLoading}
-                error={!!error.email}
+                error={!!errors.email}
               />
               <HelperText
                 type="error"
-                visible={!!error.email}
+                visible={!!errors.email}
                 style={styles.helperText}
               >
-                {error.email}
+                {errors.email}
               </HelperText>
             </Container>
 
@@ -249,14 +273,14 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
                 onChangeText={(text) => setPassword(text)}
                 style={styles.input}
                 disabled={isLoading}
-                error={!!error.password}
+                error={!!errors.password}
               />
               <HelperText
                 type="error"
-                visible={!!error.password}
+                visible={!!errors.password}
                 style={styles.helperText}
               >
-                {error.password}
+                {errors.password}
               </HelperText>
               <Container testID="forgotPasswordContainer">
                 <Text style={styles.link} onPress={handlePasswordReset}>
@@ -275,20 +299,6 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
               labelStyle={styles.buttonLabel}
             >
               {t("login:BUTTON_LOGIN")}
-            </Button>
-
-            {/* Login Button */}
-            <Button
-              mode="contained"
-              disabled={isLoading}
-              loading={isLoading}
-              onPress={() => {
-                showCaptchaModal();
-              }}
-              style={{ marginVertical: 16 }}
-              labelStyle={styles.buttonLabel}
-            >
-              Show Modal
             </Button>
           </Container>
         </Container>
