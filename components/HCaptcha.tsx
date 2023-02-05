@@ -9,7 +9,6 @@ import {
 import { ActivityIndicator } from "react-native-paper";
 import { WebView as RNWebViewWeb } from "react-native-web-webview";
 import { WebView as RNWebViewMobile } from "react-native-webview";
-// @ts-ignore
 
 export interface HCaptchaMessage {
   event:
