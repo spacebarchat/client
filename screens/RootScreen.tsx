@@ -8,7 +8,7 @@ import { t } from "../utils/i18n";
 
 export default function RootScreen({
   navigation,
-}: RootStackScreenProps<"Root">) {
+}: RootStackScreenProps<"App">) {
   const domain = useContext(DomainContext);
 
   useEffect(() => {
