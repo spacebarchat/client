@@ -26,7 +26,7 @@ export default function RootScreen({
     navigation.navigate("Register");
   };
 
-  if (Platform.isMobile) {
+  if (Platform.isMobile && !domain.account.isAuthenticated) {
     return (
       <Container displayFlex flexOne style={styles.rootContainer}>
         <Container horizontalCenter style={[styles.rootContentContainer]}>
@@ -68,7 +68,12 @@ export default function RootScreen({
     );
   }
 
-  return null;
+  return (
+    <Container verticalCenter horizontalCenter flexOne>
+      <Text>Root Screen</Text>
+      <Text>You are authenticated</Text>
+    </Container>
+  );
 }
 
 const styles = StyleSheet.create({

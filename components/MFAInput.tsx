@@ -24,9 +24,10 @@ import Container from "./Container";
 interface MFAInputProps {
   close: () => void;
   mfaTicket: string;
+  navigateRoot: () => void;
 }
 
-function MFAInput({ close, mfaTicket }: MFAInputProps) {
+function MFAInput({ close, mfaTicket, navigateRoot }: MFAInputProps) {
   const dimensions = useWindowDimensions();
   const domain = React.useContext(DomainContext);
   const logger = useLogger("MFAInput");
@@ -58,14 +59,15 @@ function MFAInput({ close, mfaTicket }: MFAInputProps) {
         // TODO: process field errors
 
         if ("token" in res) {
-          // TODO: handle success
           logger.debug("success", res);
+          domain.account.setToken(res.token);
           setIsLoading(false);
+          navigateRoot();
           return;
         } else {
           if ("message" in res) {
             setErrors({
-              code: res.message as string,
+              code: res.message,
             });
             return;
           }

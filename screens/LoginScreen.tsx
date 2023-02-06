@@ -50,6 +50,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
 
   const hideCaptchaModal = () => setCaptchaModalVisible(false);
   const showCaptchaModal = () => setCaptchaModalVisible(true);
+  const navigateRoot = () => navigation.navigate("Root");
 
   const handleSubmit = (e?: GestureResponderEvent) => {
     if (isLoading && !captchaKey) return;
@@ -93,8 +94,8 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
           setMFATicket(res.ticket);
           return;
         } else if ("token" in res) {
-          // TODO: handle success
           logger.debug("success", res);
+          domain.account.setToken(res.token);
           setIsLoading(false);
           return;
         } else {
@@ -181,7 +182,11 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
 
   if (shouldShowMFA && mfaTicket)
     return (
-      <MFAInput close={() => setShouldShowMFA(false)} mfaTicket={mfaTicket} />
+      <MFAInput
+        close={() => setShouldShowMFA(false)}
+        mfaTicket={mfaTicket}
+        navigateRoot={navigateRoot}
+      />
     );
 
   return (

@@ -68,4 +68,10 @@ export interface IAPITOTPRequest {
   login_source?: string | null;
 }
 
-export interface IAPIMFAResponse {} //  TODO:
+// TODO: move to a separate file
+export interface IAPIError {
+  code: number;
+  message: string;
+}
+
+export type IAPIMFAResponse = IAPILoginResponseSuccess | IAPIError;
