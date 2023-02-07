@@ -1,11 +1,10 @@
+import { observer } from "mobx-react";
 import { StyleSheet, View } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
 import { RootStackScreenProps } from "../types";
 import { t } from "../utils/i18n";
 
-export default function NotFoundScreen({
-  navigation,
-}: RootStackScreenProps<"NotFound">) {
+function NotFoundScreen({ navigation }: RootStackScreenProps<"NotFound">) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{t("notfound:TITLE")}</Text>
@@ -13,7 +12,7 @@ export default function NotFoundScreen({
         onPress={() =>
           navigation.canGoBack()
             ? navigation.goBack()
-            : navigation.replace("Root")
+            : navigation.replace("App")
         }
         style={styles.link}
       >
@@ -45,3 +44,5 @@ const styles = StyleSheet.create({
     color: "#2e78b7",
   },
 });
+
+export default observer(NotFoundScreen);

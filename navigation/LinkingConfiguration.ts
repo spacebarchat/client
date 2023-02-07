@@ -17,6 +17,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       Login: "login",
       Register: "register",
       Modal: "modal",
+      ThemeOverview: "dev-theme-overview",
       NotFound: "*",
     },
   },

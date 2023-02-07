@@ -1,4 +1,5 @@
 import { Link } from "@react-navigation/native";
+import { observer } from "mobx-react";
 import React from "react";
 import {
   GestureResponderEvent,
@@ -208,4 +209,4 @@ const styles = StyleSheet.create({
   buttonLabel: { fontWeight: "400", fontSize: 16 },
 });
 
-export default RegisterScreen;
+export default observer(RegisterScreen);

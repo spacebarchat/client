@@ -10,6 +10,7 @@ import LoginScreen from "../screens/LoginScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import RootScreen from "../screens/RootScreen";
+import ThemeOverview from "../screens/ThemeOverview";
 import { RootStackParamList } from "../types";
 
 /**
@@ -21,13 +22,15 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export function RootNavigator() {
   return (
     <Stack.Navigator
+      initialRouteName="App"
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Root" component={RootScreen} />
+      <Stack.Screen name="App" component={RootScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="ThemeOverview" component={ThemeOverview} />
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}

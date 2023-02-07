@@ -1,4 +1,5 @@
 import { Link } from "@react-navigation/native";
+import { observer } from "mobx-react";
 import React from "react";
 import {
   GestureResponderEvent,
@@ -50,7 +51,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
 
   const hideCaptchaModal = () => setCaptchaModalVisible(false);
   const showCaptchaModal = () => setCaptchaModalVisible(true);
-  const navigateRoot = () => navigation.navigate("Root");
+  const navigateRoot = () => navigation.navigate("App");
 
   const handleSubmit = (e?: GestureResponderEvent) => {
     if (isLoading && !captchaKey) return;
@@ -351,4 +352,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default observer(LoginScreen);

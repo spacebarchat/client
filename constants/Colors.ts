@@ -3,7 +3,6 @@ import {
   adaptNavigationTheme,
   MD3DarkTheme,
   MD3LightTheme,
-  MD3Theme,
 } from "react-native-paper";
 
 import {
@@ -11,97 +10,259 @@ import {
   DefaultTheme as NavigationDefaultTheme,
 } from "@react-navigation/native";
 import merge from "deepmerge";
-const opacity = {
-  level1: 0.08,
-  level2: 0.12,
-  level3: 0.16,
-  level4: 0.38,
+import { NavigationTheme } from "react-native-paper/lib/typescript/types";
+const {
+  tokens,
+} = require("react-native-paper/lib/commonjs/styles/themes/v3/tokens");
+
+// #262322 this is a nice color, maybe we can use this somewhere
+
+export const CustomColorsCommon = {
+  primary: Color("#FF5F00"),
+  primaryContainer: Color("#FF5F00"),
+  secondary: Color("#FF3D00"),
+  secondaryContainer: Color("#FF3D00"),
 };
 
-const neutralDark = Color("#121212");
-const neutralDarkVariant = Color("#131313");
-
-// Partial<typeof tokens.md.ref.palette>
-const CustomDarkPalette = {
-  // neutral10: 'rgba(28, 27, 31, 1)',
-  // neutral20: 'rgba(34, 33, 40, 1)',
-  // neutral30: 'rgba(48, 47, 55, 1)',
-  // neutral40: 'rgba(75, 74, 79, 1)',
-  // neutral50: 'rgba(100, 99, 105, 1)',
-  // neutral60: 'rgba(126, 124, 131, 1)',
-  // neutral70: 'rgba(151, 150, 156, 1)',
-  // neutral80: 'rgba(177, 176, 181, 1)',
-  // neutral90: 'rgba(203, 202, 206, 1)',
-  neutral10: neutralDark.lighten(0.5),
-  neutral20: neutralDark.lighten(1),
-  neutral30: neutralDark.lighten(1.5),
-  neutral40: neutralDark.lighten(2),
-  neutral50: neutralDark.lighten(2.5),
-  neutral60: neutralDark.lighten(3),
-  neutral70: neutralDark.lighten(3.5),
-  neutral80: neutralDark.lighten(4),
-  neutral90: neutralDark.lighten(4.5),
-  neutral95: neutralDark.lighten(5),
-  neutral99: neutralDark.lighten(5.4),
-  neutral100: neutralDark.lighten(5.5),
-  neutralVariant10: neutralDarkVariant.lighten(0.5),
-  neutralVariant20: neutralDarkVariant.lighten(1),
-  neutralVariant30: neutralDarkVariant.lighten(1.5),
-  neutralVariant40: neutralDarkVariant.lighten(2),
-  neutralVariant50: neutralDarkVariant.lighten(2.5),
-  neutralVariant60: neutralDarkVariant.lighten(3),
-  neutralVariant70: neutralDarkVariant.lighten(3.5),
-  neutralVariant80: neutralDarkVariant.lighten(4),
-  neutralVariant90: neutralDarkVariant.lighten(4.5),
-  neutralVariant95: neutralDarkVariant.lighten(5),
-  neutralVariant99: neutralDarkVariant.lighten(5.4),
-  neutralVariant100: neutralDarkVariant.lighten(5.5),
+export const CustomDarkColors = {
+  text: Color("#727272"),
+  disabled: Color("#474747"),
+  active: Color("#323232"),
+  green: Color("#c3e88d"),
+  yellow: Color("#ffcb6b"),
+  blue: Color("#82aaff"),
+  red: Color("#ff5370"),
+  purple: Color("#7c4dff"),
+  orange: Color("#f78c6c"),
+  cyan: Color("#89ddff"),
+  gray: Color("#c0c5ce"),
+  whiteBlack: Color("#ffffff"),
+  error: Color("#ff5370"),
+  backgroundPrimary: Color("#212121"), // #202020
+  backgroundSecondary: Color("#292929"), // #212112
 };
 
-const CustomLightTheme: MD3Theme = {
+export const CustomLightColors = {
+  text: Color("#94A7B0"),
+  disabled: Color("#D2D4D5"),
+  active: Color("#E7E7E8"),
+  green: Color("#91b859"),
+  yellow: Color("#f6a434"),
+  blue: Color("#6182b8"),
+  red: Color("#e53935"),
+  purple: Color("#7c4dff"),
+  orange: Color("#f76d47"),
+  cyan: Color("#39adb5"),
+  gray: Color("#AABFC9"),
+  whiteBlack: Color("#000000"),
+  error: Color("#e53935"),
+  backgroundPrimary: Color("#cecece"),
+  backgroundSecondary: Color("#e0e0e0"),
+};
+
+export const CustomPaletteDark = {
+  primary0: CustomColorsCommon.primary.darken(0.5),
+  primary10: CustomColorsCommon.primary.darken(0.4),
+  primary20: CustomColorsCommon.primary.darken(0.3),
+  primary30: CustomColorsCommon.primary.darken(0.2),
+  primary40: CustomColorsCommon.primary.darken(0.1),
+  primary50: CustomColorsCommon.primary,
+  primary60: CustomColorsCommon.primary.lighten(0.1),
+  primary70: CustomColorsCommon.primary.lighten(0.2),
+  primary80: CustomColorsCommon.primary.lighten(0.3),
+  primary90: CustomColorsCommon.primary.lighten(0.4),
+  primary100: CustomColorsCommon.primary.lighten(0.5),
+  secondary0: CustomColorsCommon.secondary.darken(0.5),
+  secondary10: CustomColorsCommon.secondary.darken(0.4),
+  secondary20: CustomColorsCommon.secondary.darken(0.3),
+  secondary30: CustomColorsCommon.secondary.darken(0.2),
+  secondary40: CustomColorsCommon.secondary.darken(0.1),
+  secondary50: CustomColorsCommon.secondary,
+  secondary60: CustomColorsCommon.secondary.lighten(0.1),
+  secondary70: CustomColorsCommon.secondary.lighten(0.2),
+  secondary80: CustomColorsCommon.secondary.lighten(0.3),
+  secondary90: CustomColorsCommon.secondary.lighten(0.4),
+  secondary100: CustomColorsCommon.secondary.lighten(0.5),
+  backgroundPrimary0: CustomDarkColors.backgroundPrimary.darken(0.5),
+  backgroundPrimary10: CustomDarkColors.backgroundPrimary.darken(0.4),
+  backgroundPrimary20: CustomDarkColors.backgroundPrimary.darken(0.3),
+  backgroundPrimary30: CustomDarkColors.backgroundPrimary.darken(0.2),
+  backgroundPrimary40: CustomDarkColors.backgroundPrimary.darken(0.1),
+  backgroundPrimary50: CustomDarkColors.backgroundPrimary,
+  backgroundPrimary60: CustomDarkColors.backgroundPrimary.lighten(0.1),
+  backgroundPrimary70: CustomDarkColors.backgroundPrimary.lighten(0.2),
+  backgroundPrimary80: CustomDarkColors.backgroundPrimary.lighten(0.3),
+  backgroundPrimary90: CustomDarkColors.backgroundPrimary.lighten(0.4),
+  backgroundPrimary100: CustomDarkColors.backgroundPrimary.lighten(0.5),
+  backgroundSecondary0: CustomDarkColors.backgroundSecondary.darken(0.5),
+  backgroundSecondary10: CustomDarkColors.backgroundSecondary.darken(0.4),
+  backgroundSecondary20: CustomDarkColors.backgroundSecondary.darken(0.3),
+  backgroundSecondary30: CustomDarkColors.backgroundSecondary.darken(0.2),
+  backgroundSecondary40: CustomDarkColors.backgroundSecondary.darken(0.1),
+  backgroundSecondary50: CustomDarkColors.backgroundSecondary,
+  backgroundSecondary60: CustomDarkColors.backgroundSecondary.lighten(0.1),
+  backgroundSecondary70: CustomDarkColors.backgroundSecondary.lighten(0.2),
+  backgroundSecondary80: CustomDarkColors.backgroundSecondary.lighten(0.3),
+  backgroundSecondary90: CustomDarkColors.backgroundSecondary.lighten(0.4),
+  backgroundSecondary100: CustomDarkColors.backgroundSecondary.lighten(0.5),
+};
+
+export const CustomPaletteLight = {
+  primary0: CustomColorsCommon.primary.darken(0.5),
+  primary10: CustomColorsCommon.primary.darken(0.4),
+  primary20: CustomColorsCommon.primary.darken(0.3),
+  primary30: CustomColorsCommon.primary.darken(0.2),
+  primary40: CustomColorsCommon.primary.darken(0.1),
+  primary50: CustomColorsCommon.primary,
+  primary60: CustomColorsCommon.primary.lighten(0.1),
+  primary70: CustomColorsCommon.primary.lighten(0.2),
+  primary80: CustomColorsCommon.primary.lighten(0.3),
+  primary90: CustomColorsCommon.primary.lighten(0.4),
+  primary100: CustomColorsCommon.primary.lighten(0.5),
+  secondary0: CustomColorsCommon.secondary.darken(0.5),
+  secondary10: CustomColorsCommon.secondary.darken(0.4),
+  secondary20: CustomColorsCommon.secondary.darken(0.3),
+  secondary30: CustomColorsCommon.secondary.darken(0.2),
+  secondary40: CustomColorsCommon.secondary.darken(0.1),
+  secondary50: CustomColorsCommon.secondary,
+  secondary60: CustomColorsCommon.secondary.lighten(0.1),
+  secondary70: CustomColorsCommon.secondary.lighten(0.2),
+  secondary80: CustomColorsCommon.secondary.lighten(0.3),
+  secondary90: CustomColorsCommon.secondary.lighten(0.4),
+  secondary100: CustomColorsCommon.secondary.lighten(0.5),
+  backgroundPrimary0: CustomLightColors.backgroundPrimary.darken(0.5),
+  backgroundPrimary10: CustomLightColors.backgroundPrimary.darken(0.4),
+  backgroundPrimary20: CustomLightColors.backgroundPrimary.darken(0.3),
+  backgroundPrimary30: CustomLightColors.backgroundPrimary.darken(0.2),
+  backgroundPrimary40: CustomLightColors.backgroundPrimary.darken(0.1),
+  backgroundPrimary50: CustomLightColors.backgroundPrimary,
+  backgroundPrimary60: CustomLightColors.backgroundPrimary.lighten(0.1),
+  backgroundPrimary70: CustomLightColors.backgroundPrimary.lighten(0.2),
+  backgroundPrimary80: CustomLightColors.backgroundPrimary.lighten(0.3),
+  backgroundPrimary90: CustomLightColors.backgroundPrimary.lighten(0.4),
+  backgroundPrimary100: CustomLightColors.backgroundPrimary.lighten(0.5),
+  backgroundSecondary0: CustomLightColors.backgroundSecondary.darken(0.5),
+  backgroundSecondary10: CustomLightColors.backgroundSecondary.darken(0.4),
+  backgroundSecondary20: CustomLightColors.backgroundSecondary.darken(0.3),
+  backgroundSecondary30: CustomLightColors.backgroundSecondary.darken(0.2),
+  backgroundSecondary40: CustomLightColors.backgroundSecondary.darken(0.1),
+  backgroundSecondary50: CustomLightColors.backgroundSecondary,
+  backgroundSecondary60: CustomLightColors.backgroundSecondary.lighten(0.1),
+  backgroundSecondary70: CustomLightColors.backgroundSecondary.lighten(0.2),
+  backgroundSecondary80: CustomLightColors.backgroundSecondary.lighten(0.3),
+  backgroundSecondary90: CustomLightColors.backgroundSecondary.lighten(0.4),
+  backgroundSecondary100: CustomLightColors.backgroundSecondary.lighten(0.5),
+};
+
+const CustomLightTheme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
-    primary: "#FF5F00",
-    secondary: "#FF3D00",
-    onPrimary: "#FFFFFF",
+    ...Object.entries(CustomColorsCommon).reduce((acc, [key, value]) => {
+      acc[key as keyof typeof CustomColorsCommon] = value.string();
+      return acc;
+    }, {} as { [key in keyof typeof CustomColorsCommon]: string }),
+    palette: Object.entries(CustomPaletteLight).reduce((acc, [key, value]) => {
+      acc[key as keyof typeof CustomPaletteLight] = value.string();
+      return acc;
+    }, {} as { [key in keyof typeof CustomPaletteLight]: string }),
+    onPrimary: CustomLightColors.whiteBlack.string(),
+    onPrimaryContainer: CustomLightColors.whiteBlack.string(),
+    onSecondary: CustomLightColors.whiteBlack.string(),
+    onSecondaryContainer: CustomLightColors.whiteBlack.string(),
+    errorContainer: CustomLightColors.error.string(),
+    onError: CustomLightColors.whiteBlack.string(),
+    onErrorContainer: CustomLightColors.whiteBlack.string(),
+    onBackground: CustomLightColors.whiteBlack.string(),
+    ...Object.entries(CustomLightColors).reduce((acc, [key, value]) => {
+      acc[key as keyof typeof CustomLightColors] = value.string();
+      return acc;
+    }, {} as { [key in keyof typeof CustomLightColors]: string }),
+    // surface: CustomPaletteLight.backgroundPrimary0.string(),
+    // surfaceVariant: CustomPaletteLight.backgroundSecondary30.string(),
+    // onSurfaceVariant: CustomPaletteLight.backgroundSecondary80.string(),
+    // outline: CustomPaletteLight.backgroundSecondary60.string(),
+    // outlineVariant: CustomPaletteLight.backgroundSecondary30.string(),
+    // backdrop: CustomPaletteLight.backgroundSecondary20.alpha(0.4).string(),
+    // surfaceDisabled: CustomPaletteLight.backgroundPrimary90
+    //   .alpha(tokens.md.ref.opacity.level4)
+    //   .string(),
+    // background: CustomPaletteLight.backgroundPrimary0.string(),
+    // onBackground: CustomLightColors.whiteBlack.string(),
+    // shadow: CustomPaletteLight.backgroundPrimary0.string(),
+    // elevation: {
+    //   level0: "transparent",
+    //   level1: CustomPaletteLight.backgroundSecondary100.alpha(0.05).string(),
+    //   level2: CustomPaletteLight.backgroundSecondary100.alpha(0.08).string(),
+    //   level3: CustomPaletteLight.backgroundSecondary100.alpha(0.11).string(),
+    //   level4: CustomPaletteLight.backgroundSecondary100.alpha(0.12).string(),
+    //   level5: CustomPaletteLight.backgroundSecondary100.alpha(0.14).string(),
+    // },
   },
 };
 
-const CustomDarkTheme: MD3Theme = {
+const CustomDarkTheme = {
   ...MD3DarkTheme,
   colors: {
     ...MD3DarkTheme.colors,
-    primary: "#FF5F00",
-    secondary: "#FF3D00",
-    onPrimary: "#FFFFFF",
-    surface: CustomDarkPalette.neutral10.string(),
-    surfaceVariant: CustomDarkPalette.neutralVariant30.string(),
-    onSurfaceVariant: CustomDarkPalette.neutralVariant80.string(),
-    outline: CustomDarkPalette.neutralVariant60.string(),
-    outlineVariant: CustomDarkPalette.neutralVariant30.string(),
-    backdrop: CustomDarkPalette.neutralVariant20.alpha(0.4).string(),
-    surfaceDisabled: CustomDarkPalette.neutral90.alpha(opacity.level4).string(),
-    background: CustomDarkPalette.neutral10.string(),
-    onBackground: CustomDarkPalette.neutral90.string(),
-    inverseSurface: CustomDarkPalette.neutral90.string(),
-    inverseOnSurface: CustomDarkPalette.neutral20.string(),
-    shadow: CustomDarkPalette.neutral10.string(),
-    elevation: {
-      level0: "transparent",
-      level1: CustomDarkPalette.neutralVariant100.alpha(0.05).string(),
-      level2: CustomDarkPalette.neutralVariant100.alpha(0.08).string(),
-      level3: CustomDarkPalette.neutralVariant100.alpha(0.11).string(),
-      level4: CustomDarkPalette.neutralVariant100.alpha(0.12).string(),
-      level5: CustomDarkPalette.neutralVariant100.alpha(0.14).string(),
-    },
+    ...Object.entries(CustomColorsCommon).reduce((acc, [key, value]) => {
+      acc[key as keyof typeof CustomColorsCommon] = value.string();
+      return acc;
+    }, {} as { [key in keyof typeof CustomColorsCommon]: string }),
+    palette: Object.entries(CustomPaletteDark).reduce((acc, [key, value]) => {
+      acc[key as keyof typeof CustomPaletteDark] = value.string();
+      return acc;
+    }, {} as { [key in keyof typeof CustomPaletteDark]: string }),
+    onPrimary: CustomDarkColors.whiteBlack.string(),
+    onPrimaryContainer: CustomDarkColors.whiteBlack.string(),
+    onSecondary: CustomDarkColors.whiteBlack.string(),
+    onSecondaryContainer: CustomDarkColors.whiteBlack.string(),
+    errorContainer: CustomDarkColors.error.string(),
+    onError: CustomDarkColors.whiteBlack.string(),
+    onErrorContainer: CustomDarkColors.whiteBlack.string(),
+    onBackground: CustomDarkColors.whiteBlack.string(),
+    ...Object.entries(CustomDarkColors).reduce((acc, [key, value]) => {
+      acc[key as keyof typeof CustomDarkColors] = value.string();
+      return acc;
+    }, {} as { [key in keyof typeof CustomDarkColors]: string }),
+    // surface: CustomPaletteDark.backgroundPrimary0.string(),
+    // surfaceVariant: CustomPaletteDark.backgroundSecondary30.string(),
+    // onSurfaceVariant: CustomPaletteDark.backgroundSecondary80.string(),
+    // outline: CustomPaletteDark.backgroundSecondary60.string(),
+    // outlineVariant: CustomPaletteDark.backgroundSecondary30.string(),
+    // backdrop: CustomPaletteDark.backgroundSecondary20.alpha(0.4).string(),
+    // surfaceDisabled: CustomPaletteDark.backgroundPrimary90
+    //   .alpha(tokens.md.ref.opacity.level4)
+    //   .string(),
+    // background: CustomPaletteDark.backgroundPrimary0.string(),
+    // onBackground: CustomDarkColors.whiteBlack.string(),
+    // shadow: CustomPaletteDark.backgroundPrimary0.string(),
+    // elevation: {
+    //   level0: "transparent",
+    //   level1: CustomPaletteDark.backgroundSecondary100.alpha(0.05).string(),
+    //   level2: CustomPaletteDark.backgroundSecondary100.alpha(0.08).string(),
+    //   level3: CustomPaletteDark.backgroundSecondary100.alpha(0.11).string(),
+    //   level4: CustomPaletteDark.backgroundSecondary100.alpha(0.12).string(),
+    //   level5: CustomPaletteDark.backgroundSecondary100.alpha(0.14).string(),
+    // },
   },
 };
+
+console.log(CustomLightTheme.colors.palette);
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
   reactNavigationDark: NavigationDarkTheme,
 });
 
-export const CombinedLightTheme = merge(LightTheme, CustomLightTheme);
-export const CombinedDarkTheme = merge(DarkTheme, CustomDarkTheme);
+export const CombinedLightTheme = merge<
+  NavigationTheme,
+  typeof CustomLightTheme
+>(LightTheme, CustomLightTheme);
+
+export const CombinedDarkTheme = merge<NavigationTheme, typeof CustomDarkTheme>(
+  DarkTheme,
+  CustomDarkTheme
+);
+
+export type CustomTheme = typeof CustomDarkTheme;

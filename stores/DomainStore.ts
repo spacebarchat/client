@@ -6,7 +6,7 @@ import BaseStore from "./BaseStore";
 
 export class DomainStore extends BaseStore {
   @observable isI18NInitialized: boolean = false;
-  @observable theme: string = "default";
+  @observable isDarkTheme: boolean = true;
   @observable account: AccountStore = new AccountStore();
   @observable isLoading: boolean = true;
   public rest: REST = new REST("https://staging.fosscord.com");
@@ -16,9 +16,14 @@ export class DomainStore extends BaseStore {
     makeObservable(this);
   }
 
+  @action.bound
+  toggleDarkTheme() {
+    this.isDarkTheme = !this.isDarkTheme;
+  }
+
   @action
-  setTheme(theme: string) {
-    this.theme = theme;
+  setDarkTheme(isDarkTheme: boolean) {
+    this.isDarkTheme = isDarkTheme;
   }
 
   @action

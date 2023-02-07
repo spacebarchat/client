@@ -17,6 +17,7 @@ export type RootStackParamList = {
   Register: undefined;
   ResetPassword: undefined;
   Modal: undefined;
+  ThemeOverview: undefined;
   NotFound: undefined;
 };
 
