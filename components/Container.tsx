@@ -1,5 +1,6 @@
 import React from "react";
 import { View, ViewProps } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface ContainerProps extends ViewProps {
   verticalCenter?: boolean;
@@ -7,11 +8,13 @@ interface ContainerProps extends ViewProps {
   flexOne?: boolean;
   displayFlex?: boolean;
   row?: boolean;
+  safe?: boolean;
 }
 
 function Container(props: ContainerProps) {
+  const Element = props.safe ? SafeAreaView : View;
   return (
-    <View
+    <Element
       {...props}
       style={[
         props.style,
@@ -23,7 +26,7 @@ function Container(props: ContainerProps) {
       ]}
     >
       {props.children}
-    </View>
+    </Element>
   );
 }
 

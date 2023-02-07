@@ -191,7 +191,13 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
     );
 
   return (
-    <Container testID="mainContainer" horizontalCenter verticalCenter flexOne>
+    <Container
+      testID="mainContainer"
+      horizontalCenter
+      verticalCenter
+      flexOne
+      safe
+    >
       <Portal>
         <Modal
           visible={captchaModalVisible}

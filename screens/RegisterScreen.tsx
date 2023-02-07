@@ -54,7 +54,13 @@ function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
   };
 
   return (
-    <Container testID="mainContainer" horizontalCenter verticalCenter flexOne>
+    <Container
+      testID="mainContainer"
+      horizontalCenter
+      verticalCenter
+      flexOne
+      safe
+    >
       <Surface
         testID="innerContainer"
         style={[

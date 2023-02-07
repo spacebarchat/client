@@ -4,6 +4,7 @@ import { Platform, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Button, List, Surface, Text, useTheme } from "react-native-paper";
 import Container from "../components/Container";
+import Swiper from "../components/Swiper";
 import { CustomTheme } from "../constants/Colors";
 import { DomainContext } from "../stores/DomainStore";
 import { RootStackScreenProps } from "../types";
@@ -29,50 +30,102 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
     navigation.navigate("Register");
   };
 
-  if (Platform.isMobile && !domain.account.isAuthenticated) {
-    return (
-      <Container displayFlex flexOne style={styles.rootContainer}>
-        <Container horizontalCenter style={[styles.rootContentContainer]}>
-          {/* Header, Branding */}
-          <Container horizontalCenter style={styles.headingContainer}>
-            <Text
-              variant="headlineSmall"
-              style={[styles.text, { fontWeight: "600" }]}
-            >
-              {t("root:WELCOME_TITLE_MOBILE")}
-            </Text>
-            <Text variant="bodyMedium" style={styles.text}>
-              {t("root:WELCOME_SUBTITLE_MOBILE")}
-            </Text>
-          </Container>
-
-          {/* Action Items */}
-          <Container
-            testID="mobileRootActionContainer"
-            style={styles.rootActionContainer}
+  const MobileUnauthenticated = () => (
+    <Container displayFlex flexOne safe style={styles.rootContainer}>
+      <Container horizontalCenter style={[styles.rootContentContainer]}>
+        {/* Header, Branding */}
+        <Container horizontalCenter style={styles.headingContainer}>
+          <Text
+            variant="headlineSmall"
+            style={[styles.text, { fontWeight: "600" }]}
           >
-            <Button
-              mode="contained"
-              style={styles.button}
-              onPress={handleRegister}
-            >
-              {t("root:ACTION_MOBILE_REGISTER")}
-            </Button>
-            <Button
-              mode="contained"
-              style={styles.button}
-              onPress={handleLogin}
-            >
-              {t("root:ACTION_MOBILE_LOGIN")}
-            </Button>
-          </Container>
+            {t("root:WELCOME_TITLE_MOBILE")}
+          </Text>
+          <Text variant="bodyMedium" style={styles.text}>
+            {t("root:WELCOME_SUBTITLE_MOBILE")}
+          </Text>
+        </Container>
+
+        {/* Action Items */}
+        <Container
+          testID="mobileRootActionContainer"
+          style={styles.rootActionContainer}
+        >
+          <Button
+            mode="contained"
+            style={styles.button}
+            onPress={handleRegister}
+          >
+            {t("root:ACTION_MOBILE_REGISTER")}
+          </Button>
+          <Button mode="contained" style={styles.button} onPress={handleLogin}>
+            {t("root:ACTION_MOBILE_LOGIN")}
+          </Button>
         </Container>
       </Container>
+    </Container>
+  );
+
+  const MobileAuthenticated = () => {
+    const leftAction = (
+      <Container verticalCenter horizontalCenter flexOne>
+        <Text>Left Action</Text>
+      </Container>
     );
+
+    const rightAction = (
+      <Container verticalCenter horizontalCenter flexOne>
+        <Text>Right Action</Text>
+      </Container>
+    );
+
+    const footer = (
+      <Container
+        flexOne
+        displayFlex
+        verticalCenter
+        horizontalCenter
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          zIndex: 10,
+          minHeight: 50,
+          backgroundColor: "orange",
+        }}
+      >
+        <Text>Mobile Footer</Text>
+      </Container>
+    );
+
+    return (
+      <Swiper
+        footerChildren={footer}
+        leftChildren={leftAction}
+        rightChildren={rightAction}
+      >
+        <Container
+          flexOne
+          displayFlex
+          verticalCenter
+          horizontalCenter
+          style={{ backgroundColor: "yellow" }}
+        >
+          <Text>Main Screen</Text>
+        </Container>
+      </Swiper>
+    );
+  };
+
+  if (Platform.isMobile) {
+    // if (!domain.account.isAuthenticated) return MobileUnauthenticated();
+    // else return MobileAuthenticated();
+    return MobileAuthenticated();
   }
 
   return (
-    <Container verticalCenter horizontalCenter flexOne displayFlex row>
+    <Container safe verticalCenter horizontalCenter flexOne displayFlex row>
       <Container
         testID="guildsList"
         style={{

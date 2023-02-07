@@ -1,12 +1,19 @@
 import { observer } from "mobx-react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
+import Container from "../components/Container";
 import { RootStackScreenProps } from "../types";
 import { t } from "../utils/i18n";
 
 function NotFoundScreen({ navigation }: RootStackScreenProps<"NotFound">) {
   return (
-    <View style={styles.container}>
+    <Container
+      flexOne
+      verticalCenter
+      horizontalCenter
+      safe
+      style={{ padding: 20 }}
+    >
       <Text style={styles.title}>{t("notfound:TITLE")}</Text>
       <TouchableRipple
         onPress={() =>
@@ -20,17 +27,11 @@ function NotFoundScreen({ navigation }: RootStackScreenProps<"NotFound">) {
           {t(navigation.canGoBack() ? "notfound:GO_BACK" : "notfound:GO_HOME")}
         </Text>
       </TouchableRipple>
-    </View>
+    </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
-  },
   title: {
     fontSize: 20,
     fontWeight: "bold",
