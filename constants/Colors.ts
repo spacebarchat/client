@@ -248,8 +248,6 @@ const CustomDarkTheme = {
   },
 };
 
-console.log(CustomLightTheme.colors.palette);
-
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
   reactNavigationDark: NavigationDarkTheme,
