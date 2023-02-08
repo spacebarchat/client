@@ -1,112 +1,125 @@
 import {
+  APIChannel,
   APIEmoji,
-  APIGuild,
-  APIGuildWelcomeScreen,
+  APIGuildMember,
   APIRole,
   APISticker,
-  GuildDefaultMessageNotifications,
-  GuildExplicitContentFilter,
   GuildFeature,
-  GuildHubType,
-  GuildMFALevel,
-  GuildNSFWLevel,
-  GuildPremiumTier,
-  GuildSystemChannelFlags,
-  GuildVerificationLevel,
 } from "discord-api-types/v9";
-import { makeObservable, observable } from "mobx";
+import { observable, ObservableMap } from "mobx";
+import { APIGuild } from "../interfaces/api/Guild";
+import { GatewayGuildCreateDispatchData } from "../interfaces/gateway/Gateway";
 import BaseStore from "./BaseStore";
 
 export default class GuildStore
   extends BaseStore
-  implements Omit<APIGuild, "roles" | "emojis" | "stickers">
+  implements
+    Omit<
+      APIGuild,
+      "channels" | "emojis" | "members" | "roles" | "stickers" | "properties"
+    >
 {
-  @observable icon_hash?: string | null | undefined;
-  @observable discovery_splash: string | null;
-  @observable owner_id: string;
-  @observable permissions?: string | undefined;
-  @observable region: string;
-  @observable afk_channel_id: string | null;
-  @observable afk_timeout: 60 | 300 | 900 | 1800 | 3600;
-  @observable widget_enabled?: boolean | undefined;
-  @observable widget_channel_id?: string | null | undefined;
-  @observable verification_level: GuildVerificationLevel;
-  @observable default_message_notifications: GuildDefaultMessageNotifications;
-  @observable explicit_content_filter: GuildExplicitContentFilter;
-  @observable roles: Map<string, APIRole> = new Map();
-  @observable emojis: Map<string, APIEmoji> = new Map();
-  @observable features: GuildFeature[];
-  @observable mfa_level: GuildMFALevel;
-  @observable application_id: string | null;
-  @observable system_channel_id: string | null;
-  @observable system_channel_flags: GuildSystemChannelFlags;
-  @observable rules_channel_id: string | null;
-  @observable max_presences?: number | null | undefined;
-  @observable max_members?: number | undefined;
-  @observable vanity_url_code: string | null;
-  @observable description: string | null;
-  @observable banner: string | null;
-  @observable premium_tier: GuildPremiumTier;
-  @observable premium_subscription_count?: number | undefined;
-  @observable preferred_locale: string;
-  @observable public_updates_channel_id: string | null;
-  @observable max_video_channel_users?: number | undefined;
-  @observable approximate_member_count?: number | undefined;
-  @observable approximate_presence_count?: number | undefined;
-  @observable welcome_screen?: APIGuildWelcomeScreen | undefined;
-  @observable nsfw_level: GuildNSFWLevel;
-  @observable stickers: Map<string, APISticker> = new Map();
-  @observable premium_progress_bar_enabled: boolean;
-  @observable hub_type: GuildHubType | null;
-  @observable name: string;
-  @observable icon: string | null;
-  @observable splash: string | null;
+  @observable application_command_counts?: { 1: number; 2: number; 3: number }; // ????????????
+  @observable channels: ObservableMap<string, APIChannel>;
+  @observable data_mode: string; // what is this
+  @observable emojis: ObservableMap<string, APIEmoji>;
+  @observable guild_scheduled_events: unknown[]; // TODO
   @observable id: string;
+  @observable large: boolean | undefined;
+  @observable lazy: boolean;
+  @observable member_count: number | undefined;
+  @observable members: ObservableMap<string, APIGuildMember>;
+  @observable premium_subscription_count: number | undefined;
+  @observable name: string;
+  @observable description?: string | null;
+  @observable icon?: string | null;
+  @observable splash?: string | null;
+  @observable banner?: string | null;
+  @observable features: GuildFeature[];
+  @observable preferred_locale?: string | null;
+  @observable owner_id?: string | null;
+  @observable application_id?: string | null;
+  @observable afk_channel_id?: string | null;
+  @observable afk_timeout: number | undefined;
+  @observable system_channel_id?: string | null;
+  @observable verification_level: number | undefined;
+  @observable explicit_content_filter: number | undefined;
+  @observable default_message_notifications: number | undefined;
+  @observable mfa_level: number | undefined;
+  @observable vanity_url_code?: string | null;
+  @observable premium_tier: number | undefined;
+  @observable premium_progress_bar_enabled: boolean;
+  @observable system_channel_flags: number | undefined;
+  @observable discovery_splash?: string | null;
+  @observable rules_channel_id?: string | null;
+  @observable public_updates_channel_id?: string | null;
+  @observable max_video_channel_users: number | undefined;
+  @observable max_members: number | undefined;
+  @observable nsfw_level: number | undefined;
+  @observable hub_type?: unknown | null; // ????
+  @observable roles: ObservableMap<string, APIRole>;
+  @observable stage_instances: unknown[];
+  @observable stickers: ObservableMap<string, APISticker>;
+  @observable threads: unknown[];
+  @observable version: string;
 
-  constructor(data: APIGuild) {
+  constructor(guild: GatewayGuildCreateDispatchData | APIGuild) {
     super();
-    this.icon_hash = data.icon_hash;
-    this.discovery_splash = data.discovery_splash;
-    this.owner_id = data.owner_id;
-    this.permissions = data.permissions;
-    this.region = data.region;
-    this.afk_channel_id = data.afk_channel_id;
-    this.afk_timeout = data.afk_timeout;
-    this.widget_enabled = data.widget_enabled;
-    this.widget_channel_id = data.widget_channel_id;
-    this.verification_level = data.verification_level;
-    this.default_message_notifications = data.default_message_notifications;
-    this.explicit_content_filter = data.explicit_content_filter;
-    this.roles = new Map(Object.entries(data.roles));
-    this.emojis = new Map(Object.entries(data.emojis));
-    this.features = data.features;
-    this.mfa_level = data.mfa_level;
-    this.application_id = data.application_id;
-    this.system_channel_id = data.system_channel_id;
-    this.system_channel_flags = data.system_channel_flags;
-    this.rules_channel_id = data.rules_channel_id;
-    this.max_presences = data.max_presences;
-    this.max_members = data.max_members;
-    this.vanity_url_code = data.vanity_url_code;
-    this.description = data.description;
-    this.banner = data.banner;
-    this.premium_tier = data.premium_tier;
-    this.premium_subscription_count = data.premium_subscription_count;
-    this.preferred_locale = data.preferred_locale;
-    this.public_updates_channel_id = data.public_updates_channel_id;
-    this.max_video_channel_users = data.max_video_channel_users;
-    this.approximate_member_count = data.approximate_member_count;
-    this.approximate_presence_count = data.approximate_presence_count;
-    this.welcome_screen = data.welcome_screen;
-    this.nsfw_level = data.nsfw_level;
-    this.stickers = new Map(Object.entries(data.stickers));
-    this.premium_progress_bar_enabled = data.premium_progress_bar_enabled;
-    this.hub_type = data.hub_type;
-    this.name = data.name;
-    this.icon = data.icon;
-    this.splash = data.splash;
-    this.id = data.id;
 
-    makeObservable(this);
+    this.application_command_counts = guild.application_command_counts;
+    this.channels = observable.map(
+      guild.channels.map((channel) => [channel.id, channel])
+    );
+    this.data_mode = guild.data_mode;
+    this.emojis = observable.map(
+      guild.emojis.map((emoji) => [emoji.id, emoji])
+    );
+    this.guild_scheduled_events = guild.guild_scheduled_events;
+    this.id = guild.id;
+    this.large = guild.large;
+    this.lazy = guild.lazy;
+    this.member_count = guild.member_count;
+    if (guild.members)
+      this.members = observable.map(
+        guild.members.map((member) => [member.id, member])
+      );
+    else this.members = observable.map();
+    this.premium_subscription_count = guild.premium_subscription_count;
+    this.name = guild.properties.name;
+    this.description = guild.properties.description;
+    this.icon = guild.properties.icon;
+    this.splash = guild.properties.splash;
+    this.banner = guild.properties.banner;
+    this.features = guild.properties.features;
+    this.preferred_locale = guild.properties.preferred_locale;
+    this.owner_id = guild.properties.owner_id;
+    this.application_id = guild.properties.application_id;
+    this.afk_channel_id = guild.properties.afk_channel_id;
+    this.afk_timeout = guild.properties.afk_timeout;
+    this.system_channel_id = guild.properties.system_channel_id;
+    this.verification_level = guild.properties.verification_level;
+    this.explicit_content_filter = guild.properties.explicit_content_filter;
+    this.default_message_notifications =
+      guild.properties.default_message_notifications;
+    this.mfa_level = guild.properties.mfa_level;
+    this.vanity_url_code = guild.properties.vanity_url_code;
+    this.premium_tier = guild.properties.premium_tier;
+    this.premium_progress_bar_enabled =
+      guild.properties.premium_progress_bar_enabled;
+    this.system_channel_flags = guild.properties.system_channel_flags;
+    this.discovery_splash = guild.properties.discovery_splash;
+    this.rules_channel_id = guild.properties.rules_channel_id;
+    this.public_updates_channel_id = guild.properties.public_updates_channel_id;
+    this.max_video_channel_users = guild.properties.max_video_channel_users;
+    this.max_members = guild.properties.max_members;
+    this.nsfw_level = guild.properties.nsfw_level;
+    this.hub_type = guild.properties.hub_type;
+    this.roles = observable.map(guild.roles.map((role) => [role.id, role]));
+    this.stage_instances = guild.stage_instances;
+    this.stickers = observable.map(
+      guild.stickers.map((sticker) => [sticker.id, sticker])
+    );
+    this.threads = guild.threads;
+    this.version = guild.version;
   }
 }

@@ -1,16 +1,19 @@
-import { APIGuild } from "discord-api-types/v9";
-import { observable } from "mobx";
+import { makeObservable, observable } from "mobx";
+import { APIGuild } from "../interfaces/api/Guild";
+import { GatewayGuildCreateDispatchData } from "../interfaces/gateway/Gateway";
 import BaseStore from "./BaseStore";
 import GuildStore from "./GuildStore";
 
 export default class GuildsStore extends BaseStore {
-  @observable guilds: Map<string, GuildStore> = new Map();
+  @observable guilds = observable.map<string, GuildStore>();
 
   constructor() {
     super();
+
+    makeObservable(this);
   }
 
-  add(guild: APIGuild) {
+  add(guild: GatewayGuildCreateDispatchData | APIGuild) {
     this.guilds.set(guild.id, new GuildStore(guild));
   }
 }

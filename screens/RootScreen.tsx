@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Button, List, Surface, Text, useTheme } from "react-native-paper";
+import { Button, Surface, Text, useTheme } from "react-native-paper";
 import Container from "../components/Container";
 import Swiper from "../components/Swiper";
 import { CustomTheme } from "../constants/Colors";
@@ -140,16 +140,9 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
         horizontalCenter
       >
         <ScrollView>
-          <List.Item title="Guild 1" />
-          <List.Item title="Guild 2" />
-          <List.Item title="Guild 3" />
-          <List.Item title="Guild 4" />
-          <List.Item title="Guild 5" />
-          <List.Item title="Guild 6" />
-          <List.Item title="Guild 7" />
-          <List.Item title="Guild 8" />
-          <List.Item title="Guild 9" />
-          <List.Item title="Guild 9" />
+          {Array.from(domain.guild.guilds.values()).map((guild) => {
+            return <Text key={guild.id}>{guild.name}</Text>;
+          })}
         </ScrollView>
       </Container>
 

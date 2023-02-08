@@ -1,6 +1,7 @@
 import {
   GatewayDispatchEvents,
   GatewayDispatchPayload,
+  GatewayGuildDeleteDispatchData,
   GatewayHeartbeat,
   GatewayIdentify,
   GatewayOpcodes,
@@ -9,7 +10,10 @@ import {
 } from "discord-api-types/v9";
 import { action, makeObservable, observable } from "mobx";
 import { Platform } from "react-native";
-import { GatewayReadyDispatchData } from "../interfaces/gateway/Gateway";
+import {
+  GatewayGuildCreateDispatchData,
+  GatewayReadyDispatchData,
+} from "../interfaces/gateway/Gateway";
 import BaseStoreEventEmitter from "./BaseStoreEventEmitter";
 import { DomainStore } from "./DomainStore";
 
@@ -58,6 +62,14 @@ export default class GatewayStore extends BaseStoreEventEmitter {
 
   private setupDispatchHandler() {
     this.dispatchHandlers.set(GatewayDispatchEvents.Ready, this.onReady);
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.GuildCreate,
+      this.onGuildCreate
+    );
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.GuildDelete,
+      this.onGuildDelete
+    );
   }
 
   private onopen = () => {
@@ -159,11 +171,25 @@ export default class GatewayStore extends BaseStoreEventEmitter {
     const { session_id, guilds, users, user } = data;
     this.sessionId = session_id;
     this.domain.account.setUser(user);
-    guilds.forEach((guild) => this.domain.guild.add(guild));
+    guilds.forEach((guild) =>
+      // @ts-ignore
+      this.domain.guild.add({ ...guild, ...guild.properties })
+    );
     users?.forEach((user) => this.domain.user.add(user));
 
     this.logger.debug(`Stored ${this.domain.guild.guilds.size} guilds`);
     this.logger.debug(`Stored ${this.domain.user.users.size} users`);
+  };
+
+  private onGuildCreate = (data: GatewayGuildCreateDispatchData) => {
+    this.logger.debug("Received guild create event");
+    this.domain.guild.add(data);
+  };
+
+  private onGuildDelete = (data: GatewayGuildDeleteDispatchData) => {
+    console.log(data);
+    this.logger.debug("Received guild delete event");
+    this.domain.guild.guilds.delete(data.id);
   };
 
   private processDispatch = (data: GatewayDispatchPayload) => {
