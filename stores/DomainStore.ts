@@ -3,12 +3,15 @@ import { createContext } from "react";
 import REST from "../utils/REST";
 import AccountStore from "./AccountStore";
 import BaseStore from "./BaseStore";
+import GatewayStore from "./GatewayStore";
 
 export class DomainStore extends BaseStore {
   @observable isI18NInitialized: boolean = false;
   @observable isDarkTheme: boolean = true;
   @observable account: AccountStore = new AccountStore();
+  @observable gateway: GatewayStore = new GatewayStore();
   @observable isLoading: boolean = true;
+  public readonly devSkipAuth = false;
   public rest: REST = new REST("https://staging.fosscord.com");
 
   constructor() {

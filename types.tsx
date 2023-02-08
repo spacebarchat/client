@@ -31,3 +31,14 @@ declare module "react-native" {
     isWeb?: boolean;
   }
 }
+
+declare module "discord-api-types/v9" {
+  interface GatewayIdentifyProperties {
+    os: string;
+  }
+
+  interface GatewayIdentifyData {
+    // @ts-ignore
+    intents?: number;
+  }
+}

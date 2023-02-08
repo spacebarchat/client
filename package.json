@@ -22,6 +22,7 @@
     "@types/color": "^3.0.3",
     "color": "^4.2.3",
     "deepmerge": "^4.2.2",
+    "discord-api-types": "^0.37.31",
     "expo": "~47.0.12",
     "expo-asset": "~8.7.0",
     "expo-constants": "~14.0.2",

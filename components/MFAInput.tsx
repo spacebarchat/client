@@ -15,7 +15,7 @@ import {
   TextInput,
 } from "react-native-paper";
 import useLogger from "../hooks/useLogger";
-import { IAPIMFAResponse, IAPITOTPRequest } from "../interfaces/IAPILogin";
+import { IAPIMFAResponse, IAPITOTPRequest } from "../interfaces/api/Auth";
 import { DomainContext } from "../stores/DomainStore";
 import Endpoints from "../utils/Endpoints";
 import { t } from "../utils/i18n";
@@ -47,6 +47,7 @@ function MFAInput({ close, mfaTicket, navigateRoot }: MFAInputProps) {
       setErrors({
         code: t("common:errors.INVALID_OTP") as string,
       });
+      setIsLoading(false);
       return;
     }
 

@@ -21,7 +21,7 @@ import Container from "../components/Container";
 import HCaptcha, { HCaptchaMessage } from "../components/HCaptcha";
 import MFAInput from "../components/MFAInput";
 import useLogger from "../hooks/useLogger";
-import { IAPILoginRequest, IAPILoginResponse } from "../interfaces/IAPILogin";
+import { IAPILoginRequest, IAPILoginResponse } from "../interfaces/api/Auth";
 import { DomainContext } from "../stores/DomainStore";
 import { RootStackScreenProps } from "../types";
 import Endpoints from "../utils/Endpoints";

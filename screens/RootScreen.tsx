@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import React, { useContext } from "react";
+import React from "react";
 import { Platform, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Button, List, Surface, Text, useTheme } from "react-native-paper";
@@ -11,16 +11,19 @@ import { RootStackScreenProps } from "../types";
 import { t } from "../utils/i18n";
 
 function RootScreen({ navigation }: RootStackScreenProps<"App">) {
-  const domain = useContext(DomainContext);
+  const domain = React.useContext(DomainContext);
   const theme = useTheme<CustomTheme>();
 
-  // NOTE: temporarly disabled while app screen is under construction
-  // React.useEffect(() => {
-  //   // if the user is not logged in, redirect to the login screen
-  //   if (!domain.account.isAuthenticated && !Platform.isMobile) {
-  //     navigation.navigate("Login");
-  //   }
-  // }, []);
+  React.useEffect(() => {
+    // if the user is not logged in, redirect to the login screen
+    if (
+      !domain.account.isAuthenticated &&
+      !Platform.isMobile &&
+      !domain.devSkipAuth
+    ) {
+      navigation.navigate("Login");
+    }
+  }, []);
 
   const handleLogin = () => {
     navigation.navigate("Login");
@@ -119,9 +122,9 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
   };
 
   if (Platform.isMobile) {
-    // if (!domain.account.isAuthenticated) return MobileUnauthenticated();
-    // else return MobileAuthenticated();
-    return MobileAuthenticated();
+    if (!domain.account.isAuthenticated && !domain.devSkipAuth)
+      return MobileUnauthenticated();
+    else return MobileAuthenticated();
   }
 
   return (

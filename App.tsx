@@ -33,6 +33,15 @@ function App() {
   React.useEffect(() => {
     // TODO: try to get the theme from storage
     domain.setDarkTheme(colorScheme === "dark");
+    // load token from storage
+    domain.account.loadToken();
+    // initialize gateway
+    if (domain.account.token) {
+      domain.gateway.connect(
+        "wss://staging.fosscord.com",
+        domain.account.token
+      );
+    }
   }, []);
 
   if (!isLoadingComplete) {

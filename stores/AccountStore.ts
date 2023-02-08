@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { action, autorun, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import BaseStore from "./BaseStore";
 
 /**
@@ -14,25 +14,25 @@ export default class AccountStore extends BaseStore {
 
     makeObservable(this);
 
-    autorun(() => {
-      if (this.isAuthenticated && this.token) {
-        AsyncStorage.setItem("token", this.token, (err) => {
-          if (err) {
-            this.logger.error(err);
-          } else {
-            this.logger.debug("Saved token to storage");
-          }
-        });
-      } else {
-        AsyncStorage.removeItem("token", (err) => {
-          if (err) {
-            this.logger.error(err);
-          } else {
-            this.logger.debug("Removed token from storage");
-          }
-        });
-      }
-    });
+    // autorun(() => {
+    //   if (this.isAuthenticated && this.token) {
+    //     AsyncStorage.setItem("token", this.token, (err) => {
+    //       if (err) {
+    //         this.logger.error(err);
+    //       } else {
+    //         this.logger.debug("Saved token to storage");
+    //       }
+    //     });
+    //   } else {
+    //     AsyncStorage.removeItem("token", (err) => {
+    //       if (err) {
+    //         this.logger.error(err);
+    //       } else {
+    //         this.logger.debug("Removed token from storage");
+    //       }
+    //     });
+    //   }
+    // });
   }
 
   @action
@@ -44,11 +44,36 @@ export default class AccountStore extends BaseStore {
   setToken(token: string) {
     this.token = token;
     this.isAuthenticated = true;
+    AsyncStorage.setItem("token", token, (err) => {
+      if (err) this.logger.error(err);
+      else this.logger.debug("Token saved to storage.");
+    });
+  }
+
+  @action
+  loadToken() {
+    AsyncStorage.getItem("token", (err, result) => {
+      if (err) {
+        this.logger.error(err);
+      } else {
+        if (result) {
+          this.logger.debug("Loaded token from storage.");
+          this.token = result;
+          this.isAuthenticated = true;
+        } else {
+          this.logger.debug("No token found in storage.");
+        }
+      }
+    });
   }
 
   @action
   logout() {
     this.token = null;
     this.isAuthenticated = false;
+    AsyncStorage.removeItem("token", (err) => {
+      if (err) this.logger.error(err);
+      else this.logger.debug("Token saved to storage.");
+    });
   }
 }
