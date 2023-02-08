@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { APIUser } from "discord-api-types/v9";
 import { action, makeObservable, observable } from "mobx";
 import BaseStore from "./BaseStore";
 
@@ -8,6 +9,7 @@ import BaseStore from "./BaseStore";
 export default class AccountStore extends BaseStore {
   @observable isAuthenticated: boolean = false;
   @observable token: string | null = null;
+  @observable user: APIUser | null = null;
 
   constructor() {
     super();
@@ -75,5 +77,10 @@ export default class AccountStore extends BaseStore {
       if (err) this.logger.error(err);
       else this.logger.debug("Token saved to storage.");
     });
+  }
+
+  @action
+  setUser(user: APIUser) {
+    this.user = user;
   }
 }

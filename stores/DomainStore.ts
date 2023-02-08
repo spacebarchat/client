@@ -4,12 +4,16 @@ import REST from "../utils/REST";
 import AccountStore from "./AccountStore";
 import BaseStore from "./BaseStore";
 import GatewayStore from "./GatewayStore";
+import GuildsStore from "./GuildsStore";
+import UsersStore from "./UsersStore";
 
 export class DomainStore extends BaseStore {
   @observable isI18NInitialized: boolean = false;
   @observable isDarkTheme: boolean = true;
   @observable account: AccountStore = new AccountStore();
-  @observable gateway: GatewayStore = new GatewayStore();
+  @observable user: UsersStore = new UsersStore();
+  @observable guild: GuildsStore = new GuildsStore();
+  @observable gateway: GatewayStore = new GatewayStore(this);
   @observable isLoading: boolean = true;
   public readonly devSkipAuth = false;
   public rest: REST = new REST("https://staging.fosscord.com");
