@@ -4,6 +4,7 @@ import { Platform, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Button, Surface, Text, useTheme } from "react-native-paper";
 import Container from "../components/Container";
+import GuildListGuild from "../components/GuildListGuild";
 import Swiper from "../components/Swiper";
 import { CustomTheme } from "../constants/Colors";
 import { DomainContext } from "../stores/DomainStore";
@@ -140,9 +141,11 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
         horizontalCenter
       >
         <ScrollView>
-          {Array.from(domain.guild.guilds.values()).map((guild) => {
-            return <Text key={guild.id}>{guild.name}</Text>;
-          })}
+          <Container testID="guildListGuildIconContainer">
+            {Array.from(domain.guild.guilds.values()).map((guild) => {
+              return <GuildListGuild key={guild.id} guild={guild} />;
+            })}
+          </Container>
         </ScrollView>
       </Container>
 

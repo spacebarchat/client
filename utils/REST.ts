@@ -18,8 +18,12 @@ export default class REST {
     };
   }
 
-  private makeUrl(path: string) {
+  public makeAPIUrl(path: string) {
     return `${this.baseUrl}/api/v${this.apiVersion}${path}`;
+  }
+
+  public makeCDNUrl(path: string) {
+    return `${this.baseUrl}${path}`;
   }
 
   public setToken(token: string) {
@@ -32,7 +36,7 @@ export default class REST {
 
   public async get<T>(path: string): Promise<T> {
     return new Promise((resolve, reject) => {
-      return fetch(this.makeUrl(path), {
+      return fetch(this.makeAPIUrl(path), {
         method: "GET",
         headers: this.headers,
       })
@@ -44,7 +48,7 @@ export default class REST {
 
   public async post<T, U>(path: string, body: T): Promise<U> {
     return new Promise((resolve, reject) => {
-      return fetch(this.makeUrl(path), {
+      return fetch(this.makeAPIUrl(path), {
         method: "POST",
         headers: this.headers,
         body: JSON.stringify(body),
