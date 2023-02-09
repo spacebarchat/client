@@ -3,6 +3,7 @@ import {
   GatewayDispatchPayload,
   GatewayGuildDeleteDispatchData,
   GatewayHeartbeat,
+  GatewayHelloData,
   GatewayIdentify,
   GatewayOpcodes,
   GatewayReceivePayload,
@@ -21,13 +22,19 @@ const GATEWAY_VERSION = "9";
 const GATEWAY_ENCODING = "json";
 
 export default class GatewayStore extends BaseStoreEventEmitter {
-  @observable private token?: string;
-  @observable socket?: WebSocket;
-  @observable sessionId?: string;
+  @observable private token: string | null = null;
+  @observable private socket: WebSocket | null = null;
+  @observable private sessionId: string | null = null;
   private domain: DomainStore;
   private url?: string;
-  private heartbeatTimer?: NodeJS.Timeout;
+  private heartbeatInterval: number | null = null;
+  private heartbeater: NodeJS.Timeout | null = null;
+  private initialHeartbeatTimeout: NodeJS.Timeout | null = null;
   private dispatchHandlers: Map<GatewayDispatchEvents, Function> = new Map();
+  private connectionStartTime?: number;
+  private identifyStartTime?: number;
+  private sequence: number = 0;
+  private heartbeatAck: boolean = true;
 
   constructor(domain: DomainStore) {
     super();
@@ -42,12 +49,13 @@ export default class GatewayStore extends BaseStoreEventEmitter {
   @action
   async connect(url: string, token: string) {
     this.token = token;
-    this.url = url;
-    const url2 = new URL(this.url);
-    url2.searchParams.append("v", GATEWAY_VERSION);
-    url2.searchParams.append("encoding", GATEWAY_ENCODING);
-    this.logger.debug(`Connecting to ${url2}`);
-    this.socket = new WebSocket(url2);
+    const newUrl = new URL(url);
+    newUrl.searchParams.append("v", GATEWAY_VERSION);
+    newUrl.searchParams.append("encoding", GATEWAY_ENCODING);
+    this.logger.debug(`[Connect] ${newUrl}`);
+    this.url = newUrl.toString();
+    this.connectionStartTime = Date.now();
+    this.socket = new WebSocket(newUrl);
 
     this.setupListeners();
     this.setupDispatchHandler();
@@ -73,8 +81,12 @@ export default class GatewayStore extends BaseStoreEventEmitter {
   }
 
   private onopen = () => {
-    console.debug("[Gateway] Connected");
-    this.sendIdentify();
+    this.logger.debug(
+      `[Connected] ${this.url} (took ${
+        Date.now() - this.connectionStartTime!
+      }ms)`
+    );
+    this.handleIdentify();
   };
 
   private onmessage = (e: WebSocketMessageEvent) => {
@@ -83,11 +95,9 @@ export default class GatewayStore extends BaseStoreEventEmitter {
 
     switch (payload.op) {
       case GatewayOpcodes.Dispatch:
-        this.logger.debug("Received dispatch");
         this.processDispatch(payload);
         break;
       case GatewayOpcodes.Heartbeat:
-        this.logger.debug("Received heartbeat");
         this.sendHeartbeat();
         break;
       case GatewayOpcodes.Reconnect:
@@ -97,11 +107,10 @@ export default class GatewayStore extends BaseStoreEventEmitter {
         this.logger.debug("Received invalid session");
         break;
       case GatewayOpcodes.Hello:
-        this.logger.debug("Received hello");
-        this.startHeartbeat(payload.d.heartbeat_interval);
+        this.handleHello(payload.d);
         break;
       case GatewayOpcodes.HeartbeatAck:
-        this.logger.debug("Received heartbeat ack");
+        this.handleHeartbeatAck();
         break;
       default:
         this.logger.debug("Received unknown opcode");
@@ -114,16 +123,15 @@ export default class GatewayStore extends BaseStoreEventEmitter {
   };
 
   private onclose = (e: WebSocketCloseEvent) => {
-    console.debug(`[Gateway] Closed with code ${e.code}`, e);
-    this.clearHeartbeat();
+    this.handleClose(e.code);
   };
 
   private sendJson = (payload: GatewaySendPayload) => {
     this.socket!.send(JSON.stringify(payload));
   };
 
-  private sendIdentify = () => {
-    this.logger.debug("Sending identify");
+  private handleIdentify = () => {
+    this.logger.debug("handleIdentify called");
     const payload: GatewayIdentify = {
       op: GatewayOpcodes.Identify,
       d: {
@@ -139,6 +147,76 @@ export default class GatewayStore extends BaseStoreEventEmitter {
     this.sendJson(payload);
   };
 
+  private handleHello = (data: GatewayHelloData) => {
+    this.heartbeatInterval = data.heartbeat_interval;
+    this.logger.debug(
+      `[Hello] heartbeat interval: ${data.heartbeat_interval} (took ${
+        Date.now() - this.connectionStartTime!
+      }ms)`
+    );
+    this.startHeartbeater();
+  };
+
+  private handleClose = (code: number | undefined) => {
+    this.cleanup();
+
+    if (code === 4004) {
+      this.logger.warn(`closed because of authentication failure.`);
+      return this.reset();
+    }
+
+    // TODO: reconnect
+  };
+
+  private reset = () => {
+    this.sessionId = null;
+    this.sequence = 0;
+  };
+
+  private startHeartbeater = () => {
+    if (this.heartbeater) {
+      clearInterval(this.heartbeater);
+      this.heartbeater = null;
+    }
+
+    const heartbeaterFn = () => {
+      if (this.heartbeatAck) {
+        this.heartbeatAck = false;
+        this.sendHeartbeat();
+      } else {
+        this.handleHeartbeatTimeout();
+      }
+    };
+
+    this.initialHeartbeatTimeout = setTimeout(() => {
+      this.initialHeartbeatTimeout = null;
+      this.heartbeater = setInterval(heartbeaterFn, this.heartbeatInterval!);
+      heartbeaterFn();
+    }, Math.floor(Math.random() * this.heartbeatInterval!));
+  };
+
+  private stopHeartbeater = () => {
+    if (this.heartbeater) {
+      clearInterval(this.heartbeater);
+      this.heartbeater = null;
+    }
+
+    if (this.initialHeartbeatTimeout) {
+      clearTimeout(this.initialHeartbeatTimeout);
+      this.initialHeartbeatTimeout = null;
+    }
+  };
+
+  private handleHeartbeatTimeout = () => {
+    this.socket?.close(4000);
+    // TODO: handle reconnect
+    this.logger.warn(
+      `[Heartbeat ACK Timeout] should reconnect in ${(
+        this.heartbeatInterval! / 1000
+      ).toFixed(2)} seconds`
+    );
+  };
+
   private sendHeartbeat = () => {
     const payload: GatewayHeartbeat = {
       op: GatewayOpcodes.Heartbeat,
@@ -148,33 +226,44 @@ export default class GatewayStore extends BaseStoreEventEmitter {
     this.sendJson(payload);
   };
 
-  private startHeartbeat = (interval: number) => {
-    const jitterInterval = interval - Math.random();
-    this.logger.debug(`Starting heartbeat timer with interval ${interval} ms.`);
-
-    this.sendHeartbeat();
-    this.heartbeatTimer = setInterval(() => {
-      this.sendHeartbeat();
-    }, jitterInterval);
+  private cleanup = () => {
+    this.stopHeartbeater();
+    this.socket = null;
   };
 
-  private clearHeartbeat = () => {
-    this.logger.debug("Clearning heartbeat timer");
-    if (this.heartbeatTimer) {
-      clearInterval(this.heartbeatTimer);
+  private handleHeartbeatAck = () => {
+    this.logger.debug("Received heartbeat ack");
+    this.heartbeatAck = true;
+  };
+
+  private processDispatch = (data: GatewayDispatchPayload) => {
+    // TODO: store sequence number
+
+    const { d, t, s } = data;
+    const handler = this.dispatchHandlers.get(t);
+    if (!handler) {
+      this.logger.debug(`No handler for dispatch event ${t}`);
+      return;
     }
+
+    handler(d);
   };
 
   private onReady = (data: GatewayReadyDispatchData) => {
-    this.logger.debug("Received ready event");
-
     const { session_id, guilds, users, user } = data;
     this.sessionId = session_id;
-    this.domain.account.setUser(user);
-    guilds.forEach((guild) =>
-      // @ts-ignore
-      this.domain.guild.add({ ...guild, ...guild.properties })
+    this.logger.debug(
+      `[Ready] took ${Date.now() - this.connectionStartTime!}ms`
     );
+
+    this.domain.account.setUser(user);
+    guilds.forEach((guild) => {
+      // @ts-ignore
+      if (!guild.unavailable) {
+        // TODO: handle partial data mode
+        this.domain.guild.add({ ...guild, ...guild.properties });
+      }
+    });
     users?.forEach((user) => this.domain.user.add(user));
 
     this.logger.debug(`Stored ${this.domain.guild.guilds.size} guilds`);
@@ -190,18 +279,5 @@ export default class GatewayStore extends BaseStoreEventEmitter {
     console.log(data);
     this.logger.debug("Received guild delete event");
     this.domain.guild.guilds.delete(data.id);
-  };
-
-  private processDispatch = (data: GatewayDispatchPayload) => {
-    // TODO: store sequence number
-
-    const { d, t, s } = data;
-    const handler = this.dispatchHandlers.get(t);
-    if (!handler) {
-      this.logger.debug(`No handler for dispatch event ${t}`);
-      return;
-    }
-
-    handler(d);
   };
 }
