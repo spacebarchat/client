@@ -1,20 +1,18 @@
+import { action, makeObservable, observable } from "mobx";
+import { Platform } from "react-native";
 import {
   GatewayDispatchEvents,
   GatewayDispatchPayload,
+  GatewayGuildCreateDispatchData,
   GatewayGuildDeleteDispatchData,
   GatewayHeartbeat,
   GatewayHelloData,
   GatewayIdentify,
   GatewayOpcodes,
+  GatewayReadyDispatchData,
   GatewayReceivePayload,
   GatewaySendPayload,
-} from "discord-api-types/v9";
-import { action, makeObservable, observable } from "mobx";
-import { Platform } from "react-native";
-import {
-  GatewayGuildCreateDispatchData,
-  GatewayReadyDispatchData,
-} from "../interfaces/gateway/Gateway";
+} from "../interfaces/Gateway";
 import BaseStoreEventEmitter from "./BaseStoreEventEmitter";
 import { DomainStore } from "./DomainStore";
 
@@ -138,8 +136,6 @@ export default class GatewayStore extends BaseStoreEventEmitter {
         token: this.token!,
         properties: {
           os: Platform.OS,
-          browser: "",
-          device: "",
         },
         compress: false,
       },
@@ -257,16 +253,16 @@ export default class GatewayStore extends BaseStoreEventEmitter {
     );
 
     this.domain.account.setUser(user);
-    guilds.forEach((guild) => {
-      // @ts-ignore
-      if (!guild.unavailable) {
-        // TODO: handle partial data mode
-        this.domain.guild.add({ ...guild, ...guild.properties });
-      }
-    });
+    // guilds.forEach((guild) => {
+    //   // @ts-ignore
+    //   if (!guild.unavailable) {
+    //     // TODO: handle partial data mode
+    //     this.domain.guild.add({ ...guild, ...guild.properties });
+    //   }
+    // });
     users?.forEach((user) => this.domain.user.add(user));
 
-    this.logger.debug(`Stored ${this.domain.guild.guilds.size} guilds`);
+    // this.logger.debug(`Stored ${this.domain.guild.guilds.size} guilds`);
     this.logger.debug(`Stored ${this.domain.user.users.size} users`);
   };
 

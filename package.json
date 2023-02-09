@@ -15,6 +15,7 @@
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
     "@expo/webpack-config": "^0.17.2",
+    "@puyodead1/fosscord-types": "^1.0.2",
     "@react-native-async-storage/async-storage": "~1.17.3",
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/native": "^6.0.2",
@@ -22,7 +23,6 @@
     "@types/color": "^3.0.3",
     "color": "^4.2.3",
     "deepmerge": "^4.2.2",
-    "discord-api-types": "^0.37.31",
     "expo": "~47.0.12",
     "expo-asset": "~8.7.0",
     "expo-constants": "~14.0.2",
