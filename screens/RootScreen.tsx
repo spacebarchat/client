@@ -2,7 +2,14 @@ import { observer } from "mobx-react";
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Button, Surface, Text, useTheme } from "react-native-paper";
+import {
+  Button,
+  IconButton,
+  Surface,
+  Text,
+  Tooltip,
+  useTheme,
+} from "react-native-paper";
 import Container from "../components/Container";
 import GuildListGuild from "../components/GuildListGuild";
 import Swiper from "../components/Swiper";
@@ -70,10 +77,28 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
     </Container>
   );
 
+  const MyComponent = () => (
+    <Tooltip title="Selected Camera">
+      <IconButton icon="camera" selected size={24} onPress={() => {}} />
+    </Tooltip>
+  );
+
   const MobileAuthenticated = () => {
     const leftAction = (
-      <Container verticalCenter horizontalCenter flexOne>
-        <Text>Left Action</Text>
+      <Container flexOne row>
+        <Container style={{ width: 72, backgroundColor: "blue" }}>
+          <ScrollView>
+            <Container testID="guildListGuildIconContainer">
+              {Array.from(domain.guild.guilds.values()).map((guild) => {
+                return <GuildListGuild key={guild.id} guild={guild} />;
+              })}
+              <MyComponent />
+            </Container>
+          </ScrollView>
+        </Container>
+        <Container flexOne style={{ backgroundColor: "green" }}>
+          <Text>Left Action Channel List</Text>
+        </Container>
       </Container>
     );
 

@@ -1,3 +1,4 @@
+import { Guild } from "@puyodead1/fosscord-types";
 import { action, makeObservable, observable } from "mobx";
 import { Platform } from "react-native";
 import {
@@ -50,10 +51,10 @@ export default class GatewayStore extends BaseStoreEventEmitter {
     const newUrl = new URL(url);
     newUrl.searchParams.append("v", GATEWAY_VERSION);
     newUrl.searchParams.append("encoding", GATEWAY_ENCODING);
-    this.logger.debug(`[Connect] ${newUrl}`);
-    this.url = newUrl.toString();
+    this.url = newUrl.href;
+    this.logger.debug(`[Connect] ${this.url}`);
     this.connectionStartTime = Date.now();
-    this.socket = new WebSocket(newUrl);
+    this.socket = new WebSocket(this.url);
 
     this.setupListeners();
     this.setupDispatchHandler();
@@ -253,13 +254,13 @@ export default class GatewayStore extends BaseStoreEventEmitter {
     );
 
     this.domain.account.setUser(user);
-    // guilds.forEach((guild) => {
-    //   // @ts-ignore
-    //   if (!guild.unavailable) {
-    //     // TODO: handle partial data mode
-    //     this.domain.guild.add({ ...guild, ...guild.properties });
-    //   }
-    // });
+    guilds.forEach((guild) => {
+      // TODO: handle different data modes
+      this.domain.guild.add({
+        ...guild,
+        ...guild.properties,
+      } as unknown as Guild);
+    });
     users?.forEach((user) => this.domain.user.add(user));
 
     // this.logger.debug(`Stored ${this.domain.guild.guilds.size} guilds`);
@@ -268,7 +269,7 @@ export default class GatewayStore extends BaseStoreEventEmitter {
 
   private onGuildCreate = (data: GatewayGuildCreateDispatchData) => {
     this.logger.debug("Received guild create event");
-    this.domain.guild.add(data);
+    this.domain.guild.add({ ...data, ...data.properties } as unknown as Guild);
   };
 
   private onGuildDelete = (data: GatewayGuildDeleteDispatchData) => {

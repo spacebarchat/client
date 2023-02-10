@@ -1,6 +1,5 @@
+import { Guild } from "@puyodead1/fosscord-types";
 import { makeObservable, observable } from "mobx";
-import { APIGuild } from "../interfaces/api/Guild";
-import { GatewayGuildCreateDispatchData } from "../interfaces/gateway/Gateway";
 import BaseStore from "./BaseStore";
 import GuildStore from "./GuildStore";
 
@@ -13,7 +12,7 @@ export default class GuildsStore extends BaseStore {
     makeObservable(this);
   }
 
-  add(guild: GatewayGuildCreateDispatchData | APIGuild) {
+  add(guild: Guild) {
     this.guilds.set(guild.id, new GuildStore(guild));
   }
 }

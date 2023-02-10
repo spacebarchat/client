@@ -1,6 +1,5 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { APIUser } from "discord-api-types/v9";
 import { action, makeObservable, observable } from "mobx";
+import { GatewayReadyUser } from "../interfaces/Gateway";
 import BaseStore from "./BaseStore";
 
 /**
@@ -9,7 +8,7 @@ import BaseStore from "./BaseStore";
 export default class AccountStore extends BaseStore {
   @observable isAuthenticated: boolean = false;
   @observable token: string | null = null;
-  @observable user: APIUser | null = null;
+  @observable user: GatewayReadyUser | null = null;
 
   constructor() {
     super();
@@ -45,42 +44,42 @@ export default class AccountStore extends BaseStore {
   @action
   setToken(token: string) {
     this.token = token;
-    this.isAuthenticated = true;
-    AsyncStorage.setItem("token", token, (err) => {
-      if (err) this.logger.error(err);
-      else this.logger.debug("Token saved to storage.");
-    });
+    this.setAuthenticated(true);
+    // AsyncStorage.setItem("token", token, (err) => {
+    //   if (err) this.logger.error(err);
+    //   else this.logger.debug("Token saved to storage.");
+    // });
   }
 
   @action
   loadToken() {
-    AsyncStorage.getItem("token", (err, result) => {
-      if (err) {
-        this.logger.error(err);
-      } else {
-        if (result) {
-          this.logger.debug("Loaded token from storage.");
-          this.token = result;
-          this.isAuthenticated = true;
-        } else {
-          this.logger.debug("No token found in storage.");
-        }
-      }
-    });
+    // AsyncStorage.getItem("token", (err, result) => {
+    //   if (err) {
+    //     this.logger.error(err);
+    //   } else {
+    //     if (result) {
+    //       this.logger.debug("Loaded token from storage.");
+    //       this.token = result;
+    //       this.setAuthenticated(true);
+    //     } else {
+    //       this.logger.debug("No token found in storage.");
+    //     }
+    //   }
+    // });
   }
 
   @action
   logout() {
     this.token = null;
-    this.isAuthenticated = false;
-    AsyncStorage.removeItem("token", (err) => {
-      if (err) this.logger.error(err);
-      else this.logger.debug("Token saved to storage.");
-    });
+    this.setAuthenticated(false);
+    // AsyncStorage.removeItem("token", (err) => {
+    //   if (err) this.logger.error(err);
+    //   else this.logger.debug("Token saved to storage.");
+    // });
   }
 
   @action
-  setUser(user: APIUser) {
+  setUser(user: GatewayReadyUser) {
     this.user = user;
   }
 }

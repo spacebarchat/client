@@ -1,3 +1,4 @@
+import { LoginSchema } from "@puyodead1/fosscord-types";
 import { Link } from "@react-navigation/native";
 import { observer } from "mobx-react";
 import React from "react";
@@ -21,7 +22,7 @@ import Container from "../components/Container";
 import HCaptcha, { HCaptchaMessage } from "../components/HCaptcha";
 import MFAInput from "../components/MFAInput";
 import useLogger from "../hooks/useLogger";
-import { IAPILoginRequest, IAPILoginResponse } from "../interfaces/api/Auth";
+import { IAPILoginResponse } from "../interfaces/api";
 import { DomainContext } from "../stores/DomainStore";
 import { RootStackScreenProps } from "../types";
 import Endpoints from "../utils/Endpoints";
@@ -58,7 +59,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
     e?.preventDefault();
     setIsLoading(true);
     domain.rest
-      .post<IAPILoginRequest, IAPILoginResponse>(Endpoints.LOGIN, {
+      .post<LoginSchema, IAPILoginResponse>(Endpoints.LOGIN, {
         login: email,
         password,
         captcha_key: captchaKey,

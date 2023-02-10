@@ -1,3 +1,4 @@
+import { TotpSchema } from "@puyodead1/fosscord-types";
 import React from "react";
 import {
   GestureResponderEvent,
@@ -15,7 +16,7 @@ import {
   TextInput,
 } from "react-native-paper";
 import useLogger from "../hooks/useLogger";
-import { IAPIMFAResponse, IAPITOTPRequest } from "../interfaces/api/Auth";
+import { IAPIMFAResponse } from "../interfaces/api";
 import { DomainContext } from "../stores/DomainStore";
 import Endpoints from "../utils/Endpoints";
 import { t } from "../utils/i18n";
@@ -52,7 +53,7 @@ function MFAInput({ close, mfaTicket, navigateRoot }: MFAInputProps) {
     }
 
     domain.rest
-      .post<IAPITOTPRequest, IAPIMFAResponse>(Endpoints.TOTP, {
+      .post<TotpSchema, IAPIMFAResponse>(Endpoints.TOTP, {
         code,
         ticket: mfaTicket,
       })

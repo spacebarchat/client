@@ -402,6 +402,7 @@ export type GatewayReadyDispatch = DataPayload<
 // 	application: Pick<APIApplication, 'id' | 'flags'>;
 // }
 
+export type GatewayReadyUser = Pick<ReadyEventData, "user">["user"];
 export type GatewayReadyDispatchData = ReadyEventData;
 
 /**

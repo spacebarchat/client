@@ -1,4 +1,4 @@
-import { APIUser } from "discord-api-types/v9";
+import { PublicUser } from "@puyodead1/fosscord-types";
 import { makeObservable, observable } from "mobx";
 import BaseStore from "./BaseStore";
 import UserStore from "./UserStore";
@@ -12,7 +12,7 @@ export default class UsersStore extends BaseStore {
     makeObservable(this);
   }
 
-  add(user: APIUser) {
+  add(user: PublicUser) {
     this.users.set(user.id, new UserStore(user));
   }
 }

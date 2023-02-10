@@ -4,7 +4,6 @@
  */
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { APIEmoji } from "discord-api-types/v9";
 
 declare global {
   namespace ReactNavigation {
@@ -30,24 +29,5 @@ declare module "react-native" {
     isDesktop?: boolean;
     isMobile?: boolean;
     isWeb?: boolean;
-  }
-}
-
-declare module "discord-api-types/v9" {
-  interface GatewayIdentifyProperties {
-    os: string;
-  }
-
-  interface GatewayIdentifyData {
-    // @ts-ignore
-    intents?: number;
-  }
-
-  interface APIEmoji {
-    id: string;
-  }
-
-  interface APIGuildMember {
-    id: string;
   }
 }
