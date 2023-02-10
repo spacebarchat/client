@@ -14,13 +14,13 @@ import {
   GatewayReceivePayload,
   GatewaySendPayload,
 } from "../interfaces/Gateway";
-import BaseStoreEventEmitter from "./BaseStoreEventEmitter";
+import BaseStore from "./BaseStore";
 import { DomainStore } from "./DomainStore";
 
 const GATEWAY_VERSION = "9";
 const GATEWAY_ENCODING = "json";
 
-export default class GatewayStore extends BaseStoreEventEmitter {
+export default class GatewayStore extends BaseStore {
   @observable private token: string | null = null;
   @observable private socket: WebSocket | null = null;
   @observable private sessionId: string | null = null;
