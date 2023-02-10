@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { action, makeObservable, observable } from "mobx";
 import { GatewayReadyUser } from "../interfaces/Gateway";
 import BaseStore from "./BaseStore";
@@ -45,37 +46,37 @@ export default class AccountStore extends BaseStore {
   setToken(token: string) {
     this.token = token;
     this.setAuthenticated(true);
-    // AsyncStorage.setItem("token", token, (err) => {
-    //   if (err) this.logger.error(err);
-    //   else this.logger.debug("Token saved to storage.");
-    // });
+    AsyncStorage.setItem("token", token, (err) => {
+      if (err) this.logger.error(err);
+      else this.logger.debug("Token saved to storage.");
+    });
   }
 
   @action
   loadToken() {
-    // AsyncStorage.getItem("token", (err, result) => {
-    //   if (err) {
-    //     this.logger.error(err);
-    //   } else {
-    //     if (result) {
-    //       this.logger.debug("Loaded token from storage.");
-    //       this.token = result;
-    //       this.setAuthenticated(true);
-    //     } else {
-    //       this.logger.debug("No token found in storage.");
-    //     }
-    //   }
-    // });
+    AsyncStorage.getItem("token", (err, result) => {
+      if (err) {
+        this.logger.error(err);
+      } else {
+        if (result) {
+          this.logger.debug("Loaded token from storage.");
+          this.token = result;
+          this.setAuthenticated(true);
+        } else {
+          this.logger.debug("No token found in storage.");
+        }
+      }
+    });
   }
 
   @action
   logout() {
     this.token = null;
     this.setAuthenticated(false);
-    // AsyncStorage.removeItem("token", (err) => {
-    //   if (err) this.logger.error(err);
-    //   else this.logger.debug("Token saved to storage.");
-    // });
+    AsyncStorage.removeItem("token", (err) => {
+      if (err) this.logger.error(err);
+      else this.logger.debug("Token saved to storage.");
+    });
   }
 
   @action

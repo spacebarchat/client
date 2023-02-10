@@ -1,13 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
+import { observer } from "mobx-react";
 import React from "react";
 import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider as PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { CombinedDarkTheme, CombinedLightTheme } from "./constants/Colors";
-
-import { observer } from "mobx-react";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import { RootNavigator } from "./navigation";

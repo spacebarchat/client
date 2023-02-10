@@ -2,14 +2,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import {
-  Button,
-  IconButton,
-  Surface,
-  Text,
-  Tooltip,
-  useTheme,
-} from "react-native-paper";
+import { Button, Surface, Text, useTheme } from "react-native-paper";
 import Container from "../components/Container";
 import GuildListGuild from "../components/GuildListGuild";
 import Swiper from "../components/Swiper";
@@ -77,12 +70,6 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
     </Container>
   );
 
-  const MyComponent = () => (
-    <Tooltip title="Selected Camera">
-      <IconButton icon="camera" selected size={24} onPress={() => {}} />
-    </Tooltip>
-  );
-
   const MobileAuthenticated = () => {
     const leftAction = (
       <Container flexOne row>
@@ -92,7 +79,6 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
               {Array.from(domain.guild.guilds.values()).map((guild) => {
                 return <GuildListGuild key={guild.id} guild={guild} />;
               })}
-              <MyComponent />
             </Container>
           </ScrollView>
         </Container>
@@ -161,12 +147,16 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
           height: "100%",
           backgroundColor: theme.colors.palette.backgroundPrimary60,
           width: 72,
+          zIndex: 3,
         }}
         displayFlex
         horizontalCenter
       >
-        <ScrollView>
-          <Container testID="guildListGuildIconContainer">
+        <ScrollView style={{ overflow: "visible" }}>
+          <Container
+            testID="guildListGuildIconContainer"
+            style={{ overflow: "visible" }}
+          >
             {Array.from(domain.guild.guilds.values()).map((guild) => {
               return <GuildListGuild key={guild.id} guild={guild} />;
             })}
