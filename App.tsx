@@ -41,7 +41,10 @@ function App() {
   React.useEffect(() => {
     if (!domain.account.token) return;
 
-    domain.gateway.connect("wss://staging.fosscord.com", domain.account.token);
+    domain.gateway.connect(
+      "wss://slowcord.understars.dev/",
+      domain.account.token
+    );
   }, [domain.account.token]);
 
   if (!isLoadingComplete) {

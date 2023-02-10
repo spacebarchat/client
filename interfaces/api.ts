@@ -54,15 +54,23 @@ export interface IAPILoginResponseSuccess {
   };
 }
 
-export type IAPILoginResponse =
-  | IAPILoginResponseMFARequired
-  | IAPILoginResponseCaptchaRequired
-  | IAPILoginResponseSuccess;
-
-// TODO: move to a separate file
 export interface IAPIError {
   code: number;
   message: string;
+  errors?: {
+    [key: string]: {
+      _errors: {
+        code: string;
+        message: string;
+      }[];
+    };
+  };
 }
+
+export type IAPILoginResponse =
+  | IAPILoginResponseMFARequired
+  | IAPILoginResponseCaptchaRequired
+  | IAPILoginResponseSuccess
+  | IAPIError;
 
 export type IAPIMFAResponse = IAPILoginResponseSuccess | IAPIError;

@@ -54,6 +54,38 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
   const showCaptchaModal = () => setCaptchaModalVisible(true);
   const navigateRoot = () => navigation.navigate("App");
 
+  function messageFromFieldError(
+    e:
+      | {
+          [key: string]: {
+            _errors: {
+              code: string;
+              message: string;
+            }[];
+          };
+        }
+      | {
+          [key: string]: {
+            code: string;
+            message: string;
+          }[];
+        },
+    prevKey?: string
+  ): { field: string | undefined; error: string } | null {
+    for (var key in e) {
+      var obj = e[key];
+      if (obj) {
+        if (key === "_errors" && Array.isArray(obj)) {
+          const r = obj[0];
+          return r ? { field: prevKey, error: r.message } : null;
+        }
+        if ("object" == typeof obj)
+          return messageFromFieldError(obj as any, key);
+      }
+    }
+    return null;
+  }
+
   const handleSubmit = (e?: GestureResponderEvent) => {
     if (isLoading && !captchaKey) return;
     e?.preventDefault();
@@ -80,6 +112,8 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
             setErrors({
               email: `Unhandled captcha_service ${captcha_service} `,
             });
+            setCaptchaKey(undefined);
+            setCaptchaSiteKey(undefined);
             setIsLoading(false);
             return;
           }
@@ -87,6 +121,8 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
           setErrors({
             email: `Unhandled captcha_key ${captcha_key} `,
           });
+          setCaptchaKey(undefined);
+          setCaptchaSiteKey(undefined);
           setIsLoading(false);
           return;
         } else if ("mfa" in res) {
@@ -98,27 +134,47 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
         } else if ("token" in res) {
           logger.debug("success", res);
           domain.account.setToken(res.token);
+          setCaptchaKey(undefined);
+          setCaptchaSiteKey(undefined);
           setIsLoading(false);
           return;
         } else {
-          if ("message" in res) {
-            setErrors({
-              email: (res as any).message as string,
-            });
+          if ("code" in res) {
+            if (res.code === 50035 && res.errors) {
+              const t = messageFromFieldError(res.errors);
+              if (t) {
+                const { field, error } = t;
+                setErrors({ [field ?? "email"]: error });
+                setCaptchaKey(undefined);
+                setCaptchaSiteKey(undefined);
+                setIsLoading(false);
+                return;
+              }
+            }
+
+            setErrors({ email: res.message });
+            setCaptchaKey(undefined);
+            setCaptchaSiteKey(undefined);
+            setIsLoading(false);
             return;
           }
 
           setErrors({
             email: t("common:errors.UNEXPECTED_ERROR") as string,
           });
+          setCaptchaKey(undefined);
+          setCaptchaSiteKey(undefined);
+          setIsLoading(false);
           return;
         }
       })
       .catch((e) => {
-        setIsLoading(false);
         setErrors({
           email: e.message,
         });
+        setCaptchaKey(undefined);
+        setCaptchaSiteKey(undefined);
+        setIsLoading(false);
       });
   };
 
