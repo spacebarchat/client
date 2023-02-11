@@ -13,11 +13,11 @@ export default function useCachedResources() {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
   useEffect(() => {
-    if (!domain.isLoading) {
+    if (!domain.isLoading && domain.isI18NInitialized) {
       setLoadingComplete(true);
       SplashScreen.hideAsync();
     }
-  }, [domain.isLoading]);
+  }, [domain.isLoading, domain.isI18NInitialized]);
 
   // Load any resources or data that we need prior to rendering the app
   useEffect(() => {
