@@ -85,9 +85,15 @@ const ChannelDesktop = observer(
             }}
             elevation={1}
           >
-            <Text>Channel Header</Text>
+            <Text>{guild.name}</Text>
           </Surface>
-          <Text>Channel List</Text>
+          <Container displayFlex flexOne>
+            <ScrollView>
+              {Array.from(guild.channels.channels.values()).map((channel) => (
+                <Text>{channel.name}</Text>
+              ))}
+            </ScrollView>
+          </Container>
         </Container>
 
         <Container
@@ -107,7 +113,7 @@ const ChannelDesktop = observer(
             }}
             elevation={1}
           >
-            <Text>Chat Header</Text>
+            <Text>{channel.name}</Text>
           </Surface>
           <Container testID="chat" displayFlex flexOne row>
             <Container testID="chatContent" displayFlex flexOne>
