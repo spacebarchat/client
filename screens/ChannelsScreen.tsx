@@ -157,22 +157,58 @@ const ChannelDesktop = observer(
   }
 );
 
-const ChannelMobile = observer((props: ChannelsStackScreenProps<"Channel">) => {
-  return (
-    <Container
-      flexOne
-      displayFlex
-      verticalCenter
-      horizontalCenter
-      style={{ backgroundColor: "yellow" }}
-    >
-      <Text style={{ color: "red" }}>Guild: {props.route.params.guildId}</Text>
-      <Text style={{ color: "red" }}>
-        Channel: {props.route.params.channelId}
-      </Text>
-    </Container>
-  );
-});
+const ChannelMobile = observer(
+  ({
+    route: {
+      params: { guildId, channelId },
+    },
+    navigation,
+  }: ChannelsStackScreenProps<"Channel">) => {
+    const domain = React.useContext(DomainContext);
+    const guild = useGuild(guildId, domain);
+    const channel = useChannel(guildId, channelId, domain);
+
+    React.useEffect(() => {
+      if (!channelId && channel) {
+        // get the first channel in the guild and update the route params
+        channelId = channel.id;
+        navigation.dispatch(CommonActions.setParams({ channelId: channel.id }));
+      }
+    }, [channelId, channel]);
+
+    if (!guild) {
+      return (
+        <Container>
+          <Text>Guild not found</Text>
+        </Container>
+      );
+    }
+
+    if (!channel) {
+      return (
+        <Container>
+          <Text>
+            Could not find channel by id, or could not get the first channel in
+            the guild
+          </Text>
+        </Container>
+      );
+    }
+
+    return (
+      <Container
+        flexOne
+        displayFlex
+        verticalCenter
+        horizontalCenter
+        style={{ backgroundColor: "yellow" }}
+      >
+        <Text style={{ color: "red" }}>Guild: {guildId}</Text>
+        <Text style={{ color: "red" }}>Channel: {channelId}</Text>
+      </Container>
+    );
+  }
+);
 
 const ChannelsScreenDesktop = observer(
   ({ navigation }: RootStackScreenProps<"Channels">) => {
