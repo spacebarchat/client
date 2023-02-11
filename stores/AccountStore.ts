@@ -53,19 +53,21 @@ export default class AccountStore extends BaseStore {
   }
 
   @action
-  loadToken() {
-    AsyncStorage.getItem("token", (err, result) => {
-      if (err) {
-        this.logger.error(err);
-      } else {
+  async loadToken(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      AsyncStorage.getItem("token", (err, result) => {
+        if (err) return reject(err);
+
         if (result) {
           this.logger.debug("Loaded token from storage.");
           this.token = result;
           this.setAuthenticated(true);
+          resolve(result);
         } else {
           this.logger.debug("No token found in storage.");
+          reject("No token in storage");
         }
-      }
+      });
     });
   }
 

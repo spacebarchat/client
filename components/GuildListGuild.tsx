@@ -1,18 +1,29 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Platform, Pressable, StyleSheet } from "react-native";
 import { Avatar } from "react-native-paper";
+import { Popable, usePopable } from "react-native-popable";
 import { DomainContext } from "../stores/DomainStore";
 import GuildStore from "../stores/GuildStore";
 import Endpoints from "../utils/Endpoints";
 
-import { Popable } from "react-native-popable";
-
 interface GuildListGuildProps {
   guild: GuildStore;
+  onPress?: () => void;
 }
 
-function GuildListGuild({ guild }: GuildListGuildProps) {
+function GuildListGuild({ guild, onPress }: GuildListGuildProps) {
   const domain = React.useContext(DomainContext);
+  const [ref, { hide, show }] = usePopable();
+
+  const onHoverIn = () => {
+    if (!Platform.isWeb) return;
+    show();
+  };
+
+  const onHoverOut = () => {
+    if (!Platform.isWeb) return;
+    hide();
+  };
 
   if (guild.icon) {
     return (
@@ -21,33 +32,43 @@ function GuildListGuild({ guild }: GuildListGuildProps) {
         position="right"
         action="hover"
         style={{ zIndex: 100 }}
+        ref={ref}
       >
-        <Avatar.Image
-          size={48}
-          source={{
-            uri: domain.rest.makeCDNUrl(
-              Endpoints.GUILD_ICON(guild.id, guild.icon)
-            ),
-          }}
-          style={[styles.guildIcon, { backgroundColor: "transparent" }]}
-        />
+        <Pressable
+          onPress={onPress}
+          onHoverIn={onHoverIn}
+          onHoverOut={onHoverOut}
+        >
+          <Avatar.Image
+            size={48}
+            source={{
+              uri: domain.rest.makeCDNUrl(
+                Endpoints.GUILD_ICON(guild.id, guild.icon)
+              ),
+            }}
+            style={[styles.guildIcon, { backgroundColor: "transparent" }]}
+          />
+        </Pressable>
       </Popable>
     );
   }
 
   return (
-    <Popable
-      content={guild.name}
-      position="right"
-      action="hover"
-      style={{ zIndex: 100 }}
-    >
-      <Avatar.Text
-        size={48}
-        label={guild.name.slice(0, 1)}
-        style={styles.guildIcon}
-      />
-    </Popable>
+    <Pressable onHoverIn={onHoverIn} onHoverOut={onHoverOut} onPress={onPress}>
+      <Popable
+        content={guild.name}
+        position="right"
+        action="hover"
+        style={{ zIndex: 100 }}
+        ref={ref}
+      >
+        <Avatar.Text
+          size={48}
+          label={guild.name.slice(0, 1)}
+          style={styles.guildIcon}
+        />
+      </Popable>
+    </Pressable>
   );
 }
 

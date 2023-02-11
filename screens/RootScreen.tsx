@@ -1,11 +1,8 @@
 import { observer } from "mobx-react";
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import { Button, Surface, Text, useTheme } from "react-native-paper";
+import { Button, Text, useTheme } from "react-native-paper";
 import Container from "../components/Container";
-import GuildListGuild from "../components/GuildListGuild";
-import Swiper from "../components/Swiper";
 import { CustomTheme } from "../constants/Colors";
 import { DomainContext } from "../stores/DomainStore";
 import { RootStackScreenProps } from "../types";
@@ -23,6 +20,8 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
       !domain.devSkipAuth
     ) {
       navigation.navigate("Login");
+    } else {
+      navigation.navigate("Channels");
     }
   }, []);
 
@@ -34,6 +33,7 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
     navigation.navigate("Register");
   };
 
+  // Returns the login screen for mobile
   const MobileUnauthenticated = () => (
     <Container displayFlex flexOne safe style={styles.rootContainer}>
       <Container horizontalCenter style={[styles.rootContentContainer]}>
@@ -70,190 +70,192 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
     </Container>
   );
 
-  const MobileAuthenticated = () => {
-    const leftAction = (
-      <Container flexOne row>
-        <Container style={{ width: 72, backgroundColor: "blue" }}>
-          <ScrollView>
-            <Container testID="guildListGuildIconContainer">
-              {Array.from(domain.guild.guilds.values()).map((guild) => {
-                return <GuildListGuild key={guild.id} guild={guild} />;
-              })}
-            </Container>
-          </ScrollView>
-        </Container>
-        <Container flexOne style={{ backgroundColor: "green" }}>
-          <Text>Left Action Channel List</Text>
-        </Container>
-      </Container>
-    );
+  // const MobileAuthenticated = () => {
+  //   const leftAction = (
+  //     <Container flexOne row>
+  //       <Container style={{ width: 72, backgroundColor: "blue" }}>
+  //         <ScrollView>
+  //           <Container testID="guildListGuildIconContainer">
+  //             {Array.from(domain.guild.guilds.values()).map((guild) => {
+  //               return <GuildListGuild key={guild.id} guild={guild} />;
+  //             })}
+  //           </Container>
+  //         </ScrollView>
+  //       </Container>
+  //       <Container flexOne style={{ backgroundColor: "green" }}>
+  //         <Text>Left Action Channel List</Text>
+  //       </Container>
+  //     </Container>
+  //   );
 
-    const rightAction = (
-      <Container verticalCenter horizontalCenter flexOne>
-        <Text>Right Action</Text>
-      </Container>
-    );
+  //   const rightAction = (
+  //     <Container verticalCenter horizontalCenter flexOne>
+  //       <Text>Right Action</Text>
+  //     </Container>
+  //   );
 
-    const footer = (
-      <Container
-        flexOne
-        displayFlex
-        verticalCenter
-        horizontalCenter
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          width: "100%",
-          zIndex: 10,
-          minHeight: 50,
-          backgroundColor: "orange",
-        }}
-      >
-        <Text>Mobile Footer</Text>
-      </Container>
-    );
+  //   const footer = (
+  //     <Container
+  //       flexOne
+  //       displayFlex
+  //       verticalCenter
+  //       horizontalCenter
+  //       style={{
+  //         position: "absolute",
+  //         bottom: 0,
+  //         left: 0,
+  //         width: "100%",
+  //         zIndex: 10,
+  //         minHeight: 50,
+  //         backgroundColor: "orange",
+  //       }}
+  //     >
+  //       <Text>Mobile Footer</Text>
+  //     </Container>
+  //   );
 
-    return (
-      <Swiper
-        footerChildren={footer}
-        leftChildren={leftAction}
-        rightChildren={rightAction}
-      >
-        <Container
-          flexOne
-          displayFlex
-          verticalCenter
-          horizontalCenter
-          style={{ backgroundColor: "yellow" }}
-        >
-          <Text>Main Screen</Text>
-        </Container>
-      </Swiper>
-    );
-  };
+  //   return (
+  //     <Swiper
+  //       footerChildren={footer}
+  //       leftChildren={leftAction}
+  //       rightChildren={rightAction}
+  //     >
+  //       <Container
+  //         flexOne
+  //         displayFlex
+  //         verticalCenter
+  //         horizontalCenter
+  //         style={{ backgroundColor: "yellow" }}
+  //       >
+  //         <Text>Main Screen</Text>
+  //       </Container>
+  //     </Swiper>
+  //   );
+  // };
 
   if (Platform.isMobile) {
     if (!domain.account.isAuthenticated && !domain.devSkipAuth)
       return MobileUnauthenticated();
-    else return MobileAuthenticated();
+    else navigation.navigate("Channels");
   }
 
-  return (
-    <Container safe verticalCenter horizontalCenter flexOne displayFlex row>
-      <Container
-        testID="guildsList"
-        style={{
-          height: "100%",
-          backgroundColor: theme.colors.palette.backgroundPrimary60,
-          width: 72,
-          zIndex: 3,
-        }}
-        displayFlex
-        horizontalCenter
-      >
-        <ScrollView style={{ overflow: "visible" }}>
-          <Container
-            testID="guildListGuildIconContainer"
-            style={{ overflow: "visible" }}
-          >
-            {Array.from(domain.guild.guilds.values()).map((guild) => {
-              return <GuildListGuild key={guild.id} guild={guild} />;
-            })}
-          </Container>
-        </ScrollView>
-      </Container>
+  return null;
 
-      <Container
-        testID="outerContainer"
-        style={{ height: "100%" }}
-        displayFlex
-        flexOne
-        verticalCenter
-        horizontalCenter
-        row
-      >
-        <Container
-          testID="channelList"
-          style={{
-            backgroundColor: theme.colors.palette.backgroundPrimary70,
-            height: "100%",
-            width: 240,
-          }}
-          displayFlex
-        >
-          <Surface
-            testID="chatHeader"
-            style={{
-              height: 48,
-              backgroundColor: theme.colors.palette.backgroundPrimary70,
-            }}
-            elevation={1}
-          >
-            <Text>Channel Header</Text>
-          </Surface>
-          <Text>Channel List</Text>
-        </Container>
+  // return (
+  //   <Container safe verticalCenter horizontalCenter flexOne displayFlex row>
+  //     <Container
+  //       testID="guildsList"
+  //       style={{
+  //         height: "100%",
+  //         backgroundColor: theme.colors.palette.backgroundPrimary60,
+  //         width: 72,
+  //         zIndex: 3,
+  //       }}
+  //       displayFlex
+  //       horizontalCenter
+  //     >
+  //       <ScrollView style={{ overflow: "visible" }}>
+  //         <Container
+  //           testID="guildListGuildIconContainer"
+  //           style={{ overflow: "visible" }}
+  //         >
+  //           {Array.from(domain.guild.guilds.values()).map((guild) => {
+  //             return <GuildListGuild key={guild.id} guild={guild} />;
+  //           })}
+  //         </Container>
+  //       </ScrollView>
+  //     </Container>
 
-        <Container
-          testID="chatContainer"
-          style={{
-            height: "100%",
-            backgroundColor: theme.colors.palette.backgroundPrimary100,
-          }}
-          displayFlex
-          flexOne
-        >
-          <Surface
-            testID="chatHeader"
-            style={{
-              height: 48,
-              backgroundColor: theme.colors.palette.backgroundPrimary100,
-            }}
-            elevation={1}
-          >
-            <Text>Chat Header</Text>
-          </Surface>
-          <Container testID="chat" displayFlex flexOne row>
-            <Container testID="chatContent" displayFlex flexOne>
-              <ScrollView>
-                <Button onPress={domain.toggleDarkTheme}>
-                  <Text>Theme</Text>
-                </Button>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-              </ScrollView>
-            </Container>
-            <Container
-              testID="memberList"
-              style={{
-                width: 240,
-                backgroundColor: theme.colors.palette.backgroundPrimary70,
-              }}
-              displayFlex
-            >
-              <Text>Member List</Text>
-            </Container>
-          </Container>
-        </Container>
-      </Container>
-    </Container>
-  );
+  //     <Container
+  //       testID="outerContainer"
+  //       style={{ height: "100%" }}
+  //       displayFlex
+  //       flexOne
+  //       verticalCenter
+  //       horizontalCenter
+  //       row
+  //     >
+  //       <Container
+  //         testID="channelList"
+  //         style={{
+  //           backgroundColor: theme.colors.palette.backgroundPrimary70,
+  //           height: "100%",
+  //           width: 240,
+  //         }}
+  //         displayFlex
+  //       >
+  //         <Surface
+  //           testID="chatHeader"
+  //           style={{
+  //             height: 48,
+  //             backgroundColor: theme.colors.palette.backgroundPrimary70,
+  //           }}
+  //           elevation={1}
+  //         >
+  //           <Text>Channel Header</Text>
+  //         </Surface>
+  //         <Text>Channel List</Text>
+  //       </Container>
+
+  //       <Container
+  //         testID="chatContainer"
+  //         style={{
+  //           height: "100%",
+  //           backgroundColor: theme.colors.palette.backgroundPrimary100,
+  //         }}
+  //         displayFlex
+  //         flexOne
+  //       >
+  //         <Surface
+  //           testID="chatHeader"
+  //           style={{
+  //             height: 48,
+  //             backgroundColor: theme.colors.palette.backgroundPrimary100,
+  //           }}
+  //           elevation={1}
+  //         >
+  //           <Text>Chat Header</Text>
+  //         </Surface>
+  //         <Container testID="chat" displayFlex flexOne row>
+  //           <Container testID="chatContent" displayFlex flexOne>
+  //             <ScrollView>
+  //               <Button onPress={domain.toggleDarkTheme}>
+  //                 <Text>Theme</Text>
+  //               </Button>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //               <Text style={{ marginVertical: 20 }}>Chat Content</Text>
+  //             </ScrollView>
+  //           </Container>
+  //           <Container
+  //             testID="memberList"
+  //             style={{
+  //               width: 240,
+  //               backgroundColor: theme.colors.palette.backgroundPrimary70,
+  //             }}
+  //             displayFlex
+  //           >
+  //             <Text>Member List</Text>
+  //           </Container>
+  //         </Container>
+  //       </Container>
+  //     </Container>
+  //   </Container>
+  // );
 }
 
 const styles = StyleSheet.create({

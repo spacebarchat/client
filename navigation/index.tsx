@@ -5,19 +5,19 @@
  */
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
+import ChannelsScreen from "../screens/ChannelsScreen";
 import LoginScreen from "../screens/LoginScreen";
-
 import NotFoundScreen from "../screens/NotFoundScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import RootScreen from "../screens/RootScreen";
 import ThemeOverview from "../screens/ThemeOverview";
-import { RootStackParamList } from "../types";
+import { RootStackParamsList } from "../types";
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
  */
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamsList>();
 
 export function RootNavigator() {
   return (
@@ -26,8 +26,10 @@ export function RootNavigator() {
       screenOptions={{
         headerShown: false,
       }}
+      screenListeners={{}}
     >
       <Stack.Screen name="App" component={RootScreen} />
+      <Stack.Screen name="Channels" component={ChannelsScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="ThemeOverview" component={ThemeOverview} />

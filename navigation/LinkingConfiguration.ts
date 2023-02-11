@@ -7,13 +7,19 @@
 import { LinkingOptions } from "@react-navigation/native";
 import * as Linking from "expo-linking";
 
-import { RootStackParamList } from "../types";
+import { RootStackParamsList } from "../types";
 
-const linking: LinkingOptions<RootStackParamList> = {
+const linking: LinkingOptions<RootStackParamsList> = {
   prefixes: [Linking.createURL("/")],
   config: {
     screens: {
       App: "app",
+      Channels: {
+        screens: {
+          Home: "channels/me",
+          Channel: "channels/:id",
+        },
+      },
       Login: "login",
       Register: "register",
       Modal: "modal",

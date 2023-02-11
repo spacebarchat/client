@@ -126,15 +126,22 @@ export default class GatewayStore extends BaseStore {
   };
 
   private sendJson = (payload: GatewaySendPayload) => {
-    this.socket!.send(JSON.stringify(payload));
+    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+      this.logger.error("Socket is not open");
+      return;
+    }
+    this.socket.send(JSON.stringify(payload));
   };
 
   private handleIdentify = () => {
     this.logger.debug("handleIdentify called");
+    if (!this.token) return this.logger.error(`Token shouldn't be null here`);
+    this.identifyStartTime = Date.now();
+
     const payload: GatewayIdentify = {
       op: GatewayOpcodes.Identify,
       d: {
-        token: this.token!,
+        token: this.token,
         properties: {
           os: Platform.OS,
         },
@@ -263,7 +270,7 @@ export default class GatewayStore extends BaseStore {
     });
     users?.forEach((user) => this.domain.user.add(user));
 
-    // this.logger.debug(`Stored ${this.domain.guild.guilds.size} guilds`);
+    this.logger.debug(`Stored ${this.domain.guild.guilds.size} guilds`);
     this.logger.debug(`Stored ${this.domain.user.users.size} users`);
   };
 

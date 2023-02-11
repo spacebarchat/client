@@ -1,4 +1,7 @@
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { observer } from "mobx-react";
 import React from "react";
@@ -25,26 +28,25 @@ function App() {
   )
     throw new Error("Transpiler is not configured correctly");
 
+  // const logger = useLogger("App");
+  // const navigationLogger = useLogger("Routing");
   const domain = React.useContext(DomainContext);
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+  const navigationRef = useNavigationContainerRef();
 
   React.useEffect(() => {
     // TODO: try to get the theme from storage
     domain.setDarkTheme(colorScheme === "dark");
 
     // load token from storage
-    domain.account.loadToken();
+    domain.account
+      .loadToken()
+      .then((token) => {
+        domain.gateway.connect("wss://slowcord.understars.dev/", token);
+      })
+      .catch(console.error);
   }, []);
-
-  React.useEffect(() => {
-    if (!domain.account.token) return;
-
-    domain.gateway.connect(
-      "wss://slowcord.understars.dev/",
-      domain.account.token
-    );
-  }, [domain.account.token]);
 
   if (!isLoadingComplete) {
     return null;
@@ -56,6 +58,10 @@ function App() {
         >
           <SafeAreaProvider>
             <NavigationContainer
+              ref={navigationRef}
+              onStateChange={() => {
+                // TODO: log the route transition
+              }}
               linking={linking}
               theme={
                 domain.isDarkTheme ? CombinedDarkTheme : CombinedLightTheme
