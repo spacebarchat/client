@@ -26,7 +26,6 @@ export function RootNavigator() {
       screenOptions={{
         headerShown: false,
       }}
-      screenListeners={{}}
     >
       <Stack.Screen name="App" component={RootScreen} />
       <Stack.Screen

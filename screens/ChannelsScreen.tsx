@@ -36,7 +36,16 @@ const ChannelDesktop = observer(
   }: ChannelsStackScreenProps<"Channel">) => {
     const theme = useTheme<CustomTheme>();
     const domain = React.useContext(DomainContext);
-    const guild = useGuild(guildId);
+    const guild = useGuild(guildId, domain);
+    const channel = useChannel(guildId, channelId, domain);
+
+    React.useEffect(() => {
+      if (!channelId && channel) {
+        // get the first channel in the guild and update the route params
+        channelId = channel.id;
+        navigation.dispatch(CommonActions.setParams({ channelId: channel.id }));
+      }
+    }, [channelId, channel]);
 
     if (!guild) {
       return (
@@ -46,7 +55,6 @@ const ChannelDesktop = observer(
       );
     }
 
-    const channel = useChannel(guildId, channelId);
     if (!channel) {
       return (
         <Container>
@@ -56,12 +64,6 @@ const ChannelDesktop = observer(
           </Text>
         </Container>
       );
-    }
-
-    if (!channelId) {
-      // get the first channel in the guild and update the route params
-      channelId = channel.id;
-      navigation.dispatch(CommonActions.setParams({ channelId: channel.id }));
     }
 
     return (
@@ -231,7 +233,11 @@ const ChannelsScreenDesktop = observer(
               headerShown: false,
             }}
           >
-            <Stack.Screen name="Channel" component={ChannelDesktop} />
+            <Stack.Screen
+              name="Channel"
+              component={ChannelDesktop}
+              initialParams={{ guildId: "me" }}
+            />
           </Stack.Navigator>
         </Container>
       </Container>
@@ -320,7 +326,11 @@ const ChannelsScreenMobile = observer(
             headerShown: false,
           }}
         >
-          <Stack.Screen name="Channel" component={ChannelMobile} />
+          <Stack.Screen
+            name="Channel"
+            component={ChannelMobile}
+            initialParams={{ guildId: "me" }}
+          />
         </Stack.Navigator>
       </Swiper>
     );

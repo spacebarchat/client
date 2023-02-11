@@ -1,9 +1,7 @@
-import { useContext } from "react";
 import { Snowflake } from "../interfaces/common";
-import { DomainContext } from "../stores/DomainStore";
+import { DomainStore } from "../stores/DomainStore";
 
-function useGuild(guildId: Snowflake) {
-  const domain = useContext(DomainContext);
+function useGuild(guildId: Snowflake, domain: DomainStore) {
   const guild = domain.guild.guilds.get(guildId);
   return guild;
 }

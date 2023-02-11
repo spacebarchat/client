@@ -49,6 +49,7 @@ export default class ChannelStore extends BaseStore implements Channel {
 
   constructor(data: Channel) {
     super();
+    // super({ logStoreCreated: false });
 
     this.id = data.id;
     this.created_at = data.created_at;
@@ -82,5 +83,11 @@ export default class ChannelStore extends BaseStore implements Channel {
     this.flags = data.flags;
     this.default_thread_rate_limit_per_user =
       data.default_thread_rate_limit_per_user;
+
+    // this.storeCreated();
   }
+
+  // storeCreated() {
+  //   this.logger.debug(`Store created for channel ${this.id}`);
+  // }
 }

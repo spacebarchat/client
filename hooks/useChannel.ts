@@ -1,14 +1,17 @@
-import { useContext } from "react";
 import { Snowflake } from "../interfaces/common";
-import { DomainContext } from "../stores/DomainStore";
+import ChannelStore from "../stores/ChannelStore";
+import { DomainStore } from "../stores/DomainStore";
 
-function useChannel(guildId: Snowflake, channelId: Snowflake | undefined) {
-  const domain = useContext(DomainContext);
+function useChannel(
+  guildId: Snowflake,
+  channelId: Snowflake | undefined,
+  domain: DomainStore
+) {
   const guild = domain.guild.guilds.get(guildId);
   // get the channel by id or return the first channel in the guild
   const channel = channelId
     ? guild?.channels.channels.get(channelId)
-    : guild?.channels.channels.values().next().value;
+    : (guild?.channels.channels.values().next().value as ChannelStore);
   return channel;
 }
 
