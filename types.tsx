@@ -27,7 +27,6 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamsList> =
   NativeStackScreenProps<RootStackParamsList, Screen>;
 
 export type ChannelsParamList = {
-  Home: undefined;
   Channel: { id: string };
 };
 
