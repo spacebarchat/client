@@ -272,6 +272,8 @@ export default class GatewayStore extends BaseStore {
 
     this.logger.debug(`Stored ${this.domain.guild.guilds.size} guilds`);
     this.logger.debug(`Stored ${this.domain.user.users.size} users`);
+
+    this.domain.setLoading(false);
   };
 
   private onGuildCreate = (data: GatewayGuildCreateDispatchData) => {

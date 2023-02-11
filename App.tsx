@@ -1,7 +1,4 @@
-import {
-  NavigationContainer,
-  useNavigationContainerRef,
-} from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { observer } from "mobx-react";
 import React from "react";
@@ -33,7 +30,6 @@ function App() {
   const domain = React.useContext(DomainContext);
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
-  const navigationRef = useNavigationContainerRef();
 
   React.useEffect(() => {
     // TODO: try to get the theme from storage
@@ -58,10 +54,6 @@ function App() {
         >
           <SafeAreaProvider>
             <NavigationContainer
-              ref={navigationRef}
-              onStateChange={() => {
-                // TODO: log the route transition
-              }}
               linking={linking}
               theme={
                 domain.isDarkTheme ? CombinedDarkTheme : CombinedLightTheme

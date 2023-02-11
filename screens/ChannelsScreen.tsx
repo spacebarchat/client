@@ -1,10 +1,11 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { observer } from "mobx-react";
 import React from "react";
-import { Platform, ScrollView } from "react-native";
-import { Button, Surface, Text, useTheme } from "react-native-paper";
+import { Platform, Pressable, ScrollView } from "react-native";
+import { Avatar, Button, Surface, Text, useTheme } from "react-native-paper";
 import Container from "../components/Container";
 import GuildListGuild from "../components/GuildListGuild";
+import Swiper from "../components/Swiper";
 import { CustomTheme } from "../constants/Colors";
 import { DomainContext } from "../stores/DomainStore";
 import {
@@ -115,8 +116,14 @@ const ChannelDesktop = observer(
 
 const ChannelMobile = observer((props: ChannelsStackScreenProps<"Channel">) => {
   return (
-    <Container>
-      <Text>Channel: {props.route.params.id}</Text>
+    <Container
+      flexOne
+      displayFlex
+      verticalCenter
+      horizontalCenter
+      style={{ backgroundColor: "yellow" }}
+    >
+      <Text style={{ color: "red" }}>Channel: {props.route.params.id}</Text>
     </Container>
   );
 });
@@ -140,6 +147,17 @@ const ChannelsScreenDesktop = observer(
           horizontalCenter
         >
           <ScrollView style={{ overflow: "visible" }}>
+            <Pressable
+              onPress={() => {
+                navigation.navigate("Channels", {
+                  screen: "Channel",
+                  params: { id: "me" },
+                });
+              }}
+            >
+              <Avatar.Icon icon="home" size={48} />
+            </Pressable>
+
             <Container
               testID="guildListGuildIconContainer"
               style={{ overflow: "visible" }}
@@ -189,12 +207,79 @@ const ChannelsScreenDesktop = observer(
 
 const ChannelsScreenMobile = observer(
   ({ navigation }: RootStackScreenProps<"Channels">) => {
-    return (
-      <Container row>
-        <Container>
-          <Text>Sidebar</Text>
-        </Container>
+    const domain = React.useContext(DomainContext);
 
+    const leftAction = (
+      <Container flexOne row>
+        <Container style={{ width: 72, backgroundColor: "blue" }}>
+          <ScrollView>
+            <Pressable
+              onPress={() => {
+                navigation.navigate("Channels", {
+                  screen: "Channel",
+                  params: { id: "me" },
+                });
+              }}
+            >
+              <Avatar.Icon icon="home" size={48} />
+            </Pressable>
+
+            <Container testID="guildListGuildIconContainer">
+              {Array.from(domain.guild.guilds.values()).map((guild) => {
+                return (
+                  <GuildListGuild
+                    key={guild.id}
+                    guild={guild}
+                    onPress={() => {
+                      navigation.navigate("Channels", {
+                        screen: "Channel",
+                        params: { id: guild.id },
+                      });
+                    }}
+                  />
+                );
+              })}
+            </Container>
+          </ScrollView>
+        </Container>
+        <Container flexOne style={{ backgroundColor: "green" }}>
+          <Text>Left Action Channel List</Text>
+        </Container>
+      </Container>
+    );
+
+    const rightAction = (
+      <Container verticalCenter horizontalCenter flexOne>
+        <Text>Right Action</Text>
+      </Container>
+    );
+
+    const footer = (
+      <Container
+        flexOne
+        displayFlex
+        verticalCenter
+        horizontalCenter
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          zIndex: 10,
+          minHeight: 50,
+          backgroundColor: "orange",
+        }}
+      >
+        <Text>Footer</Text>
+      </Container>
+    );
+
+    return (
+      <Swiper
+        footerChildren={footer}
+        leftChildren={leftAction}
+        rightChildren={rightAction}
+      >
         <Stack.Navigator
           initialRouteName="Channel"
           screenOptions={{
@@ -207,7 +292,7 @@ const ChannelsScreenMobile = observer(
             initialParams={{ id: "me" }}
           />
         </Stack.Navigator>
-      </Container>
+      </Swiper>
     );
   }
 );

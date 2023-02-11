@@ -12,6 +12,13 @@ export default function useCachedResources() {
   const domain = useContext(DomainContext);
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
+  useEffect(() => {
+    if (!domain.isLoading) {
+      setLoadingComplete(true);
+      SplashScreen.hideAsync();
+    }
+  }, [domain.isLoading]);
+
   // Load any resources or data that we need prior to rendering the app
   useEffect(() => {
     async function loadResourcesAndDataAsync() {
@@ -47,9 +54,6 @@ export default function useCachedResources() {
       } catch (e) {
         // We might want to provide this error information to an error reporting service
         console.warn(e);
-      } finally {
-        setLoadingComplete(true);
-        SplashScreen.hideAsync();
       }
     }
 
