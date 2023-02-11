@@ -13,9 +13,7 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
   const theme = useTheme<CustomTheme>();
 
   React.useEffect(() => {
-    if (Platform.isMobile) return;
-
-    if (!domain.account.isAuthenticated) {
+    if (!domain.account.isAuthenticated && !Platform.isMobile) {
       navigation.navigate("Login");
     } else {
       navigation.navigate("Channels");
