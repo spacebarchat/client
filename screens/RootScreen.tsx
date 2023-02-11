@@ -2,15 +2,13 @@ import { t } from "i18next";
 import { observer } from "mobx-react";
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
-import { Button, Text, useTheme } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import Container from "../components/Container";
-import { CustomTheme } from "../constants/Colors";
 import { DomainContext } from "../stores/DomainStore";
 import { RootStackScreenProps } from "../types";
 
 function RootScreen({ navigation }: RootStackScreenProps<"App">) {
   const domain = React.useContext(DomainContext);
-  const theme = useTheme<CustomTheme>();
 
   React.useEffect(() => {
     if (!domain.account.isAuthenticated && !Platform.isMobile) {
