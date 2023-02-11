@@ -160,7 +160,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
           }
 
           setErrors({
-            email: t("common:errors.UNEXPECTED_ERROR") as string,
+            email: t("common:errors.UNKNOWN_ERROR") as string,
           });
           setCaptchaKey(undefined);
           setCaptchaSiteKey(undefined);
