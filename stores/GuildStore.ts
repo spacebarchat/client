@@ -12,10 +12,10 @@ import {
 } from "@puyodead1/fosscord-types";
 import { makeObservable, observable } from "mobx";
 import BaseStore from "./BaseStore";
+import ChannelsStore from "./ChannelsStore";
 
-// TODO: rest of types
 export default class GuildStore extends BaseStore {
-  @observable id: string;
+  id: string;
   @observable afk_channel_id?: string | undefined;
   @observable afk_timeout?: number | undefined;
   @observable bans: Ban[];
@@ -35,7 +35,7 @@ export default class GuildStore extends BaseStore {
   @observable presence_count?: number | undefined;
   @observable members: Member[];
   @observable roles: Role[];
-  @observable channels: Channel[];
+  @observable channels: ChannelsStore = new ChannelsStore();
   @observable template_id?: string | undefined;
   @observable emojis: Emoji[];
   @observable stickers: Sticker[];
@@ -98,7 +98,7 @@ export default class GuildStore extends BaseStore {
     this.presence_count = guild.presence_count;
     this.members = guild.members;
     this.roles = guild.roles;
-    this.channels = guild.channels;
+    guild.channels.forEach((channel) => this.channels.add(channel));
     this.template_id = guild.template_id;
     this.emojis = guild.emojis;
     this.stickers = guild.stickers;

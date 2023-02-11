@@ -3,7 +3,7 @@ import { makeObservable, observable } from "mobx";
 import BaseStore from "./BaseStore";
 
 export default class UserStore extends BaseStore implements PublicUser {
-  @observable id: string;
+  id: string;
   @observable username: string;
   @observable discriminator: string;
   @observable avatar?: string | undefined;

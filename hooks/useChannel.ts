@@ -7,8 +7,8 @@ function useChannel(guildId: Snowflake, channelId: Snowflake | undefined) {
   const guild = domain.guild.guilds.get(guildId);
   // get the channel by id or return the first channel in the guild
   const channel = channelId
-    ? guild?.channels.find((x) => x.id === channelId)
-    : guild?.channels[0];
+    ? guild?.channels.channels.get(channelId)
+    : guild?.channels.channels.values().next().value;
   return channel;
 }
 
