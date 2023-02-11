@@ -29,7 +29,11 @@ export function RootNavigator() {
       screenListeners={{}}
     >
       <Stack.Screen name="App" component={RootScreen} />
-      <Stack.Screen name="Channels" component={ChannelsScreen} />
+      <Stack.Screen
+        name="Channels"
+        component={ChannelsScreen}
+        initialParams={{ params: { guildId: "me" } }}
+      />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="ThemeOverview" component={ThemeOverview} />

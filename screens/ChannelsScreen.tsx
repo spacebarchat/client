@@ -1,3 +1,4 @@
+import { CommonActions } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { observer } from "mobx-react";
 import React from "react";
@@ -7,6 +8,8 @@ import Container from "../components/Container";
 import GuildListGuild from "../components/GuildListGuild";
 import Swiper from "../components/Swiper";
 import { CustomTheme } from "../constants/Colors";
+import useChannel from "../hooks/useChannel";
+import useGuild from "../hooks/useGuild";
 import { DomainContext } from "../stores/DomainStore";
 import {
   ChannelsParamList,
@@ -25,9 +28,41 @@ const Home = observer(() => {
 });
 
 const ChannelDesktop = observer(
-  (props: ChannelsStackScreenProps<"Channel">) => {
+  ({
+    route: {
+      params: { guildId, channelId },
+    },
+    navigation,
+  }: ChannelsStackScreenProps<"Channel">) => {
     const theme = useTheme<CustomTheme>();
     const domain = React.useContext(DomainContext);
+    const guild = useGuild(guildId);
+
+    if (!guild) {
+      return (
+        <Container>
+          <Text>Guild not found</Text>
+        </Container>
+      );
+    }
+
+    const channel = useChannel(guildId, channelId);
+    if (!channel) {
+      return (
+        <Container>
+          <Text>
+            Could not find channel by id, or could not get the first channel in
+            the guild
+          </Text>
+        </Container>
+      );
+    }
+
+    if (!channelId) {
+      // get the first channel in the guild and update the route params
+      channelId = channel.id;
+      navigation.dispatch(CommonActions.setParams({ channelId: channel.id }));
+    }
 
     return (
       <Container verticalCenter horizontalCenter flexOne displayFlex row>
@@ -123,7 +158,10 @@ const ChannelMobile = observer((props: ChannelsStackScreenProps<"Channel">) => {
       horizontalCenter
       style={{ backgroundColor: "yellow" }}
     >
-      <Text style={{ color: "red" }}>Channel: {props.route.params.id}</Text>
+      <Text style={{ color: "red" }}>Guild: {props.route.params.guildId}</Text>
+      <Text style={{ color: "red" }}>
+        Channel: {props.route.params.channelId}
+      </Text>
     </Container>
   );
 });
@@ -151,7 +189,7 @@ const ChannelsScreenDesktop = observer(
               onPress={() => {
                 navigation.navigate("Channels", {
                   screen: "Channel",
-                  params: { id: "me" },
+                  params: { guildId: "me" },
                 });
               }}
             >
@@ -170,7 +208,7 @@ const ChannelsScreenDesktop = observer(
                     onPress={() => {
                       navigation.navigate("Channels", {
                         screen: "Channel",
-                        params: { id: guild.id },
+                        params: { guildId: guild.id },
                       });
                     }}
                   />
@@ -193,11 +231,7 @@ const ChannelsScreenDesktop = observer(
               headerShown: false,
             }}
           >
-            <Stack.Screen
-              name="Channel"
-              component={ChannelDesktop}
-              initialParams={{ id: "me" }}
-            />
+            <Stack.Screen name="Channel" component={ChannelDesktop} />
           </Stack.Navigator>
         </Container>
       </Container>
@@ -217,7 +251,7 @@ const ChannelsScreenMobile = observer(
               onPress={() => {
                 navigation.navigate("Channels", {
                   screen: "Channel",
-                  params: { id: "me" },
+                  params: { guildId: "me" },
                 });
               }}
             >
@@ -233,7 +267,7 @@ const ChannelsScreenMobile = observer(
                     onPress={() => {
                       navigation.navigate("Channels", {
                         screen: "Channel",
-                        params: { id: guild.id },
+                        params: { guildId: guild.id },
                       });
                     }}
                   />
@@ -286,11 +320,7 @@ const ChannelsScreenMobile = observer(
             headerShown: false,
           }}
         >
-          <Stack.Screen
-            name="Channel"
-            component={ChannelMobile}
-            initialParams={{ id: "me" }}
-          />
+          <Stack.Screen name="Channel" component={ChannelMobile} />
         </Stack.Navigator>
       </Swiper>
     );

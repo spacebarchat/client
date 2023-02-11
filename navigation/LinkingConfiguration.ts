@@ -16,8 +16,7 @@ const linking: LinkingOptions<RootStackParamsList> = {
       App: "app",
       Channels: {
         screens: {
-          Home: "channels/me",
-          Channel: "channels/:id",
+          Channel: "channels/:guildId/:channelId?",
         },
       },
       Login: "login",

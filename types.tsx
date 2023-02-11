@@ -5,6 +5,7 @@
 
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Snowflake } from "./interfaces/common";
 
 declare global {
   namespace ReactNavigation {
@@ -27,11 +28,14 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamsList> =
   NativeStackScreenProps<RootStackParamsList, Screen>;
 
 export type ChannelsParamList = {
-  Channel: { id: string };
+  Channel: { guildId: Snowflake; channelId?: Snowflake };
 };
 
 export type ChannelsStackScreenProps<Screen extends keyof ChannelsParamList> =
   NativeStackScreenProps<ChannelsParamList, Screen>;
+
+export type ChannelProps = NativeStackScreenProps<ChannelsParamList, "Channel">;
+export type ChannelParams = ChannelProps["route"];
 
 declare module "react-native" {
   interface PlatformStatic {
