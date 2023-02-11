@@ -41,7 +41,10 @@ function App() {
       .then((token) => {
         domain.gateway.connect("wss://slowcord.understars.dev/", token);
       })
-      .catch(console.error);
+      .catch((e) => {
+        console.error(e);
+        domain.setLoading(false);
+      });
   }, []);
 
   if (!isLoadingComplete) {

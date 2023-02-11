@@ -12,6 +12,16 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
   const domain = React.useContext(DomainContext);
   const theme = useTheme<CustomTheme>();
 
+  React.useEffect(() => {
+    if (Platform.isMobile) return;
+
+    if (!domain.account.isAuthenticated) {
+      navigation.navigate("Login");
+    } else {
+      navigation.navigate("Channels");
+    }
+  }, [domain.account.isAuthenticated]);
+
   const handleLogin = () => {
     navigation.navigate("Login");
   };
@@ -56,10 +66,6 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
       </Container>
     </Container>
   );
-
-  React.useEffect(() => {
-    if (domain.account.isAuthenticated) return navigation.navigate("Channels");
-  }, []);
 
   return Platform.isMobile ? <MobileUnauthenticated /> : null;
 }
