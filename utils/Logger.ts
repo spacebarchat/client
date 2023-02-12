@@ -1,10 +1,27 @@
 import {
-  fileAsyncTransport,
+  configLoggerType,
   logger,
-  mapConsoleTransport,
+  transportFunctionType,
 } from "react-native-logs";
 
-const config = {
+const customTransport: transportFunctionType = (props) => {
+  switch (props.level.severity) {
+    case 0:
+      console.debug(props.level.text.toUpperCase() + " |", ...props.rawMsg);
+      break;
+    case 1:
+      console.info(props.level.text.toUpperCase() + " |", ...props.rawMsg);
+      break;
+    case 2:
+      console.warn(props.level.text.toUpperCase() + " |", ...props.rawMsg);
+      break;
+    case 3:
+      console.error(props.level.text.toUpperCase() + " |", ...props.rawMsg);
+      break;
+  }
+};
+
+const config: configLoggerType = {
   levels: {
     debug: 0,
     info: 1,
@@ -12,16 +29,17 @@ const config = {
     error: 3,
   },
   severity: __DEV__ ? "debug" : "error",
-  transport: __DEV__ ? mapConsoleTransport : fileAsyncTransport,
+  // transport: __DEV__ ? customTransport : fileAsyncTransport,
+  transport: customTransport,
   transportOptions: {
+    color: "ansi",
     colors: {
       info: "blueBright",
       warn: "yellowBright",
       error: "redBright",
+      debug: "greenBright",
     },
-    // FS: RNFS, // TODO: React native fs
   },
-  // async: true,
   dateFormat: "time",
   printLevel: true,
   printDate: true,

@@ -100,7 +100,8 @@ export default class GatewayStore extends BaseStore {
 
   private onmessage = (e: WebSocketMessageEvent) => {
     const payload: GatewayReceivePayload = JSON.parse(e.data);
-    console.debug("[Gateway] ->", payload);
+    if (payload.op !== GatewayOpcodes.Dispatch)
+      this.logger.debug(`[Gateway] -> ${payload.op}`, payload);
 
     switch (payload.op) {
       case GatewayOpcodes.Dispatch:
@@ -128,7 +129,7 @@ export default class GatewayStore extends BaseStore {
   };
 
   private onerror = (e: Event) => {
-    console.error("[Gateway] Socket Error", e);
+    this.logger.error("[Gateway] Socket Error", e);
   };
 
   private onclose = (e: WebSocketCloseEvent) => {
@@ -140,7 +141,7 @@ export default class GatewayStore extends BaseStore {
       this.logger.error("Socket is not open");
       return;
     }
-    console.debug("[Gateway] <-", payload);
+    this.logger.debug(`[Gateway] <- ${payload.op}`, payload);
     this.socket.send(JSON.stringify(payload));
   };
 
@@ -254,6 +255,7 @@ export default class GatewayStore extends BaseStore {
 
   private processDispatch = (data: GatewayDispatchPayload) => {
     const { d, t, s } = data;
+    this.logger.debug(`[Gateway] -> ${t}`, d);
     this.sequence = s;
     const handler = this.dispatchHandlers.get(t);
     if (!handler) {
@@ -293,7 +295,6 @@ export default class GatewayStore extends BaseStore {
   };
 
   private onGuildDelete = (data: GatewayGuildDeleteDispatchData) => {
-    console.log(data);
     this.logger.debug("Received guild delete event");
     this.domain.guild.guilds.delete(data.id);
   };
