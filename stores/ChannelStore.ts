@@ -2,19 +2,18 @@ import {
   Channel,
   ChannelPermissionOverwrite,
   ChannelType,
-  Guild,
   Invite,
   Message,
   ReadState,
   Recipient,
-  User,
   VoiceState,
   Webhook,
 } from "@puyodead1/fosscord-types";
 import { observable } from "mobx";
+import { ChannelOmit } from "../interfaces/Gateway";
 import BaseStore from "./BaseStore";
 
-export default class ChannelStore extends BaseStore implements Channel {
+export default class ChannelStore extends BaseStore implements ChannelOmit {
   id: string;
   created_at: Date;
   @observable name?: string | undefined;
@@ -23,11 +22,9 @@ export default class ChannelStore extends BaseStore implements Channel {
   recipients?: Recipient[] | undefined;
   last_message_id?: string | undefined;
   guild_id?: string | undefined;
-  guild: Guild;
   parent_id: string;
   parent?: Channel | undefined;
   owner_id?: string | undefined;
-  owner: User;
   last_pin_timestamp?: number | undefined;
   default_auto_archive_duration?: number | undefined;
   position?: number | undefined;
@@ -47,7 +44,7 @@ export default class ChannelStore extends BaseStore implements Channel {
   flags: number;
   default_thread_rate_limit_per_user: number;
 
-  constructor(data: Channel) {
+  constructor(data: ChannelOmit) {
     super();
     // super({ logStoreCreated: false });
 
@@ -59,11 +56,9 @@ export default class ChannelStore extends BaseStore implements Channel {
     this.recipients = data.recipients;
     this.last_message_id = data.last_message_id;
     this.guild_id = data.guild_id;
-    this.guild = data.guild;
     this.parent_id = data.parent_id;
     this.parent = data.parent;
     this.owner_id = data.owner_id;
-    this.owner = data.owner;
     this.last_pin_timestamp = data.last_pin_timestamp;
     this.default_auto_archive_duration = data.default_auto_archive_duration;
     this.position = data.position;

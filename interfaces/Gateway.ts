@@ -19,6 +19,7 @@ import { APIUnavailableGuild } from "./api";
 import { Nullable, Snowflake } from "./common";
 
 export const GatewayVersion = "9";
+export type ChannelOmit = Omit<Channel, "owner" | "guild">; // FIXME: types should not have these fields
 
 /**
  * https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes
@@ -582,7 +583,7 @@ export type GatewayChannelModifyDispatch = DataPayload<
  * https://discord.com/developers/docs/topics/gateway-events#channel-update
  * https://discord.com/developers/docs/topics/gateway-events#channel-delete
  */
-export type GatewayChannelModifyDispatchData = Channel;
+export type GatewayChannelModifyDispatchData = ChannelOmit;
 
 /**
  * https://discord.com/developers/docs/topics/gateway-events#channel-create

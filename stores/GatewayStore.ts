@@ -2,6 +2,8 @@ import { Guild } from "@puyodead1/fosscord-types";
 import { action, makeObservable, observable, reaction } from "mobx";
 import { Platform } from "react-native";
 import {
+  GatewayChannelCreateDispatchData,
+  GatewayChannelDeleteDispatchData,
   GatewayDispatchEvents,
   GatewayDispatchPayload,
   GatewayGuildCreateDispatchData,
@@ -86,6 +88,15 @@ export default class GatewayStore extends BaseStore {
     this.dispatchHandlers.set(
       GatewayDispatchEvents.GuildDelete,
       this.onGuildDelete
+    );
+
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.ChannelCreate,
+      this.onChannelCreate
+    );
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.ChannelDelete,
+      this.onChannelDelete
     );
   }
 
@@ -289,6 +300,8 @@ export default class GatewayStore extends BaseStore {
     this.domain.setAppLoading(false);
   };
 
+  // Start dispatch handlers
+
   private onGuildCreate = (data: GatewayGuildCreateDispatchData) => {
     this.logger.debug("Received guild create event");
     this.domain.guild.add({ ...data, ...data.properties } as unknown as Guild);
@@ -297,5 +310,13 @@ export default class GatewayStore extends BaseStore {
   private onGuildDelete = (data: GatewayGuildDeleteDispatchData) => {
     this.logger.debug("Received guild delete event");
     this.domain.guild.guilds.delete(data.id);
+  };
+
+  private onChannelCreate = (data: GatewayChannelCreateDispatchData) => {
+    this.domain.guild.guilds.get(data.guild_id!)?.channels.add(data);
+  };
+
+  private onChannelDelete = (data: GatewayChannelDeleteDispatchData) => {
+    this.domain.guild.guilds.get(data.guild_id!)?.channels.remove(data.id);
   };
 }
