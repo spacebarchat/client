@@ -90,7 +90,7 @@ const ChannelDesktop = observer(
           <Container displayFlex flexOne>
             <ScrollView>
               {Array.from(guild.channels.channels.values()).map((channel) => (
-                <Text>{channel.name}</Text>
+                <Text key={channel.id}>{channel.name}</Text>
               ))}
             </ScrollView>
           </Container>
