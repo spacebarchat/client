@@ -127,6 +127,7 @@ function Swiper({
             flexDirection: "row",
             maxWidth: w,
             marginRight: 5,
+            marginLeft: 5,
             transform: [{ translateX: trans }],
           },
         ]}

@@ -9,7 +9,7 @@ import {
   SectionList,
   View,
 } from "react-native";
-import { Avatar, Button, Surface, Text, useTheme } from "react-native-paper";
+import { Avatar, Button, Text, useTheme } from "react-native-paper";
 import Container from "../components/Container";
 import GuildListGuild from "../components/GuildListGuild";
 import Swiper from "../components/Swiper";
@@ -102,18 +102,21 @@ const ChannelDesktop = observer(
           }}
           displayFlex
         >
-          <Surface
+          <Container
             testID="chatHeader"
+            verticalCenter
+            horizontalCenter
             style={{
               height: 48,
               backgroundColor: theme.colors.palette.backgroundPrimary70,
             }}
+            isSurface
             elevation={1}
           >
             <Text>{guild.name}</Text>
-          </Surface>
+          </Container>
           <Container displayFlex flexOne>
-            <ScrollView>
+            <ScrollView style={{ padding: 10 }}>
               {Array.from(guild.channels.channels.values()).map((channel) => (
                 <Text key={channel.id}>{channel.name}</Text>
               ))}
@@ -130,19 +133,22 @@ const ChannelDesktop = observer(
           displayFlex
           flexOne
         >
-          <Surface
+          <Container
             testID="chatHeader"
+            verticalCenter
             style={{
               height: 48,
+              paddingHorizontal: 10,
               backgroundColor: theme.colors.palette.backgroundPrimary100,
             }}
+            isSurface
             elevation={1}
           >
-            <Text>{channel.name}</Text>
-          </Surface>
+            <Text>#{channel.name}</Text>
+          </Container>
           <Container testID="chat" displayFlex flexOne row>
             <Container testID="chatContent" displayFlex flexOne>
-              <ScrollView>
+              <ScrollView style={{ padding: 10 }}>
                 <Button mode="contained" onPress={domain.toggleDarkTheme}>
                   Theme
                 </Button>
@@ -176,7 +182,7 @@ const ChannelDesktop = observer(
               testID="memberList"
               style={{
                 width: 240,
-                backgroundColor: theme.colors.palette.backgroundPrimary40,
+                backgroundColor: theme.colors.palette.backgroundPrimary70,
               }}
               displayFlex
             >
@@ -184,14 +190,27 @@ const ChannelDesktop = observer(
                 sections={sectionPlaceholderData}
                 keyExtractor={(item, index) => item + index}
                 renderItem={({ item }) => (
-                  <View style={{ marginVertical: 20, padding: 10 }}>
+                  <View
+                    style={{
+                      marginVertical: 20,
+                      padding: 10,
+                    }}
+                  >
                     <Text>{item}</Text>
                   </View>
                 )}
                 renderSectionHeader={({ section: { title } }) => (
-                  <Text>{title}</Text>
+                  <View
+                    style={{
+                      backgroundColor: theme.colors.palette.backgroundPrimary70,
+                      padding: 20,
+                    }}
+                  >
+                    <Text>{title}</Text>
+                  </View>
                 )}
                 stickySectionHeadersEnabled={true}
+                contentContainerStyle={{ padding: 10 }}
               />
             </Container>
           </Container>
@@ -227,7 +246,11 @@ const ChannelMobile = observer(
         displayFlex
         verticalCenter
         horizontalCenter
-        style={{ backgroundColor: theme.colors.palette.backgroundPrimary100 }}
+        style={{
+          backgroundColor: theme.colors.palette.backgroundPrimary90,
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+        }}
       >
         {!guild ? (
           <Text>Guild not found</Text>
@@ -367,20 +390,30 @@ const ChannelsScreenMobile = observer(
         <Container
           testID="channelSidebar"
           flexOne
-          style={{ backgroundColor: theme.colors.palette.backgroundPrimary70 }}
+          style={{
+            backgroundColor: theme.colors.palette.backgroundPrimary70,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+          }}
         >
-          <Surface
+          <Container
             testID="chatHeader"
+            verticalCenter
+            horizontalCenter
             style={{
               height: 74,
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
               backgroundColor: theme.colors.palette.backgroundPrimary70,
             }}
+            isSurface
             elevation={1}
           >
             <Text>Channel Header</Text>
-          </Surface>
+          </Container>
           <Container testID="channelSidebarBody" flexOne>
             <SectionList
+              style={{ margin: 10 }}
               sections={sectionPlaceholderData}
               keyExtractor={(item, index) => item + index}
               renderItem={({ item }) => (
@@ -389,9 +422,17 @@ const ChannelsScreenMobile = observer(
                 </View>
               )}
               renderSectionHeader={({ section: { title } }) => (
-                <Text>{title}</Text>
+                <View
+                  style={{
+                    backgroundColor: theme.colors.palette.backgroundPrimary70,
+                    padding: 20,
+                  }}
+                >
+                  <Text>{title}</Text>
+                </View>
               )}
               stickySectionHeadersEnabled={true}
+              contentContainerStyle={{ padding: 10 }}
             />
           </Container>
         </Container>
@@ -399,8 +440,53 @@ const ChannelsScreenMobile = observer(
     );
 
     const rightAction = (
-      <Container verticalCenter horizontalCenter flexOne>
-        <Text>Right Action</Text>
+      <Container
+        flexOne
+        style={{
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          backgroundColor: theme.colors.palette.backgroundPrimary70,
+        }}
+      >
+        <Container
+          verticalCenter
+          horizontalCenter
+          style={{
+            height: 74,
+            padding: 10,
+          }}
+        >
+          <Text>Member List Header</Text>
+        </Container>
+        <Container
+          verticalCenter
+          style={{
+            padding: 10,
+            backgroundColor: theme.colors.palette.backgroundPrimary100,
+          }}
+        >
+          <SectionList
+            sections={sectionPlaceholderData}
+            keyExtractor={(item, index) => item + index}
+            renderItem={({ item }) => (
+              <View style={{ marginVertical: 20, padding: 10 }}>
+                <Text>{item}</Text>
+              </View>
+            )}
+            renderSectionHeader={({ section: { title } }) => (
+              <View
+                style={{
+                  backgroundColor: theme.colors.palette.backgroundPrimary100,
+                  padding: 20,
+                }}
+              >
+                <Text>{title}</Text>
+              </View>
+            )}
+            stickySectionHeadersEnabled={true}
+            contentContainerStyle={{ padding: 10 }}
+          />
+        </Container>
       </Container>
     );
 
@@ -440,7 +526,7 @@ const ChannelsScreenMobile = observer(
         leftChildren={leftAction}
         rightChildren={rightAction}
         containerStyle={{
-          backgroundColor: theme.colors.palette.backgroundPrimary60,
+          backgroundColor: theme.colors.palette.backgroundPrimary40,
         }}
       >
         <Stack.Navigator

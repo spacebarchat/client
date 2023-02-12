@@ -11,6 +11,7 @@ interface ContainerProps extends ViewProps {
   row?: boolean;
   isSafe?: boolean;
   isSurface?: boolean;
+  elevation?: 0 | 1 | 2 | 3 | 4 | 5 | undefined;
 }
 
 function Container(props: ContainerProps) {
