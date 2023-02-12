@@ -32,7 +32,7 @@ export default class GatewayStore extends BaseStore {
   private dispatchHandlers: Map<GatewayDispatchEvents, Function> = new Map();
   private connectionStartTime?: number;
   private identifyStartTime?: number;
-  private sequence: number = 0;
+  private sequence: number | null = null;
   private heartbeatAck: boolean = true;
 
   constructor(domain: DomainStore) {
@@ -100,7 +100,7 @@ export default class GatewayStore extends BaseStore {
 
   private onmessage = (e: WebSocketMessageEvent) => {
     const payload: GatewayReceivePayload = JSON.parse(e.data);
-    console.debug("[Gateway] Received", payload);
+    console.debug("[Gateway] ->", payload);
 
     switch (payload.op) {
       case GatewayOpcodes.Dispatch:
@@ -140,6 +140,7 @@ export default class GatewayStore extends BaseStore {
       this.logger.error("Socket is not open");
       return;
     }
+    console.debug("[Gateway] <-", payload);
     this.socket.send(JSON.stringify(payload));
   };
 
@@ -235,7 +236,7 @@ export default class GatewayStore extends BaseStore {
   private sendHeartbeat = () => {
     const payload: GatewayHeartbeat = {
       op: GatewayOpcodes.Heartbeat,
-      d: null,
+      d: this.sequence,
     };
     this.logger.debug("Sending heartbeat");
     this.sendJson(payload);
@@ -252,9 +253,8 @@ export default class GatewayStore extends BaseStore {
   };
 
   private processDispatch = (data: GatewayDispatchPayload) => {
-    // TODO: store sequence number
-
     const { d, t, s } = data;
+    this.sequence = s;
     const handler = this.dispatchHandlers.get(t);
     if (!handler) {
       this.logger.debug(`No handler for dispatch event ${t}`);
