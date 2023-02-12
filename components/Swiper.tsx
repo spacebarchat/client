@@ -135,7 +135,7 @@ function Swiper({
   };
 
   return (
-    <Container safe>
+    <Container isSafe>
       <Swipeable
         renderLeftActions={leftChildren ? renderLeftAction : undefined}
         renderRightActions={rightChildren ? renderRightAction : undefined}

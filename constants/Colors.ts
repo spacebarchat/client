@@ -1,8 +1,10 @@
 import Color from "color";
 import {
   adaptNavigationTheme,
+  configureFonts,
   MD3DarkTheme,
   MD3LightTheme,
+  MD3Theme,
 } from "react-native-paper";
 
 import {
@@ -11,9 +13,6 @@ import {
 } from "@react-navigation/native";
 import merge from "deepmerge";
 import { NavigationTheme } from "react-native-paper/lib/typescript/types";
-const {
-  tokens,
-} = require("react-native-paper/lib/commonjs/styles/themes/v3/tokens");
 
 // #262322 this is a nice color, maybe we can use this somewhere
 
@@ -154,7 +153,9 @@ export const CustomPaletteLight = {
   backgroundSecondary100: CustomLightColors.backgroundSecondary.lighten(0.5),
 };
 
-const CustomLightTheme = {
+const CustomLightTheme: MD3Theme & {
+  colors: { palette: Record<string, string> };
+} = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
@@ -199,9 +200,16 @@ const CustomLightTheme = {
     //   level5: CustomPaletteLight.backgroundSecondary100.alpha(0.14).string(),
     // },
   },
+  fonts: configureFonts({
+    config: {
+      fontFamily: "source-sans-regular",
+    },
+  }),
 };
 
-const CustomDarkTheme = {
+const CustomDarkTheme: MD3Theme & {
+  colors: { palette: Record<string, string> };
+} = {
   ...MD3DarkTheme,
   colors: {
     ...MD3DarkTheme.colors,
@@ -246,6 +254,11 @@ const CustomDarkTheme = {
     //   level5: CustomPaletteDark.backgroundSecondary100.alpha(0.14).string(),
     // },
   },
+  fonts: configureFonts({
+    config: {
+      fontFamily: "source-sans-regular",
+    },
+  }),
 };
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({

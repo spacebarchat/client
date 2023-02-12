@@ -14,7 +14,7 @@ export class DomainStore extends BaseStore {
   @observable user: UsersStore = new UsersStore();
   @observable guild: GuildsStore = new GuildsStore();
   @observable gateway: GatewayStore = new GatewayStore(this);
-  @observable isLoading: boolean = true;
+  @observable isAppLoading: boolean = true;
   public readonly devSkipAuth = false;
   public rest: REST = new REST("https://slowcord.understars.dev");
 
@@ -34,14 +34,18 @@ export class DomainStore extends BaseStore {
   }
 
   @action
-  setLoading(isLoading: boolean) {
-    this.isLoading = isLoading;
+  setAppLoading(isAppLoading: boolean) {
+    this.isAppLoading = isAppLoading;
   }
 
   @action
   setI18NInitialized() {
     this.isI18NInitialized = true;
     this.logger.debug("i18n initialized");
+  }
+
+  get isAppReady() {
+    return !this.isAppLoading && this.isI18NInitialized;
   }
 }
 

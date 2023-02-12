@@ -1,5 +1,6 @@
 import React from "react";
 import { View, ViewProps } from "react-native";
+import { Surface } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface ContainerProps extends ViewProps {
@@ -8,11 +9,17 @@ interface ContainerProps extends ViewProps {
   flexOne?: boolean;
   displayFlex?: boolean;
   row?: boolean;
-  safe?: boolean;
+  isSafe?: boolean;
+  isSurface?: boolean;
 }
 
 function Container(props: ContainerProps) {
-  const Element = props.safe ? SafeAreaView : View;
+  const Element = props.isSafe
+    ? SafeAreaView
+    : props.isSurface
+    ? Surface
+    : View;
+
   return (
     <Element
       {...props}

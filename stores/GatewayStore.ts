@@ -1,5 +1,5 @@
 import { Guild } from "@puyodead1/fosscord-types";
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, reaction } from "mobx";
 import { Platform } from "react-native";
 import {
   GatewayDispatchEvents,
@@ -40,14 +40,24 @@ export default class GatewayStore extends BaseStore {
 
     this.domain = domain;
 
+    reaction(
+      () => domain.account.token,
+      (token) => {
+        if (token) {
+          this.connect("wss://slowcord.understars.dev/");
+        } else {
+          this.socket?.close(1000, "user is no longer authenticated");
+        }
+      }
+    );
+
     makeObservable(this);
   }
   /**
    * Starts connection to gateway
    */
   @action
-  async connect(url: string, token: string) {
-    this.token = token;
+  async connect(url: string) {
     const newUrl = new URL(url);
     newUrl.searchParams.append("v", GATEWAY_VERSION);
     newUrl.searchParams.append("encoding", GATEWAY_ENCODING);
@@ -135,13 +145,14 @@ export default class GatewayStore extends BaseStore {
 
   private handleIdentify = () => {
     this.logger.debug("handleIdentify called");
-    if (!this.token) return this.logger.error(`Token shouldn't be null here`);
+    if (!this.domain.account.token)
+      return this.logger.error(`Token shouldn't be null here`);
     this.identifyStartTime = Date.now();
 
     const payload: GatewayIdentify = {
       op: GatewayOpcodes.Identify,
       d: {
-        token: this.token,
+        token: this.domain.account.token,
         properties: {
           os: Platform.OS,
         },
@@ -273,7 +284,7 @@ export default class GatewayStore extends BaseStore {
     this.logger.debug(`Stored ${this.domain.guild.guilds.size} guilds`);
     this.logger.debug(`Stored ${this.domain.user.users.size} users`);
 
-    this.domain.setLoading(false);
+    this.domain.setAppLoading(false);
   };
 
   private onGuildCreate = (data: GatewayGuildCreateDispatchData) => {

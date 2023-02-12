@@ -118,8 +118,15 @@ const ChannelDesktop = observer(
           <Container testID="chat" displayFlex flexOne row>
             <Container testID="chatContent" displayFlex flexOne>
               <ScrollView>
-                <Button onPress={domain.toggleDarkTheme}>
-                  <Text>Theme</Text>
+                <Button mode="contained" onPress={domain.toggleDarkTheme}>
+                  Theme
+                </Button>
+                <Button
+                  mode="contained"
+                  onPress={domain.account.logout}
+                  buttonColor={theme.colors.error}
+                >
+                  Logout
                 </Button>
                 <Text style={{ marginVertical: 20 }}>Chat Content</Text>
                 <Text style={{ marginVertical: 20 }}>Chat Content</Text>
@@ -290,6 +297,7 @@ const ChannelsScreenDesktop = observer(
 const ChannelsScreenMobile = observer(
   ({ navigation }: RootStackScreenProps<"Channels">) => {
     const domain = React.useContext(DomainContext);
+    const theme = useTheme<CustomTheme>();
 
     const leftAction = (
       <Container flexOne row>
@@ -342,6 +350,7 @@ const ChannelsScreenMobile = observer(
         displayFlex
         verticalCenter
         horizontalCenter
+        row
         style={{
           position: "absolute",
           bottom: 0,
@@ -352,7 +361,16 @@ const ChannelsScreenMobile = observer(
           backgroundColor: "orange",
         }}
       >
-        <Text>Footer</Text>
+        <Button mode="contained" onPress={domain.toggleDarkTheme}>
+          Toggle Theme
+        </Button>
+        <Button
+          mode="contained"
+          onPress={domain.account.logout}
+          buttonColor={theme.colors.error}
+        >
+          Logout
+        </Button>
       </Container>
     );
 

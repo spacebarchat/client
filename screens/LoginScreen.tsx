@@ -253,12 +253,15 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
       horizontalCenter
       verticalCenter
       flexOne
-      safe
+      isSafe
     >
       <Portal>
         <Modal
           visible={captchaModalVisible}
-          onDismiss={hideCaptchaModal}
+          onDismiss={() => {
+            hideCaptchaModal();
+            setIsLoading(false);
+          }}
           style={styles.modalContainer}
           contentContainerStyle={styles.modalContentContainer}
         >
@@ -409,7 +412,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContentContainer: {
-    flex: 1,
+    width: "100%",
+    height: "100%",
     justifyContent: "center",
     alignItems: "center",
   },

@@ -1,7 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, reaction } from "mobx";
 import { GatewayReadyUser } from "../interfaces/Gateway";
 import BaseStore from "./BaseStore";
+import { DomainStore } from "./DomainStore";
 
 /**
  * Handles all account related data and actions
@@ -16,25 +17,16 @@ export default class AccountStore extends BaseStore {
 
     makeObservable(this);
 
-    // autorun(() => {
-    //   if (this.isAuthenticated && this.token) {
-    //     AsyncStorage.setItem("token", this.token, (err) => {
-    //       if (err) {
-    //         this.logger.error(err);
-    //       } else {
-    //         this.logger.debug("Saved token to storage");
-    //       }
-    //     });
-    //   } else {
-    //     AsyncStorage.removeItem("token", (err) => {
-    //       if (err) {
-    //         this.logger.error(err);
-    //       } else {
-    //         this.logger.debug("Removed token from storage");
-    //       }
-    //     });
-    //   }
-    // });
+    reaction(
+      () => this.token,
+      (token) => {
+        if (token) {
+          this.isAuthenticated = true;
+        } else {
+          this.isAuthenticated = false;
+        }
+      }
+    );
   }
 
   @action
@@ -45,7 +37,6 @@ export default class AccountStore extends BaseStore {
   @action
   setToken(token: string) {
     this.token = token;
-    this.setAuthenticated(true);
     AsyncStorage.setItem("token", token, (err) => {
       if (err) this.logger.error(err);
       else this.logger.debug("Token saved to storage.");
@@ -53,7 +44,7 @@ export default class AccountStore extends BaseStore {
   }
 
   @action
-  async loadToken(): Promise<string> {
+  async loadToken(domain: DomainStore): Promise<void> {
     return new Promise((resolve, reject) => {
       AsyncStorage.getItem("token", (err, result) => {
         if (err) return reject(err);
@@ -61,11 +52,11 @@ export default class AccountStore extends BaseStore {
         if (result) {
           this.logger.debug("Loaded token from storage.");
           this.token = result;
-          this.setAuthenticated(true);
-          resolve(result);
+          resolve();
         } else {
           this.logger.debug("No token found in storage.");
-          reject("No token in storage");
+          domain.setAppLoading(false);
+          resolve();
         }
       });
     });
@@ -74,10 +65,9 @@ export default class AccountStore extends BaseStore {
   @action
   logout() {
     this.token = null;
-    this.setAuthenticated(false);
     AsyncStorage.removeItem("token", (err) => {
-      if (err) this.logger.error(err);
-      else this.logger.debug("Token saved to storage.");
+      if (err) console.error(err);
+      else console.debug("Token removed from storage.");
     });
   }
 

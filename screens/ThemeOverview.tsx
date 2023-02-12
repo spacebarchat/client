@@ -79,7 +79,7 @@ function ThemeOverview() {
   }
 
   return (
-    <Container flexOne safe>
+    <Container flexOne isSafe>
       <Container
         flexOne
         style={{

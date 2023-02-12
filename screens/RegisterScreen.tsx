@@ -59,7 +59,7 @@ function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
       horizontalCenter
       verticalCenter
       flexOne
-      safe
+      isSafe
     >
       <Surface
         testID="innerContainer"

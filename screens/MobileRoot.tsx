@@ -1,23 +1,11 @@
-import { t } from "i18next";
-import { observer } from "mobx-react";
 import React from "react";
-import { Platform, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Button, Text } from "react-native-paper";
 import Container from "../components/Container";
-import { DomainContext } from "../stores/DomainStore";
 import { RootStackScreenProps } from "../types";
+import { t } from "../utils/i18n";
 
-function RootScreen({ navigation }: RootStackScreenProps<"App">) {
-  const domain = React.useContext(DomainContext);
-
-  React.useEffect(() => {
-    if (!domain.account.isAuthenticated && !Platform.isMobile) {
-      navigation.navigate("Login");
-    } else {
-      navigation.navigate("Channels");
-    }
-  }, [domain.account.isAuthenticated]);
-
+function MobileRoot({ navigation }: RootStackScreenProps<"App">) {
   const handleLogin = () => {
     navigation.navigate("Login");
   };
@@ -26,9 +14,8 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
     navigation.navigate("Register");
   };
 
-  // Returns the login screen for mobile
-  const MobileUnauthenticated = () => (
-    <Container displayFlex flexOne safe style={styles.rootContainer}>
+  return (
+    <Container displayFlex flexOne isSafe style={styles.rootContainer}>
       <Container horizontalCenter style={[styles.rootContentContainer]}>
         {/* Header, Branding */}
         <Container horizontalCenter style={styles.headingContainer}>
@@ -62,8 +49,6 @@ function RootScreen({ navigation }: RootStackScreenProps<"App">) {
       </Container>
     </Container>
   );
-
-  return Platform.isMobile ? <MobileUnauthenticated /> : null;
 }
 
 const styles = StyleSheet.create({
@@ -90,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default observer(RootScreen);
+export default MobileRoot;

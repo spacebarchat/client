@@ -176,7 +176,11 @@ function HCaptcha({ siteKey, theme, onMessage }: HCaptchaProps) {
   return (
     <WebView
       containerStyle={{ height: dimensions.height, width: dimensions.width }}
-      style={{ backgroundColor: "transparent", width: "100%", pointerEvents: "auto" }}
+      style={{
+        backgroundColor: "transparent",
+        width: "100%",
+        pointerEvents: "auto",
+      }}
       source={{ html }}
       originWhitelist={["*"]}
       onShouldStartLoadWithRequest={(event: any) => {

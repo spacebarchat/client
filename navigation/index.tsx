@@ -4,13 +4,16 @@
  *
  */
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { observer } from "mobx-react";
 import * as React from "react";
+import { Platform } from "react-native";
 import ChannelsScreen from "../screens/ChannelsScreen";
 import LoginScreen from "../screens/LoginScreen";
+import MobileRoot from "../screens/MobileRoot";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import RegisterScreen from "../screens/RegisterScreen";
-import RootScreen from "../screens/RootScreen";
 import ThemeOverview from "../screens/ThemeOverview";
+import { DomainContext } from "../stores/DomainStore";
 import { RootStackParamsList } from "../types";
 
 /**
@@ -19,28 +22,44 @@ import { RootStackParamsList } from "../types";
  */
 const Stack = createNativeStackNavigator<RootStackParamsList>();
 
-export function RootNavigator() {
-  return (
-    <Stack.Navigator
-      initialRouteName="App"
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="App" component={RootScreen} />
-      <Stack.Screen
-        name="Channels"
-        component={ChannelsScreen}
-        initialParams={{ params: { guildId: "me" } }}
-      />
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
+export const RootNavigator = observer(() => {
+  const domain = React.useContext(DomainContext);
+
+  const commonStack = (
+    <>
       <Stack.Screen name="ThemeOverview" component={ThemeOverview} />
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}
         options={{ title: "Oops!" }}
       />
+    </>
+  );
+
+  const authenticatedStack = (
+    <>
+      <Stack.Screen
+        name="Channels"
+        component={ChannelsScreen}
+        initialParams={{ params: { guildId: "me" } }}
+      />
+    </>
+  );
+
+  const unauthenticatedStack = (
+    <>
+      {Platform.isMobile && <Stack.Screen name="App" component={MobileRoot} />}
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Register" component={RegisterScreen} />
+    </>
+  );
+
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {domain.account.isAuthenticated
+        ? authenticatedStack
+        : unauthenticatedStack}
+      {commonStack}
     </Stack.Navigator>
   );
-}
+});

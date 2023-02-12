@@ -11,7 +11,7 @@ function NotFoundScreen({ navigation }: RootStackScreenProps<"NotFound">) {
       flexOne
       verticalCenter
       horizontalCenter
-      safe
+      isSafe
       style={{ padding: 20 }}
     >
       <Text style={styles.title}>{t("notfound:TITLE")}</Text>

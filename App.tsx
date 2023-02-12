@@ -4,11 +4,16 @@ import { observer } from "mobx-react";
 import React from "react";
 import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Provider as PaperProvider } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Provider as PaperProvider,
+} from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import Container from "./components/Container";
 import { CombinedDarkTheme, CombinedLightTheme } from "./constants/Colors";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
+import useLogger from "./hooks/useLogger";
 import { RootNavigator } from "./navigation";
 import linking from "./navigation/LinkingConfiguration";
 import { DomainContext } from "./stores/DomainStore";
@@ -25,7 +30,7 @@ function App() {
   )
     throw new Error("Transpiler is not configured correctly");
 
-  // const logger = useLogger("App");
+  const logger = useLogger("App");
   // const navigationLogger = useLogger("Routing");
   const domain = React.useContext(DomainContext);
   const isLoadingComplete = useCachedResources();
@@ -36,40 +41,34 @@ function App() {
     domain.setDarkTheme(colorScheme === "dark");
 
     // load token from storage
-    domain.account
-      .loadToken()
-      .then((token) => {
-        domain.gateway.connect("wss://slowcord.understars.dev/", token);
-      })
-      .catch((e) => {
-        console.error(e);
-        domain.setLoading(false);
-      });
+    domain.account.loadToken(domain).catch((e) => {
+      logger.error(e);
+    });
   }, []);
 
-  if (!isLoadingComplete) {
-    return null;
-  } else {
-    return (
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <PaperProvider
-          theme={domain.isDarkTheme ? CombinedDarkTheme : CombinedLightTheme}
-        >
-          <SafeAreaProvider>
-            <NavigationContainer
-              linking={linking}
-              theme={
-                domain.isDarkTheme ? CombinedDarkTheme : CombinedLightTheme
-              }
-            >
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <PaperProvider
+        theme={domain.isDarkTheme ? CombinedDarkTheme : CombinedLightTheme}
+      >
+        <SafeAreaProvider>
+          <NavigationContainer
+            linking={linking}
+            theme={domain.isDarkTheme ? CombinedDarkTheme : CombinedLightTheme}
+          >
+            {isLoadingComplete ? (
               <RootNavigator />
-            </NavigationContainer>
-            <StatusBar />
-          </SafeAreaProvider>
-        </PaperProvider>
-      </GestureHandlerRootView>
-    );
-  }
+            ) : !Platform.isWeb ? null : (
+              <Container verticalCenter horizontalCenter flexOne isSurface>
+                <ActivityIndicator animating={true} />
+              </Container>
+            )}
+          </NavigationContainer>
+          <StatusBar />
+        </SafeAreaProvider>
+      </PaperProvider>
+    </GestureHandlerRootView>
+  );
 }
 
 export default observer(App);
