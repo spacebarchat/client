@@ -54,21 +54,25 @@ function GuildListGuild({ guild, onPress }: GuildListGuildProps) {
   }
 
   return (
-    <Pressable onHoverIn={onHoverIn} onHoverOut={onHoverOut} onPress={onPress}>
-      <Popable
-        content={guild.name}
-        position="right"
-        action="hover"
-        style={{ zIndex: 100 }}
-        ref={ref}
+    <Popable
+      content={guild.name}
+      position="right"
+      action="hover"
+      style={{ zIndex: 100 }}
+      ref={ref}
+    >
+      <Pressable
+        onPress={onPress}
+        onHoverIn={onHoverIn}
+        onHoverOut={onHoverOut}
       >
         <Avatar.Text
           size={48}
-          label={guild.name.slice(0, 1)}
+          label={guild.name.substring(0, 2).toUpperCase()}
           style={styles.guildIcon}
         />
-      </Popable>
-    </Pressable>
+      </Pressable>
+    </Popable>
   );
 }
 

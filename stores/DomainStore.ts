@@ -16,7 +16,7 @@ export class DomainStore extends BaseStore {
   @observable gateway: GatewayStore = new GatewayStore(this);
   @observable isAppLoading: boolean = true;
   public readonly devSkipAuth = false;
-  public rest: REST = new REST("https://slowcord.understars.dev");
+  public rest: REST = new REST("https://canary.slowcord.understars.dev");
 
   constructor() {
     super();

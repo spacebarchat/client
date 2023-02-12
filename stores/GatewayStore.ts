@@ -44,7 +44,7 @@ export default class GatewayStore extends BaseStore {
       () => domain.account.token,
       (token) => {
         if (token) {
-          this.connect("wss://slowcord.understars.dev/");
+          this.connect("wss://gateway.canary.slowcord.understars.dev/");
         } else {
           this.socket?.close(1000, "user is no longer authenticated");
         }

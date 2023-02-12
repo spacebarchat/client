@@ -33,14 +33,14 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
   const domain = React.useContext(DomainContext);
   const logger = useLogger("LoginScreen");
 
-  const [email, setEmail] = React.useState("");
+  const [login, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [errors, setErrors] = React.useState<{
-    email?: string;
+    login?: string;
     username?: string;
     password?: string;
     dob?: string;
-  }>({ email: "", password: "" });
+  }>({ login: "", password: "" });
   const [isLoading, setIsLoading] = React.useState(false);
   const [captchaModalVisible, setCaptchaModalVisible] = React.useState(false);
   const [captchaSiteKey, setCaptchaSiteKey] = React.useState<
@@ -92,7 +92,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
     setIsLoading(true);
     domain.rest
       .post<LoginSchema, IAPILoginResponse>(Endpoints.LOGIN, {
-        login: email,
+        login,
         password,
         captcha_key: captchaKey,
       })
@@ -110,7 +110,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
             }
 
             setErrors({
-              email: `Unhandled captcha_service ${captcha_service} `,
+              login: `Unhandled captcha_service ${captcha_service} `,
             });
             setCaptchaKey(undefined);
             setCaptchaSiteKey(undefined);
@@ -119,7 +119,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
           }
 
           setErrors({
-            email: `Unhandled captcha_key ${captcha_key} `,
+            login: `Unhandled captcha_key ${captcha_key} `,
           });
           setCaptchaKey(undefined);
           setCaptchaSiteKey(undefined);
@@ -144,7 +144,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
               const t = messageFromFieldError(res.errors);
               if (t) {
                 const { field, error } = t;
-                setErrors({ [field ?? "email"]: error });
+                setErrors({ [field ?? "login"]: error });
                 setCaptchaKey(undefined);
                 setCaptchaSiteKey(undefined);
                 setIsLoading(false);
@@ -152,7 +152,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
               }
             }
 
-            setErrors({ email: res.message });
+            setErrors({ login: res.message });
             setCaptchaKey(undefined);
             setCaptchaSiteKey(undefined);
             setIsLoading(false);
@@ -160,7 +160,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
           }
 
           setErrors({
-            email: t("common:errors.UNKNOWN_ERROR") as string,
+            login: t("common:errors.UNKNOWN_ERROR") as string,
           });
           setCaptchaKey(undefined);
           setCaptchaSiteKey(undefined);
@@ -170,7 +170,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
       })
       .catch((e) => {
         setErrors({
-          email: e.message,
+          login: e.message,
         });
         setCaptchaKey(undefined);
         setCaptchaSiteKey(undefined);
@@ -186,9 +186,9 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
   const handlePasswordReset = () => {
     if (isLoading) return;
     setIsLoading(true);
-    if (!email || email == "") {
+    if (!login || login == "") {
       setErrors({
-        email: t("common:errors.INVALID_LOGIN") as string,
+        login: t("common:errors.INVALID_LOGIN") as string,
       });
       setIsLoading(false);
       return;
@@ -320,18 +320,18 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
               <TextInput
                 label={t("login:LABEL_EMAIL") as string}
                 textContentType="emailAddress"
-                value={email}
+                value={login}
                 onChangeText={(text) => setEmail(text)}
                 style={styles.input}
                 disabled={isLoading}
-                error={!!errors.email}
+                error={!!errors.login}
               />
               <HelperText
                 type="error"
-                visible={!!errors.email}
+                visible={!!errors.login}
                 style={styles.helperText}
               >
-                {errors.email}
+                {errors.login}
               </HelperText>
             </Container>
 
