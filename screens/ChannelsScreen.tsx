@@ -2,7 +2,13 @@ import { CommonActions } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { observer } from "mobx-react";
 import React from "react";
-import { Platform, Pressable, ScrollView } from "react-native";
+import {
+  Platform,
+  Pressable,
+  ScrollView,
+  SectionList,
+  View,
+} from "react-native";
 import { Avatar, Button, Surface, Text, useTheme } from "react-native-paper";
 import Container from "../components/Container";
 import GuildListGuild from "../components/GuildListGuild";
@@ -16,6 +22,25 @@ import {
   ChannelsStackScreenProps,
   RootStackScreenProps,
 } from "../types";
+
+const sectionPlaceholderData = [
+  {
+    title: "Section 1",
+    data: ["member1", "member2", "member3", "member4", "member4"],
+  },
+  {
+    title: "Section 2",
+    data: ["member1", "member2", "member3", "member4", "member4"],
+  },
+  {
+    title: "Section 3",
+    data: ["member1", "member2", "member3", "member4", "member4"],
+  },
+  {
+    title: "Section 4",
+    data: ["member1", "member2", "member3", "member4", "member4"],
+  },
+];
 
 const Stack = createNativeStackNavigator<ChannelsParamList>();
 
@@ -151,11 +176,23 @@ const ChannelDesktop = observer(
               testID="memberList"
               style={{
                 width: 240,
-                backgroundColor: theme.colors.palette.backgroundPrimary70,
+                backgroundColor: theme.colors.palette.backgroundPrimary40,
               }}
               displayFlex
             >
-              <Text>Member List</Text>
+              <SectionList
+                sections={sectionPlaceholderData}
+                keyExtractor={(item, index) => item + index}
+                renderItem={({ item }) => (
+                  <View style={{ marginVertical: 20, padding: 10 }}>
+                    <Text>{item}</Text>
+                  </View>
+                )}
+                renderSectionHeader={({ section: { title } }) => (
+                  <Text>{title}</Text>
+                )}
+                stickySectionHeadersEnabled={true}
+              />
             </Container>
           </Container>
         </Container>
@@ -171,6 +208,7 @@ const ChannelMobile = observer(
     },
     navigation,
   }: ChannelsStackScreenProps<"Channel">) => {
+    const theme = useTheme<CustomTheme>();
     const domain = React.useContext(DomainContext);
     const guild = useGuild(guildId, domain);
     const channel = useChannel(guildId, channelId, domain);
@@ -183,35 +221,24 @@ const ChannelMobile = observer(
       }
     }, [channelId, channel]);
 
-    if (!guild) {
-      return (
-        <Container>
-          <Text>Guild not found</Text>
-        </Container>
-      );
-    }
-
-    if (!channel) {
-      return (
-        <Container>
-          <Text>
-            Could not find channel by id, or could not get the first channel in
-            the guild
-          </Text>
-        </Container>
-      );
-    }
-
     return (
       <Container
         flexOne
         displayFlex
         verticalCenter
         horizontalCenter
-        style={{ backgroundColor: "yellow" }}
+        style={{ backgroundColor: theme.colors.palette.backgroundPrimary100 }}
       >
-        <Text style={{ color: "red" }}>Guild: {guildId}</Text>
-        <Text style={{ color: "red" }}>Channel: {channelId}</Text>
+        {!guild ? (
+          <Text>Guild not found</Text>
+        ) : !channel ? (
+          <Text>Channel not found</Text>
+        ) : (
+          <>
+            <Text style={{ color: "red" }}>Guild: {guildId}</Text>
+            <Text style={{ color: "red" }}>Channel: {channelId}</Text>
+          </>
+        )}
       </Container>
     );
   }
@@ -228,7 +255,7 @@ const ChannelsScreenDesktop = observer(
           testID="guildsList"
           style={{
             height: "100%",
-            backgroundColor: theme.colors.palette.backgroundPrimary60,
+            backgroundColor: theme.colors.palette.backgroundPrimary40,
             width: 72,
             zIndex: 3,
           }}
@@ -301,7 +328,12 @@ const ChannelsScreenMobile = observer(
 
     const leftAction = (
       <Container flexOne row>
-        <Container style={{ width: 72, backgroundColor: "blue" }}>
+        <Container
+          style={{
+            width: 72,
+            backgroundColor: theme.colors.palette.backgroundPrimary40,
+          }}
+        >
           <ScrollView>
             <Pressable
               onPress={() => {
@@ -332,8 +364,36 @@ const ChannelsScreenMobile = observer(
             </Container>
           </ScrollView>
         </Container>
-        <Container flexOne style={{ backgroundColor: "green" }}>
-          <Text>Left Action Channel List</Text>
+        <Container
+          testID="channelSidebar"
+          flexOne
+          style={{ backgroundColor: theme.colors.palette.backgroundPrimary70 }}
+        >
+          <Surface
+            testID="chatHeader"
+            style={{
+              height: 74,
+              backgroundColor: theme.colors.palette.backgroundPrimary70,
+            }}
+            elevation={1}
+          >
+            <Text>Channel Header</Text>
+          </Surface>
+          <Container testID="channelSidebarBody" flexOne>
+            <SectionList
+              sections={sectionPlaceholderData}
+              keyExtractor={(item, index) => item + index}
+              renderItem={({ item }) => (
+                <View style={{ marginVertical: 20, padding: 10 }}>
+                  <Text>{item}</Text>
+                </View>
+              )}
+              renderSectionHeader={({ section: { title } }) => (
+                <Text>{title}</Text>
+              )}
+              stickySectionHeadersEnabled={true}
+            />
+          </Container>
         </Container>
       </Container>
     );
@@ -358,7 +418,7 @@ const ChannelsScreenMobile = observer(
           width: "100%",
           zIndex: 10,
           minHeight: 50,
-          backgroundColor: "orange",
+          backgroundColor: theme.colors.palette.backgroundPrimary0,
         }}
       >
         <Button mode="contained" onPress={domain.toggleDarkTheme}>
@@ -379,6 +439,9 @@ const ChannelsScreenMobile = observer(
         footerChildren={footer}
         leftChildren={leftAction}
         rightChildren={rightAction}
+        containerStyle={{
+          backgroundColor: theme.colors.palette.backgroundPrimary60,
+        }}
       >
         <Stack.Navigator
           initialRouteName="Channel"

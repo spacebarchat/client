@@ -37,7 +37,7 @@ export const CustomDarkColors = {
   gray: Color("#c0c5ce"),
   whiteBlack: Color("#ffffff"),
   error: Color("#ff5370"),
-  backgroundPrimary: Color("#212121"), // #202020
+  backgroundPrimary: Color("#303030"), // #202020
   backgroundSecondary: Color("#292929"), // #212112
 };
 

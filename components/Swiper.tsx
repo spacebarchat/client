@@ -31,6 +31,7 @@ interface SwiperProps {
   children: React.ReactNode;
   footerChildren?: React.ReactNode;
   footerProps?: FooterProps & ViewProps;
+  containerStyle?: ViewProps["style"];
 }
 
 function Swiper({
@@ -41,6 +42,7 @@ function Swiper({
   children,
   footerProps,
   footerChildren,
+  containerStyle,
 }: SwiperProps) {
   const { width, height } = useWindowDimensions();
   const [footerProgress, setFooterProgress] = React.useState(
@@ -116,9 +118,9 @@ function Swiper({
 
     return (
       <Animated.View
-        {...leftProps}
+        {...rightProps}
         style={[
-          leftProps?.style,
+          rightProps?.style,
           {
             display: "flex",
             flex: 1,
@@ -135,7 +137,7 @@ function Swiper({
   };
 
   return (
-    <Container isSafe>
+    <Container isSafe style={containerStyle}>
       <Swipeable
         renderLeftActions={leftChildren ? renderLeftAction : undefined}
         renderRightActions={rightChildren ? renderRightAction : undefined}
@@ -143,8 +145,7 @@ function Swiper({
         overshootLeft={false}
         onSwipeableLeftWillOpen={bringUpActionSheet}
         onActivated={closeDownBottomSheet}
-        containerStyle={{ backgroundColor: "red" }}
-        childrenContainerStyle={{ backgroundColor: "blue", height: "100%" }}
+        childrenContainerStyle={{ height: "100%" }}
       >
         {children}
       </Swipeable>
