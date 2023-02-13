@@ -8,6 +8,7 @@ import {
   GatewayDispatchPayload,
   GatewayGuildCreateDispatchData,
   GatewayGuildDeleteDispatchData,
+  GatewayGuildModifyDispatchData,
   GatewayHeartbeat,
   GatewayHelloData,
   GatewayIdentify,
@@ -23,7 +24,6 @@ const GATEWAY_VERSION = "9";
 const GATEWAY_ENCODING = "json";
 
 export default class GatewayStore extends BaseStore {
-  @observable private token: string | null = null;
   @observable private socket: WebSocket | null = null;
   @observable private sessionId: string | null = null;
   private domain: DomainStore;
@@ -84,6 +84,10 @@ export default class GatewayStore extends BaseStore {
     this.dispatchHandlers.set(
       GatewayDispatchEvents.GuildCreate,
       this.onGuildCreate
+    );
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.GuildUpdate,
+      this.onGuildUpdate
     );
     this.dispatchHandlers.set(
       GatewayDispatchEvents.GuildDelete,
@@ -307,9 +311,14 @@ export default class GatewayStore extends BaseStore {
     this.domain.guild.add({ ...data, ...data.properties } as unknown as Guild);
   };
 
+  private onGuildUpdate = (data: GatewayGuildModifyDispatchData) => {
+    this.logger.debug("Received guild update event");
+    this.domain.guild.get(data.id)?.update(data);
+  };
+
   private onGuildDelete = (data: GatewayGuildDeleteDispatchData) => {
     this.logger.debug("Received guild delete event");
-    this.domain.guild.guilds.delete(data.id);
+    this.domain.guild.remove(data.id);
   };
 
   private onChannelCreate = (data: GatewayChannelCreateDispatchData) => {

@@ -652,7 +652,49 @@ export type GatewayGuildModifyDispatch = DataPayload<
 /**
  * https://discord.com/developers/docs/topics/gateway-events#guild-update
  */
-export type GatewayGuildModifyDispatchData = Guild;
+// FIXME: this is disgusting, but some fields on the guild shouldnt be there
+export type GatewayGuildModifyDispatchData = Pick<
+  Guild,
+  | "id"
+  | "afk_channel_id"
+  | "afk_timeout"
+  | "banner"
+  | "default_message_notifications"
+  | "description"
+  | "discovery_splash"
+  | "emojis"
+  | "explicit_content_filter"
+  | "features"
+  | "icon"
+  | "large"
+  | "max_members"
+  | "max_presences"
+  | "max_video_channel_users"
+  | "member_count"
+  | "mfa_level"
+  | "name"
+  | "nsfw"
+  | "nsfw_level"
+  | "owner_id"
+  | "parent"
+  | "preferred_locale"
+  | "premium_progress_bar_enabled"
+  | "premium_subscription_count"
+  | "premium_tier"
+  | "presence_count"
+  | "primary_category_id"
+  | "public_updates_channel_id"
+  | "region"
+  | "roles"
+  | "rules_channel_id"
+  | "splash"
+  | "stickers"
+  | "system_channel_flags"
+  | "system_channel_id"
+  | "unavailable"
+  | "verification_level"
+  | "welcome_screen"
+>;
 
 /**
  * https://discord.com/developers/docs/topics/gateway-events#guild-create

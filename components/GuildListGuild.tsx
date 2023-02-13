@@ -1,3 +1,4 @@
+import { observer } from "mobx-react";
 import React from "react";
 import { Platform, Pressable, StyleSheet } from "react-native";
 import { Avatar } from "react-native-paper";
@@ -68,7 +69,10 @@ function GuildListGuild({ guild, onPress }: GuildListGuildProps) {
       >
         <Avatar.Text
           size={48}
-          label={guild.name.substring(0, 2).toUpperCase()}
+          label={guild.name
+            .split(" ")
+            .map((word) => word.substring(0, 1))
+            .join("")} // TODO: we should probably put a limit on this
           style={styles.guildIcon}
         />
       </Pressable>
@@ -82,4 +86,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GuildListGuild;
+export default observer(GuildListGuild);

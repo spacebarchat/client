@@ -10,7 +10,8 @@ import {
   VoiceState,
   Webhook,
 } from "@puyodead1/fosscord-types";
-import { makeObservable, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
+import { GatewayGuildModifyDispatchData } from "../interfaces/Gateway";
 import BaseStore from "./BaseStore";
 import ChannelsStore from "./ChannelsStore";
 
@@ -130,5 +131,10 @@ export default class GuildStore extends BaseStore {
     this.premium_progress_bar_enabled = guild.premium_progress_bar_enabled;
 
     makeObservable(this);
+  }
+
+  @action
+  update(data: GatewayGuildModifyDispatchData) {
+    Object.assign(this, data);
   }
 }
