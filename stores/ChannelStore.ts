@@ -1,5 +1,4 @@
 import {
-  Channel,
   ChannelPermissionOverwrite,
   ChannelType,
   Invite,
@@ -23,7 +22,6 @@ export default class ChannelStore extends BaseStore implements ChannelOmit {
   last_message_id?: string | undefined;
   guild_id?: string | undefined;
   parent_id: string;
-  parent?: Channel | undefined;
   owner_id?: string | undefined;
   last_pin_timestamp?: number | undefined;
   default_auto_archive_duration?: number | undefined;
@@ -57,7 +55,6 @@ export default class ChannelStore extends BaseStore implements ChannelOmit {
     this.last_message_id = data.last_message_id;
     this.guild_id = data.guild_id;
     this.parent_id = data.parent_id;
-    this.parent = data.parent;
     this.owner_id = data.owner_id;
     this.last_pin_timestamp = data.last_pin_timestamp;
     this.default_auto_archive_duration = data.default_auto_archive_duration;
