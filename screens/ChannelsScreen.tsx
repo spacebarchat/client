@@ -127,54 +127,69 @@ const ChannelDesktop = observer(
     return (
       <Container verticalCenter horizontalCenter flexOne displayFlex row>
         <Container
-          testID="channelList"
+          testID="channelSidebar"
           style={{
             backgroundColor: theme.colors.palette.backgroundPrimary70,
             height: "100%",
             width: 240,
           }}
-          displayFlex
         >
-          <Container
-            testID="chatHeader"
-            verticalCenter
-            horizontalCenter
-            style={{
-              height: 48,
-              backgroundColor: theme.colors.palette.backgroundPrimary70,
-            }}
-            isSurface
-            elevation={1}
-          >
-            <Text>{guild.name}</Text>
-          </Container>
-          <Container displayFlex flexOne>
-            <ScrollView style={{ padding: 10 }}>
-              <SectionList
-                sections={channelListData}
-                keyExtractor={(item, index) => item.id + index}
-                renderItem={({ item }) => (
-                  <View style={{ marginHorizontal: 10 }}>
-                    <Text>#{item.name}</Text>
-                  </View>
-                )}
-                renderSectionHeader={({ section: { title } }) => {
-                  if (!title) return null;
-                  return (
-                    <View
-                      style={{
-                        backgroundColor:
-                          theme.colors.palette.backgroundPrimary70,
-                      }}
-                    >
-                      <Text>{title.toUpperCase()}</Text>
+          <Container testID="channelsWrapper" displayFlex flexOne>
+            <Container
+              testID="channelHeader"
+              verticalCenter
+              horizontalCenter
+              style={{
+                height: 48,
+                backgroundColor: theme.colors.palette.backgroundPrimary70,
+              }}
+              isSurface
+              elevation={1}
+            >
+              <Text>{guild.name}</Text>
+            </Container>
+            <Container displayFlex flexOne>
+              <ScrollView style={{ padding: 10 }}>
+                <SectionList
+                  sections={channelListData}
+                  keyExtractor={(item, index) => item.id + index}
+                  renderItem={({ item }) => (
+                    <View style={{ marginHorizontal: 10 }}>
+                      <Text>#{item.name}</Text>
                     </View>
-                  );
-                }}
-                stickySectionHeadersEnabled={true}
-                contentContainerStyle={{ padding: 10 }}
-              />
-            </ScrollView>
+                  )}
+                  renderSectionHeader={({ section: { title } }) => {
+                    if (!title) return null;
+                    return (
+                      <View
+                        style={{
+                          backgroundColor:
+                            theme.colors.palette.backgroundPrimary70,
+                        }}
+                      >
+                        <Text>{title.toUpperCase()}</Text>
+                      </View>
+                    );
+                  }}
+                  stickySectionHeadersEnabled={true}
+                  contentContainerStyle={{ padding: 10 }}
+                />
+              </ScrollView>
+            </Container>
+          </Container>
+          <Container
+            testID="channelFooter"
+            style={{
+              backgroundColor: theme.colors.palette.backgroundPrimary50,
+            }}
+          >
+            <Container
+              testID="userActions"
+              displayFlex
+              style={{ height: 52, paddingVertical: 8 }}
+            >
+              <Text>User</Text>
+            </Container>
           </Container>
         </Container>
 
