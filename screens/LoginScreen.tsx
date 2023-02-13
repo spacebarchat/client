@@ -25,7 +25,7 @@ import useLogger from "../hooks/useLogger";
 import { IAPILoginResponse } from "../interfaces/api";
 import { DomainContext } from "../stores/DomainStore";
 import { RootStackScreenProps } from "../types";
-import Endpoints from "../utils/Endpoints";
+import { Routes } from "../utils/Endpoints";
 import { t } from "../utils/i18n";
 
 function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
@@ -91,7 +91,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
     e?.preventDefault();
     setIsLoading(true);
     domain.rest
-      .post<LoginSchema, IAPILoginResponse>(Endpoints.LOGIN, {
+      .post<LoginSchema, IAPILoginResponse>(Routes.login(), {
         login,
         password,
         captcha_key: captchaKey,

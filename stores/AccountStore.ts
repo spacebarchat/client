@@ -1,6 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { action, makeObservable, observable, reaction } from "mobx";
 import { GatewayReadyUser } from "../interfaces/Gateway";
+import { CDNRoutes, DefaultUserAvatarAssets } from "../utils/Endpoints";
+import REST from "../utils/REST";
 import BaseStore from "./BaseStore";
 import { DomainStore } from "./DomainStore";
 
@@ -10,7 +12,7 @@ import { DomainStore } from "./DomainStore";
 export default class AccountStore extends BaseStore {
   @observable isAuthenticated: boolean = false;
   @observable token: string | null = null;
-  @observable user: GatewayReadyUser | null = null;
+  @observable user: (GatewayReadyUser & { avatarURL: string }) | null = null;
 
   constructor() {
     super();
@@ -73,6 +75,14 @@ export default class AccountStore extends BaseStore {
 
   @action
   setUser(user: GatewayReadyUser) {
-    this.user = user;
+    // TODO: fosscord doesnt have default user avatar cdn route yet
+    this.user = {
+      ...user,
+      avatarURL: user.avatar
+        ? REST.makeCDNUrl(CDNRoutes.userAvatar(user.id, user.avatar))
+        : `https://cdn.discordapp.com${CDNRoutes.defaultUserAvatar(
+            (Number(user.discriminator) % 5) as any as DefaultUserAvatarAssets
+          )}`,
+    };
   }
 }

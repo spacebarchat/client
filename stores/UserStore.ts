@@ -1,5 +1,7 @@
 import { PublicUser } from "@puyodead1/fosscord-types";
 import { makeObservable, observable } from "mobx";
+import { CDNRoutes, DefaultUserAvatarAssets } from "../utils/Endpoints";
+import REST from "../utils/REST";
 import BaseStore from "./BaseStore";
 
 export default class UserStore extends BaseStore implements PublicUser {
@@ -7,6 +9,7 @@ export default class UserStore extends BaseStore implements PublicUser {
   @observable username: string;
   @observable discriminator: string;
   @observable avatar?: string | undefined;
+  @observable avatarUrl: string;
   @observable accent_color?: number | undefined;
   @observable banner?: string | undefined;
   @observable theme_colors?: number[] | undefined;
@@ -37,6 +40,17 @@ export default class UserStore extends BaseStore implements PublicUser {
     this.bio = user.bio;
     this.premium_since = user.premium_since;
     this.public_flags = user.public_flags;
+
+    if (user.avatar)
+      this.avatarUrl = REST.makeCDNUrl(
+        CDNRoutes.userAvatar(user.id, user.avatar)
+      );
+    else
+      this.avatarUrl = REST.makeCDNUrl(
+        CDNRoutes.defaultUserAvatar(
+          (Number(user.discriminator) % 5) as any as DefaultUserAvatarAssets
+        )
+      );
 
     makeObservable(this);
   }

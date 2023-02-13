@@ -1,13 +1,11 @@
+import { APIVersion, RouteBases } from "./Endpoints";
+
 export default class REST {
-  public baseUrl: string;
   private token?: string;
-  public apiVersion: string;
   private headers: Record<string, any>;
 
-  constructor(baseUrl: string, token?: string, apiVersion: string = "9") {
-    this.baseUrl = baseUrl;
+  constructor(token?: string) {
     this.token = token;
-    this.apiVersion = apiVersion;
 
     this.headers = {
       mode: "cors",
@@ -18,12 +16,12 @@ export default class REST {
     };
   }
 
-  public makeAPIUrl(path: string) {
-    return `${this.baseUrl}/api/v${this.apiVersion}${path}`;
+  public static makeAPIUrl(path: string) {
+    return `${RouteBases.api}/api/v${APIVersion}${path}`;
   }
 
-  public makeCDNUrl(path: string) {
-    return `${this.baseUrl}${path}`;
+  public static makeCDNUrl(path: string) {
+    return `${RouteBases.cdn}${path}`;
   }
 
   public setToken(token: string) {
@@ -36,7 +34,7 @@ export default class REST {
 
   public async get<T>(path: string): Promise<T> {
     return new Promise((resolve, reject) => {
-      return fetch(this.makeAPIUrl(path), {
+      return fetch(REST.makeAPIUrl(path), {
         method: "GET",
         headers: this.headers,
       })
@@ -48,7 +46,7 @@ export default class REST {
 
   public async post<T, U>(path: string, body: T): Promise<U> {
     return new Promise((resolve, reject) => {
-      return fetch(this.makeAPIUrl(path), {
+      return fetch(REST.makeAPIUrl(path), {
         method: "POST",
         headers: this.headers,
         body: JSON.stringify(body),

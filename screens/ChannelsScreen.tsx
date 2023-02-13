@@ -186,9 +186,26 @@ const ChannelDesktop = observer(
             <Container
               testID="userActions"
               displayFlex
-              style={{ height: 52, paddingVertical: 8 }}
+              row
+              horizontalCenter
+              style={{
+                height: 52,
+                paddingVertical: 8,
+                backgroundColor: "transparent",
+              }}
             >
-              <Text>User</Text>
+              <Container style={{ marginHorizontal: 8 }}>
+                <Avatar.Image
+                  size={32}
+                  source={{ uri: domain.account.user?.avatarURL }}
+                />
+              </Container>
+              <Container>
+                <Text>
+                  {domain.account.user?.username}#
+                  {domain.account.user?.discriminator}
+                </Text>
+              </Container>
             </Container>
           </Container>
         </Container>

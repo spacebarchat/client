@@ -3,9 +3,9 @@ import React from "react";
 import { Platform, Pressable, StyleSheet } from "react-native";
 import { Avatar } from "react-native-paper";
 import { Popable, usePopable } from "react-native-popable";
-import { DomainContext } from "../stores/DomainStore";
 import GuildStore from "../stores/GuildStore";
-import Endpoints from "../utils/Endpoints";
+import { CDNRoutes } from "../utils/Endpoints";
+import REST from "../utils/REST";
 
 interface GuildListGuildProps {
   guild: GuildStore;
@@ -13,7 +13,6 @@ interface GuildListGuildProps {
 }
 
 function GuildListGuild({ guild, onPress }: GuildListGuildProps) {
-  const domain = React.useContext(DomainContext);
   const [ref, { hide, show }] = usePopable();
 
   const onHoverIn = () => {
@@ -43,9 +42,7 @@ function GuildListGuild({ guild, onPress }: GuildListGuildProps) {
           <Avatar.Image
             size={48}
             source={{
-              uri: domain.rest.makeCDNUrl(
-                Endpoints.GUILD_ICON(guild.id, guild.icon)
-              ),
+              uri: REST.makeCDNUrl(CDNRoutes.guildIcon(guild.id, guild.icon)),
             }}
             style={[styles.guildIcon, { backgroundColor: "transparent" }]}
           />
