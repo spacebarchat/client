@@ -1,8 +1,10 @@
-import { APIVersion, RouteBases } from "./Endpoints";
+import useLogger from "../hooks/useLogger";
+import { RouteBases } from "./Endpoints";
 
 export default class REST {
   private token?: string;
   private headers: Record<string, any>;
+  private logger = useLogger("REST");
 
   constructor(token?: string) {
     this.token = token;
@@ -17,7 +19,7 @@ export default class REST {
   }
 
   public static makeAPIUrl(path: string) {
-    return `${RouteBases.api}/api/v${APIVersion}${path}`;
+    return `${RouteBases.api}${path}`;
   }
 
   public static makeCDNUrl(path: string) {
@@ -34,7 +36,9 @@ export default class REST {
 
   public async get<T>(path: string): Promise<T> {
     return new Promise((resolve, reject) => {
-      return fetch(REST.makeAPIUrl(path), {
+      const url = REST.makeAPIUrl(path);
+      this.logger.debug(`GET ${url}`);
+      return fetch(url, {
         method: "GET",
         headers: this.headers,
       })
@@ -46,7 +50,9 @@ export default class REST {
 
   public async post<T, U>(path: string, body: T): Promise<U> {
     return new Promise((resolve, reject) => {
-      return fetch(REST.makeAPIUrl(path), {
+      const url = REST.makeAPIUrl(path);
+      this.logger.debug(`POST ${url}; payload:`, body);
+      return fetch(url, {
         method: "POST",
         headers: this.headers,
         body: JSON.stringify(body),
