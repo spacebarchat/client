@@ -317,39 +317,291 @@ const ChannelMobile = observer(
     const domain = React.useContext(DomainContext);
     const guild = useGuild(guildId, domain);
     const channel = useChannel(guildId, channelId, domain);
+    const [channelListData, setChannelListData] = React.useState<
+      {
+        title?: string;
+        data: ChannelStore[];
+      }[]
+    >([]);
 
     React.useEffect(() => {
-      if (!channelId && channel) {
-        // get the first channel in the guild and update the route params
-        channelId = channel.id;
-        navigation.dispatch(CommonActions.setParams({ channelId: channel.id }));
-      }
+      if (!channel) return;
+      // get the first channel in the guild and update the route params
+      channelId = channel.id;
+      navigation.dispatch(CommonActions.setParams({ channelId: channel.id }));
     }, [channelId, channel]);
 
-    return (
+    React.useEffect(
+      () =>
+        autorun(() => {
+          if (!guild) return;
+          const channels = Array.from(guild.channels.channels.values());
+          const channelsWithoutCategory = channels.filter(
+            (x) => !x.parent_id && x.type !== 4
+          ); // TODO: we should be checking if its a guild channel, not just not a category
+
+          const mapped = channels
+            .filter((x) => x.type === 4) // FIXME: cant resolve @puyodead1/fosscord-types??
+            .map((category) => {
+              const channelsInCategory = channels.filter(
+                (channel) => channel.parent_id === category.id
+              );
+              return {
+                title: category.name!, // TODO: fix this, channel name should not be null
+                data: channelsInCategory,
+              };
+            });
+
+          setChannelListData([...mapped, { data: channelsWithoutCategory }]);
+        }),
+      [guild]
+    );
+
+    /**
+     * Constructions the Guild and Channel list for the left side of the Swipper component
+     */
+    const leftAction = (
+      <Container flexOne row>
+        <Container
+          style={{
+            width: 72,
+            backgroundColor: theme.colors.palette.backgroundPrimary40,
+          }}
+        >
+          <ScrollView>
+            <Pressable
+              onPress={() => {
+                navigation.dispatch(
+                  CommonActions.navigate("Channels", {
+                    screen: "Channel",
+                    params: { guildId: "me" },
+                  })
+                );
+              }}
+            >
+              <Avatar.Icon icon="home" size={48} />
+            </Pressable>
+
+            <Container testID="guildListGuildIconContainer">
+              {Array.from(domain.guild.guilds.values()).map((guild) => {
+                return (
+                  <GuildListGuild
+                    key={guild.id}
+                    guild={guild}
+                    onPress={() => {
+                      navigation.dispatch(
+                        CommonActions.navigate("Channels", {
+                          screen: "Channel",
+                          params: { guildId: guild.id },
+                        })
+                      );
+                    }}
+                  />
+                );
+              })}
+            </Container>
+          </ScrollView>
+        </Container>
+        <Container
+          testID="channelSidebar"
+          flexOne
+          style={{
+            backgroundColor: theme.colors.palette.backgroundPrimary70,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+          }}
+        >
+          <Container
+            testID="channelHeader"
+            verticalCenter
+            horizontalCenter
+            style={{
+              height: 74,
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+              backgroundColor: theme.colors.palette.backgroundPrimary70,
+            }}
+            isSurface
+            elevation={1}
+          >
+            {/* TODO: private channels  */}
+            <Text>{guild?.name}</Text>
+          </Container>
+          <Container testID="channelSidebarBody" flexOne>
+            {/* TODO: private channels  */}
+            <SectionList
+              sections={channelListData}
+              keyExtractor={(item, index) => item.id + index}
+              renderItem={({ item }) => (
+                <View style={{ marginHorizontal: 10 }}>
+                  <Text>#{item.name}</Text>
+                </View>
+              )}
+              renderSectionHeader={({ section: { title } }) => {
+                if (!title) return null;
+                return (
+                  <View
+                    style={{
+                      backgroundColor: theme.colors.palette.backgroundPrimary70,
+                    }}
+                  >
+                    <Text>{title.toUpperCase()}</Text>
+                  </View>
+                );
+              }}
+              stickySectionHeadersEnabled={true}
+              contentContainerStyle={{ padding: 10 }}
+            />
+          </Container>
+        </Container>
+      </Container>
+    );
+
+    /**
+     * Constructions the Member list component for the right side of the swiper
+     */
+    const rightAction = (
+      <Container
+        flexOne
+        style={{
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          backgroundColor: theme.colors.palette.backgroundPrimary70,
+        }}
+      >
+        <Container
+          verticalCenter
+          horizontalCenter
+          style={{
+            height: 74,
+            padding: 10,
+          }}
+        >
+          <Text>Member List Header</Text>
+        </Container>
+        <Container
+          verticalCenter
+          style={{
+            padding: 10,
+            backgroundColor: theme.colors.palette.backgroundPrimary100,
+          }}
+        >
+          <SectionList
+            sections={sectionPlaceholderData}
+            keyExtractor={(item, index) => item + index}
+            renderItem={({ item }) => (
+              <View style={{ marginVertical: 20, padding: 10 }}>
+                <Text>{item}</Text>
+              </View>
+            )}
+            renderSectionHeader={({ section: { title } }) => (
+              <View
+                style={{
+                  backgroundColor: theme.colors.palette.backgroundPrimary100,
+                  padding: 20,
+                }}
+              >
+                <Text>{title}</Text>
+              </View>
+            )}
+            stickySectionHeadersEnabled={true}
+            contentContainerStyle={{ padding: 10 }}
+          />
+        </Container>
+      </Container>
+    );
+
+    /**
+     * Constructs the footer for the Swiper component
+     */
+    const footer = (
       <Container
         flexOne
         displayFlex
         verticalCenter
         horizontalCenter
+        row
         style={{
-          backgroundColor: theme.colors.palette.backgroundPrimary90,
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          zIndex: 10,
+          minHeight: 50,
+          backgroundColor: theme.colors.palette.backgroundPrimary0,
         }}
       >
-        {!guild ? (
-          <Text>Guild not found</Text>
-        ) : !channel ? (
-          <Text>Channel not found</Text>
-        ) : (
-          <>
-            <Text style={{ color: "red" }}>Guild: {guildId}</Text>
-            <Text style={{ color: "red" }}>Channel: {channelId}</Text>
-          </>
-        )}
+        <Button mode="contained" onPress={domain.toggleDarkTheme}>
+          Toggle Theme
+        </Button>
+        <Button
+          mode="contained"
+          onPress={domain.account.logout}
+          buttonColor={theme.colors.error}
+        >
+          Logout
+        </Button>
       </Container>
     );
+
+    return (
+      <Swiper
+        footerChildren={footer}
+        leftChildren={leftAction}
+        rightChildren={rightAction}
+        containerStyle={{
+          backgroundColor: theme.colors.palette.backgroundPrimary40,
+        }}
+      >
+        <Container
+          flexOne
+          displayFlex
+          verticalCenter
+          horizontalCenter
+          style={{
+            backgroundColor: theme.colors.palette.backgroundPrimary90,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+          }}
+        >
+          {!guild ? (
+            <Text>Guild not found</Text>
+          ) : !channel ? (
+            <Text>Channel not found</Text>
+          ) : (
+            <>
+              <Text style={{ color: "red" }}>Guild: {guildId}</Text>
+              <Text style={{ color: "red" }}>Channel: {channelId}</Text>
+            </>
+          )}
+        </Container>
+      </Swiper>
+    );
+
+    // return (
+    //   <Container
+    //     flexOne
+    //     displayFlex
+    //     verticalCenter
+    //     horizontalCenter
+    //     style={{
+    //       backgroundColor: theme.colors.palette.backgroundPrimary90,
+    //       borderTopLeftRadius: 10,
+    //       borderTopRightRadius: 10,
+    //     }}
+    //   >
+    //     {!guild ? (
+    //       <Text>Guild not found</Text>
+    //     ) : !channel ? (
+    //       <Text>Channel not found</Text>
+    //     ) : (
+    //       <>
+    //         <Text style={{ color: "red" }}>Guild: {guildId}</Text>
+    //         <Text style={{ color: "red" }}>Channel: {channelId}</Text>
+    //       </>
+    //     )}
+    //   </Container>
+    // );
   }
 );
 
@@ -432,202 +684,19 @@ const ChannelsScreenDesktop = observer(
 
 const ChannelsScreenMobile = observer(
   ({ navigation }: RootStackScreenProps<"Channels">) => {
-    const domain = React.useContext(DomainContext);
-    const theme = useTheme<CustomTheme>();
-
-    const leftAction = (
-      <Container flexOne row>
-        <Container
-          style={{
-            width: 72,
-            backgroundColor: theme.colors.palette.backgroundPrimary40,
-          }}
-        >
-          <ScrollView>
-            <Pressable
-              onPress={() => {
-                navigation.navigate("Channels", {
-                  screen: "Channel",
-                  params: { guildId: "me" },
-                });
-              }}
-            >
-              <Avatar.Icon icon="home" size={48} />
-            </Pressable>
-
-            <Container testID="guildListGuildIconContainer">
-              {Array.from(domain.guild.guilds.values()).map((guild) => {
-                return (
-                  <GuildListGuild
-                    key={guild.id}
-                    guild={guild}
-                    onPress={() => {
-                      navigation.navigate("Channels", {
-                        screen: "Channel",
-                        params: { guildId: guild.id },
-                      });
-                    }}
-                  />
-                );
-              })}
-            </Container>
-          </ScrollView>
-        </Container>
-        <Container
-          testID="channelSidebar"
-          flexOne
-          style={{
-            backgroundColor: theme.colors.palette.backgroundPrimary70,
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-          }}
-        >
-          <Container
-            testID="chatHeader"
-            verticalCenter
-            horizontalCenter
-            style={{
-              height: 74,
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
-              backgroundColor: theme.colors.palette.backgroundPrimary70,
-            }}
-            isSurface
-            elevation={1}
-          >
-            <Text>Channel Header</Text>
-          </Container>
-          <Container testID="channelSidebarBody" flexOne>
-            <SectionList
-              style={{ margin: 10 }}
-              sections={sectionPlaceholderData}
-              keyExtractor={(item, index) => item + index}
-              renderItem={({ item }) => (
-                <View style={{ marginVertical: 20, padding: 10 }}>
-                  <Text>{item}</Text>
-                </View>
-              )}
-              renderSectionHeader={({ section: { title } }) => (
-                <View
-                  style={{
-                    backgroundColor: theme.colors.palette.backgroundPrimary70,
-                    padding: 20,
-                  }}
-                >
-                  <Text>{title}</Text>
-                </View>
-              )}
-              stickySectionHeadersEnabled={true}
-              contentContainerStyle={{ padding: 10 }}
-            />
-          </Container>
-        </Container>
-      </Container>
-    );
-
-    const rightAction = (
-      <Container
-        flexOne
-        style={{
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
-          backgroundColor: theme.colors.palette.backgroundPrimary70,
-        }}
-      >
-        <Container
-          verticalCenter
-          horizontalCenter
-          style={{
-            height: 74,
-            padding: 10,
-          }}
-        >
-          <Text>Member List Header</Text>
-        </Container>
-        <Container
-          verticalCenter
-          style={{
-            padding: 10,
-            backgroundColor: theme.colors.palette.backgroundPrimary100,
-          }}
-        >
-          <SectionList
-            sections={sectionPlaceholderData}
-            keyExtractor={(item, index) => item + index}
-            renderItem={({ item }) => (
-              <View style={{ marginVertical: 20, padding: 10 }}>
-                <Text>{item}</Text>
-              </View>
-            )}
-            renderSectionHeader={({ section: { title } }) => (
-              <View
-                style={{
-                  backgroundColor: theme.colors.palette.backgroundPrimary100,
-                  padding: 20,
-                }}
-              >
-                <Text>{title}</Text>
-              </View>
-            )}
-            stickySectionHeadersEnabled={true}
-            contentContainerStyle={{ padding: 10 }}
-          />
-        </Container>
-      </Container>
-    );
-
-    const footer = (
-      <Container
-        flexOne
-        displayFlex
-        verticalCenter
-        horizontalCenter
-        row
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          width: "100%",
-          zIndex: 10,
-          minHeight: 50,
-          backgroundColor: theme.colors.palette.backgroundPrimary0,
-        }}
-      >
-        <Button mode="contained" onPress={domain.toggleDarkTheme}>
-          Toggle Theme
-        </Button>
-        <Button
-          mode="contained"
-          onPress={domain.account.logout}
-          buttonColor={theme.colors.error}
-        >
-          Logout
-        </Button>
-      </Container>
-    );
-
     return (
-      <Swiper
-        footerChildren={footer}
-        leftChildren={leftAction}
-        rightChildren={rightAction}
-        containerStyle={{
-          backgroundColor: theme.colors.palette.backgroundPrimary40,
+      <Stack.Navigator
+        initialRouteName="Channel"
+        screenOptions={{
+          headerShown: false,
         }}
       >
-        <Stack.Navigator
-          initialRouteName="Channel"
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen
-            name="Channel"
-            component={ChannelMobile}
-            initialParams={{ guildId: "me" }}
-          />
-        </Stack.Navigator>
-      </Swiper>
+        <Stack.Screen
+          name="Channel"
+          component={ChannelMobile}
+          initialParams={{ guildId: "me" }}
+        />
+      </Stack.Navigator>
     );
   }
 );

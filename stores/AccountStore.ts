@@ -53,7 +53,7 @@ export default class AccountStore extends BaseStore {
 
         if (result) {
           this.logger.debug("Loaded token from storage.");
-          this.token = result;
+          this.setToken(result);
           resolve();
         } else {
           this.logger.debug("No token found in storage.");
