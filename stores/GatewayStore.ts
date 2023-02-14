@@ -194,6 +194,9 @@ export default class GatewayStore extends BaseStore {
 
     if (code === 4004) {
       this.logger.warn(`closed because of authentication failure.`);
+      // remove token, this will send us back to the login screen
+      // TODO: maybe we could show a toast here so the user knows why they got logged out
+      this.domain.account.logout();
       return this.reset();
     }
 

@@ -66,10 +66,10 @@ export default class AccountStore extends BaseStore {
 
   @action
   logout() {
+    this.token = null;
     AsyncStorage.removeItem("token", (err) => {
       if (err) console.error(err);
       else console.debug("Token removed from storage.");
-      this.token = null;
     });
   }
 
