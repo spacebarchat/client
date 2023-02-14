@@ -1,9 +1,12 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { CommonActions } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { autorun } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import {
+  Animated,
   Platform,
   Pressable,
   ScrollView,
@@ -13,8 +16,10 @@ import {
 import { Avatar, Button, Text, useTheme } from "react-native-paper";
 import Container from "../components/Container";
 import GuildListGuild from "../components/GuildListGuild";
+import BottomTabBar from "../components/ReactNavigationBottomTabs/views/BottomTabBar";
 import Swiper from "../components/Swiper";
 import { CustomTheme } from "../constants/Colors";
+import BottomTabBarProgressContext from "../contexts/BottomTabBarProgressContext";
 import useChannel from "../hooks/useChannel";
 import useGuild from "../hooks/useGuild";
 import ChannelStore from "../stores/ChannelStore";
@@ -45,14 +50,7 @@ const sectionPlaceholderData = [
 ];
 
 const Stack = createNativeStackNavigator<ChannelsParamList>();
-
-const Home = observer(() => {
-  return (
-    <Container>
-      <Text>Home</Text>
-    </Container>
-  );
-});
+const Tab = createBottomTabNavigator<ChannelsParamList>();
 
 const ChannelDesktop = observer(
   ({
@@ -306,6 +304,91 @@ const ChannelDesktop = observer(
   }
 );
 
+const ChannelsScreenDesktop = observer(
+  ({ navigation }: RootStackScreenProps<"Channels">) => {
+    const domain = React.useContext(DomainContext);
+    const theme = useTheme<CustomTheme>();
+
+    return (
+      <Container verticalCenter horizontalCenter flexOne displayFlex row>
+        <Container
+          testID="guildsList"
+          style={{
+            height: "100%",
+            backgroundColor: theme.colors.palette.backgroundPrimary40,
+            width: 72,
+            zIndex: 3,
+          }}
+          displayFlex
+          horizontalCenter
+        >
+          <ScrollView style={{ overflow: "visible" }}>
+            <Pressable
+              onPress={() => {
+                navigation.navigate("Channels", {
+                  screen: "Channel",
+                  params: { guildId: "me" },
+                });
+              }}
+            >
+              <Avatar.Icon icon="home" size={48} />
+            </Pressable>
+
+            <Container
+              testID="guildListGuildIconContainer"
+              style={{ overflow: "visible" }}
+            >
+              {Array.from(domain.guild.guilds.values()).map((guild) => {
+                return (
+                  <GuildListGuild
+                    key={guild.id}
+                    guild={guild}
+                    onPress={() => {
+                      navigation.navigate("Channels", {
+                        screen: "Channel",
+                        params: { guildId: guild.id },
+                      });
+                    }}
+                  />
+                );
+              })}
+            </Container>
+          </ScrollView>
+        </Container>
+
+        <Container
+          testID="outerContainer"
+          style={{ height: "100%" }}
+          displayFlex
+          flexOne
+          row
+        >
+          <Stack.Navigator
+            initialRouteName="Channel"
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen
+              name="Channel"
+              component={ChannelDesktop}
+              initialParams={{ guildId: "me" }}
+            />
+          </Stack.Navigator>
+        </Container>
+      </Container>
+    );
+  }
+);
+
+function SettingsMobile({ navigation }: ChannelsStackScreenProps<"Settings">) {
+  return (
+    <Container isSafe>
+      <Text>Settings</Text>
+    </Container>
+  );
+}
+
 const ChannelMobile = observer(
   ({
     route: {
@@ -511,42 +594,8 @@ const ChannelMobile = observer(
       </Container>
     );
 
-    /**
-     * Constructs the footer for the Swiper component
-     */
-    const footer = (
-      <Container
-        flexOne
-        displayFlex
-        verticalCenter
-        horizontalCenter
-        row
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          width: "100%",
-          zIndex: 10,
-          minHeight: 50,
-          backgroundColor: theme.colors.palette.backgroundPrimary0,
-        }}
-      >
-        <Button mode="contained" onPress={domain.toggleDarkTheme}>
-          Toggle Theme
-        </Button>
-        <Button
-          mode="contained"
-          onPress={domain.account.logout}
-          buttonColor={theme.colors.error}
-        >
-          Logout
-        </Button>
-      </Container>
-    );
-
     return (
       <Swiper
-        footerChildren={footer}
         leftChildren={leftAction}
         rightChildren={rightAction}
         containerStyle={{
@@ -572,134 +621,62 @@ const ChannelMobile = observer(
             <>
               <Text style={{ color: "red" }}>Guild: {guildId}</Text>
               <Text style={{ color: "red" }}>Channel: {channelId}</Text>
+              <Button mode="contained" onPress={domain.toggleDarkTheme}>
+                Theme
+              </Button>
             </>
           )}
         </Container>
       </Swiper>
     );
-
-    // return (
-    //   <Container
-    //     flexOne
-    //     displayFlex
-    //     verticalCenter
-    //     horizontalCenter
-    //     style={{
-    //       backgroundColor: theme.colors.palette.backgroundPrimary90,
-    //       borderTopLeftRadius: 10,
-    //       borderTopRightRadius: 10,
-    //     }}
-    //   >
-    //     {!guild ? (
-    //       <Text>Guild not found</Text>
-    //     ) : !channel ? (
-    //       <Text>Channel not found</Text>
-    //     ) : (
-    //       <>
-    //         <Text style={{ color: "red" }}>Guild: {guildId}</Text>
-    //         <Text style={{ color: "red" }}>Channel: {channelId}</Text>
-    //       </>
-    //     )}
-    //   </Container>
-    // );
   }
 );
 
-const ChannelsScreenDesktop = observer(
-  ({ navigation }: RootStackScreenProps<"Channels">) => {
-    const domain = React.useContext(DomainContext);
-    const theme = useTheme<CustomTheme>();
+const ChannelsScreenMobile = observer(() => {
+  const theme = useTheme<CustomTheme>();
 
-    return (
-      <Container verticalCenter horizontalCenter flexOne displayFlex row>
-        <Container
-          testID="guildsList"
-          style={{
-            height: "100%",
-            backgroundColor: theme.colors.palette.backgroundPrimary40,
-            width: 72,
-            zIndex: 3,
-          }}
-          displayFlex
-          horizontalCenter
-        >
-          <ScrollView style={{ overflow: "visible" }}>
-            <Pressable
-              onPress={() => {
-                navigation.navigate("Channels", {
-                  screen: "Channel",
-                  params: { guildId: "me" },
-                });
-              }}
-            >
-              <Avatar.Icon icon="home" size={48} />
-            </Pressable>
-
-            <Container
-              testID="guildListGuildIconContainer"
-              style={{ overflow: "visible" }}
-            >
-              {Array.from(domain.guild.guilds.values()).map((guild) => {
-                return (
-                  <GuildListGuild
-                    key={guild.id}
-                    guild={guild}
-                    onPress={() => {
-                      navigation.navigate("Channels", {
-                        screen: "Channel",
-                        params: { guildId: guild.id },
-                      });
-                    }}
-                  />
-                );
-              })}
-            </Container>
-          </ScrollView>
-        </Container>
-
-        <Container
-          testID="outerContainer"
-          style={{ height: "100%" }}
-          displayFlex
-          flexOne
-          row
-        >
-          <Stack.Navigator
-            initialRouteName="Channel"
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen
-              name="Channel"
-              component={ChannelDesktop}
-              initialParams={{ guildId: "me" }}
-            />
-          </Stack.Navigator>
-        </Container>
-      </Container>
-    );
-  }
-);
-
-const ChannelsScreenMobile = observer(
-  ({ navigation }: RootStackScreenProps<"Channels">) => {
-    return (
-      <Stack.Navigator
+  return (
+    <BottomTabBarProgressContext.Provider
+      value={{
+        progress: new Animated.Value(0),
+        setProgress: (progress: number) => {},
+      }}
+    >
+      <Tab.Navigator
         initialRouteName="Channel"
         screenOptions={{
           headerShown: false,
+          // tabBarActiveBackgroundColor: theme.colors.primary,
+          tabBarStyle: {
+            backgroundColor: theme.colors.palette.backgroundPrimary0,
+          },
+          tabBarShowLabel: false,
         }}
+        tabBar={(props) => <BottomTabBar {...props} />}
       >
-        <Stack.Screen
+        <Tab.Screen
           name="Channel"
           component={ChannelMobile}
           initialParams={{ guildId: "me" }}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="chat" color={color} size={size} />
+            ),
+          }}
         />
-      </Stack.Navigator>
-    );
-  }
-);
+        <Tab.Screen
+          name="Settings"
+          component={SettingsMobile}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="cog" color={color} size={size} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </BottomTabBarProgressContext.Provider>
+  );
+});
 
 function ChannelsScreen(props: RootStackScreenProps<"Channels">) {
   const Element = Platform.isMobile

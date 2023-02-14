@@ -29,6 +29,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamsList> =
 
 export type ChannelsParamList = {
   Channel: { guildId: Snowflake; channelId?: Snowflake };
+  Settings: undefined;
 };
 
 export type ChannelsStackScreenProps<Screen extends keyof ChannelsParamList> =

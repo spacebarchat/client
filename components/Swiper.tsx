@@ -1,7 +1,15 @@
 import React from "react";
-import { Animated, useWindowDimensions, ViewProps } from "react-native";
+import {
+  Animated,
+  Platform,
+  useWindowDimensions,
+  ViewProps,
+} from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
+import BottomTabBarProgressContext from "../contexts/BottomTabBarProgressContext";
 import Container from "./Container";
+
+const useNativeDriver = Platform.OS !== "web";
 
 interface FooterProps {
   progress: Animated.AnimatedInterpolation<string | number>;
@@ -45,30 +53,30 @@ function Swiper({
   containerStyle,
 }: SwiperProps) {
   const { width, height } = useWindowDimensions();
-  const [footerProgress, setFooterProgress] = React.useState(
-    new Animated.Value(0)
+  const { progress, setProgress } = React.useContext(
+    BottomTabBarProgressContext
   );
 
   const bringUpActionSheet = () => {
-    Animated.timing(footerProgress, {
-      toValue: 0,
-      duration: 500,
-      useNativeDriver: false,
+    Animated.timing(progress, {
+      toValue: 1,
+      duration: 250,
+      useNativeDriver,
     }).start();
   };
 
   const closeDownBottomSheet = () => {
-    Animated.timing(footerProgress, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: false,
+    Animated.timing(progress, {
+      toValue: 0,
+      duration: 250,
+      useNativeDriver,
     }).start();
   };
 
-  const bottomSheetIntropolate = footerProgress.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, height],
-  });
+  // const bottomSheetIntropolate = footerProgress.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: [0, height],
+  // });
 
   const renderLeftAction = (
     _: Animated.AnimatedInterpolation<string | number>,
@@ -150,13 +158,13 @@ function Swiper({
       >
         {children}
       </Swipeable>
-      {footerChildren ? (
+      {/* {footerChildren ? (
         <Footer
           {...footerProps}
           progress={bottomSheetIntropolate}
           children={footerChildren}
         />
-      ) : null}
+      ) : null} */}
     </Container>
   );
 }
