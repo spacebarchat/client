@@ -84,7 +84,7 @@ const ChannelDesktop = observer(
       () =>
         autorun(() => {
           if (!guild) return;
-          const channels = Array.from(guild.channels.channels.values());
+          const channels = guild.channels.asList();
           const channelsWithoutCategory = channels.filter(
             (x) => !x.parent_id && x.type !== 4
           ); // TODO: we should be checking if its a guild channel, not just not a category
@@ -341,7 +341,7 @@ const ChannelsScreenDesktop = observer(
               testID="guildListGuildIconContainer"
               style={{ overflow: "visible" }}
             >
-              {Array.from(domain.guild.guilds.values()).map((guild) => {
+              {domain.guild.asList().map((guild) => {
                 return (
                   <GuildListGuild
                     key={guild.id}
@@ -424,7 +424,7 @@ const ChannelMobile = observer(
       () =>
         autorun(() => {
           if (!guild) return;
-          const channels = Array.from(guild.channels.channels.values());
+          const channels = guild.channels.asList();
           const channelsWithoutCategory = channels.filter(
             (x) => !x.parent_id && x.type !== 4
           ); // TODO: we should be checking if its a guild channel, not just not a category
@@ -472,7 +472,7 @@ const ChannelMobile = observer(
             </Pressable>
 
             <Container testID="guildListGuildIconContainer">
-              {Array.from(domain.guild.guilds.values()).map((guild) => {
+              {domain.guild.asList().map((guild) => {
                 return (
                   <GuildListGuild
                     key={guild.id}

@@ -5,7 +5,7 @@ import BaseStore from "./BaseStore";
 import GuildStore from "./GuildStore";
 
 export default class GuildsStore extends BaseStore {
-  @observable guilds = observable.map<string, GuildStore>();
+  @observable private readonly guilds = observable.map<Snowflake, GuildStore>();
 
   constructor() {
     super();
@@ -19,12 +19,15 @@ export default class GuildsStore extends BaseStore {
   }
 
   @action
+  remove(guild_id: string) {
+    this.guilds.delete(guild_id);
+  }
+
   get(id: Snowflake) {
     return this.guilds.get(id);
   }
 
-  @action
-  remove(guild_id: string) {
-    this.guilds.delete(guild_id);
+  asList() {
+    return Array.from(this.guilds.values());
   }
 }

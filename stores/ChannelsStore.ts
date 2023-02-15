@@ -5,7 +5,10 @@ import BaseStore from "./BaseStore";
 import ChannelStore from "./ChannelStore";
 
 export default class ChannelsStore extends BaseStore {
-  @observable channels = observable.map<string, ChannelStore>();
+  @observable private readonly channels = observable.map<
+    Snowflake,
+    ChannelStore
+  >();
 
   constructor() {
     super();
@@ -21,5 +24,13 @@ export default class ChannelsStore extends BaseStore {
   @action
   remove(id: Snowflake) {
     this.channels.delete(id);
+  }
+
+  get(id: Snowflake) {
+    return this.channels.get(id);
+  }
+
+  asList() {
+    return Array.from(this.channels.values());
   }
 }
