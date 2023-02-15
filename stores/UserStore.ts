@@ -1,5 +1,5 @@
 import { PublicUser } from "@puyodead1/fosscord-types";
-import { makeObservable, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import { CDNRoutes, DefaultUserAvatarAssets } from "../utils/Endpoints";
 import REST from "../utils/REST";
 import BaseStore from "./BaseStore";
@@ -53,5 +53,10 @@ export default class UserStore extends BaseStore implements PublicUser {
       );
 
     makeObservable(this);
+  }
+
+  @action
+  update(user: PublicUser) {
+    Object.assign(this, user);
   }
 }

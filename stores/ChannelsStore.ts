@@ -1,14 +1,11 @@
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, ObservableMap } from "mobx";
 import { Snowflake } from "../interfaces/common";
 import { ChannelOmit } from "../interfaces/Gateway";
 import BaseStore from "./BaseStore";
 import ChannelStore from "./ChannelStore";
 
 export default class ChannelsStore extends BaseStore {
-  @observable private readonly channels = observable.map<
-    Snowflake,
-    ChannelStore
-  >();
+  @observable readonly channels = new ObservableMap<Snowflake, ChannelStore>();
 
   constructor() {
     super();

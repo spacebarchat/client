@@ -30,4 +30,8 @@ export default class GuildsStore extends BaseStore {
   asList() {
     return Array.from(this.guilds.values());
   }
+
+  get size() {
+    return this.guilds.size;
+  }
 }

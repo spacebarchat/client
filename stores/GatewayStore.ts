@@ -317,15 +317,15 @@ export default class GatewayStore extends BaseStore {
     this.domain.account.setUser(user);
     guilds.forEach((guild) => {
       // TODO: handle different data modes
-      this.domain.guild.add({
+      this.domain.guilds.add({
         ...guild,
         ...guild.properties,
       } as unknown as Guild);
     });
     users?.forEach((user) => this.domain.user.add(user));
 
-    this.logger.debug(`Stored ${this.domain.guild.guilds.size} guilds`);
-    this.logger.debug(`Stored ${this.domain.user.users.size} users`);
+    this.logger.debug(`Stored ${this.domain.guilds.size} guilds`);
+    this.logger.debug(`Stored ${this.domain.user.size} users`);
 
     this.domain.setAppLoading(false);
   };
@@ -373,17 +373,17 @@ export default class GatewayStore extends BaseStore {
 
   private onGuildCreate = (data: GatewayGuildCreateDispatchData) => {
     this.logger.debug("Received guild create event");
-    this.domain.guild.add({ ...data, ...data.properties } as unknown as Guild);
+    this.domain.guilds.add({ ...data, ...data.properties } as unknown as Guild);
   };
 
   private onGuildUpdate = (data: GatewayGuildModifyDispatchData) => {
     this.logger.debug("Received guild update event");
-    this.domain.guild.get(data.id)?.update(data);
+    this.domain.guilds.get(data.id)?.update(data);
   };
 
   private onGuildDelete = (data: GatewayGuildDeleteDispatchData) => {
     this.logger.debug("Received guild delete event");
-    this.domain.guild.remove(data.id);
+    this.domain.guilds.remove(data.id);
   };
 
   private onGuildMemberListUpdate = (
@@ -391,7 +391,7 @@ export default class GatewayStore extends BaseStore {
   ) => {
     this.logger.debug("Received GuildMemberListUpdate event");
     const { guild_id } = data;
-    const guild = this.domain.guild.guilds.get(guild_id);
+    const guild = this.domain.guilds.get(guild_id);
 
     if (!guild) {
       this.logger.warn(`[GuildMemberListUpdate] Guild ${guild_id} not found`);
@@ -402,10 +402,26 @@ export default class GatewayStore extends BaseStore {
   };
 
   private onChannelCreate = (data: GatewayChannelCreateDispatchData) => {
-    this.domain.guild.guilds.get(data.guild_id!)?.channels.add(data);
+    const guild = this.domain.guilds.get(data.guild_id!);
+    if (!guild) {
+      this.logger.warn(
+        `[ChannelCreate] Guild ${data.guild_id} not found for channel ${data.id}`
+      );
+      return;
+    }
+    guild.channels.add(data);
+    guild.computeChannelList();
   };
 
   private onChannelDelete = (data: GatewayChannelDeleteDispatchData) => {
-    this.domain.guild.guilds.get(data.guild_id!)?.channels.remove(data.id);
+    const guild = this.domain.guilds.get(data.guild_id!);
+    if (!guild) {
+      this.logger.warn(
+        `[ChannelDelete] Guild ${data.guild_id} not found for channel ${data.id}`
+      );
+      return;
+    }
+    guild.channels.remove(data.id);
+    guild.computeChannelList();
   };
 }

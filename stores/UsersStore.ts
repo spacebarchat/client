@@ -29,4 +29,8 @@ export default class UsersStore extends BaseStore {
   asList() {
     return Array.from(this.users.values());
   }
+
+  get size() {
+    return this.users.size;
+  }
 }

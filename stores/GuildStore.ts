@@ -17,6 +17,7 @@ import {
 } from "../interfaces/Gateway";
 import BaseStore from "./BaseStore";
 import ChannelsStore from "./ChannelsStore";
+import ChannelStore from "./ChannelStore";
 import GuildMemberListStore from "./GuildMemberListStore";
 
 export default class GuildStore extends BaseStore {
@@ -81,9 +82,15 @@ export default class GuildStore extends BaseStore {
   @observable premium_progress_bar_enabled: boolean;
 
   @observable memberList: GuildMemberListStore | null = null;
+  @observable channelList: {
+    title?: string;
+    data: ChannelStore[];
+  }[] = [];
 
   constructor(guild: Guild) {
     super();
+
+    makeObservable(this);
 
     this.id = guild.id;
     this.afk_channel_id = guild.afk_channel_id;
@@ -136,12 +143,12 @@ export default class GuildStore extends BaseStore {
     this.permissions = guild.permissions;
     this.premium_progress_bar_enabled = guild.premium_progress_bar_enabled;
 
-    makeObservable(this);
+    this.computeChannelList();
   }
 
   @action
-  update(data: GatewayGuildModifyDispatchData) {
-    Object.assign(this, data);
+  update(guild: GatewayGuildModifyDispatchData) {
+    Object.assign(this, guild);
   }
 
   @action
@@ -151,5 +158,27 @@ export default class GuildStore extends BaseStore {
     } else {
       this.memberList = new GuildMemberListStore(data);
     }
+  }
+
+  @action
+  public computeChannelList() {
+    const channels = this.channels.asList();
+    const channelsWithoutCategory = channels.filter(
+      (x) => !x.parent_id && x.type !== 4
+    ); // TODO: we should be checking if its a guild channel, not just not a category
+
+    const mapped = channels
+      .filter((x) => x.type === 4) // FIXME: cant resolve @puyodead1/fosscord-types??
+      .map((category) => {
+        const channelsInCategory = channels.filter(
+          (channel) => channel.parent_id === category.id
+        );
+        return {
+          title: category.name!,
+          data: channelsInCategory,
+        };
+      });
+
+    this.channelList = [...mapped, { data: channelsWithoutCategory }];
   }
 }

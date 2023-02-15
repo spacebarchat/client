@@ -2,7 +2,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { CommonActions } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { autorun } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import {
@@ -22,7 +21,6 @@ import { CustomTheme } from "../constants/Colors";
 import BottomTabBarProgressContext from "../contexts/BottomTabBarProgressContext";
 import useChannel from "../hooks/useChannel";
 import useGuild from "../hooks/useGuild";
-import ChannelStore from "../stores/ChannelStore";
 import { DomainContext } from "../stores/DomainStore";
 import {
   ChannelsParamList,
@@ -63,12 +61,6 @@ const ChannelDesktop = observer(
     const domain = React.useContext(DomainContext);
     const guild = useGuild(guildId, domain);
     const channel = useChannel(guildId, channelId, domain);
-    const [channelListData, setChannelListData] = React.useState<
-      {
-        title?: string;
-        data: ChannelStore[];
-      }[]
-    >([]);
 
     React.useEffect(() => {
       if (!channel) return;
@@ -78,33 +70,6 @@ const ChannelDesktop = observer(
 
       domain.gateway.onChannelOpen(guildId, channelId);
     }, [channelId, channel]);
-
-    // TODO: we could probably just pre-calculate this and store it in the guild store instead of re-calculating it every render
-    React.useEffect(
-      () =>
-        autorun(() => {
-          if (!guild) return;
-          const channels = guild.channels.asList();
-          const channelsWithoutCategory = channels.filter(
-            (x) => !x.parent_id && x.type !== 4
-          ); // TODO: we should be checking if its a guild channel, not just not a category
-
-          const mapped = channels
-            .filter((x) => x.type === 4) // FIXME: cant resolve @puyodead1/fosscord-types??
-            .map((category) => {
-              const channelsInCategory = channels.filter(
-                (channel) => channel.parent_id === category.id
-              );
-              return {
-                title: category.name!, // TODO: fix this, channel name should not be null
-                data: channelsInCategory,
-              };
-            });
-
-          setChannelListData([...mapped, { data: channelsWithoutCategory }]);
-        }),
-      [guild]
-    );
 
     if (!guild) {
       return (
@@ -152,7 +117,7 @@ const ChannelDesktop = observer(
             <Container displayFlex flexOne>
               <ScrollView style={{ padding: 10 }}>
                 <SectionList
-                  sections={channelListData}
+                  sections={guild.channelList}
                   keyExtractor={(item, index) => item.id + index}
                   renderItem={({ item }) => (
                     <View style={{ marginHorizontal: 10 }}>
@@ -341,7 +306,7 @@ const ChannelsScreenDesktop = observer(
               testID="guildListGuildIconContainer"
               style={{ overflow: "visible" }}
             >
-              {domain.guild.asList().map((guild) => {
+              {domain.guilds.asList().map((guild) => {
                 return (
                   <GuildListGuild
                     key={guild.id}
@@ -403,12 +368,6 @@ const ChannelMobile = observer(
     const domain = React.useContext(DomainContext);
     const guild = useGuild(guildId, domain);
     const channel = useChannel(guildId, channelId, domain);
-    const [channelListData, setChannelListData] = React.useState<
-      {
-        title?: string;
-        data: ChannelStore[];
-      }[]
-    >([]);
 
     React.useEffect(() => {
       if (!channel) return;
@@ -418,33 +377,6 @@ const ChannelMobile = observer(
 
       domain.gateway.onChannelOpen(guildId, channelId);
     }, [channelId, channel]);
-
-    // TODO: we could probably just pre-calculate this and store it in the guild store instead of re-calculating it every render
-    React.useEffect(
-      () =>
-        autorun(() => {
-          if (!guild) return;
-          const channels = guild.channels.asList();
-          const channelsWithoutCategory = channels.filter(
-            (x) => !x.parent_id && x.type !== 4
-          ); // TODO: we should be checking if its a guild channel, not just not a category
-
-          const mapped = channels
-            .filter((x) => x.type === 4) // FIXME: cant resolve @puyodead1/fosscord-types??
-            .map((category) => {
-              const channelsInCategory = channels.filter(
-                (channel) => channel.parent_id === category.id
-              );
-              return {
-                title: category.name!, // TODO: fix this, channel name should not be null
-                data: channelsInCategory,
-              };
-            });
-
-          setChannelListData([...mapped, { data: channelsWithoutCategory }]);
-        }),
-      [guild]
-    );
 
     /**
      * Constructions the Guild and Channel list for the left side of the Swipper component
@@ -472,7 +404,7 @@ const ChannelMobile = observer(
             </Pressable>
 
             <Container testID="guildListGuildIconContainer">
-              {domain.guild.asList().map((guild) => {
+              {domain.guilds.asList().map((guild) => {
                 return (
                   <GuildListGuild
                     key={guild.id}
@@ -519,7 +451,7 @@ const ChannelMobile = observer(
           <Container testID="channelSidebarBody" flexOne>
             {/* TODO: private channels  */}
             <SectionList
-              sections={channelListData}
+              sections={guild?.channelList ?? []}
               keyExtractor={(item, index) => item.id + index}
               renderItem={({ item }) => (
                 <View style={{ marginHorizontal: 10 }}>

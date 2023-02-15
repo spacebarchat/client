@@ -18,7 +18,7 @@ export class DomainStore extends BaseStore {
   @observable isDarkTheme: boolean = true;
   @observable account: AccountStore = new AccountStore();
   @observable user: UsersStore = new UsersStore();
-  @observable guild: GuildsStore = new GuildsStore();
+  @observable guilds: GuildsStore = new GuildsStore();
   @observable gateway: GatewayStore = new GatewayStore(this);
   @observable isAppLoading: boolean = true;
   @observable isNetworkConnected: boolean | null = null;

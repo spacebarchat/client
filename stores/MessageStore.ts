@@ -87,34 +87,7 @@ export default class MessageStore extends BaseStore {
   }
 
   @action
-  update(data: Message) {
-    this.id = data.id;
-    this.channel_id = data.channel_id;
-    this.guild_id = data.guild_id;
-    this.guild = data.guild;
-    this.author_id = data.author_id;
-    this.member_id = data.member_id;
-    this.webhook_id = data.webhook_id;
-    this.application_id = data.application_id;
-    this.content = data.content;
-    this.timestamp = data.timestamp;
-    this.edited_timestamp = data.edited_timestamp;
-    this.tts = data.tts;
-    this.mention_everyone = data.mention_everyone;
-    this.mentions = data.mentions;
-    this.mention_roles = data.mention_roles;
-    this.mention_channels = data.mention_channels;
-    this.sticker_items = data.sticker_items;
-    this.attachments = data.attachments;
-    this.embeds = data.embeds;
-    this.reactions = data.reactions;
-    this.nonce = data.nonce;
-    this.pinned = data.pinned;
-    this.type = data.type;
-    this.activity = data.activity;
-    this.flags = data.flags;
-    this.message_reference = data.message_reference;
-    this.interaction = data.interaction;
-    this.components = data.components;
+  update(message: Message) {
+    Object.assign(this, message);
   }
 }
