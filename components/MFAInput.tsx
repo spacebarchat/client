@@ -18,7 +18,7 @@ import {
 import useLogger from "../hooks/useLogger";
 import { IAPIMFAResponse } from "../interfaces/api";
 import { DomainContext } from "../stores/DomainStore";
-import Endpoints from "../utils/Endpoints";
+import { Routes } from "../utils/Endpoints";
 import { t } from "../utils/i18n";
 import Container from "./Container";
 
@@ -53,7 +53,7 @@ function MFAInput({ close, mfaTicket, navigateRoot }: MFAInputProps) {
     }
 
     domain.rest
-      .post<TotpSchema, IAPIMFAResponse>(Endpoints.TOTP, {
+      .post<TotpSchema, IAPIMFAResponse>(Routes.totp(), {
         code,
         ticket: mfaTicket,
       })
