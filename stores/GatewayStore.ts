@@ -175,12 +175,23 @@ export default class GatewayStore extends BaseStore {
       return this.logger.error(`Token shouldn't be null here`);
     this.identifyStartTime = Date.now();
 
+    let browser;
+    if (Platform.OS === "ios") browser = "Fosscord iOS";
+    else if (Platform.OS === "android") browser = "Fosscord Android";
+    else if (Platform.isDesktop) browser = "Fosscord Desktop";
+    else browser = "Fosscord Web";
+
     const payload: GatewayIdentify = {
       op: GatewayOpcodes.Identify,
       d: {
         token: this.domain.account.token,
         properties: {
+          browser,
+          client_build_number: 0,
+          client_version: "0.0.1",
           os: Platform.OS,
+          os_version: Platform.Version.toString(),
+          release_channel: "dev",
         },
         compress: false,
       },
