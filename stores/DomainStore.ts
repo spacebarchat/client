@@ -1,5 +1,10 @@
+import NetInfo, {
+  NetInfoState,
+  NetInfoSubscription,
+} from "@react-native-community/netinfo";
 import { action, makeObservable, observable } from "mobx";
 import { createContext } from "react";
+import useLogger from "../hooks/useLogger";
 import REST from "../utils/REST";
 import AccountStore from "./AccountStore";
 import BaseStore from "./BaseStore";
@@ -15,12 +20,27 @@ export class DomainStore extends BaseStore {
   @observable guild: GuildsStore = new GuildsStore();
   @observable gateway: GatewayStore = new GatewayStore(this);
   @observable isAppLoading: boolean = true;
+  @observable isNetworkConnected: boolean | null = null;
+
   public readonly devSkipAuth = false;
   public rest: REST = new REST();
+  private readonly networkInfoUnsubscribe: NetInfoSubscription;
+  private readonly networkLogger = useLogger("Network");
 
   constructor() {
     super();
     makeObservable(this);
+
+    this.networkInfoUnsubscribe = NetInfo.addEventListener(
+      this.onNetChange.bind(this)
+    );
+  }
+
+  private onNetChange(state: NetInfoState) {
+    this.networkLogger.info(
+      `Connection state changed; type: ${state.type}, isConnected: ${state.isConnected}`
+    );
+    this.isNetworkConnected = state.isConnected;
   }
 
   @action.bound
