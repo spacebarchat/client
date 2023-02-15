@@ -1,6 +1,7 @@
 import { Guild } from "@puyodead1/fosscord-types";
 import { action, makeObservable, observable, reaction } from "mobx";
 import { Platform } from "react-native";
+import { Snowflake } from "../interfaces/common";
 import {
   GatewayChannelCreateDispatchData,
   GatewayChannelDeleteDispatchData,
@@ -8,10 +9,13 @@ import {
   GatewayDispatchPayload,
   GatewayGuildCreateDispatchData,
   GatewayGuildDeleteDispatchData,
+  GatewayGuildMemberListUpdateDispatchData,
   GatewayGuildModifyDispatchData,
   GatewayHeartbeat,
   GatewayHelloData,
   GatewayIdentify,
+  GatewayLazyRequest,
+  GatewayLazyRequestData,
   GatewayOpcodes,
   GatewayReadyDispatchData,
   GatewayReceivePayload,
@@ -36,6 +40,7 @@ export default class GatewayStore extends BaseStore {
   private identifyStartTime?: number;
   private sequence: number | null = null;
   private heartbeatAck: boolean = true;
+  private lazyRequestChannels = new Map<string, Snowflake[]>(); // guild, channels
 
   constructor(domain: DomainStore) {
     super();
@@ -92,6 +97,10 @@ export default class GatewayStore extends BaseStore {
     this.dispatchHandlers.set(
       GatewayDispatchEvents.GuildDelete,
       this.onGuildDelete
+    );
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.GuildMemberListUpdate,
+      this.onGuildMemberListUpdate
     );
 
     this.dispatchHandlers.set(
@@ -307,6 +316,45 @@ export default class GatewayStore extends BaseStore {
     this.domain.setAppLoading(false);
   };
 
+  public onChannelOpen = (guild_id: Snowflake, channelId: Snowflake) => {
+    let payload: GatewayLazyRequestData;
+
+    const guildChannels = this.lazyRequestChannels.get(guild_id);
+
+    if (!guildChannels) {
+      payload = {
+        guild_id,
+        activities: true,
+        threads: true,
+        typing: true,
+        channels: {
+          [channelId]: [[0, 99]],
+        },
+      };
+      this.lazyRequestChannels.set(guild_id, [channelId]);
+
+      this.sendJson({
+        op: GatewayOpcodes.LazyRequest,
+        d: payload,
+      } as GatewayLazyRequest);
+    } else {
+      if (guildChannels.includes(channelId)) return;
+
+      const d: Record<string, [number, number][]> = {};
+      guildChannels.forEach((x) => (d[x] = [[0, 99]]));
+      payload = {
+        guild_id,
+        channels: d,
+      };
+      guildChannels.push(channelId);
+
+      this.sendJson({
+        op: GatewayOpcodes.LazyRequest,
+        d: payload,
+      } as GatewayLazyRequest);
+    }
+  };
+
   // Start dispatch handlers
 
   private onGuildCreate = (data: GatewayGuildCreateDispatchData) => {
@@ -322,6 +370,21 @@ export default class GatewayStore extends BaseStore {
   private onGuildDelete = (data: GatewayGuildDeleteDispatchData) => {
     this.logger.debug("Received guild delete event");
     this.domain.guild.remove(data.id);
+  };
+
+  private onGuildMemberListUpdate = (
+    data: GatewayGuildMemberListUpdateDispatchData
+  ) => {
+    this.logger.debug("Received GuildMemberListUpdate event");
+    const { guild_id } = data;
+    const guild = this.domain.guild.guilds.get(guild_id);
+
+    if (!guild) {
+      this.logger.warn(`[GuildMemberListUpdate] Guild ${guild_id} not found`);
+      return;
+    }
+
+    guild.onMemberListUpdate(data);
   };
 
   private onChannelCreate = (data: GatewayChannelCreateDispatchData) => {

@@ -6,6 +6,7 @@ import {
   Guild,
   IdentifySchema,
   Interaction,
+  LazyRequestSchema,
   Member,
   Message,
   ReadyEventData,
@@ -70,6 +71,8 @@ export enum GatewayOpcodes {
    * Sent in response to receiving a heartbeat to acknowledge that it has been received
    */
   HeartbeatAck,
+  GuildSync,
+  LazyRequest = 14,
 }
 
 /**
@@ -171,6 +174,7 @@ export enum GatewayDispatchEvents {
   GuildEmojisUpdate = "GUILD_EMOJIS_UPDATE",
   GuildIntegrationsUpdate = "GUILD_INTEGRATIONS_UPDATE",
   GuildMemberAdd = "GUILD_MEMBER_ADD",
+  GuildMemberListUpdate = "GUILD_MEMBER_LIST_UPDATE",
   GuildMemberRemove = "GUILD_MEMBER_REMOVE",
   GuildMembersChunk = "GUILD_MEMBERS_CHUNK",
   GuildMemberUpdate = "GUILD_MEMBER_UPDATE",
@@ -228,7 +232,8 @@ export type GatewaySendPayload =
   | GatewayUpdatePresence
   | GatewayVoiceStateUpdate
   | GatewayResume
-  | GatewayRequestGuildMembers;
+  | GatewayRequestGuildMembers
+  | GatewayLazyRequest;
 
 export type GatewayReceivePayload =
   | GatewayHello
@@ -252,6 +257,7 @@ export type GatewayDispatchPayload =
   | GatewayGuildEmojisUpdateDispatch
   | GatewayGuildIntegrationsUpdateDispatch
   | GatewayGuildMemberAddDispatch
+  | GatewayGuildMemberListUpdateDispatch
   | GatewayGuildMemberRemoveDispatch
   | GatewayGuildMembersChunkDispatch
   | GatewayGuildMemberUpdateDispatch
@@ -895,6 +901,11 @@ export type GatewayGuildMemberAddDispatch = DataPayload<
   GatewayGuildMemberAddDispatchData
 >;
 
+export type GatewayGuildMemberListUpdateDispatch = DataPayload<
+  GatewayDispatchEvents.GuildMemberListUpdate,
+  GatewayGuildMemberListUpdateDispatchData
+>;
+
 /**
  * https://discord.com/developers/docs/topics/gateway-events#guild-member-add
  */
@@ -903,6 +914,36 @@ export interface GatewayGuildMemberAddDispatchData extends Member {
    * The id of the guild
    */
   guild_id: Snowflake;
+}
+
+export enum GatewayGuildMemberListUpdateOperation {
+  SYNC = "SYNC",
+  INVALIDATE = "INVALIDATE",
+  INSERT = "INSERT",
+  DELETE = "DELETE",
+  UPDATE = "UPDATE",
+}
+export interface GatewayGuildMemberListUpdateGroup {
+  count: number;
+  id: string;
+}
+
+export interface GatewayGuildMemberListUpdateDispatchData {
+  groups: GatewayGuildMemberListUpdateGroup[];
+  guild_id: Snowflake;
+  id: string;
+  member_count: number;
+  online_count: number;
+  ops: {
+    op: keyof typeof GatewayGuildMemberListUpdateOperation;
+    range: number[];
+    items: (
+      | { group: GatewayGuildMemberListUpdateGroup }
+      | { member: Member }
+    )[];
+    index: number;
+    item: { group: GatewayGuildMemberListUpdateGroup } | { member: Member };
+  }[];
 }
 
 /**
@@ -1774,6 +1815,11 @@ export interface GatewayIdentify {
   d: GatewayIdentifyData;
 }
 
+export interface GatewayLazyRequest {
+  op: GatewayOpcodes.LazyRequest;
+  d: GatewayLazyRequestData;
+}
+
 /**
  * https://discord.com/developers/docs/topics/gateway-events#identify
  */
@@ -1821,6 +1867,8 @@ export interface GatewayIdentify {
 //   intents: number;
 // }
 export type GatewayIdentifyData = IdentifySchema;
+
+export type GatewayLazyRequestData = LazyRequestSchema;
 
 /**
  * https://discord.com/developers/docs/topics/gateway-events#identify-identify-connection-properties

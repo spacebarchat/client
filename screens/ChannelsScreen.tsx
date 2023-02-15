@@ -75,8 +75,11 @@ const ChannelDesktop = observer(
       // get the first channel in the guild and update the route params
       channelId = channel.id;
       navigation.dispatch(CommonActions.setParams({ channelId: channel.id }));
+
+      domain.gateway.onChannelOpen(guildId, channelId);
     }, [channelId, channel]);
 
+    // TODO: we could probably just pre-calculate this and store it in the guild store instead of re-calculating it every render
     React.useEffect(
       () =>
         autorun(() => {
@@ -271,29 +274,29 @@ const ChannelDesktop = observer(
               displayFlex
             >
               <SectionList
-                sections={sectionPlaceholderData}
-                keyExtractor={(item, index) => item + index}
+                sections={guild.memberList?.listData || []}
+                keyExtractor={(item, index) => index + item.id}
                 renderItem={({ item }) => (
-                  <View
-                    style={{
-                      marginVertical: 20,
-                      padding: 10,
-                    }}
-                  >
-                    <Text>{item}</Text>
+                  <View>
+                    <Text>{item.user.username}</Text>
                   </View>
                 )}
                 renderSectionHeader={({ section: { title } }) => (
                   <View
                     style={{
                       backgroundColor: theme.colors.palette.backgroundPrimary70,
-                      padding: 20,
+                      paddingTop: 10,
                     }}
                   >
-                    <Text>{title}</Text>
+                    <Text
+                      style={{
+                        color: theme.colors.textMuted,
+                      }}
+                    >
+                      {title}
+                    </Text>
                   </View>
                 )}
-                stickySectionHeadersEnabled={true}
                 contentContainerStyle={{ padding: 10 }}
               />
             </Container>
@@ -412,8 +415,11 @@ const ChannelMobile = observer(
       // get the first channel in the guild and update the route params
       channelId = channel.id;
       navigation.dispatch(CommonActions.setParams({ channelId: channel.id }));
+
+      domain.gateway.onChannelOpen(guildId, channelId);
     }, [channelId, channel]);
 
+    // TODO: we could probably just pre-calculate this and store it in the guild store instead of re-calculating it every render
     React.useEffect(
       () =>
         autorun(() => {
@@ -570,21 +576,27 @@ const ChannelMobile = observer(
           }}
         >
           <SectionList
-            sections={sectionPlaceholderData}
-            keyExtractor={(item, index) => item + index}
+            sections={guild?.memberList?.listData || []}
+            keyExtractor={(item, index) => index + item.id}
             renderItem={({ item }) => (
-              <View style={{ marginVertical: 20, padding: 10 }}>
-                <Text>{item}</Text>
+              <View>
+                <Text>{item.user.username}</Text>
               </View>
             )}
             renderSectionHeader={({ section: { title } }) => (
               <View
                 style={{
                   backgroundColor: theme.colors.palette.backgroundPrimary100,
-                  padding: 20,
+                  paddingTop: 10,
                 }}
               >
-                <Text>{title}</Text>
+                <Text
+                  style={{
+                    color: theme.colors.textMuted,
+                  }}
+                >
+                  {title}
+                </Text>
               </View>
             )}
             stickySectionHeadersEnabled={true}

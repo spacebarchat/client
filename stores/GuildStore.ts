@@ -11,9 +11,13 @@ import {
   Webhook,
 } from "@puyodead1/fosscord-types";
 import { action, makeObservable, observable } from "mobx";
-import { GatewayGuildModifyDispatchData } from "../interfaces/Gateway";
+import {
+  GatewayGuildMemberListUpdateDispatchData,
+  GatewayGuildModifyDispatchData,
+} from "../interfaces/Gateway";
 import BaseStore from "./BaseStore";
 import ChannelsStore from "./ChannelsStore";
+import GuildMemberListStore from "./GuildMemberListStore";
 
 export default class GuildStore extends BaseStore {
   id: string;
@@ -76,6 +80,8 @@ export default class GuildStore extends BaseStore {
   @observable permissions?: number | undefined;
   @observable premium_progress_bar_enabled: boolean;
 
+  @observable memberList: GuildMemberListStore | null = null;
+
   constructor(guild: Guild) {
     super();
 
@@ -136,5 +142,14 @@ export default class GuildStore extends BaseStore {
   @action
   update(data: GatewayGuildModifyDispatchData) {
     Object.assign(this, data);
+  }
+
+  @action
+  onMemberListUpdate(data: GatewayGuildMemberListUpdateDispatchData) {
+    if (this.memberList) {
+      this.memberList.update(data);
+    } else {
+      this.memberList = new GuildMemberListStore(data);
+    }
   }
 }

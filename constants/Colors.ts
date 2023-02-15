@@ -25,6 +25,7 @@ export const CustomColorsCommon = {
 
 export const CustomDarkColors = {
   text: Color("#727272"),
+  textMuted: Color("#96989d"),
   disabled: Color("#474747"),
   active: Color("#323232"),
   green: Color("#c3e88d"),
@@ -43,6 +44,7 @@ export const CustomDarkColors = {
 
 export const CustomLightColors = {
   text: Color("#94A7B0"),
+  textMuted: Color("#96989d"),
   disabled: Color("#D2D4D5"),
   active: Color("#E7E7E8"),
   green: Color("#91b859"),
@@ -154,7 +156,11 @@ export const CustomPaletteLight = {
 };
 
 const CustomLightTheme: MD3Theme & {
-  colors: { palette: Record<string, string> };
+  colors: { palette: { [key in keyof typeof CustomPaletteLight]: string } } & {
+    [key in keyof typeof CustomLightColors]: string;
+  } & {
+    [key in keyof typeof CustomColorsCommon]: string;
+  };
 } = {
   ...MD3LightTheme,
   colors: {
@@ -208,7 +214,11 @@ const CustomLightTheme: MD3Theme & {
 };
 
 const CustomDarkTheme: MD3Theme & {
-  colors: { palette: Record<string, string> };
+  colors: { palette: { [key in keyof typeof CustomPaletteDark]: string } } & {
+    [key in keyof typeof CustomDarkColors]: string;
+  } & {
+    [key in keyof typeof CustomColorsCommon]: string;
+  };
 } = {
   ...MD3DarkTheme,
   colors: {
