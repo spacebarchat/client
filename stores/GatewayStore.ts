@@ -204,7 +204,7 @@ export default class GatewayStore extends BaseStore {
 
   private handleHello = (data: GatewayHelloData) => {
     this.heartbeatInterval = data.heartbeat_interval;
-    this.logger.debug(
+    this.logger.info(
       `[Hello] heartbeat interval: ${data.heartbeat_interval} (took ${
         Date.now() - this.connectionStartTime!
       }ms)`
@@ -310,7 +310,7 @@ export default class GatewayStore extends BaseStore {
   private onReady = (data: GatewayReadyDispatchData) => {
     const { session_id, guilds, users, user } = data;
     this.sessionId = session_id;
-    this.logger.debug(
+    this.logger.info(
       `[Ready] took ${Date.now() - this.connectionStartTime!}ms`
     );
 
