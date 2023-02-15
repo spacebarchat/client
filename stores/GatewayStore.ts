@@ -1,4 +1,6 @@
 import { Guild } from "@puyodead1/fosscord-types";
+import * as Application from "expo-application";
+import * as Device from "expo-device";
 import { action, makeObservable, observable, reaction } from "mobx";
 import { Platform } from "react-native";
 import { Snowflake } from "../interfaces/common";
@@ -188,9 +190,10 @@ export default class GatewayStore extends BaseStore {
         properties: {
           browser,
           client_build_number: 0,
-          client_version: "0.0.1",
+          client_version: Application.nativeApplicationVersion ?? undefined,
+          browser_version: Device.osVersion ?? undefined,
           os: Platform.OS,
-          os_version: Platform.Version.toString(),
+          os_version: Device.osVersion ?? undefined,
           release_channel: "dev",
         },
         compress: false,

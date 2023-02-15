@@ -96,6 +96,10 @@ export const Routes = {
   totp() {
     return "/auth/mfa/totp";
   },
+  minVersion(os: "android" | "ios") {
+    // TODO: this route should be implemented in fosscord-server and then implemented for mobile versions of the client
+    return `/apps/${os}/versions.json`;
+  },
 };
 
 export const CDNRoutes = {
