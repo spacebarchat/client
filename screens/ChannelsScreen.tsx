@@ -15,6 +15,7 @@ import {
 } from "react-native";
 import { Avatar, Text, useTheme } from "react-native-paper";
 import ChannelsSidebarMobile from "../components/ChannelsSidebarMobile";
+import ChatMessage from "../components/ChatMessage";
 import Container from "../components/Container";
 import GuildListGuild from "../components/GuildListGuildItem";
 import GuildSidebarMobile from "../components/GuildSidebarMobile";
@@ -31,8 +32,6 @@ import {
   ChannelsStackScreenProps,
   RootStackScreenProps,
 } from "../types";
-import { CDNRoutes, DefaultUserAvatarAssets } from "../utils/Endpoints";
-import REST from "../utils/REST";
 
 const sectionPlaceholderData = [
   {
@@ -210,74 +209,7 @@ const ChannelDesktop = observer(
             <Container testID="chatContent" displayFlex flexOne>
               <FlatList
                 data={channel.messages.asList()}
-                renderItem={({ item }) => (
-                  <Container
-                    testID="messageContainer"
-                    key={item.id}
-                    row
-                    horizontalCenter
-                    style={{
-                      marginHorizontal: 10,
-                      paddingVertical: 10,
-                    }}
-                  >
-                    <Container testID="messageAvatarContainer">
-                      <Avatar.Image
-                        testID="messageAvatar"
-                        size={32}
-                        source={{
-                          uri: item.author?.avatar
-                            ? REST.makeCDNUrl(
-                                CDNRoutes.userAvatar(
-                                  item.author.id,
-                                  item.author.avatar
-                                )
-                              )
-                            : "https://cdn.discordapp.com" +
-                              CDNRoutes.defaultUserAvatar(
-                                (Number(item.author?.discriminator) %
-                                  5) as DefaultUserAvatarAssets
-                              ),
-                        }}
-                        style={{ backgroundColor: "transparent" }}
-                      />
-                    </Container>
-                    <Container
-                      testID="messageContentContainer"
-                      style={{
-                        marginLeft: 10,
-                        flex: 1,
-                      }}
-                    >
-                      <Container
-                        testID="messageHeaderContainer"
-                        row
-                        horizontalCenter
-                      >
-                        <Text
-                          testID="messageHeaderAuthor"
-                          style={{ fontWeight: "500", fontSize: 16 }}
-                        >
-                          {item.author?.username}
-                        </Text>
-                        <Text
-                          testID="messageHeaderTimestamp"
-                          style={{
-                            fontSize: 12,
-                            fontWeight: "500",
-                            color: theme.colors.textMuted,
-                            marginLeft: 5,
-                          }}
-                        >
-                          {item.timestamp.toLocaleString()}
-                        </Text>
-                      </Container>
-                      <Container testID="messageContentContainer">
-                        <Text>{item.content}</Text>
-                      </Container>
-                    </Container>
-                  </Container>
-                )}
+                renderItem={({ item }) => <ChatMessage message={item} />}
                 keyExtractor={(item) => item.id}
                 inverted={true}
               />
@@ -470,74 +402,7 @@ const ChannelMobile = observer((props: ChannelsStackScreenProps<"Channel">) => {
         ) : (
           <FlatList
             data={channel?.messages.asList()}
-            renderItem={({ item }) => (
-              <Container
-                testID="messageContainer"
-                key={item.id}
-                row
-                horizontalCenter
-                style={{
-                  marginHorizontal: 10,
-                  paddingVertical: 10,
-                }}
-              >
-                <Container testID="messageAvatarContainer">
-                  <Avatar.Image
-                    testID="messageAvatar"
-                    size={32}
-                    source={{
-                      uri: item.author?.avatar
-                        ? REST.makeCDNUrl(
-                            CDNRoutes.userAvatar(
-                              item.author.id,
-                              item.author.avatar
-                            )
-                          )
-                        : "https://cdn.discordapp.com" +
-                          CDNRoutes.defaultUserAvatar(
-                            (Number(item.author?.discriminator) %
-                              5) as DefaultUserAvatarAssets
-                          ),
-                    }}
-                    style={{ backgroundColor: "transparent" }}
-                  />
-                </Container>
-                <Container
-                  testID="messageContentContainer"
-                  style={{
-                    marginLeft: 10,
-                    flex: 1,
-                  }}
-                >
-                  <Container
-                    testID="messageHeaderContainer"
-                    row
-                    horizontalCenter
-                  >
-                    <Text
-                      testID="messageHeaderAuthor"
-                      style={{ fontWeight: "500", fontSize: 16 }}
-                    >
-                      {item.author?.username}
-                    </Text>
-                    <Text
-                      testID="messageHeaderTimestamp"
-                      style={{
-                        fontSize: 12,
-                        fontWeight: "500",
-                        color: theme.colors.textMuted,
-                        marginLeft: 5,
-                      }}
-                    >
-                      {item.timestamp.toLocaleString()}
-                    </Text>
-                  </Container>
-                  <Container testID="messageContentContainer">
-                    <Text>{item.content}</Text>
-                  </Container>
-                </Container>
-              </Container>
-            )}
+            renderItem={({ item }) => <ChatMessage message={item} />}
             keyExtractor={(item) => item.id}
             inverted={true}
           />
