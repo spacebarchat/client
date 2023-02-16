@@ -11,9 +11,10 @@ import {
   Pressable,
   ScrollView,
   SectionList,
+  TextInput,
   View,
 } from "react-native";
-import { Avatar, Button, Text, TextInput, useTheme } from "react-native-paper";
+import { Avatar, Button, Text, useTheme } from "react-native-paper";
 import ChannelsSidebarMobile from "../components/ChannelsSidebarMobile";
 import ChatMessage from "../components/ChatMessage";
 import Container from "../components/Container";
@@ -66,6 +67,8 @@ const ChannelDesktop = observer(
     const domain = React.useContext(DomainContext);
     const guild = useGuild(guildId, domain);
     const channel = useChannel(guildId, channelId, domain);
+
+    const [message, setMessage] = React.useState("");
 
     React.useEffect(() => {
       if (!channel) return;
@@ -213,6 +216,29 @@ const ChannelDesktop = observer(
                 keyExtractor={(item) => item.id}
                 inverted={true}
               />
+              <Container
+                testID="chatInput"
+                style={{
+                  paddingHorizontal: 16,
+                  marginBottom: 24,
+                  maxHeight: "50vh",
+                }}
+              >
+                <TextInput
+                  placeholder={`Message #${channel?.name}`}
+                  value={message}
+                  onChangeText={(message) => setMessage(message)}
+                  editable
+                  multiline
+                  style={{
+                    backgroundColor: theme.colors.palette.backgroundPrimary80,
+                    color: theme.colors.text,
+                    padding: 10,
+                    borderRadius: 20,
+                  }}
+                  spellCheck={false}
+                />
+              </Container>
             </Container>
             <Container
               testID="memberList"
@@ -438,12 +464,11 @@ const ChannelMobile = observer((props: ChannelsStackScreenProps<"Channel">) => {
                 multiline
                 style={{
                   backgroundColor: theme.colors.palette.backgroundPrimary60,
-                  borderTopLeftRadius: 20,
-                  borderTopRightRadius: 20,
-                  borderBottomLeftRadius: 20,
-                  borderBottomRightRadius: 20,
+                  color: theme.colors.text,
+                  padding: 10,
+                  borderRadius: 20,
                 }}
-                underlineStyle={{ display: "none" }}
+                spellCheck={false}
               />
             </Container>
           </>
