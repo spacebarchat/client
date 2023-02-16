@@ -1,42 +1,66 @@
+import { reaction } from "mobx";
 import useLogger from "../hooks/useLogger";
+import { DomainStore } from "../stores/DomainStore";
 import { RouteBases } from "./Endpoints";
 
 export default class REST {
-  private token?: string;
+  private readonly domain: DomainStore;
+  private token: string | null = null;
   private headers: Record<string, any>;
   private logger = useLogger("REST");
 
-  constructor(token?: string) {
-    this.token = token;
+  constructor(domain: DomainStore) {
+    this.domain = domain;
 
     this.headers = {
       mode: "cors",
-      "User-Agent": `Fosscord-Client/1.0 (${process.platform} ${process.arch})`,
+      "User-Agent": `Fosscord-Client/1.0`,
       accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: this.token,
     };
+
+    reaction(
+      () => this.domain.account.token,
+      (token) => {
+        this.token = token;
+
+        if (token) {
+          this.headers["Authorization"] = token;
+        } else {
+          delete this.headers["Authorization"];
+        }
+      }
+    );
   }
 
-  public static makeAPIUrl(path: string) {
-    return `${RouteBases.api}${path}`;
+  public static makeAPIUrl(
+    path: string,
+    queryParams: Record<string, any> = {}
+  ) {
+    const url = new URL(`${RouteBases.api}${path}`);
+    Object.entries(queryParams).forEach(([key, value]) => {
+      url.searchParams.append(key, value);
+    });
+    return url.toString();
   }
 
-  public static makeCDNUrl(path: string) {
-    return `${RouteBases.cdn}${path}`;
+  public static makeCDNUrl(
+    path: string,
+    queryParams: Record<string, any> = {}
+  ) {
+    const url = new URL(`${RouteBases.cdn}${path}`);
+    Object.entries(queryParams).forEach(([key, value]) => {
+      url.searchParams.append(key, value);
+    });
+    return url.toString();
   }
 
-  public setToken(token: string) {
-    this.token = token;
-    this.headers = {
-      ...this.headers,
-      Authorization: this.token,
-    };
-  }
-
-  public async get<T>(path: string): Promise<T> {
+  public async get<T>(
+    path: string,
+    queryParams: Record<string, any> = {}
+  ): Promise<T> {
     return new Promise((resolve, reject) => {
-      const url = REST.makeAPIUrl(path);
+      const url = REST.makeAPIUrl(path, queryParams);
       this.logger.debug(`GET ${url}`);
       return fetch(url, {
         method: "GET",
@@ -48,9 +72,13 @@ export default class REST {
     });
   }
 
-  public async post<T, U>(path: string, body: T): Promise<U> {
+  public async post<T, U>(
+    path: string,
+    body: T,
+    queryParams: Record<string, any> = {}
+  ): Promise<U> {
     return new Promise((resolve, reject) => {
-      const url = REST.makeAPIUrl(path);
+      const url = REST.makeAPIUrl(path, queryParams);
       this.logger.debug(`POST ${url}; payload:`, body);
       return fetch(url, {
         method: "POST",

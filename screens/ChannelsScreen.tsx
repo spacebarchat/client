@@ -6,6 +6,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import {
   Animated,
+  FlatList,
   Platform,
   Pressable,
   ScrollView,
@@ -27,6 +28,8 @@ import {
   ChannelsStackScreenProps,
   RootStackScreenProps,
 } from "../types";
+import { CDNRoutes, DefaultUserAvatarAssets } from "../utils/Endpoints";
+import REST from "../utils/REST";
 
 const sectionPlaceholderData = [
   {
@@ -69,6 +72,8 @@ const ChannelDesktop = observer(
       navigation.dispatch(CommonActions.setParams({ channelId: channel.id }));
 
       domain.gateway.onChannelOpen(guildId, channelId);
+
+      channel.getChannelMessages(domain, 50).catch(console.error);
     }, [channelId, channel]);
 
     if (!guild) {
@@ -200,35 +205,56 @@ const ChannelDesktop = observer(
           </Container>
           <Container testID="chat" displayFlex flexOne row>
             <Container testID="chatContent" displayFlex flexOne>
-              <ScrollView style={{ padding: 10 }}>
-                <Button mode="contained" onPress={domain.toggleDarkTheme}>
-                  Theme
-                </Button>
-                <Button
-                  mode="contained"
-                  onPress={domain.account.logout}
-                  buttonColor={theme.colors.error}
-                >
-                  Logout
-                </Button>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-                <Text style={{ marginVertical: 20 }}>Chat Content</Text>
-              </ScrollView>
+              <FlatList
+                data={channel.messages.asList()}
+                renderItem={({ item }) => (
+                  <Container
+                    key={item.id}
+                    horizontalCenter
+                    row
+                    style={{ marginHorizontal: 10, paddingVertical: 10 }}
+                  >
+                    <Avatar.Image
+                      size={32}
+                      source={{
+                        uri: item.author?.avatar
+                          ? REST.makeCDNUrl(
+                              CDNRoutes.userAvatar(
+                                item.author.id,
+                                item.author.avatar
+                              )
+                            )
+                          : "https://cdn.discordapp.com" +
+                            CDNRoutes.defaultUserAvatar(
+                              (Number(item.author?.discriminator) %
+                                5) as DefaultUserAvatarAssets
+                            ),
+                      }}
+                      style={{ backgroundColor: "transparent" }}
+                    />
+                    <Container verticalCenter style={{ marginLeft: 10 }}>
+                      <Container row horizontalCenter>
+                        <Text style={{ fontWeight: "500", fontSize: 16 }}>
+                          {item.author?.username}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            fontWeight: "500",
+                            color: theme.colors.textMuted,
+                            marginLeft: 5,
+                          }}
+                        >
+                          {item.timestamp.toLocaleString()}
+                        </Text>
+                      </Container>
+                      <Text>{item.content}</Text>
+                    </Container>
+                  </Container>
+                )}
+                keyExtractor={(item) => item.id}
+                inverted={true}
+              />
             </Container>
             <Container
               testID="memberList"
@@ -557,6 +583,57 @@ const ChannelMobile = observer(
             borderTopRightRadius: 10,
           }}
         >
+          {/* // TODO: render channel messages */}
+          {/* <FlatList
+                data={channel.messages.asList()}
+                renderItem={({ item }) => (
+                  <Container
+                    key={item.id}
+                    horizontalCenter
+                    row
+                    style={{ marginHorizontal: 10, paddingVertical: 10 }}
+                  >
+                    <Avatar.Image
+                      size={32}
+                      source={{
+                        uri: item.author?.avatar
+                          ? REST.makeCDNUrl(
+                              CDNRoutes.userAvatar(
+                                item.author.id,
+                                item.author.avatar
+                              )
+                            )
+                          : "https://cdn.discordapp.com" +
+                            CDNRoutes.defaultUserAvatar(
+                              (Number(item.author?.discriminator) %
+                                5) as DefaultUserAvatarAssets
+                            ),
+                      }}
+                      style={{ backgroundColor: "transparent" }}
+                    />
+                    <Container verticalCenter style={{ marginLeft: 10 }}>
+                      <Container row horizontalCenter>
+                        <Text style={{ fontWeight: "500", fontSize: 16 }}>
+                          {item.author?.username}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            fontWeight: "500",
+                            color: theme.colors.textMuted,
+                            marginLeft: 5,
+                          }}
+                        >
+                          {item.timestamp.toLocaleString()}
+                        </Text>
+                      </Container>
+                      <Text>{item.content}</Text>
+                    </Container>
+                  </Container>
+                )}
+                keyExtractor={(item) => item.id}
+                inverted={true}
+              /> */}
           {!guild ? (
             <Text>Guild not found</Text>
           ) : !channel ? (

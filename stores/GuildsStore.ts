@@ -27,6 +27,10 @@ export default class GuildsStore extends BaseStore {
     return this.guilds.get(id);
   }
 
+  has(id: Snowflake) {
+    return this.guilds.has(id);
+  }
+
   asList() {
     return Array.from(this.guilds.values());
   }

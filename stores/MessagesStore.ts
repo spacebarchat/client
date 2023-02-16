@@ -20,6 +20,11 @@ export default class MessagesStore extends BaseStore {
   }
 
   @action
+  addAll(messages: Message[]) {
+    messages.forEach((message) => this.add(message));
+  }
+
+  @action
   remove(message: Message) {
     this.messages.delete(message.id);
   }
@@ -28,7 +33,15 @@ export default class MessagesStore extends BaseStore {
     return this.messages.get(id);
   }
 
+  has(id: Snowflake) {
+    return this.messages.has(id);
+  }
+
   asList() {
     return Array.from(this.messages.values());
+  }
+
+  get size() {
+    return this.messages.size;
   }
 }

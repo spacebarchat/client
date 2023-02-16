@@ -17,14 +17,14 @@ export class DomainStore extends BaseStore {
   @observable isI18NInitialized: boolean = false;
   @observable isDarkTheme: boolean = true;
   @observable account: AccountStore = new AccountStore();
-  @observable user: UsersStore = new UsersStore();
+  @observable users: UsersStore = new UsersStore();
   @observable guilds: GuildsStore = new GuildsStore();
   @observable gateway: GatewayStore = new GatewayStore(this);
   @observable isAppLoading: boolean = true;
   @observable isNetworkConnected: boolean | null = null;
 
   public readonly devSkipAuth = false;
-  public rest: REST = new REST();
+  public rest: REST = new REST(this);
   private readonly networkInfoUnsubscribe: NetInfoSubscription;
   private readonly networkLogger = useLogger("Network");
 

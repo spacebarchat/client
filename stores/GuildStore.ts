@@ -90,8 +90,6 @@ export default class GuildStore extends BaseStore {
   constructor(guild: Guild) {
     super();
 
-    makeObservable(this);
-
     this.id = guild.id;
     this.afk_channel_id = guild.afk_channel_id;
     this.afk_timeout = guild.afk_timeout;
@@ -142,6 +140,8 @@ export default class GuildStore extends BaseStore {
     this.parent = guild.parent;
     this.permissions = guild.permissions;
     this.premium_progress_bar_enabled = guild.premium_progress_bar_enabled;
+
+    makeObservable(this);
 
     this.computeChannelList();
   }

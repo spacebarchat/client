@@ -26,6 +26,10 @@ export default class UsersStore extends BaseStore {
     return this.users.get(id);
   }
 
+  has(id: string) {
+    return this.users.has(id);
+  }
+
   asList() {
     return Array.from(this.users.values());
   }

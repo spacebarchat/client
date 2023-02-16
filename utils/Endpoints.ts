@@ -100,6 +100,14 @@ export const Routes = {
     // TODO: this route should be implemented in fosscord-server and then implemented for mobile versions of the client
     return `/apps/${os}/versions.json`;
   },
+  /**
+   * Route for:
+   * - GET  `/channels/{channel.id}/messages`
+   * - POST `/channels/{channel.id}/messages`
+   */
+  channelMessages(channelId: Snowflake) {
+    return `/channels/${channelId}/messages` as const;
+  },
 };
 
 export const CDNRoutes = {

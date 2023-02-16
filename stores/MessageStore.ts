@@ -21,6 +21,7 @@ export default class MessageStore extends BaseStore {
   guild_id?: string | undefined;
   guild?: Guild | undefined;
   author_id?: string | undefined;
+  author?: User | undefined;
   member_id?: string | undefined;
   webhook_id?: string | undefined;
   application_id?: string | undefined;
@@ -61,12 +62,15 @@ export default class MessageStore extends BaseStore {
     this.guild_id = data.guild_id;
     this.guild = data.guild;
     this.author_id = data.author_id;
+    this.author = data.author;
     this.member_id = data.member_id;
     this.webhook_id = data.webhook_id;
     this.application_id = data.application_id;
     this.content = data.content;
-    this.timestamp = data.timestamp;
-    this.edited_timestamp = data.edited_timestamp;
+    this.timestamp = new Date(data.timestamp as any as string);
+    this.edited_timestamp = data.edited_timestamp
+      ? new Date(data.edited_timestamp as any as string)
+      : undefined;
     this.tts = data.tts;
     this.mention_everyone = data.mention_everyone;
     this.mentions = data.mentions;

@@ -27,7 +27,15 @@ export default class ChannelsStore extends BaseStore {
     return this.channels.get(id);
   }
 
+  has(id: Snowflake) {
+    return this.channels.has(id);
+  }
+
   asList() {
     return Array.from(this.channels.values());
+  }
+
+  get size() {
+    return this.channels.size;
   }
 }

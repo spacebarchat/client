@@ -1,3 +1,4 @@
+import { Message } from "@puyodead1/fosscord-types";
 import { Snowflake } from "./common";
 
 export interface APIUnavailableGuild {
@@ -74,3 +75,26 @@ export type IAPILoginResponse =
   | IAPIError;
 
 export type IAPIMFAResponse = IAPILoginResponseSuccess | IAPIError;
+
+export interface IAPIGetChannelMessagesQuery {
+  /**
+   * Get messages around this message ID
+   */
+  around?: Snowflake;
+  /**
+   * Get messages before this message ID
+   */
+  before?: Snowflake;
+  /**
+   * Get messages after this message ID
+   */
+  after?: Snowflake;
+  /**
+   * Max number of messages to return (1-100)
+   *
+   * @default 50
+   */
+  limit?: number;
+}
+
+export type IAPIGetChannelMessagesResult = Message[];

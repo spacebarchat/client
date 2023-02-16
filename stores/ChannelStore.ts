@@ -2,45 +2,49 @@ import {
   ChannelPermissionOverwrite,
   ChannelType,
   Invite,
-  Message,
   ReadState,
   Recipient,
   VoiceState,
   Webhook,
 } from "@puyodead1/fosscord-types";
-import { observable } from "mobx";
+import { action, observable } from "mobx";
+import { IAPIGetChannelMessagesResult } from "../interfaces/api";
 import { ChannelOmit } from "../interfaces/Gateway";
+import { Routes } from "../utils/Endpoints";
 import BaseStore from "./BaseStore";
+import { DomainStore } from "./DomainStore";
+import MessagesStore from "./MessagesStore";
 
-export default class ChannelStore extends BaseStore implements ChannelOmit {
+export default class ChannelStore extends BaseStore {
   id: string;
   created_at: Date;
   @observable name?: string | undefined;
   @observable icon?: string | null | undefined;
   type: ChannelType;
-  recipients?: Recipient[] | undefined;
-  last_message_id?: string | undefined;
+  @observable recipients?: Recipient[] | undefined;
+  @observable last_message_id?: string | undefined;
   guild_id?: string | undefined;
-  parent_id: string;
+  @observable parent_id: string;
   owner_id?: string | undefined;
-  last_pin_timestamp?: number | undefined;
-  default_auto_archive_duration?: number | undefined;
-  position?: number | undefined;
-  permission_overwrites?: ChannelPermissionOverwrite[] | undefined;
-  video_quality_mode?: number | undefined;
-  bitrate?: number | undefined;
-  user_limit?: number | undefined;
-  nsfw: boolean;
-  rate_limit_per_user?: number | undefined;
-  topic?: string | undefined;
-  invites?: Invite[] | undefined;
+  @observable last_pin_timestamp?: number | undefined;
+  @observable default_auto_archive_duration?: number | undefined;
+  @observable position?: number | undefined;
+  @observable permission_overwrites?: ChannelPermissionOverwrite[] | undefined;
+  @observable video_quality_mode?: number | undefined;
+  @observable bitrate?: number | undefined;
+  @observable user_limit?: number | undefined;
+  @observable nsfw: boolean;
+  @observable rate_limit_per_user?: number | undefined;
+  @observable topic?: string | undefined;
+  @observable invites?: Invite[] | undefined;
   retention_policy_id?: string | undefined;
-  messages?: Message[] | undefined;
-  voice_states?: VoiceState[] | undefined;
-  read_states?: ReadState[] | undefined;
+  @observable messages: MessagesStore = new MessagesStore();
+  @observable voice_states?: VoiceState[] | undefined;
+  @observable read_states?: ReadState[] | undefined;
   webhooks?: Webhook[] | undefined;
-  flags: number;
+  @observable flags: number;
   default_thread_rate_limit_per_user: number;
+  private hasFetchedMessages: boolean = false;
 
   constructor(data: ChannelOmit) {
     super();
@@ -68,7 +72,7 @@ export default class ChannelStore extends BaseStore implements ChannelOmit {
     this.topic = data.topic;
     this.invites = data.invites;
     this.retention_policy_id = data.retention_policy_id;
-    this.messages = data.messages;
+    if (data.messages) this.messages.addAll(data.messages);
     this.voice_states = data.voice_states;
     this.read_states = data.read_states;
     this.webhooks = data.webhooks;
@@ -82,4 +86,26 @@ export default class ChannelStore extends BaseStore implements ChannelOmit {
   // storeCreated() {
   //   this.logger.debug(`Store created for channel ${this.id}`);
   // }
+
+  @action
+  async getChannelMessages(domain: DomainStore, limit?: number) {
+    if (this.hasFetchedMessages) return;
+
+    this.logger.info(`Fetching messags for ${this.id}`);
+    const messages = await domain.rest.get<IAPIGetChannelMessagesResult>(
+      Routes.channelMessages(this.id),
+      {
+        limit: limit || 50,
+      }
+    );
+    this.messages.addAll(
+      messages.filter((x) => !this.messages.has(x.id))
+      // .sort((a, b) => {
+      //   const aTimestamp = new Date(a.timestamp as unknown as string);
+      //   const bTimestamp = new Date(b.timestamp as unknown as string);
+      //   return aTimestamp.getTime() - bTimestamp.getTime();
+      // })
+    );
+    this.hasFetchedMessages = true;
+  }
 }

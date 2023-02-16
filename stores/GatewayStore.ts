@@ -322,10 +322,10 @@ export default class GatewayStore extends BaseStore {
         ...guild.properties,
       } as unknown as Guild);
     });
-    users?.forEach((user) => this.domain.user.add(user));
+    users?.forEach((user) => this.domain.users.add(user));
 
     this.logger.debug(`Stored ${this.domain.guilds.size} guilds`);
-    this.logger.debug(`Stored ${this.domain.user.size} users`);
+    this.logger.debug(`Stored ${this.domain.users.size} users`);
 
     this.domain.setAppLoading(false);
   };
