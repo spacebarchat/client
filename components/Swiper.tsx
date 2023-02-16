@@ -37,8 +37,6 @@ interface SwiperProps {
   rightChildren?: React.ReactNode;
   rightProps?: ViewProps;
   children: React.ReactNode;
-  footerChildren?: React.ReactNode;
-  footerProps?: FooterProps & ViewProps;
   containerStyle?: ViewProps["style"];
 }
 
@@ -48,8 +46,6 @@ function Swiper({
   rightChildren,
   rightProps,
   children,
-  footerProps,
-  footerChildren,
   containerStyle,
 }: SwiperProps) {
   const { width, height } = useWindowDimensions();
@@ -72,11 +68,6 @@ function Swiper({
       useNativeDriver,
     }).start();
   };
-
-  // const bottomSheetIntropolate = footerProgress.interpolate({
-  //   inputRange: [0, 1],
-  //   outputRange: [0, height],
-  // });
 
   const renderLeftAction = (
     _: Animated.AnimatedInterpolation<string | number>,
@@ -150,21 +141,12 @@ function Swiper({
       <Swipeable
         renderLeftActions={leftChildren ? renderLeftAction : undefined}
         renderRightActions={rightChildren ? renderRightAction : undefined}
-        overshootRight={false}
-        overshootLeft={false}
         onSwipeableLeftWillOpen={bringUpActionSheet}
         onActivated={closeDownBottomSheet}
         childrenContainerStyle={{ height: "100%" }}
       >
         {children}
       </Swipeable>
-      {/* {footerChildren ? (
-        <Footer
-          {...footerProps}
-          progress={bottomSheetIntropolate}
-          children={footerChildren}
-        />
-      ) : null} */}
     </Container>
   );
 }

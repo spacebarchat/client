@@ -13,9 +13,12 @@ import {
   SectionList,
   View,
 } from "react-native";
-import { Avatar, Button, Text, useTheme } from "react-native-paper";
+import { Avatar, Text, useTheme } from "react-native-paper";
+import ChannelsSidebarMobile from "../components/ChannelsSidebarMobile";
 import Container from "../components/Container";
-import GuildListGuild from "../components/GuildListGuild";
+import GuildListGuild from "../components/GuildListGuildItem";
+import GuildSidebarMobile from "../components/GuildSidebarMobile";
+import MembersListMobile from "../components/MembersListMobile";
 import BottomTabBar from "../components/ReactNavigationBottomTabs/views/BottomTabBar";
 import Swiper from "../components/Swiper";
 import { CustomTheme } from "../constants/Colors";
@@ -209,35 +212,56 @@ const ChannelDesktop = observer(
                 data={channel.messages.asList()}
                 renderItem={({ item }) => (
                   <Container
+                    testID="messageContainer"
                     key={item.id}
-                    horizontalCenter
                     row
-                    style={{ marginHorizontal: 10, paddingVertical: 10 }}
+                    horizontalCenter
+                    style={{
+                      marginHorizontal: 10,
+                      paddingVertical: 10,
+                    }}
                   >
-                    <Avatar.Image
-                      size={32}
-                      source={{
-                        uri: item.author?.avatar
-                          ? REST.makeCDNUrl(
-                              CDNRoutes.userAvatar(
-                                item.author.id,
-                                item.author.avatar
+                    <Container testID="messageAvatarContainer">
+                      <Avatar.Image
+                        testID="messageAvatar"
+                        size={32}
+                        source={{
+                          uri: item.author?.avatar
+                            ? REST.makeCDNUrl(
+                                CDNRoutes.userAvatar(
+                                  item.author.id,
+                                  item.author.avatar
+                                )
                               )
-                            )
-                          : "https://cdn.discordapp.com" +
-                            CDNRoutes.defaultUserAvatar(
-                              (Number(item.author?.discriminator) %
-                                5) as DefaultUserAvatarAssets
-                            ),
+                            : "https://cdn.discordapp.com" +
+                              CDNRoutes.defaultUserAvatar(
+                                (Number(item.author?.discriminator) %
+                                  5) as DefaultUserAvatarAssets
+                              ),
+                        }}
+                        style={{ backgroundColor: "transparent" }}
+                      />
+                    </Container>
+                    <Container
+                      testID="messageContentContainer"
+                      style={{
+                        marginLeft: 10,
+                        flex: 1,
                       }}
-                      style={{ backgroundColor: "transparent" }}
-                    />
-                    <Container verticalCenter style={{ marginLeft: 10 }}>
-                      <Container row horizontalCenter>
-                        <Text style={{ fontWeight: "500", fontSize: 16 }}>
+                    >
+                      <Container
+                        testID="messageHeaderContainer"
+                        row
+                        horizontalCenter
+                      >
+                        <Text
+                          testID="messageHeaderAuthor"
+                          style={{ fontWeight: "500", fontSize: 16 }}
+                        >
                           {item.author?.username}
                         </Text>
                         <Text
+                          testID="messageHeaderTimestamp"
                           style={{
                             fontSize: 12,
                             fontWeight: "500",
@@ -248,7 +272,9 @@ const ChannelDesktop = observer(
                           {item.timestamp.toLocaleString()}
                         </Text>
                       </Container>
-                      <Text>{item.content}</Text>
+                      <Container testID="messageContentContainer">
+                        <Text>{item.content}</Text>
+                      </Container>
                     </Container>
                   </Container>
                 )}
@@ -383,275 +409,143 @@ function SettingsMobile({ navigation }: ChannelsStackScreenProps<"Settings">) {
   );
 }
 
-const ChannelMobile = observer(
-  ({
-    route: {
-      params: { guildId, channelId },
-    },
-    navigation,
-  }: ChannelsStackScreenProps<"Channel">) => {
-    const theme = useTheme<CustomTheme>();
-    const domain = React.useContext(DomainContext);
-    const guild = useGuild(guildId, domain);
-    const channel = useChannel(guildId, channelId, domain);
+/**
+ * Main screen rendering for mobile
+ */
+const ChannelMobile = observer((props: ChannelsStackScreenProps<"Channel">) => {
+  let { guildId, channelId } = props.route.params;
 
-    React.useEffect(() => {
-      if (!channel) return;
-      // get the first channel in the guild and update the route params
-      channelId = channel.id;
-      navigation.dispatch(CommonActions.setParams({ channelId: channel.id }));
+  const theme = useTheme<CustomTheme>();
+  const domain = React.useContext(DomainContext);
+  const guild = useGuild(guildId, domain);
+  const channel = useChannel(guildId, channelId, domain);
 
-      domain.gateway.onChannelOpen(guildId, channelId);
-    }, [channelId, channel]);
-
-    /**
-     * Constructions the Guild and Channel list for the left side of the Swipper component
-     */
-    const leftAction = (
-      <Container flexOne row>
-        <Container
-          style={{
-            width: 72,
-            backgroundColor: theme.colors.palette.backgroundPrimary40,
-          }}
-        >
-          <ScrollView>
-            <Pressable
-              onPress={() => {
-                navigation.dispatch(
-                  CommonActions.navigate("Channels", {
-                    screen: "Channel",
-                    params: { guildId: "me" },
-                  })
-                );
-              }}
-            >
-              <Avatar.Icon icon="home" size={48} />
-            </Pressable>
-
-            <Container testID="guildListGuildIconContainer">
-              {domain.guilds.asList().map((guild) => {
-                return (
-                  <GuildListGuild
-                    key={guild.id}
-                    guild={guild}
-                    onPress={() => {
-                      navigation.dispatch(
-                        CommonActions.navigate("Channels", {
-                          screen: "Channel",
-                          params: { guildId: guild.id },
-                        })
-                      );
-                    }}
-                  />
-                );
-              })}
-            </Container>
-          </ScrollView>
-        </Container>
-        <Container
-          testID="channelSidebar"
-          flexOne
-          style={{
-            backgroundColor: theme.colors.palette.backgroundPrimary70,
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-          }}
-        >
-          <Container
-            testID="channelHeader"
-            verticalCenter
-            horizontalCenter
-            style={{
-              height: 74,
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
-              backgroundColor: theme.colors.palette.backgroundPrimary70,
-            }}
-            isSurface
-            elevation={1}
-          >
-            {/* TODO: private channels  */}
-            <Text>{guild?.name}</Text>
-          </Container>
-          <Container testID="channelSidebarBody" flexOne>
-            {/* TODO: private channels  */}
-            <SectionList
-              sections={guild?.channelList ?? []}
-              keyExtractor={(item, index) => item.id + index}
-              renderItem={({ item }) => (
-                <View style={{ marginHorizontal: 10 }}>
-                  <Text>#{item.name}</Text>
-                </View>
-              )}
-              renderSectionHeader={({ section: { title } }) => {
-                if (!title) return null;
-                return (
-                  <View
-                    style={{
-                      backgroundColor: theme.colors.palette.backgroundPrimary70,
-                    }}
-                  >
-                    <Text>{title.toUpperCase()}</Text>
-                  </View>
-                );
-              }}
-              stickySectionHeadersEnabled={true}
-              contentContainerStyle={{ padding: 10 }}
-            />
-          </Container>
-        </Container>
-      </Container>
+  // handles selecting a channel and updating the url to include the channel id
+  React.useEffect(() => {
+    if (!channel) return;
+    // get the first channel in the guild and update the route params
+    channelId = channel.id;
+    props.navigation.dispatch(
+      CommonActions.setParams({ channelId: channel.id })
     );
 
-    /**
-     * Constructions the Member list component for the right side of the swiper
-     */
-    const rightAction = (
+    domain.gateway.onChannelOpen(guildId, channelId);
+
+    channel.getChannelMessages(domain, 50).catch(console.error);
+  }, [channelId, channel]);
+
+  /**
+   Constructs the Guild Sidebar and Channel list for the left side of the Swipper component
+   */
+  const leftAction = (
+    <Container flexOne row>
+      <GuildSidebarMobile {...props} />
+      <ChannelsSidebarMobile guild={guild} />
+    </Container>
+  );
+
+  /**
+   * Constructs the Member list component for the right side of the swiper
+   */
+  const rightAction = <MembersListMobile guild={guild} />;
+
+  return (
+    <Swiper
+      leftChildren={leftAction}
+      rightChildren={rightAction}
+      containerStyle={{
+        backgroundColor: theme.colors.palette.backgroundPrimary40,
+      }}
+    >
       <Container
         flexOne
         style={{
+          backgroundColor: theme.colors.palette.backgroundPrimary90,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
-          backgroundColor: theme.colors.palette.backgroundPrimary70,
         }}
       >
-        <Container
-          verticalCenter
-          horizontalCenter
-          style={{
-            height: 74,
-            padding: 10,
-          }}
-        >
-          <Text>Member List Header</Text>
-        </Container>
-        <Container
-          verticalCenter
-          style={{
-            padding: 10,
-            backgroundColor: theme.colors.palette.backgroundPrimary100,
-          }}
-        >
-          <SectionList
-            sections={guild?.memberList?.listData || []}
-            keyExtractor={(item, index) => index + item.id}
+        {!guild || !channel ? (
+          <Text>AAAA</Text>
+        ) : (
+          <FlatList
+            data={channel?.messages.asList()}
             renderItem={({ item }) => (
-              <View>
-                <Text>{item.user.username}</Text>
-              </View>
-            )}
-            renderSectionHeader={({ section: { title } }) => (
-              <View
+              <Container
+                testID="messageContainer"
+                key={item.id}
+                row
+                horizontalCenter
                 style={{
-                  backgroundColor: theme.colors.palette.backgroundPrimary100,
-                  paddingTop: 10,
+                  marginHorizontal: 10,
+                  paddingVertical: 10,
                 }}
               >
-                <Text
+                <Container testID="messageAvatarContainer">
+                  <Avatar.Image
+                    testID="messageAvatar"
+                    size={32}
+                    source={{
+                      uri: item.author?.avatar
+                        ? REST.makeCDNUrl(
+                            CDNRoutes.userAvatar(
+                              item.author.id,
+                              item.author.avatar
+                            )
+                          )
+                        : "https://cdn.discordapp.com" +
+                          CDNRoutes.defaultUserAvatar(
+                            (Number(item.author?.discriminator) %
+                              5) as DefaultUserAvatarAssets
+                          ),
+                    }}
+                    style={{ backgroundColor: "transparent" }}
+                  />
+                </Container>
+                <Container
+                  testID="messageContentContainer"
                   style={{
-                    color: theme.colors.textMuted,
+                    marginLeft: 10,
+                    flex: 1,
                   }}
                 >
-                  {title}
-                </Text>
-              </View>
-            )}
-            stickySectionHeadersEnabled={true}
-            contentContainerStyle={{ padding: 10 }}
-          />
-        </Container>
-      </Container>
-    );
-
-    return (
-      <Swiper
-        leftChildren={leftAction}
-        rightChildren={rightAction}
-        containerStyle={{
-          backgroundColor: theme.colors.palette.backgroundPrimary40,
-        }}
-      >
-        <Container
-          flexOne
-          displayFlex
-          verticalCenter
-          horizontalCenter
-          style={{
-            backgroundColor: theme.colors.palette.backgroundPrimary90,
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-          }}
-        >
-          {/* // TODO: render channel messages */}
-          {/* <FlatList
-                data={channel.messages.asList()}
-                renderItem={({ item }) => (
                   <Container
-                    key={item.id}
-                    horizontalCenter
+                    testID="messageHeaderContainer"
                     row
-                    style={{ marginHorizontal: 10, paddingVertical: 10 }}
+                    horizontalCenter
                   >
-                    <Avatar.Image
-                      size={32}
-                      source={{
-                        uri: item.author?.avatar
-                          ? REST.makeCDNUrl(
-                              CDNRoutes.userAvatar(
-                                item.author.id,
-                                item.author.avatar
-                              )
-                            )
-                          : "https://cdn.discordapp.com" +
-                            CDNRoutes.defaultUserAvatar(
-                              (Number(item.author?.discriminator) %
-                                5) as DefaultUserAvatarAssets
-                            ),
+                    <Text
+                      testID="messageHeaderAuthor"
+                      style={{ fontWeight: "500", fontSize: 16 }}
+                    >
+                      {item.author?.username}
+                    </Text>
+                    <Text
+                      testID="messageHeaderTimestamp"
+                      style={{
+                        fontSize: 12,
+                        fontWeight: "500",
+                        color: theme.colors.textMuted,
+                        marginLeft: 5,
                       }}
-                      style={{ backgroundColor: "transparent" }}
-                    />
-                    <Container verticalCenter style={{ marginLeft: 10 }}>
-                      <Container row horizontalCenter>
-                        <Text style={{ fontWeight: "500", fontSize: 16 }}>
-                          {item.author?.username}
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            fontWeight: "500",
-                            color: theme.colors.textMuted,
-                            marginLeft: 5,
-                          }}
-                        >
-                          {item.timestamp.toLocaleString()}
-                        </Text>
-                      </Container>
-                      <Text>{item.content}</Text>
-                    </Container>
+                    >
+                      {item.timestamp.toLocaleString()}
+                    </Text>
                   </Container>
-                )}
-                keyExtractor={(item) => item.id}
-                inverted={true}
-              /> */}
-          {!guild ? (
-            <Text>Guild not found</Text>
-          ) : !channel ? (
-            <Text>Channel not found</Text>
-          ) : (
-            <>
-              <Text style={{ color: "red" }}>Guild: {guildId}</Text>
-              <Text style={{ color: "red" }}>Channel: {channelId}</Text>
-              <Button mode="contained" onPress={domain.toggleDarkTheme}>
-                Theme
-              </Button>
-            </>
-          )}
-        </Container>
-      </Swiper>
-    );
-  }
-);
+                  <Container testID="messageContentContainer">
+                    <Text>{item.content}</Text>
+                  </Container>
+                </Container>
+              </Container>
+            )}
+            keyExtractor={(item) => item.id}
+            inverted={true}
+          />
+        )}
+      </Container>
+    </Swiper>
+  );
+});
 
 const ChannelsScreenMobile = observer(() => {
   const theme = useTheme<CustomTheme>();

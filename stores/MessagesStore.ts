@@ -1,5 +1,5 @@
 import { Message } from "@puyodead1/fosscord-types";
-import { action, observable, ObservableMap } from "mobx";
+import { action, makeObservable, observable, ObservableMap } from "mobx";
 import { Snowflake } from "../interfaces/common";
 import BaseStore from "./BaseStore";
 import MessageStore from "./MessageStore";
@@ -12,6 +12,8 @@ export default class MessagesStore extends BaseStore {
 
   constructor() {
     super();
+
+    makeObservable(this);
   }
 
   @action
