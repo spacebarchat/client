@@ -13,7 +13,7 @@ import {
   SectionList,
   View,
 } from "react-native";
-import { Avatar, Text, useTheme } from "react-native-paper";
+import { Avatar, Button, Text, TextInput, useTheme } from "react-native-paper";
 import ChannelsSidebarMobile from "../components/ChannelsSidebarMobile";
 import ChatMessage from "../components/ChatMessage";
 import Container from "../components/Container";
@@ -334,9 +334,14 @@ const ChannelsScreenDesktop = observer(
 );
 
 function SettingsMobile({ navigation }: ChannelsStackScreenProps<"Settings">) {
+  const domain = React.useContext(DomainContext);
+
   return (
     <Container isSafe>
       <Text>Settings</Text>
+      <Button mode="contained" onPress={domain.toggleDarkTheme}>
+        Toggle Theme
+      </Button>
     </Container>
   );
 }
@@ -351,6 +356,8 @@ const ChannelMobile = observer((props: ChannelsStackScreenProps<"Channel">) => {
   const domain = React.useContext(DomainContext);
   const guild = useGuild(guildId, domain);
   const channel = useChannel(guildId, channelId, domain);
+
+  const [message, setMessage] = React.useState("");
 
   // handles selecting a channel and updating the url to include the channel id
   React.useEffect(() => {
@@ -400,12 +407,46 @@ const ChannelMobile = observer((props: ChannelsStackScreenProps<"Channel">) => {
         {!guild || !channel ? (
           <Text>AAAA</Text>
         ) : (
-          <FlatList
-            data={channel?.messages.asList()}
-            renderItem={({ item }) => <ChatMessage message={item} />}
-            keyExtractor={(item) => item.id}
-            inverted={true}
-          />
+          <>
+            <Container
+              testID="chatHeader"
+              style={{
+                height: 48,
+                padding: 10,
+                backgroundColor: theme.colors.palette.backgroundPrimary60,
+              }}
+            >
+              <Text>#{channel?.name}</Text>
+            </Container>
+            <FlatList
+              data={channel?.messages.asList()}
+              renderItem={({ item }) => <ChatMessage message={item} />}
+              keyExtractor={(item) => item.id}
+              inverted={true}
+            />
+            <Container
+              testID="chatInput"
+              style={{
+                padding: 10,
+              }}
+            >
+              <TextInput
+                placeholder={`Message #${channel?.name}`}
+                value={message}
+                onChangeText={(message) => setMessage(message)}
+                editable
+                multiline
+                style={{
+                  backgroundColor: theme.colors.palette.backgroundPrimary60,
+                  borderTopLeftRadius: 20,
+                  borderTopRightRadius: 20,
+                  borderBottomLeftRadius: 20,
+                  borderBottomRightRadius: 20,
+                }}
+                underlineStyle={{ display: "none" }}
+              />
+            </Container>
+          </>
         )}
       </Container>
     </Swiper>

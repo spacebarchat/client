@@ -6,8 +6,8 @@ import {
   ViewProps,
 } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 import BottomTabBarProgressContext from "../contexts/BottomTabBarProgressContext";
-import Container from "./Container";
 
 const useNativeDriver = Platform.OS !== "web";
 
@@ -137,17 +137,18 @@ function Swiper({
   };
 
   return (
-    <Container isSafe style={containerStyle}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Swipeable
         renderLeftActions={leftChildren ? renderLeftAction : undefined}
         renderRightActions={rightChildren ? renderRightAction : undefined}
         onSwipeableLeftWillOpen={bringUpActionSheet}
         onActivated={closeDownBottomSheet}
-        childrenContainerStyle={{ height: "100%" }}
+        childrenContainerStyle={{ flex: 1 }}
+        containerStyle={{ flex: 1 }}
       >
         {children}
       </Swipeable>
-    </Container>
+    </SafeAreaView>
   );
 }
 
