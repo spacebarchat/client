@@ -35,7 +35,6 @@ import {
   RootStackScreenProps,
 } from "../types";
 import { Routes } from "../utils/Endpoints";
-import REST from "../utils/REST";
 
 const sectionPlaceholderData = [
   {
@@ -111,7 +110,7 @@ const ChannelDesktop = observer(
         return;
       domain.rest
         .post<RESTPostAPIChannelMessageJSONBody, any>(
-          REST.makeAPIUrl(Routes.channelMessages(channel.id)),
+          Routes.channelMessages(channel.id),
           {
             content: message,
             nonce: Date.now().toString(),
