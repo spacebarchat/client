@@ -70,6 +70,8 @@ const ChannelDesktop = observer(
     const domain = React.useContext(DomainContext);
     const guild = useGuild(guildId, domain);
     const channel = useChannel(guildId, channelId, domain);
+    console.log(guild);
+    console.log(channel);
 
     const [message, setMessage] = React.useState("");
 

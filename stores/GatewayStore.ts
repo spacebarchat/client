@@ -432,7 +432,7 @@ export default class GatewayStore extends BaseStore {
       );
       return;
     }
-    guild.channels.add(data);
+    this.domain.channels.add(data);
     guild.computeChannelList();
   };
 
@@ -447,19 +447,43 @@ export default class GatewayStore extends BaseStore {
       );
       return;
     }
-    guild.channels.remove(data.id);
+    this.domain.channels.remove(data.id);
     guild.computeChannelList();
   };
 
   private onMessageCreate = (data: GatewayMessageCreateDispatchData) => {
-    console.log(data);
+    const channel = this.domain.channels.get(data.channel_id);
+    if (!channel) {
+      this.logger.warn(
+        `[MessageCreate] Channel ${data.channel_id} not found for message ${data.id}`
+      );
+      return;
+    }
+
+    channel.messages.add(data);
   };
 
   private onMessageUpdate = (data: GatewayMessageUpdateDispatchData) => {
-    console.log(data);
+    const channel = this.domain.channels.get(data.channel_id);
+    if (!channel) {
+      this.logger.warn(
+        `[MessageCreate] Channel ${data.channel_id} not found for message ${data.id}`
+      );
+      return;
+    }
+
+    // channel.messages.update(data)
   };
 
   private onMessageDelete = (data: GatewayMessageDeleteDispatchData) => {
-    console.log(data);
+    const channel = this.domain.channels.get(data.channel_id);
+    if (!channel) {
+      this.logger.warn(
+        `[MessageCreate] Channel ${data.channel_id} not found for message ${data.id}`
+      );
+      return;
+    }
+
+    channel.messages.remove(data.id);
   };
 }

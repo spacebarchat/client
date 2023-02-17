@@ -9,6 +9,7 @@ import { localeLogger } from "../utils/i18n/locale-detector";
 import REST from "../utils/REST";
 import AccountStore from "./AccountStore";
 import BaseStore from "./BaseStore";
+import ChannelsStore from "./ChannelsStore";
 import GatewayStore from "./GatewayStore";
 import GuildsStore from "./GuildsStore";
 import UsersStore from "./UsersStore";
@@ -18,7 +19,8 @@ export class DomainStore extends BaseStore {
   @observable isDarkTheme: boolean = true;
   @observable account: AccountStore = new AccountStore();
   @observable users: UsersStore = new UsersStore();
-  @observable guilds: GuildsStore = new GuildsStore();
+  @observable guilds: GuildsStore = new GuildsStore(this);
+  @observable channels: ChannelsStore = new ChannelsStore();
   @observable gateway: GatewayStore = new GatewayStore(this);
   @observable isAppLoading: boolean = true;
   @observable isNetworkConnected: boolean | null = null;

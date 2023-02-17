@@ -19,11 +19,13 @@ import {
 } from "@puyodead1/fosscord-api-types/v9";
 import { action, makeObservable, observable } from "mobx";
 import BaseStore from "./BaseStore";
-import ChannelsStore from "./ChannelsStore";
 import ChannelStore from "./ChannelStore";
+import { DomainStore } from "./DomainStore";
 import GuildMemberListStore from "./GuildMemberListStore";
 
 export default class GuildStore extends BaseStore {
+  private readonly domain: DomainStore;
+
   id: string;
   @observable icon_hash?: string | null | undefined;
   @observable discovery_splash: string | null;
@@ -66,15 +68,16 @@ export default class GuildStore extends BaseStore {
   @observable name: string;
   @observable icon: string | null;
   @observable splash: string | null;
-  @observable channels: ChannelsStore = new ChannelsStore();
   @observable memberList: GuildMemberListStore | null = null;
+  @observable channels: Map<string, ChannelStore> = new Map();
   @observable channelList: {
     title?: string;
     data: ChannelStore[];
   }[] = [];
 
-  constructor(guild: APIGuild) {
+  constructor(domain: DomainStore, guild: APIGuild) {
     super();
+    this.domain = domain;
 
     this.id = guild.id;
     this.name = guild.name;
@@ -118,7 +121,10 @@ export default class GuildStore extends BaseStore {
     this.stickers = guild.stickers;
     this.premium_progress_bar_enabled = guild.premium_progress_bar_enabled;
     this.hub_type = guild.hub_type;
-    guild.channels.forEach((x) => this.channels.add(x as APIChannel));
+    guild.channels.forEach((x) => {
+      const c = this.domain.channels.add(x as APIChannel);
+      c && this.channels.set(c.id, c);
+    });
 
     makeObservable(this);
 
@@ -141,7 +147,7 @@ export default class GuildStore extends BaseStore {
 
   @action
   public computeChannelList() {
-    const channels = this.channels.asList();
+    const channels = this.domain.channels.getGuildChannels(this.id);
     const channelsWithoutCategory = channels.filter(
       (x) => !x.parent_id && x.type !== 4
     ); // TODO: we should be checking if its a guild channel, not just not a category

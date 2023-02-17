@@ -15,6 +15,7 @@ export default class ChannelsStore extends BaseStore {
   @action
   add(channel: APIChannel) {
     this.channels.set(channel.id, new ChannelStore(channel));
+    return this.channels.get(channel.id);
   }
 
   @action
@@ -32,6 +33,10 @@ export default class ChannelsStore extends BaseStore {
 
   asList() {
     return Array.from(this.channels.values());
+  }
+
+  getGuildChannels(guild_id: Snowflake) {
+    return this.asList().filter((channel) => channel.guild_id === guild_id);
   }
 
   get size() {

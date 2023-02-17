@@ -1,4 +1,4 @@
-import { Snowflake } from "../interfaces/common";
+import { Snowflake } from "@puyodead1/fosscord-api-types/globals";
 import ChannelStore from "../stores/ChannelStore";
 import { DomainStore } from "../stores/DomainStore";
 
@@ -10,8 +10,8 @@ function useChannel(
   const guild = domain.guilds.get(guildId);
   // get the channel by id or return the first channel in the guild
   const channel = channelId
-    ? guild?.channels.channels.get(channelId)
-    : (guild?.channels.channels.values().next().value as ChannelStore);
+    ? guild?.channels.get(channelId)
+    : (guild?.channels.values().next().value as ChannelStore);
   return channel;
 }
 

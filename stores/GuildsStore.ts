@@ -1,20 +1,23 @@
 import { APIGuild, Snowflake } from "@puyodead1/fosscord-api-types/v9";
 import { action, makeObservable, observable } from "mobx";
 import BaseStore from "./BaseStore";
+import { DomainStore } from "./DomainStore";
 import GuildStore from "./GuildStore";
 
 export default class GuildsStore extends BaseStore {
+  private readonly domain: DomainStore;
   @observable private readonly guilds = observable.map<Snowflake, GuildStore>();
 
-  constructor() {
+  constructor(domain: DomainStore) {
     super();
+    this.domain = domain;
 
     makeObservable(this);
   }
 
   @action
   add(guild: APIGuild) {
-    this.guilds.set(guild.id, new GuildStore(guild));
+    this.guilds.set(guild.id, new GuildStore(this.domain, guild));
   }
 
   @action

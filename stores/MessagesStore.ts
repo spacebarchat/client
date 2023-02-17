@@ -27,8 +27,13 @@ export default class MessagesStore extends BaseStore {
   }
 
   @action
-  remove(message: APIMessage) {
-    this.messages.delete(message.id);
+  remove(id: Snowflake) {
+    this.messages.delete(id);
+  }
+
+  @action
+  update(message: APIMessage) {
+    this.messages.get(message.id)?.update(message);
   }
 
   get(id: Snowflake) {
