@@ -35,7 +35,7 @@ jobs:
         run: expo prebuild --no-install --platform android && yarn install
 
       - name: Generate Bundle
-        run: yarn react-native bundle --dev true --platform android --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle --assets-dest ./android/app/src/main/res
+        run: mkdir android/app/src/main/assets && yarn react-native bundle --dev true --platform android --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle --assets-dest ./android/app/src/main/res
 
       - name: Setup JDK 18
         uses: actions/setup-java@v2
