@@ -29,7 +29,6 @@
     "expo-application": "~5.0.1",
     "expo-asset": "~8.7.0",
     "expo-constants": "~14.0.2",
-    "expo-dev-client": "~2.0.1",
     "expo-device": "~5.0.0",
     "expo-font": "~11.0.1",
     "expo-linking": "~3.3.0",
