@@ -241,7 +241,7 @@ const ChannelDesktop = observer(
           <Container testID="chat" displayFlex flexOne row>
             <Container testID="chatContent" displayFlex flexOne>
               <FlatList
-                data={channel.messages.asList()}
+                data={channel.messages.asList().reverse()}
                 renderItem={({ item }) => <ChatMessage message={item} />}
                 keyExtractor={(item) => item.id}
                 inverted={true}
@@ -496,7 +496,7 @@ const ChannelMobile = observer((props: ChannelsStackScreenProps<"Channel">) => {
               <Text>#{channel?.name}</Text>
             </Container>
             <FlatList
-              data={channel?.messages.asList()}
+              data={channel?.messages.asList().reverse()}
               renderItem={({ item }) => <ChatMessage message={item} />}
               keyExtractor={(item) => item.id}
               inverted={true}

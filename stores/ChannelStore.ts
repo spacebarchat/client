@@ -15,7 +15,7 @@ import BaseStore from "./BaseStore";
 import { DomainStore } from "./DomainStore";
 import MessagesStore from "./MessagesStore";
 
-export default class ChannelStore extends BaseStore  {
+export default class ChannelStore extends BaseStore {
   id: string;
   created_at: string;
   name?: string;
@@ -106,7 +106,7 @@ export default class ChannelStore extends BaseStore  {
       }
     );
     this.messages.addAll(
-      messages.filter((x) => !this.messages.has(x.id))
+      messages.filter((x) => !this.messages.has(x.id)).reverse()
       // .sort((a, b) => {
       //   const aTimestamp = new Date(a.timestamp as unknown as string);
       //   const bTimestamp = new Date(b.timestamp as unknown as string);
