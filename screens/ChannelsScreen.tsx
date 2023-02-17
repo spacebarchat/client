@@ -69,8 +69,6 @@ const ChannelDesktop = observer(
     const domain = React.useContext(DomainContext);
     const guild = useGuild(guildId, domain);
     const channel = useChannel(guildId, channelId, domain);
-    console.log(guild);
-    console.log(channel);
 
     const [message, setMessage] = React.useState("");
 
@@ -253,10 +251,13 @@ const ChannelDesktop = observer(
                   multiline
                   style={{
                     backgroundColor: theme.colors.palette.backgroundPrimary80,
-                    color: theme.colors.text,
+                    color: theme.colors.whiteBlack,
                     padding: 10,
                     borderRadius: 10,
+                    // @ts-ignore
+                    outlineStyle: "none",
                   }}
+                  placeholderTextColor={theme.colors.text}
                   spellCheck={false}
                   onKeyPress={(e) => {
                     // @ts-ignore
@@ -493,10 +494,11 @@ const ChannelMobile = observer((props: ChannelsStackScreenProps<"Channel">) => {
                 multiline
                 style={{
                   backgroundColor: theme.colors.palette.backgroundPrimary60,
-                  color: theme.colors.text,
+                  color: theme.colors.whiteBlack,
                   padding: 10,
                   borderRadius: 20,
                 }}
+                placeholderTextColor={theme.colors.text}
                 spellCheck={false}
               />
             </Container>

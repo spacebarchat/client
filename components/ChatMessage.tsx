@@ -52,7 +52,11 @@ function ChatMessage({ message }: Props) {
         <Container testID="messageHeaderContainer" row horizontalCenter>
           <Text
             testID="messageHeaderAuthor"
-            style={{ fontWeight: "500", fontSize: 16 }}
+            style={{
+              fontWeight: "500",
+              fontSize: 16,
+              color: theme.colors.whiteBlack,
+            }}
           >
             {message.author?.username}
           </Text>
@@ -61,7 +65,7 @@ function ChatMessage({ message }: Props) {
             style={{
               fontSize: 12,
               fontWeight: "500",
-              color: theme.colors.textMuted,
+              color: theme.colors.whiteBlack,
               marginLeft: 5,
             }}
           >
