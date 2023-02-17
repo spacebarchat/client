@@ -13,3 +13,8 @@ web-build/
 # macOS
 .DS_Store
 yarn-error.log
+
+# ignore prebuilds
+android/
+ios/
+metro.config.js

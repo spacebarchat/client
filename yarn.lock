@@ -1858,10 +1858,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@puyodead1/fosscord-api-types@^0.37.39":
-  version "0.37.39"
-  resolved "https://registry.yarnpkg.com/@puyodead1/fosscord-api-types/-/fosscord-api-types-0.37.39.tgz#2808b31062d5410a4a976ee3772a0b50bfbb7a58"
-  integrity sha512-hb1iBfQl0LFqF36Hpt+eth6YNzzx56TjcHyDUkCx4MBFKZ2Vs9iCzX+YEutGjQ5GUXENGhRMJvTJ22GVPLDKOw==
+"@puyodead1/fosscord-api-types@^0.37.40":
+  version "0.37.40"
+  resolved "https://registry.yarnpkg.com/@puyodead1/fosscord-api-types/-/fosscord-api-types-0.37.40.tgz#1f72a045bfbd93d4e5bedcae2432230c251e7200"
+  integrity sha512-2+fsLEjHYsP+vvw+rsbtgTArBp0vFDDR1ZM0KD1wXelNO60SjuS/lOGfcuXH+0Xk0RxN3bWv1ha0Iy4/rZaVjQ==
 
 "@react-native-async-storage/async-storage@~1.17.3":
   version "1.17.11"
@@ -3197,7 +3197,7 @@ better-opn@~3.0.2:
   dependencies:
     open "^8.0.4"
 
-big-integer@1.6.x:
+big-integer@1.6.x, big-integer@^1.6.51:
   version "1.6.51"
   resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.51.tgz#0df92a5d9880560d3ff2d5fd20245c889d130686"
   integrity sha512-GPEid2Y9QU1Exl1rpO9B2IPJGHPSupF5GnVIP0blYvNOMer2bTvSWs1jGOUg04hTmu67nmLsQ9TBo1puaotBHg==
