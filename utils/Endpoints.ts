@@ -1,4 +1,4 @@
-import { Snowflake } from "../interfaces/common";
+import { Snowflake } from "@puyodead1/fosscord-api-types/globals";
 
 export const APIVersion = "9";
 
