@@ -254,7 +254,7 @@ const ChannelDesktop = observer(
                     backgroundColor: theme.colors.palette.backgroundPrimary80,
                     color: theme.colors.text,
                     padding: 10,
-                    borderRadius: 20,
+                    borderRadius: 10,
                   }}
                   spellCheck={false}
                   onKeyPress={(e) => {
