@@ -8,14 +8,17 @@ import React from "react";
 import {
   Animated,
   FlatList,
+  GestureResponderEvent,
+  NativeSyntheticEvent,
   Platform,
   Pressable,
   ScrollView,
   SectionList,
   TextInput,
+  TextInputKeyPressEventData,
   View,
 } from "react-native";
-import { Avatar, Button, Text, useTheme } from "react-native-paper";
+import { Avatar, Button, IconButton, Text, useTheme } from "react-native-paper";
 import ChannelsSidebarMobile from "../components/ChannelsSidebarMobile";
 import ChatMessage from "../components/ChatMessage";
 import Container from "../components/Container";
@@ -102,21 +105,29 @@ const ChannelDesktop = observer(
       );
     }
 
-    const handleSendMessage = () => {
-      // check if the message is empty, contains only spaces, or contains only newlines
-      if (!message || !message.trim() || !message.replace(/\r?\n|\r/g, ""))
-        return;
-      domain.rest
-        .post<RESTPostAPIChannelMessageJSONBody, any>(
-          Routes.channelMessages(channel.id),
-          {
-            content: message,
-            nonce: Date.now().toString(),
-          }
-        )
-        .then(() => {
-          setMessage("");
-        });
+    const handleSendMessage = (
+      e: NativeSyntheticEvent<TextInputKeyPressEventData>
+    ) => {
+      // @ts-ignore
+      if (e.which === 13 && !e.shiftKey) {
+        // send message
+        e.preventDefault();
+
+        // check if the message is empty, contains only spaces, or contains only newlines
+        if (!message || !message.trim() || !message.replace(/\r?\n|\r/g, ""))
+          return;
+        domain.rest
+          .post<RESTPostAPIChannelMessageJSONBody, any>(
+            Routes.channelMessages(channel.id),
+            {
+              content: message,
+              nonce: Date.now().toString(),
+            }
+          )
+          .then(() => {
+            setMessage("");
+          });
+      }
     };
 
     return (
@@ -259,14 +270,7 @@ const ChannelDesktop = observer(
                   }}
                   placeholderTextColor={theme.colors.text}
                   spellCheck={false}
-                  onKeyPress={(e) => {
-                    // @ts-ignore
-                    if (e.which === 13 && !e.shiftKey) {
-                      // send message
-                      e.preventDefault();
-                      handleSendMessage();
-                    }
-                  }}
+                  onKeyPress={handleSendMessage}
                 />
               </Container>
             </Container>
@@ -444,6 +448,23 @@ const ChannelMobile = observer((props: ChannelsStackScreenProps<"Channel">) => {
    */
   const rightAction = <MembersListMobile guild={guild} />;
 
+  const handleSendMessage = (e: GestureResponderEvent) => {
+    // check if the message is empty, contains only spaces, or contains only newlines
+    if (!message || !message.trim() || !message.replace(/\r?\n|\r/g, ""))
+      return;
+    domain.rest
+      .post<RESTPostAPIChannelMessageJSONBody, any>(
+        Routes.channelMessages(channelId),
+        {
+          content: message,
+          nonce: Date.now().toString(),
+        }
+      )
+      .then(() => {
+        setMessage("");
+      });
+  };
+
   return (
     <Swiper
       leftChildren={leftAction}
@@ -486,21 +507,31 @@ const ChannelMobile = observer((props: ChannelsStackScreenProps<"Channel">) => {
                 padding: 10,
               }}
             >
-              <TextInput
-                placeholder={`Message #${channel?.name}`}
-                value={message}
-                onChangeText={(message) => setMessage(message)}
-                editable
-                multiline
+              <Container
+                row
+                horizontalCenter
                 style={{
                   backgroundColor: theme.colors.palette.backgroundPrimary60,
-                  color: theme.colors.whiteBlack,
-                  padding: 10,
                   borderRadius: 20,
                 }}
-                placeholderTextColor={theme.colors.text}
-                spellCheck={false}
-              />
+              >
+                <TextInput
+                  placeholder={`Message #${channel?.name}`}
+                  value={message}
+                  onChangeText={(message) => setMessage(message)}
+                  editable
+                  multiline
+                  style={{
+                    backgroundColor: "transparent",
+                    color: theme.colors.whiteBlack,
+                    padding: 10,
+                    flex: 1,
+                  }}
+                  placeholderTextColor={theme.colors.text}
+                  spellCheck={false}
+                />
+                <IconButton icon="send" size={32} onPress={handleSendMessage} />
+              </Container>
             </Container>
           </>
         )}
