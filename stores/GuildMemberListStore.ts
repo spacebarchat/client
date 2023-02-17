@@ -1,10 +1,11 @@
-import { Member } from "@puyodead1/fosscord-types";
-import { action, observable } from "mobx";
 import {
+  APIGuildMember,
   GatewayGuildMemberListUpdateDispatchData,
   GatewayGuildMemberListUpdateGroup,
   GatewayGuildMemberListUpdateOperation,
-} from "../interfaces/Gateway";
+} from "@puyodead1/fosscord-api-types/v9";
+import { action, observable } from "mobx";
+
 import BaseStore from "./BaseStore";
 
 export default class GuildMemberListStore extends BaseStore {
@@ -14,7 +15,7 @@ export default class GuildMemberListStore extends BaseStore {
   @observable online_count: number;
   @observable listData: {
     title: string;
-    data: Member[];
+    data: APIGuildMember[];
   }[] = [];
 
   constructor(data: GatewayGuildMemberListUpdateDispatchData) {
@@ -46,10 +47,12 @@ export default class GuildMemberListStore extends BaseStore {
       range: number[];
       items: (
         | { group: GatewayGuildMemberListUpdateGroup }
-        | { member: Member }
+        | { member: APIGuildMember }
       )[];
       index: number;
-      item: { group: GatewayGuildMemberListUpdateGroup } | { member: Member };
+      item:
+        | { group: GatewayGuildMemberListUpdateGroup }
+        | { member: APIGuildMember };
     }[]
   ) {
     for (const i of ops) {

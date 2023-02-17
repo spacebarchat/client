@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { RESTPostAPIChannelMessageJSONBody } from "@puyodead1/fosscord-api-types/v9";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { CommonActions } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -33,6 +34,8 @@ import {
   ChannelsStackScreenProps,
   RootStackScreenProps,
 } from "../types";
+import { Routes } from "../utils/Endpoints";
+import REST from "../utils/REST";
 
 const sectionPlaceholderData = [
   {
@@ -99,6 +102,23 @@ const ChannelDesktop = observer(
         </Container>
       );
     }
+
+    const handleSendMessage = () => {
+      // check if the message is empty, contains only spaces, or contains only newlines
+      if (!message || !message.trim() || !message.replace(/\r?\n|\r/g, ""))
+        return;
+      domain.rest
+        .post<RESTPostAPIChannelMessageJSONBody, any>(
+          REST.makeAPIUrl(Routes.channelMessages(channel.id)),
+          {
+            content: message,
+            nonce: Date.now().toString(),
+          }
+        )
+        .then(() => {
+          setMessage("");
+        });
+    };
 
     return (
       <Container verticalCenter horizontalCenter flexOne displayFlex row>
@@ -237,6 +257,14 @@ const ChannelDesktop = observer(
                     borderRadius: 20,
                   }}
                   spellCheck={false}
+                  onKeyPress={(e) => {
+                    // @ts-ignore
+                    if (e.which === 13 && !e.shiftKey) {
+                      // send message
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
                 />
               </Container>
             </Container>
@@ -250,10 +278,10 @@ const ChannelDesktop = observer(
             >
               <SectionList
                 sections={guild.memberList?.listData || []}
-                keyExtractor={(item, index) => index + item.id}
+                keyExtractor={(item, index) => index + item.user?.id!}
                 renderItem={({ item }) => (
                   <View>
-                    <Text>{item.user.username}</Text>
+                    <Text>{item.user?.username}</Text>
                   </View>
                 )}
                 renderSectionHeader={({ section: { title } }) => (

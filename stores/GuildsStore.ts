@@ -1,6 +1,5 @@
-import { Guild } from "@puyodead1/fosscord-types";
+import { APIGuild, Snowflake } from "@puyodead1/fosscord-api-types/v9";
 import { action, makeObservable, observable } from "mobx";
-import { Snowflake } from "../interfaces/common";
 import BaseStore from "./BaseStore";
 import GuildStore from "./GuildStore";
 
@@ -14,7 +13,7 @@ export default class GuildsStore extends BaseStore {
   }
 
   @action
-  add(guild: Guild) {
+  add(guild: APIGuild) {
     this.guilds.set(guild.id, new GuildStore(guild));
   }
 

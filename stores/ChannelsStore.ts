@@ -1,6 +1,5 @@
+import { APIChannel, Snowflake } from "@puyodead1/fosscord-api-types/v9";
 import { action, makeObservable, observable, ObservableMap } from "mobx";
-import { Snowflake } from "../interfaces/common";
-import { ChannelOmit } from "../interfaces/Gateway";
 import BaseStore from "./BaseStore";
 import ChannelStore from "./ChannelStore";
 
@@ -14,7 +13,7 @@ export default class ChannelsStore extends BaseStore {
   }
 
   @action
-  add(channel: ChannelOmit) {
+  add(channel: APIChannel) {
     this.channels.set(channel.id, new ChannelStore(channel));
   }
 

@@ -1,52 +1,52 @@
 import {
-  ChannelPermissionOverwrite,
+  APIChannel,
+  APIInvite,
+  APIOverwrite,
+  APIReadState,
+  APIUser,
+  APIWebhook,
   ChannelType,
-  Invite,
-  ReadState,
-  Recipient,
-  VoiceState,
-  Webhook,
-} from "@puyodead1/fosscord-types";
+  GatewayVoiceState,
+  RESTGetAPIChannelMessagesResult,
+} from "@puyodead1/fosscord-api-types/v9";
 import { action, observable } from "mobx";
-import { IAPIGetChannelMessagesResult } from "../interfaces/api";
-import { ChannelOmit } from "../interfaces/Gateway";
 import { Routes } from "../utils/Endpoints";
 import BaseStore from "./BaseStore";
 import { DomainStore } from "./DomainStore";
 import MessagesStore from "./MessagesStore";
 
-export default class ChannelStore extends BaseStore {
+export default class ChannelStore extends BaseStore  {
   id: string;
-  created_at: Date;
-  @observable name?: string | undefined;
-  @observable icon?: string | null | undefined;
+  created_at: string;
+  name?: string;
+  icon?: string | null;
   type: ChannelType;
-  @observable recipients?: Recipient[] | undefined;
-  @observable last_message_id?: string | undefined;
-  guild_id?: string | undefined;
-  @observable parent_id: string;
-  owner_id?: string | undefined;
-  @observable last_pin_timestamp?: number | undefined;
-  @observable default_auto_archive_duration?: number | undefined;
-  @observable position?: number | undefined;
-  @observable permission_overwrites?: ChannelPermissionOverwrite[] | undefined;
-  @observable video_quality_mode?: number | undefined;
-  @observable bitrate?: number | undefined;
-  @observable user_limit?: number | undefined;
-  @observable nsfw: boolean;
-  @observable rate_limit_per_user?: number | undefined;
-  @observable topic?: string | undefined;
-  @observable invites?: Invite[] | undefined;
-  retention_policy_id?: string | undefined;
-  @observable messages: MessagesStore = new MessagesStore();
-  @observable voice_states?: VoiceState[] | undefined;
-  @observable read_states?: ReadState[] | undefined;
-  webhooks?: Webhook[] | undefined;
-  @observable flags: number;
+  recipients?: APIUser[];
+  last_message_id?: string;
+  guild_id?: string;
+  parent_id: string;
+  owner_id?: string;
+  last_pin_timestamp?: number;
+  default_auto_archive_duration?: number;
+  position?: number;
+  permission_overwrites?: APIOverwrite[];
+  video_quality_mode?: number;
+  bitrate?: number;
+  user_limit?: number;
+  nsfw: boolean;
+  rate_limit_per_user?: number;
+  topic?: string;
+  invites?: APIInvite[];
+  retention_policy_id?: string;
+  voice_states?: GatewayVoiceState[];
+  read_states?: APIReadState[];
+  webhooks?: APIWebhook[];
+  flags: number;
   default_thread_rate_limit_per_user: number;
+  @observable messages: MessagesStore = new MessagesStore();
   private hasFetchedMessages: boolean = false;
 
-  constructor(data: ChannelOmit) {
+  constructor(data: APIChannel) {
     super();
     // super({ logStoreCreated: false });
 
@@ -79,6 +79,13 @@ export default class ChannelStore extends BaseStore {
     this.flags = data.flags;
     this.default_thread_rate_limit_per_user =
       data.default_thread_rate_limit_per_user;
+    // makeObservable(this, {
+    //   messages: observable,
+    //   getChannelMessages: action,
+    // });
+
+    //
+    if (data.messages) this.messages.addAll(data.messages);
 
     // this.storeCreated();
   }
@@ -92,7 +99,7 @@ export default class ChannelStore extends BaseStore {
     if (this.hasFetchedMessages) return;
 
     this.logger.info(`Fetching messags for ${this.id}`);
-    const messages = await domain.rest.get<IAPIGetChannelMessagesResult>(
+    const messages = await domain.rest.get<RESTGetAPIChannelMessagesResult>(
       Routes.channelMessages(this.id),
       {
         limit: limit || 50,

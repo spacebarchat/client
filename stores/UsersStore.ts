@@ -1,4 +1,4 @@
-import { PublicUser } from "@puyodead1/fosscord-types";
+import { APIUser } from "@puyodead1/fosscord-api-types/v9";
 import { action, makeObservable, observable } from "mobx";
 import BaseStore from "./BaseStore";
 import UserStore from "./UserStore";
@@ -13,7 +13,7 @@ export default class UsersStore extends BaseStore {
   }
 
   @action
-  add(user: PublicUser) {
+  add(user: APIUser) {
     this.users.set(user.id, new UserStore(user));
   }
 

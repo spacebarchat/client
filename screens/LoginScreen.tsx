@@ -1,4 +1,3 @@
-import { LoginSchema } from "@puyodead1/fosscord-types";
 import { Link } from "@react-navigation/native";
 import { observer } from "mobx-react";
 import React from "react";
@@ -22,7 +21,7 @@ import Container from "../components/Container";
 import HCaptcha, { HCaptchaMessage } from "../components/HCaptcha";
 import MFAInput from "../components/MFAInput";
 import useLogger from "../hooks/useLogger";
-import { IAPILoginResponse } from "../interfaces/api";
+import { IAPILoginResponse, LoginSchema } from "../interfaces/api";
 import { DomainContext } from "../stores/DomainStore";
 import { RootStackScreenProps } from "../types";
 import { Routes } from "../utils/Endpoints";

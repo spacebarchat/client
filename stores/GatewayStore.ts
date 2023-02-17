@@ -1,10 +1,6 @@
-import { Guild } from "@puyodead1/fosscord-types";
-import * as Application from "expo-application";
-import * as Device from "expo-device";
-import { action, makeObservable, observable, reaction } from "mobx";
-import { Platform } from "react-native";
-import { Snowflake } from "../interfaces/common";
 import {
+  APIGuild,
+  ChannelType,
   GatewayChannelCreateDispatchData,
   GatewayChannelDeleteDispatchData,
   GatewayDispatchEvents,
@@ -18,11 +14,19 @@ import {
   GatewayIdentify,
   GatewayLazyRequest,
   GatewayLazyRequestData,
+  GatewayMessageCreateDispatchData,
+  GatewayMessageDeleteDispatchData,
+  GatewayMessageUpdateDispatchData,
   GatewayOpcodes,
   GatewayReadyDispatchData,
   GatewayReceivePayload,
   GatewaySendPayload,
-} from "../interfaces/Gateway";
+  Snowflake,
+} from "@puyodead1/fosscord-api-types/v9";
+import * as Application from "expo-application";
+import * as Device from "expo-device";
+import { action, makeObservable, observable, reaction } from "mobx";
+import { Platform } from "react-native";
 import BaseStore from "./BaseStore";
 import { DomainStore } from "./DomainStore";
 
@@ -112,6 +116,19 @@ export default class GatewayStore extends BaseStore {
     this.dispatchHandlers.set(
       GatewayDispatchEvents.ChannelDelete,
       this.onChannelDelete
+    );
+
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.MessageCreate,
+      this.onMessageCreate
+    );
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.MessageUpdate,
+      this.onMessageUpdate
+    );
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.MessageDelete,
+      this.onMessageDelete
     );
   }
 
@@ -320,7 +337,7 @@ export default class GatewayStore extends BaseStore {
       this.domain.guilds.add({
         ...guild,
         ...guild.properties,
-      } as unknown as Guild);
+      } as unknown as APIGuild);
     });
     users?.forEach((user) => this.domain.users.add(user));
 
@@ -373,7 +390,10 @@ export default class GatewayStore extends BaseStore {
 
   private onGuildCreate = (data: GatewayGuildCreateDispatchData) => {
     this.logger.debug("Received guild create event");
-    this.domain.guilds.add({ ...data, ...data.properties } as unknown as Guild);
+    this.domain.guilds.add({
+      ...data,
+      ...data.properties,
+    } as unknown as APIGuild);
   };
 
   private onGuildUpdate = (data: GatewayGuildModifyDispatchData) => {
@@ -402,6 +422,9 @@ export default class GatewayStore extends BaseStore {
   };
 
   private onChannelCreate = (data: GatewayChannelCreateDispatchData) => {
+    if (data.type === ChannelType.DM || data.type === ChannelType.GroupDM)
+      return; // TODO: handle these
+
     const guild = this.domain.guilds.get(data.guild_id!);
     if (!guild) {
       this.logger.warn(
@@ -414,6 +437,9 @@ export default class GatewayStore extends BaseStore {
   };
 
   private onChannelDelete = (data: GatewayChannelDeleteDispatchData) => {
+    if (data.type === ChannelType.DM || data.type === ChannelType.GroupDM)
+      return; // TODO: handle these
+
     const guild = this.domain.guilds.get(data.guild_id!);
     if (!guild) {
       this.logger.warn(
@@ -423,5 +449,17 @@ export default class GatewayStore extends BaseStore {
     }
     guild.channels.remove(data.id);
     guild.computeChannelList();
+  };
+
+  private onMessageCreate = (data: GatewayMessageCreateDispatchData) => {
+    console.log(data);
+  };
+
+  private onMessageUpdate = (data: GatewayMessageUpdateDispatchData) => {
+    console.log(data);
+  };
+
+  private onMessageDelete = (data: GatewayMessageDeleteDispatchData) => {
+    console.log(data);
   };
 }

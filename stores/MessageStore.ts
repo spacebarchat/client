@@ -1,76 +1,70 @@
 import {
-  Attachment,
-  Channel,
-  Embed,
-  Guild,
-  InteractionType,
-  Message,
-  MessageComponent,
+  APIActionRowComponent,
+  APIApplication,
+  APIAttachment,
+  APIChannel,
+  APIChannelMention,
+  APIEmbed,
+  APIMessage,
+  APIMessageActionRowComponent,
+  APIMessageActivity,
+  APIMessageInteraction,
+  APIMessageReference,
+  APIReaction,
+  APISticker,
+  APIStickerItem,
+  APIUser,
+  MessageFlags,
   MessageType,
-  Reaction,
-  Role,
-  Sticker,
-  User,
-} from "@puyodead1/fosscord-types";
-import { action, observable } from "mobx";
+} from "@puyodead1/fosscord-api-types/v9";
+import { action } from "mobx";
 import BaseStore from "./BaseStore";
 
-export default class MessageStore extends BaseStore {
+export default class MessageStore extends BaseStore implements APIMessage {
   id: string;
-  channel_id?: string | undefined;
-  guild_id?: string | undefined;
-  guild?: Guild | undefined;
-  author_id?: string | undefined;
-  author?: User | undefined;
-  member_id?: string | undefined;
+  channel_id: string;
+  author: APIUser;
+  content: string;
+  timestamp: string;
+  edited_timestamp: string | null;
+  tts: boolean;
+  mention_everyone: boolean;
+  mentions: APIUser[];
+  mention_roles: string[];
+  mention_channels?: APIChannelMention[] | undefined;
+  attachments: APIAttachment[];
+  embeds: APIEmbed[];
+  reactions?: APIReaction[] | undefined;
+  nonce?: string | number | undefined;
+  pinned: boolean;
   webhook_id?: string | undefined;
-  application_id?: string | undefined;
-  @observable content?: string | undefined;
-  timestamp: Date;
-  @observable edited_timestamp?: Date | undefined;
-  tts?: boolean | undefined;
-  mention_everyone?: boolean | undefined;
-  @observable mentions: User[];
-  @observable mention_roles: Role[];
-  @observable mention_channels: Channel[];
-  @observable sticker_items?: Sticker[] | undefined;
-  @observable attachments?: Attachment[] | undefined;
-  @observable embeds: Embed[];
-  @observable reactions: Reaction[];
-  nonce?: string | undefined;
-  @observable pinned?: boolean | undefined;
   type: MessageType;
-  activity?: { type: number; party_id: string } | undefined;
-  @observable flags?: string | undefined;
-  message_reference?:
-    | {
-        message_id: string;
-        channel_id?: string | undefined;
-        guild_id?: string | undefined;
-      }
+  activity?: APIMessageActivity | undefined;
+  application?: Partial<APIApplication> | undefined;
+  application_id?: string | undefined;
+  message_reference?: APIMessageReference | undefined;
+  flags?: MessageFlags | undefined;
+  referenced_message?: APIMessage | null | undefined;
+  interaction?: APIMessageInteraction | undefined;
+  thread?: APIChannel | undefined;
+  components?:
+    | APIActionRowComponent<APIMessageActionRowComponent>[]
     | undefined;
-  interaction?:
-    | { id: string; type: InteractionType; name: string; user_id: string }
-    | undefined;
-  @observable components?: MessageComponent[] | undefined;
+  sticker_items?: APIStickerItem[] | undefined;
+  stickers?: APISticker[] | undefined;
+  position?: number | undefined;
 
-  constructor(data: Message) {
+  constructor(data: APIMessage) {
     super();
 
     this.id = data.id;
     this.channel_id = data.channel_id;
-    this.guild_id = data.guild_id;
-    this.guild = data.guild;
-    this.author_id = data.author_id;
     this.author = data.author;
-    this.member_id = data.member_id;
     this.webhook_id = data.webhook_id;
     this.application_id = data.application_id;
     this.content = data.content;
-    this.timestamp = new Date(data.timestamp as any as string);
-    this.edited_timestamp = data.edited_timestamp
-      ? new Date(data.edited_timestamp as any as string)
-      : undefined;
+    this.timestamp = data.timestamp;
+    this.edited_timestamp = data.edited_timestamp;
     this.tts = data.tts;
     this.mention_everyone = data.mention_everyone;
     this.mentions = data.mentions;
@@ -91,7 +85,7 @@ export default class MessageStore extends BaseStore {
   }
 
   @action
-  update(message: Message) {
+  update(message: APIMessage) {
     Object.assign(this, message);
   }
 }

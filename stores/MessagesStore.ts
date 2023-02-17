@@ -1,6 +1,6 @@
-import { Message } from "@puyodead1/fosscord-types";
+import { Snowflake } from "@puyodead1/fosscord-api-types/globals";
+import { APIMessage } from "@puyodead1/fosscord-api-types/v9";
 import { action, makeObservable, observable, ObservableMap } from "mobx";
-import { Snowflake } from "../interfaces/common";
 import BaseStore from "./BaseStore";
 import MessageStore from "./MessageStore";
 
@@ -17,17 +17,17 @@ export default class MessagesStore extends BaseStore {
   }
 
   @action
-  add(message: Message) {
+  add(message: APIMessage) {
     this.messages.set(message.id, new MessageStore(message));
   }
 
   @action
-  addAll(messages: Message[]) {
+  addAll(messages: APIMessage[]) {
     messages.forEach((message) => this.add(message));
   }
 
   @action
-  remove(message: Message) {
+  remove(message: APIMessage) {
     this.messages.delete(message.id);
   }
 

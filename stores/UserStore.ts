@@ -1,30 +1,36 @@
-import { PublicUser } from "@puyodead1/fosscord-types";
+import {
+  APIUser,
+  UserFlags,
+  UserPremiumType,
+} from "@puyodead1/fosscord-api-types/v9";
 import { action, makeObservable, observable } from "mobx";
 import { CDNRoutes, DefaultUserAvatarAssets } from "../utils/Endpoints";
 import REST from "../utils/REST";
 import BaseStore from "./BaseStore";
 
-export default class UserStore extends BaseStore implements PublicUser {
+export default class UserStore extends BaseStore implements APIUser {
   id: string;
   @observable username: string;
   @observable discriminator: string;
-  @observable avatar?: string | undefined;
-  @observable avatarUrl: string;
-  @observable accent_color?: number | undefined;
-  @observable banner?: string | undefined;
-  @observable theme_colors?: number[] | undefined;
+  @observable avatar: string | null;
+  bot?: boolean | undefined;
+  @observable bio?: string | undefined;
+  system?: boolean | undefined;
+  @observable mfa_enabled?: boolean | undefined;
+  @observable banner?: string | null | undefined;
+  @observable theme_colors?: number | undefined;
   @observable pronouns?: string | undefined;
-  @observable phone?: string | undefined;
-  @observable premium_type: number;
-  @observable bot: boolean;
-  @observable bio: string;
-  @observable totp_secret?: string | undefined;
-  @observable totp_last_ticket?: string | undefined;
-  @observable premium_since: Date;
-  @observable email?: string | undefined;
-  @observable public_flags: number;
+  @observable accent_color?: number | null | undefined;
+  @observable locale?: string | undefined;
+  @observable verified?: boolean | undefined;
+  @observable email?: string | null | undefined;
+  @observable flags?: UserFlags | undefined;
+  @observable premium_type?: UserPremiumType | undefined;
+  @observable premium_since?: string | undefined;
+  @observable public_flags?: UserFlags | undefined;
+  @observable avatarURL: string;
 
-  constructor(user: PublicUser) {
+  constructor(user: APIUser) {
     super();
 
     this.id = user.id;
@@ -42,11 +48,11 @@ export default class UserStore extends BaseStore implements PublicUser {
     this.public_flags = user.public_flags;
 
     if (user.avatar)
-      this.avatarUrl = REST.makeCDNUrl(
+      this.avatarURL = REST.makeCDNUrl(
         CDNRoutes.userAvatar(user.id, user.avatar)
       );
     else
-      this.avatarUrl = REST.makeCDNUrl(
+      this.avatarURL = REST.makeCDNUrl(
         CDNRoutes.defaultUserAvatar(
           (Number(user.discriminator) % 5) as any as DefaultUserAvatarAssets
         )
@@ -56,7 +62,18 @@ export default class UserStore extends BaseStore implements PublicUser {
   }
 
   @action
-  update(user: PublicUser) {
+  update(user: APIUser) {
     Object.assign(this, user);
+
+    if (user.avatar)
+      this.avatarURL = REST.makeCDNUrl(
+        CDNRoutes.userAvatar(user.id, user.avatar)
+      );
+    else
+      this.avatarURL = REST.makeCDNUrl(
+        CDNRoutes.defaultUserAvatar(
+          (Number(user.discriminator) % 5) as any as DefaultUserAvatarAssets
+        )
+      );
   }
 }
