@@ -76,3 +76,10 @@ export interface LoginSchema {
   login_source?: string;
   gift_code_sku_id?: string;
 }
+
+export interface TotpSchema {
+  code: string;
+  ticket: string;
+  gift_code_sku_id?: string | null;
+  login_source?: string | null;
+}

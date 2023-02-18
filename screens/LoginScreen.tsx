@@ -51,7 +51,6 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
 
   const hideCaptchaModal = () => setCaptchaModalVisible(false);
   const showCaptchaModal = () => setCaptchaModalVisible(true);
-  const navigateRoot = () => navigation.navigate("App");
 
   function messageFromFieldError(
     e:
@@ -239,11 +238,7 @@ function LoginScreen({ navigation }: RootStackScreenProps<"Login">) {
 
   if (shouldShowMFA && mfaTicket)
     return (
-      <MFAInput
-        close={() => setShouldShowMFA(false)}
-        mfaTicket={mfaTicket}
-        navigateRoot={navigateRoot}
-      />
+      <MFAInput close={() => setShouldShowMFA(false)} mfaTicket={mfaTicket} />
     );
 
   return (

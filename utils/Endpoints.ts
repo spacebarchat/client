@@ -75,12 +75,13 @@ export interface CDNQuery {
 }
 
 export const RouteBases = {
-  api: `https://canary.slowcord.understars.dev/api/v${APIVersion}`,
-  cdn: "https://canary.slowcord.understars.dev",
-  invite: "https://canary.slowcord.understars.dev/invite",
-  template: "https://canary.slowcord.understars.dev/template",
-  gift: "https://canary.slowcord.understars.dev/gift",
-  scheduledEvent: "https://canary.slowcord.understars.dev/events",
+  api: `https://staging.fosscord.com/api/v${APIVersion}`,
+  cdn: "https://staging.fosscord.com",
+  invite: "https://staging.fosscord.com/invite",
+  template: "https://staging.fosscord.com/template",
+  gift: "https://staging.fosscord.com/gift",
+  scheduledEvent: "https://staging.fosscord.com/events",
+  gateway: "wss://staging.fosscord.com",
 } as const;
 
 // Freeze bases object
@@ -124,7 +125,7 @@ export const CDNRoutes = {
     guildIcon: string,
     format: GuildIconFormat = ImageFormat.PNG
   ) {
-    return `icons/${guildId}/${guildIcon}.${format}` as const;
+    return `/icons/${guildId}/${guildIcon}.${format}` as const;
   },
   /**
    * Route for:

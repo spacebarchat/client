@@ -1,4 +1,4 @@
-import { TotpSchema } from "@puyodead1/fosscord-types";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
   GestureResponderEvent,
@@ -16,7 +16,7 @@ import {
   TextInput,
 } from "react-native-paper";
 import useLogger from "../hooks/useLogger";
-import { IAPIMFAResponse } from "../interfaces/api";
+import { IAPIMFAResponse, TotpSchema } from "../interfaces/api";
 import { DomainContext } from "../stores/DomainStore";
 import { Routes } from "../utils/Endpoints";
 import { t } from "../utils/i18n";
@@ -25,13 +25,13 @@ import Container from "./Container";
 interface MFAInputProps {
   close: () => void;
   mfaTicket: string;
-  navigateRoot: () => void;
 }
 
-function MFAInput({ close, mfaTicket, navigateRoot }: MFAInputProps) {
+function MFAInput({ close, mfaTicket }: MFAInputProps) {
   const dimensions = useWindowDimensions();
   const domain = React.useContext(DomainContext);
   const logger = useLogger("MFAInput");
+  const navigation = useNavigation();
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [code, setCode] = React.useState("");
@@ -64,9 +64,17 @@ function MFAInput({ close, mfaTicket, navigateRoot }: MFAInputProps) {
           logger.debug("success", res);
           domain.account.setToken(res.token);
           setIsLoading(false);
-          navigateRoot();
+          navigation.navigate("App");
           return;
         } else {
+          if (res.code === 60008) {
+            setErrors({
+              code: t("common:errors.INVALID_OTP") as string,
+            });
+            setIsLoading(false);
+            return;
+          }
+
           if ("message" in res) {
             setErrors({
               code: res.message,

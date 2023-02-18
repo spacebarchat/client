@@ -26,10 +26,8 @@ supportedLocales.forEach((locale) => {
 module.exports = { LOCALE_BASE_PATH, supportedLocales, namespaces, locales };
 `;
 
-console.log(supportedLocales);
-
 export const tryImportMomentLocale = (locale: string) => {
-  // the default is already en_US, and there is no locale file for it, so just return.
+  // the default is already en, and there is no locale file for it, so just return.
   if (locale === "en") return Promise.resolve();
 
   try {

@@ -27,6 +27,7 @@ import * as Application from "expo-application";
 import * as Device from "expo-device";
 import { action, makeObservable, observable, reaction } from "mobx";
 import { Platform } from "react-native";
+import { RouteBases } from "../utils/Endpoints";
 import BaseStore from "./BaseStore";
 import { DomainStore } from "./DomainStore";
 
@@ -57,7 +58,7 @@ export default class GatewayStore extends BaseStore {
       () => domain.account.token,
       (token) => {
         if (token) {
-          this.connect("wss://gateway.canary.slowcord.understars.dev/");
+          this.connect(RouteBases.gateway);
         } else {
           this.socket?.close(1000, "user is no longer authenticated");
         }
@@ -237,7 +238,9 @@ export default class GatewayStore extends BaseStore {
       // remove token, this will send us back to the login screen
       // TODO: maybe we could show a toast here so the user knows why they got logged out
       this.domain.account.logout();
-      return this.reset();
+      this.reset();
+      this.domain.setAppLoading(false);
+      return;
     }
 
     // TODO: reconnect
