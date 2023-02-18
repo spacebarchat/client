@@ -160,6 +160,15 @@ const ChannelDesktop = observer(
               style={{ marginVertical: 10 }}
             />
           </Container>
+          <Button
+            mode="contained"
+            buttonColor={theme.colors.error}
+            onPress={() => {
+              domain.account.logout();
+            }}
+          >
+            Logout
+          </Button>
         </Container>
       );
     }

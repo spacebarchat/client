@@ -50,11 +50,9 @@ export const RootNavigator = observer(() => {
   const unauthenticatedStack = (
     <>
       {Platform.isMobile && <Stack.Screen name="App" component={MobileRoot} />}
-      {Platform.isMobile && (
-        <Stack.Screen name="Settings" component={TempSettingsScreen} />
-      )}
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="Settings" component={TempSettingsScreen} />
     </>
   );
 

@@ -54,7 +54,7 @@ function MobileRoot({ navigation }: RootStackScreenProps<"App">) {
             style={styles.button}
             onPress={handleSettings}
           >
-            {t("root:ACTION_MOBILE_SETTINGS")}
+            Settings
           </Button>
         </Container>
       </Container>
