@@ -1,5 +1,6 @@
 export const fallback = "en";
 import preval from "preval.macro";
+import { localeLogger } from "./locale-detector";
 
 export const {
   LOCALE_BASE_PATH,
@@ -16,23 +17,28 @@ const locales = {};
 supportedLocales.forEach((locale) => {
   locales[locale] = {};
   namespaces.forEach((namespace) => {
-    locales[locale][namespace] = require(path.join(LOCALE_BASE_PATH, locale, namespace + ".json"))
+    locales[locale][namespace] = require(path.join(LOCALE_BASE_PATH, locale, namespace + ".json"));
+    try {
+      locales[locale].moment = require.resolve("moment/locale/" + locale);
+    } catch {}
   });
 });
 module.exports = { LOCALE_BASE_PATH, supportedLocales, namespaces, locales };
 `;
 
-// FIXME: android fails to import because of the expression
-// export const tryImportMomentLocale = (locale: string) => {
+console.log(supportedLocales);
 
-//   // the default is already en_US, and there is no locale file for it, so just return.
-//   if (locale === "en") return Promise.resolve();
+export const tryImportMomentLocale = (locale: string) => {
+  // the default is already en_US, and there is no locale file for it, so just return.
+  if (locale === "en") return Promise.resolve();
 
-//   try {
-//     // try to import the moment locale.
-//     return import(locales[locale].moment);
-//   } catch (e) {
-//     // fallback to the default
-//     return Promise.resolve();
-//   }
-// };
+  try {
+    // try to import the moment locale.
+    localeLogger.debug(`moment: ${locales[locale].moment}`);
+    // return import(locales[locale].moment);
+    return Promise.resolve();
+  } catch (e) {
+    // fallback to the default
+    return Promise.resolve();
+  }
+};

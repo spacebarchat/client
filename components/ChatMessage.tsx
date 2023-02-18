@@ -1,8 +1,11 @@
+import "moment-timezone";
 import React from "react";
+import Moment from "react-moment";
 import { Avatar, Text, useTheme } from "react-native-paper";
 import { CustomTheme } from "../constants/Colors";
 import MessageStore from "../stores/MessageStore";
 import { CDNRoutes, DefaultUserAvatarAssets } from "../utils/Endpoints";
+import { calendarStrings } from "../utils/i18n/date";
 import REST from "../utils/REST";
 import Container from "./Container";
 
@@ -69,7 +72,9 @@ function ChatMessage({ message }: Props) {
               marginLeft: 5,
             }}
           >
-            {message.timestamp.toLocaleString()}
+            <Moment element={Text} calendar={calendarStrings}>
+              {message.timestamp}
+            </Moment>
           </Text>
         </Container>
         <Container testID="messageContentContainer">

@@ -11,7 +11,7 @@ const languageDetector: LanguageDetectorAsyncModule = {
     const localeCode = Localization.getLocales()[0].languageCode;
     localeLogger.info(`Detected locale: ${localeCode}`);
     callback(localeCode);
-    // callback("es_ES"); // forcing a different locale, for testing
+    // callback("es"); // forcing a different locale, for testing
   },
   init: () => {},
   cacheUserLanguage: () => {},

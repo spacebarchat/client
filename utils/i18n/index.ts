@@ -32,11 +32,10 @@ const i18n = {
             if (error) {
               return reject(error);
             }
-            // date
-            //   .init(i18next.language)
-            //   .then(resolve)
-            //   .catch((error) => reject(error));
-            resolve(void 0);
+            date
+              .init(i18next.language)
+              .then(resolve)
+              .catch((error) => reject(error));
           }
         );
     });

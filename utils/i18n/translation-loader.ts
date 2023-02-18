@@ -1,5 +1,6 @@
 import { BackendModule } from "i18next";
 import * as config from "./i18n";
+import { localeLogger } from "./locale-detector";
 
 const translationLoader: BackendModule & { backendOptions: object } = {
   type: "backend",
@@ -15,8 +16,12 @@ const translationLoader: BackendModule & { backendOptions: object } = {
     let resource,
       error = null;
     try {
-      if (!(language in config.locales))
-        throw new Error(`Language ${language} not found`);
+      if (!(language in config.locales)) {
+        localeLogger.warn(
+          `Language ${language} not found, falling back to ${config.fallback}`
+        );
+        language = config.fallback;
+      }
       const locale = config.locales[language];
       if (!(namespace in locale))
         throw new Error(
