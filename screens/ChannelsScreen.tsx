@@ -47,25 +47,6 @@ import {
 } from "../types";
 import { Routes } from "../utils/Endpoints";
 
-const sectionPlaceholderData = [
-  {
-    title: "Section 1",
-    data: ["member1", "member2", "member3", "member4", "member4"],
-  },
-  {
-    title: "Section 2",
-    data: ["member1", "member2", "member3", "member4", "member4"],
-  },
-  {
-    title: "Section 3",
-    data: ["member1", "member2", "member3", "member4", "member4"],
-  },
-  {
-    title: "Section 4",
-    data: ["member1", "member2", "member3", "member4", "member4"],
-  },
-];
-
 const Stack = createNativeStackNavigator<ChannelsParamList>();
 const Tab = createBottomTabNavigator<ChannelsParamList>();
 
