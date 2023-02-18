@@ -586,7 +586,7 @@ const ChannelMobile = observer((props: ChannelsStackScreenProps<"Channel">) => {
       return;
     domain.rest
       .post<RESTPostAPIChannelMessageJSONBody, any>(
-        Routes.channelMessages(channelId),
+        Routes.channelMessages(channelId!),
         {
           content: message,
           nonce: Date.now().toString(),

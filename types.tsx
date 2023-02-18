@@ -3,9 +3,9 @@
  * https://reactnavigation.org/docs/typescript/
  */
 
+import { Snowflake } from "@puyodead1/fosscord-api-types/globals";
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Snowflake } from "./interfaces/common";
 
 declare global {
   namespace ReactNavigation {
@@ -22,6 +22,7 @@ export type RootStackParamsList = {
   Modal: undefined;
   ThemeOverview: undefined;
   NotFound: undefined;
+  Settings: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamsList> =

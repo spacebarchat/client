@@ -12,6 +12,7 @@ import LoginScreen from "../screens/LoginScreen";
 import MobileRoot from "../screens/MobileRoot";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import RegisterScreen from "../screens/RegisterScreen";
+import TempSettingsScreen from "../screens/TempSettingsScreen";
 import ThemeOverview from "../screens/ThemeOverview";
 import { DomainContext } from "../stores/DomainStore";
 import { RootStackParamsList } from "../types";
@@ -49,6 +50,9 @@ export const RootNavigator = observer(() => {
   const unauthenticatedStack = (
     <>
       {Platform.isMobile && <Stack.Screen name="App" component={MobileRoot} />}
+      {Platform.isMobile && (
+        <Stack.Screen name="Settings" component={TempSettingsScreen} />
+      )}
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
     </>

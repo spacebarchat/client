@@ -14,6 +14,10 @@ function MobileRoot({ navigation }: RootStackScreenProps<"App">) {
     navigation.navigate("Register");
   };
 
+  const handleSettings = () => {
+    navigation.navigate("Settings");
+  };
+
   return (
     <Container displayFlex flexOne isSafe style={styles.rootContainer}>
       <Container horizontalCenter style={[styles.rootContentContainer]}>
@@ -44,6 +48,13 @@ function MobileRoot({ navigation }: RootStackScreenProps<"App">) {
           </Button>
           <Button mode="contained" style={styles.button} onPress={handleLogin}>
             {t("root:ACTION_MOBILE_LOGIN")}
+          </Button>
+          <Button
+            mode="contained"
+            style={styles.button}
+            onPress={handleSettings}
+          >
+            {t("root:ACTION_MOBILE_SETTINGS")}
           </Button>
         </Container>
       </Container>
