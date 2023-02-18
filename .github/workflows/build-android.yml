@@ -1,17 +1,15 @@
 name: Build APK
 
-on:
+on:  
   push:
-    branches:
-      - '*'
+    branches: [ master ]
   pull_request:
-    branches:
-      - '*'
+    branches: [ master ]
   workflow_dispatch:
 
 jobs:
   build:
-    if: "! contains(toJSON(github.event.commits.*.message), '[ci skip]')"
+    if: "contains(toJSON(github.event.commits.*.message), '[ci]')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
