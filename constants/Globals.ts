@@ -12,13 +12,13 @@ interface RouteSettings {
 }
 
 export const DefaultRouteSettings: RouteSettings = {
-  api: `https://staging.fosscord.com/api`,
-  cdn: "https://staging.fosscord.com",
+  api: `https://api.staging.fosscord.com/api`,
+  cdn: "https://cdn.staging.fosscord.com",
   invite: "https://staging.fosscord.com/invite",
   template: "https://staging.fosscord.com/template",
   gift: "https://staging.fosscord.com/gift",
   scheduledEvent: "https://staging.fosscord.com/events",
-  gateway: "wss://staging.fosscord.com",
+  gateway: "wss://gateway.staging.fosscord.com",
 };
 
 export const Globals: {
@@ -38,11 +38,10 @@ export const Globals: {
       Globals.logger.info("Initializing Globals");
       AsyncStorage.getItem("routeSettings")
         .then((settings) => {
-          if (settings) {
-            Globals.routeSettings = JSON.parse(settings);
-            Globals.logger.info("Loaded route settings from storage");
-            resolve();
-          }
+          if (!settings) return resolve();
+          Globals.routeSettings = JSON.parse(settings);
+          Globals.logger.info("Loaded route settings from storage");
+          resolve();
         })
         .catch((e) => {
           Globals.logger.error(
