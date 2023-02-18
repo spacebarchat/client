@@ -3,6 +3,7 @@ import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useContext, useEffect, useState } from "react";
 import { I18nManager } from "react-native";
+import { Globals } from "../constants/Globals";
 import { DomainContext } from "../stores/DomainStore";
 import i18n from "../utils/i18n";
 import Logger from "../utils/Logger";
@@ -23,6 +24,9 @@ export default function useCachedResources() {
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHideAsync();
+
+        // load "constant" globals
+        await Globals.init();
 
         // initialize localization
         await i18n
@@ -74,6 +78,9 @@ export default function useCachedResources() {
           "source-code-pro-semibold": require("../assets/fonts/SourceCodePro/SourceCodePro-Semibold.otf"),
           "source-code-pro-semibold-italic": require("../assets/fonts/SourceCodePro/SourceCodePro-SemiboldIt.otf"),
         });
+
+        // load token from storage
+        domain.account.loadToken(domain);
       } catch (e) {
         // We might want to provide this error information to an error reporting service
         console.warn(e);

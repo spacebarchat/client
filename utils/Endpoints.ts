@@ -74,19 +74,6 @@ export interface CDNQuery {
   size?: number;
 }
 
-export const RouteBases = {
-  api: `https://staging.fosscord.com/api/v${APIVersion}`,
-  cdn: "https://staging.fosscord.com",
-  invite: "https://staging.fosscord.com/invite",
-  template: "https://staging.fosscord.com/template",
-  gift: "https://staging.fosscord.com/gift",
-  scheduledEvent: "https://staging.fosscord.com/events",
-  gateway: "wss://staging.fosscord.com",
-} as const;
-
-// Freeze bases object
-Object.freeze(RouteBases);
-
 export const Routes = {
   login() {
     return "/auth/login";

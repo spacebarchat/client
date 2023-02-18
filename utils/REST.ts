@@ -1,7 +1,7 @@
 import { reaction } from "mobx";
+import { Globals } from "../constants/Globals";
 import useLogger from "../hooks/useLogger";
 import { DomainStore } from "../stores/DomainStore";
-import { RouteBases } from "./Endpoints";
 
 export default class REST {
   private readonly domain: DomainStore;
@@ -37,7 +37,7 @@ export default class REST {
     path: string,
     queryParams: Record<string, any> = {}
   ) {
-    const url = new URL(`${RouteBases.api}${path}`);
+    const url = new URL(`${Globals.routeSettings.api}${path}`);
     Object.entries(queryParams).forEach(([key, value]) => {
       url.searchParams.append(key, value);
     });
@@ -48,7 +48,7 @@ export default class REST {
     path: string,
     queryParams: Record<string, any> = {}
   ) {
-    const url = new URL(`${RouteBases.cdn}${path}`);
+    const url = new URL(`${Globals.routeSettings.cdn}${path}`);
     Object.entries(queryParams).forEach(([key, value]) => {
       url.searchParams.append(key, value);
     });

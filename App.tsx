@@ -13,7 +13,6 @@ import Container from "./components/Container";
 import { CombinedDarkTheme, CombinedLightTheme } from "./constants/Colors";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
-import useLogger from "./hooks/useLogger";
 import { RootNavigator } from "./navigation";
 import linking from "./navigation/LinkingConfiguration";
 import { DomainContext } from "./stores/DomainStore";
@@ -30,7 +29,6 @@ function App() {
   )
     throw new Error("Transpiler is not configured correctly");
 
-  const logger = useLogger("App");
   // const navigationLogger = useLogger("Routing");
   const domain = React.useContext(DomainContext);
   const isLoadingComplete = useCachedResources();
@@ -39,11 +37,6 @@ function App() {
   React.useEffect(() => {
     // TODO: try to get the theme from storage
     domain.setDarkTheme(colorScheme === "dark");
-
-    // load token from storage
-    domain.account.loadToken(domain).catch((e) => {
-      logger.error(e);
-    });
   }, []);
 
   return (

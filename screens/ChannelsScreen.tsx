@@ -18,7 +18,14 @@ import {
   TextInputKeyPressEventData,
   View,
 } from "react-native";
-import { Avatar, Button, IconButton, Text, useTheme } from "react-native-paper";
+import {
+  Avatar,
+  Button,
+  IconButton,
+  Text,
+  TextInput as TextInputPaper,
+  useTheme,
+} from "react-native-paper";
 import ChannelsSidebarMobile from "../components/ChannelsSidebarMobile";
 import ChatMessage from "../components/ChatMessage";
 import Container from "../components/Container";
@@ -28,6 +35,7 @@ import MembersListMobile from "../components/MembersListMobile";
 import BottomTabBar from "../components/ReactNavigationBottomTabs/views/BottomTabBar";
 import Swiper from "../components/Swiper";
 import { CustomTheme } from "../constants/Colors";
+import { DefaultRouteSettings, Globals } from "../constants/Globals";
 import BottomTabBarProgressContext from "../contexts/BottomTabBarProgressContext";
 import useChannel from "../hooks/useChannel";
 import useGuild from "../hooks/useGuild";
@@ -72,6 +80,9 @@ const ChannelDesktop = observer(
     const domain = React.useContext(DomainContext);
     const guild = useGuild(guildId, domain);
     const channel = useChannel(guildId, channelId, domain);
+    const [routeSettings, setRouteSettings] = React.useState(
+      Globals.routeSettings
+    );
 
     const [message, setMessage] = React.useState("");
 
@@ -86,10 +97,69 @@ const ChannelDesktop = observer(
       channel.getChannelMessages(domain, 50).catch(console.error);
     }, [channelId, channel]);
 
+    const onSettingChange = (key: keyof typeof Globals.routeSettings) => {
+      return async (value: any) => {
+        setRouteSettings({ ...routeSettings, [key]: value });
+        Globals.routeSettings[key] = value;
+        await Globals.save();
+      };
+    };
+
     if (!guild) {
       return (
         <Container>
           <Text>Guild not found</Text>
+          <Container style={{ margin: 10 }}>
+            <TextInputPaper
+              label="API URL"
+              value={routeSettings.api}
+              placeholder={DefaultRouteSettings.api}
+              onChangeText={onSettingChange("api")}
+              style={{ marginVertical: 10 }}
+            />
+            <TextInputPaper
+              label="CDN URL"
+              value={routeSettings.cdn}
+              placeholder={DefaultRouteSettings.cdn}
+              onChangeText={onSettingChange("cdn")}
+              style={{ marginVertical: 10 }}
+            />
+            <TextInputPaper
+              label="Gateway URL"
+              value={routeSettings.gateway}
+              placeholder={DefaultRouteSettings.gateway}
+              onChangeText={onSettingChange("gateway")}
+              style={{ marginVertical: 10 }}
+            />
+            <TextInputPaper
+              label="Invite URL"
+              value={routeSettings.invite}
+              placeholder={DefaultRouteSettings.invite}
+              onChangeText={onSettingChange("invite")}
+              style={{ marginVertical: 10 }}
+            />
+            <TextInputPaper
+              label="Template URL"
+              value={routeSettings.template}
+              placeholder={DefaultRouteSettings.template}
+              onChangeText={onSettingChange("template")}
+              style={{ marginVertical: 10 }}
+            />
+            <TextInputPaper
+              label="Gift URL"
+              value={routeSettings.gift}
+              placeholder={DefaultRouteSettings.gift}
+              onChangeText={onSettingChange("gift")}
+              style={{ marginVertical: 10 }}
+            />
+            <TextInputPaper
+              label="Scheduled Event URL"
+              value={routeSettings.scheduledEvent}
+              placeholder={DefaultRouteSettings.scheduledEvent}
+              onChangeText={onSettingChange("scheduledEvent")}
+              style={{ marginVertical: 10 }}
+            />
+          </Container>
         </Container>
       );
     }
@@ -395,6 +465,17 @@ const ChannelsScreenDesktop = observer(
 
 function SettingsMobile({ navigation }: ChannelsStackScreenProps<"Settings">) {
   const domain = React.useContext(DomainContext);
+  const [routeSettings, setRouteSettings] = React.useState(
+    Globals.routeSettings
+  );
+
+  const onSettingChange = (key: keyof typeof Globals.routeSettings) => {
+    return async (value: any) => {
+      setRouteSettings({ ...routeSettings, [key]: value });
+      Globals.routeSettings[key] = value;
+      await Globals.save();
+    };
+  };
 
   return (
     <Container isSafe>
@@ -402,6 +483,57 @@ function SettingsMobile({ navigation }: ChannelsStackScreenProps<"Settings">) {
       <Button mode="contained" onPress={domain.toggleDarkTheme}>
         Toggle Theme
       </Button>
+      <Container style={{ margin: 10 }}>
+        <TextInputPaper
+          label="API URL"
+          value={routeSettings.api}
+          placeholder={DefaultRouteSettings.api}
+          onChangeText={onSettingChange("api")}
+          style={{ marginVertical: 10 }}
+        />
+        <TextInputPaper
+          label="CDN URL"
+          value={routeSettings.cdn}
+          placeholder={DefaultRouteSettings.cdn}
+          onChangeText={onSettingChange("cdn")}
+          style={{ marginVertical: 10 }}
+        />
+        <TextInputPaper
+          label="Gateway URL"
+          value={routeSettings.gateway}
+          placeholder={DefaultRouteSettings.gateway}
+          onChangeText={onSettingChange("gateway")}
+          style={{ marginVertical: 10 }}
+        />
+        <TextInputPaper
+          label="Invite URL"
+          value={routeSettings.invite}
+          placeholder={DefaultRouteSettings.invite}
+          onChangeText={onSettingChange("invite")}
+          style={{ marginVertical: 10 }}
+        />
+        <TextInputPaper
+          label="Template URL"
+          value={routeSettings.template}
+          placeholder={DefaultRouteSettings.template}
+          onChangeText={onSettingChange("template")}
+          style={{ marginVertical: 10 }}
+        />
+        <TextInputPaper
+          label="Gift URL"
+          value={routeSettings.gift}
+          placeholder={DefaultRouteSettings.gift}
+          onChangeText={onSettingChange("gift")}
+          style={{ marginVertical: 10 }}
+        />
+        <TextInputPaper
+          label="Scheduled Event URL"
+          value={routeSettings.scheduledEvent}
+          placeholder={DefaultRouteSettings.scheduledEvent}
+          onChangeText={onSettingChange("scheduledEvent")}
+          style={{ marginVertical: 10 }}
+        />
+      </Container>
     </Container>
   );
 }

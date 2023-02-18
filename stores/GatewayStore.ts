@@ -27,7 +27,7 @@ import * as Application from "expo-application";
 import * as Device from "expo-device";
 import { action, makeObservable, observable, reaction } from "mobx";
 import { Platform } from "react-native";
-import { RouteBases } from "../utils/Endpoints";
+import { Globals } from "../constants/Globals";
 import BaseStore from "./BaseStore";
 import { DomainStore } from "./DomainStore";
 
@@ -58,7 +58,7 @@ export default class GatewayStore extends BaseStore {
       () => domain.account.token,
       (token) => {
         if (token) {
-          this.connect(RouteBases.gateway);
+          this.connect(Globals.routeSettings.gateway);
         } else {
           this.socket?.close(1000, "user is no longer authenticated");
         }
