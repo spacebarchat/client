@@ -128,9 +128,9 @@ export const CDNRoutes = {
   },
   /**
    * Route for:
-   * - GET `/embed/avatars/{user.discriminator % 5}.png`
+   * - GET `/embed/avatars/{user.discriminator % 6}.png`
    *
-   * The `userDiscriminator` parameter should be the user discriminator modulo 5 (e.g. 1337 % 5 = 2)
+   * The `userDiscriminator` parameter should be the user discriminator modulo 5 (e.g. 1337 % 6 = 5)
    *
    * This route supports the extension: PNG
    */

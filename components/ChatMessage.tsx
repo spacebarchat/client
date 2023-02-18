@@ -36,10 +36,11 @@ function ChatMessage({ message }: Props) {
               ? REST.makeCDNUrl(
                   CDNRoutes.userAvatar(message.author.id, message.author.avatar)
                 )
-              : "https://cdn.discordapp.com" +
-                CDNRoutes.defaultUserAvatar(
-                  (Number(message.author?.discriminator) %
-                    5) as DefaultUserAvatarAssets
+              : REST.makeCDNUrl(
+                  CDNRoutes.defaultUserAvatar(
+                    (Number(message.author?.discriminator) %
+                      6) as DefaultUserAvatarAssets
+                  )
                 ),
           }}
           style={{ backgroundColor: "transparent" }}

@@ -54,7 +54,7 @@ export default class UserStore extends BaseStore implements APIUser {
     else
       this.avatarURL = REST.makeCDNUrl(
         CDNRoutes.defaultUserAvatar(
-          (Number(user.discriminator) % 5) as any as DefaultUserAvatarAssets
+          (Number(user.discriminator) % 6) as any as DefaultUserAvatarAssets
         )
       );
 
@@ -72,7 +72,7 @@ export default class UserStore extends BaseStore implements APIUser {
     else
       this.avatarURL = REST.makeCDNUrl(
         CDNRoutes.defaultUserAvatar(
-          (Number(user.discriminator) % 5) as any as DefaultUserAvatarAssets
+          (Number(user.discriminator) % 6) as any as DefaultUserAvatarAssets
         )
       );
   }
