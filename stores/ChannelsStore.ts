@@ -32,7 +32,9 @@ export default class ChannelsStore extends BaseStore {
   }
 
   asList() {
-    return Array.from(this.channels.values());
+    return Array.from(this.channels.values()).sort(
+      (a, b) => a.position - b.position
+    );
   }
 
   getGuildChannels(guild_id: Snowflake) {

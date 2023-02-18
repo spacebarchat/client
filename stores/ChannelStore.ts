@@ -7,7 +7,7 @@ import {
   APIWebhook,
   ChannelType,
   GatewayVoiceState,
-  RESTGetAPIChannelMessagesResult,
+  RESTGetAPIChannelMessagesResult
 } from "@puyodead1/fosscord-api-types/v9";
 import { action, observable } from "mobx";
 import { Routes } from "../utils/Endpoints";
@@ -28,7 +28,7 @@ export default class ChannelStore extends BaseStore {
   owner_id?: string;
   last_pin_timestamp?: number;
   default_auto_archive_duration?: number;
-  position?: number;
+  position: number;
   permission_overwrites?: APIOverwrite[];
   video_quality_mode?: number;
   bitrate?: number;
@@ -62,7 +62,7 @@ export default class ChannelStore extends BaseStore {
     this.owner_id = data.owner_id;
     this.last_pin_timestamp = data.last_pin_timestamp;
     this.default_auto_archive_duration = data.default_auto_archive_duration;
-    this.position = data.position;
+    this.position = data.position ?? 0;
     this.permission_overwrites = data.permission_overwrites;
     this.video_quality_mode = data.video_quality_mode;
     this.bitrate = data.bitrate;

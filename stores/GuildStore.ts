@@ -121,10 +121,13 @@ export default class GuildStore extends BaseStore {
     this.stickers = guild.stickers;
     this.premium_progress_bar_enabled = guild.premium_progress_bar_enabled;
     this.hub_type = guild.hub_type;
-    guild.channels.forEach((x) => {
-      const c = this.domain.channels.add(x as APIChannel);
-      c && this.channels.set(c.id, c);
-    });
+    if (guild.channels)
+      guild.channels
+        .sort((a, b) => a.position - b.position)
+        .forEach((x) => {
+          const c = this.domain.channels.add(x as APIChannel);
+          c && this.channels.set(c.id, c);
+        });
 
     makeObservable(this);
 
