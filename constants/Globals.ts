@@ -12,7 +12,7 @@ interface RouteSettings {
 }
 
 export const DefaultRouteSettings: RouteSettings = {
-  api: `https://api.staging.fosscord.com/api`,
+  api: `https://staging.fosscord.com/api`,
   cdn: "https://cdn.staging.fosscord.com",
   invite: "https://staging.fosscord.com/invite",
   template: "https://staging.fosscord.com/template",
