@@ -220,9 +220,23 @@ const ChannelDesktop = observer(
                   sections={guild.channelList}
                   keyExtractor={(item, index) => item.id + index}
                   renderItem={({ item }) => (
-                    <View style={{ marginHorizontal: 10 }}>
-                      <Text>#{item.name}</Text>
-                    </View>
+                    <Container
+                      row
+                      horizontalCenter
+                      style={{ marginHorizontal: 10 }}
+                    >
+                      {item.channelIcon && (
+                        <MaterialCommunityIcons
+                          name={item.channelIcon! as any}
+                          size={16}
+                          color={theme.colors.textMuted}
+                          style={{ marginRight: 5 }}
+                        />
+                      )}
+                      <Text style={{ color: theme.colors.textMuted }}>
+                        {item.name}
+                      </Text>
+                    </Container>
                   )}
                   renderSectionHeader={({ section: { title } }) => {
                     if (!title) return null;

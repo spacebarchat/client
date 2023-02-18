@@ -7,7 +7,7 @@ import {
   APIWebhook,
   ChannelType,
   GatewayVoiceState,
-  RESTGetAPIChannelMessagesResult
+  RESTGetAPIChannelMessagesResult,
 } from "@puyodead1/fosscord-api-types/v9";
 import { action, observable } from "mobx";
 import { Routes } from "../utils/Endpoints";
@@ -17,38 +17,39 @@ import MessagesStore from "./MessagesStore";
 
 export default class ChannelStore extends BaseStore {
   id: string;
-  created_at: string;
-  name?: string;
-  icon?: string | null;
+  @observable created_at: string;
+  @observable name?: string;
+  @observable icon?: string | null;
   type: ChannelType;
-  recipients?: APIUser[];
-  last_message_id?: string;
-  guild_id?: string;
-  parent_id: string;
-  owner_id?: string;
-  last_pin_timestamp?: number;
-  default_auto_archive_duration?: number;
-  position: number;
-  permission_overwrites?: APIOverwrite[];
-  video_quality_mode?: number;
-  bitrate?: number;
-  user_limit?: number;
-  nsfw: boolean;
-  rate_limit_per_user?: number;
-  topic?: string;
-  invites?: APIInvite[];
-  retention_policy_id?: string;
-  voice_states?: GatewayVoiceState[];
-  read_states?: APIReadState[];
-  webhooks?: APIWebhook[];
-  flags: number;
-  default_thread_rate_limit_per_user: number;
+  @observable recipients?: APIUser[];
+  @observable last_message_id?: string;
+  @observable guild_id?: string;
+  @observable parent_id: string;
+  @observable owner_id?: string;
+  @observable last_pin_timestamp?: number;
+  @observable default_auto_archive_duration?: number;
+  @observable position: number;
+  @observable permission_overwrites?: APIOverwrite[];
+  @observable video_quality_mode?: number;
+  @observable bitrate?: number;
+  @observable user_limit?: number;
+  @observable nsfw: boolean;
+  @observable rate_limit_per_user?: number;
+  @observable topic?: string;
+  @observable invites?: APIInvite[];
+  @observable retention_policy_id?: string;
+  @observable voice_states?: GatewayVoiceState[];
+  @observable read_states?: APIReadState[];
+  @observable webhooks?: APIWebhook[];
+  @observable flags: number;
+  @observable default_thread_rate_limit_per_user: number;
+  @observable channelIcon?: string;
+
   @observable messages: MessagesStore = new MessagesStore();
   private hasFetchedMessages: boolean = false;
 
   constructor(data: APIChannel) {
     super();
-    // super({ logStoreCreated: false });
 
     this.id = data.id;
     this.created_at = data.created_at;
@@ -79,20 +80,49 @@ export default class ChannelStore extends BaseStore {
     this.flags = data.flags;
     this.default_thread_rate_limit_per_user =
       data.default_thread_rate_limit_per_user;
-    // makeObservable(this, {
-    //   messages: observable,
-    //   getChannelMessages: action,
-    // });
 
-    //
+    switch (this.type) {
+      case ChannelType.GuildText:
+        this.channelIcon = "pound";
+        break;
+      case ChannelType.GuildVoice:
+        this.channelIcon = "volume-high";
+        break;
+      case ChannelType.GuildAnnouncement:
+      case ChannelType.AnnouncementThread:
+        this.channelIcon = "bullhorn-variant";
+        break;
+      case ChannelType.GuildStore:
+      case ChannelType.Transactional:
+        this.channelIcon = "tag";
+        break;
+      case ChannelType.Encrypted:
+      case ChannelType.EncryptedThread:
+        this.channelIcon = "message-lock";
+        break;
+      case ChannelType.PublicThread:
+      case ChannelType.PrivateThread:
+        this.channelIcon = "comment-text-multiple";
+        break;
+      case ChannelType.GuildStageVoice:
+        this.channelIcon = "broadcast";
+        break;
+      case ChannelType.GuildForum:
+        this.channelIcon = "forum";
+        break;
+      case ChannelType.TicketTracker:
+        this.channelIcon = "ticket-outline";
+        break;
+      case ChannelType.KanBan:
+        this.channelIcon = "developer-board";
+        break;
+      case ChannelType.VoicelessWhiteboard:
+        this.channelIcon = "draw";
+        break;
+    }
+
     if (data.messages) this.messages.addAll(data.messages);
-
-    // this.storeCreated();
   }
-
-  // storeCreated() {
-  //   this.logger.debug(`Store created for channel ${this.id}`);
-  // }
 
   @action
   async getChannelMessages(domain: DomainStore, limit?: number) {
