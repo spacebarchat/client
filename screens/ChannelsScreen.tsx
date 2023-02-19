@@ -47,6 +47,7 @@ const ChannelDesktop = observer(
 		const domain = React.useContext(DomainContext);
 		const guild = useGuild(guildId, domain);
 		const channel = useChannel(guildId, channelId, domain);
+		const [isLoading, setLoading] = React.useState(false);
 		const [routeSettings, setRouteSettings] = React.useState(
 			Globals.routeSettings,
 		);
@@ -57,6 +58,14 @@ const ChannelDesktop = observer(
 				Globals.routeSettings[key] = value;
 				await Globals.save();
 			};
+		};
+
+		const reset = async () => {
+			setLoading(true);
+			setRouteSettings(DefaultRouteSettings);
+			Globals.routeSettings = DefaultRouteSettings;
+			await Globals.save();
+			setLoading(false);
 		};
 
 		if (!guild) {
@@ -114,6 +123,9 @@ const ChannelDesktop = observer(
 							style={{ marginVertical: 10 }}
 						/>
 					</Container>
+					<Button onPress={reset} loading={isLoading}>
+						Reset route settings to default
+					</Button>
 					<Button
 						mode="contained"
 						buttonColor={theme.colors.error}
