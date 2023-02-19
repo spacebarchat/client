@@ -1,6 +1,7 @@
 import { observer } from "mobx-react";
 import React from "react";
 import { Button, Text, TextInput } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Container from "../../../components/Container";
 import { DefaultRouteSettings, Globals } from "../../../constants/Globals";
 import { DomainContext } from "../../../stores/DomainStore";
@@ -21,7 +22,7 @@ function Settings({ navigation }: ChannelsStackScreenProps<"Settings">) {
 	};
 
 	return (
-		<Container isSafe>
+		<Container element={SafeAreaView}>
 			<Text>Settings</Text>
 			<Button mode="contained" onPress={domain.toggleDarkTheme}>
 				Toggle Theme

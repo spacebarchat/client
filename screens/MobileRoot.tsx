@@ -2,6 +2,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Button, Text } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Container from "../components/Container";
 import { RootStackScreenProps } from "../types";
 import { t } from "../utils/i18n";
@@ -20,7 +21,12 @@ function MobileRoot({ navigation }: RootStackScreenProps<"App">) {
 	};
 
 	return (
-		<Container displayFlex flexOne isSafe style={styles.rootContainer}>
+		<Container
+			displayFlex
+			flexOne
+			style={styles.rootContainer}
+			element={SafeAreaView}
+		>
 			<Container horizontalCenter style={[styles.rootContentContainer]}>
 				{/* Header, Branding */}
 				<Container horizontalCenter style={styles.headingContainer}>
