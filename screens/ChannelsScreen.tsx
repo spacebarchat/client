@@ -215,7 +215,7 @@ const ChannelDesktop = observer(
               <Text>{guild.name}</Text>
             </Container>
             <Container displayFlex flexOne>
-              <ScrollView style={{ padding: 10 }}>
+              <ScrollView>
                 <SectionList
                   sections={guild.channelList}
                   keyExtractor={(item, index) => item.id + index}
@@ -223,7 +223,7 @@ const ChannelDesktop = observer(
                     <Container
                       row
                       horizontalCenter
-                      style={{ marginHorizontal: 10 }}
+                      style={{ marginHorizontal: 10, padding: 2 }}
                     >
                       {item.channelIcon && (
                         <MaterialCommunityIcons
@@ -233,7 +233,10 @@ const ChannelDesktop = observer(
                           style={{ marginRight: 5 }}
                         />
                       )}
-                      <Text style={{ color: theme.colors.textMuted }}>
+                      <Text
+                        variant="bodyMedium"
+                        style={{ color: theme.colors.textMuted }}
+                      >
                         {item.name}
                       </Text>
                     </Container>
@@ -245,6 +248,7 @@ const ChannelDesktop = observer(
                         style={{
                           backgroundColor:
                             theme.colors.palette.backgroundPrimary70,
+                          marginTop: 20,
                         }}
                       >
                         <Text>{title.toUpperCase()}</Text>
