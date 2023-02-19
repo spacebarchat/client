@@ -15,7 +15,9 @@ import BaseStore from "./BaseStore";
 import { DomainStore } from "./DomainStore";
 import MessagesStore from "./MessagesStore";
 
-export default class ChannelStore extends BaseStore {
+export default class Channel extends BaseStore {
+  private readonly domain: DomainStore;
+
   id: string;
   @observable created_at: string;
   @observable name?: string;
@@ -45,11 +47,13 @@ export default class ChannelStore extends BaseStore {
   @observable default_thread_rate_limit_per_user: number;
   @observable channelIcon?: string;
 
-  @observable messages: MessagesStore = new MessagesStore();
+  @observable messages: MessagesStore;
   private hasFetchedMessages: boolean = false;
 
-  constructor(data: APIChannel) {
+  constructor(domain: DomainStore, data: APIChannel) {
     super();
+    this.domain = domain;
+    this.messages = new MessagesStore(domain);
 
     this.id = data.id;
     this.created_at = data.created_at;

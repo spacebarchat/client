@@ -2,7 +2,7 @@ import { APIGuild, Snowflake } from "@puyodead1/fosscord-api-types/v9";
 import { action, makeObservable, observable } from "mobx";
 import BaseStore from "./BaseStore";
 import { DomainStore } from "./DomainStore";
-import GuildStore from "./GuildStore";
+import GuildStore from "./Guild";
 
 export default class GuildsStore extends BaseStore {
   private readonly domain: DomainStore;

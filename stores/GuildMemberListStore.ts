@@ -7,9 +7,11 @@ import {
 import { action, observable } from "mobx";
 
 import BaseStore from "./BaseStore";
+import Guild from "./Guild";
 
 export default class GuildMemberListStore extends BaseStore {
   id: string;
+  private readonly guild: Guild;
   @observable groups: GatewayGuildMemberListUpdateGroup[] = [];
   @observable member_count: number;
   @observable online_count: number;
@@ -18,8 +20,9 @@ export default class GuildMemberListStore extends BaseStore {
     data: APIGuildMember[];
   }[] = [];
 
-  constructor(data: GatewayGuildMemberListUpdateDispatchData) {
+  constructor(guild: Guild, data: GatewayGuildMemberListUpdateDispatchData) {
     super();
+    this.guild = guild;
 
     const { groups, id, member_count, online_count, ops } = data;
 
@@ -59,17 +62,43 @@ export default class GuildMemberListStore extends BaseStore {
       const { op, items, range, item, index } = i;
       switch (op) {
         case GatewayGuildMemberListUpdateOperation.SYNC:
-          this.listData = [];
+          let listData: {
+            title: string;
+            data: APIGuildMember[];
+          }[] = [];
+
           for (const item of items) {
             if ("group" in item) {
-              this.listData.push({
-                title: item.group.id,
+              const role = this.guild.roles.get(item.group.id);
+
+              listData.push({
+                title: `${(role?.name ?? item.group.id).toUpperCase()}`,
                 data: [],
               });
             } else {
-              this.listData[this.listData.length - 1].data.push(item.member);
+              listData[listData.length - 1].data.push(item.member);
             }
           }
+
+          // remove empty groups
+          listData = listData.filter((i) => i.data.length > 0);
+          // add the number of members in each group to the group name
+          listData = listData.map((i) => ({
+            ...i,
+            title: `${i.title} - ${i.data.length}`,
+          }));
+
+          // hide offline group if it has more than 100 members
+          listData = listData.filter(
+            (i) =>
+              !(
+                i.title.toLowerCase().startsWith("offline") &&
+                i.data.length >= 100
+              )
+          );
+
+          this.listData = listData;
+
           break;
         case GatewayGuildMemberListUpdateOperation.DELETE:
           //   for (const item of items) {

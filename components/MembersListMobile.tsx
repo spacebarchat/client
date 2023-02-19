@@ -3,7 +3,7 @@ import React from "react";
 import { SectionList, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { CustomTheme } from "../constants/Colors";
-import GuildStore from "../stores/GuildStore";
+import GuildStore from "../stores/Guild";
 import Container from "./Container";
 
 interface Props {
@@ -46,10 +46,10 @@ function MembersListMobile({ guild }: Props) {
         <SectionList
           testID="memberListList"
           sections={guild?.memberList?.listData || []}
-          keyExtractor={(item, index) => index + item.id}
+          keyExtractor={(item, index) => index + item.user!.id}
           renderItem={({ item }) => (
             <View>
-              <Text>{item.user.username}</Text>
+              <Text>{item.user?.username}</Text>
             </View>
           )}
           renderSectionHeader={({ section: { title } }) => (

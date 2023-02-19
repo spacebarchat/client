@@ -7,8 +7,11 @@ import { action, makeObservable, observable } from "mobx";
 import { CDNRoutes, DefaultUserAvatarAssets } from "../utils/Endpoints";
 import REST from "../utils/REST";
 import BaseStore from "./BaseStore";
+import { DomainStore } from "./DomainStore";
 
-export default class UserStore extends BaseStore implements APIUser {
+export default class User extends BaseStore implements APIUser {
+  private readonly domain: DomainStore;
+
   id: string;
   @observable username: string;
   @observable discriminator: string;
@@ -30,8 +33,9 @@ export default class UserStore extends BaseStore implements APIUser {
   @observable public_flags?: UserFlags | undefined;
   @observable avatarURL: string;
 
-  constructor(user: APIUser) {
+  constructor(domain: DomainStore, user: APIUser) {
     super();
+    this.domain = domain;
 
     this.id = user.id;
     this.username = user.username;

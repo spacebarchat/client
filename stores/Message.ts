@@ -1,6 +1,5 @@
 import {
   APIActionRowComponent,
-  APIApplication,
   APIAttachment,
   APIChannel,
   APIChannelMention,
@@ -17,45 +16,48 @@ import {
   MessageFlags,
   MessageType,
 } from "@puyodead1/fosscord-api-types/v9";
-import { action } from "mobx";
+import { action, observable } from "mobx";
 import BaseStore from "./BaseStore";
+import { DomainStore } from "./DomainStore";
 
-export default class MessageStore extends BaseStore implements APIMessage {
+export default class Message extends BaseStore implements APIMessage {
+  private readonly domain: DomainStore;
+
   id: string;
   channel_id: string;
   author: APIUser;
-  content: string;
+  @observable content: string;
   timestamp: string;
-  edited_timestamp: string | null;
+  @observable edited_timestamp: string | null;
   tts: boolean;
   mention_everyone: boolean;
-  mentions: APIUser[];
-  mention_roles: string[];
-  mention_channels?: APIChannelMention[] | undefined;
-  attachments: APIAttachment[];
-  embeds: APIEmbed[];
-  reactions?: APIReaction[] | undefined;
+  @observable mentions: APIUser[];
+  @observable mention_roles: string[];
+  @observable mention_channels?: APIChannelMention[] | undefined;
+  @observable attachments: APIAttachment[];
+  @observable embeds: APIEmbed[];
+  @observable reactions?: APIReaction[] | undefined;
   nonce?: string | number | undefined;
-  pinned: boolean;
-  webhook_id?: string | undefined;
+  @observable pinned: boolean;
+  @observable webhook_id?: string | undefined;
   type: MessageType;
-  activity?: APIMessageActivity | undefined;
-  application?: Partial<APIApplication> | undefined;
+  @observable activity?: APIMessageActivity | undefined;
   application_id?: string | undefined;
   message_reference?: APIMessageReference | undefined;
-  flags?: MessageFlags | undefined;
+  @observable flags?: MessageFlags | undefined;
   referenced_message?: APIMessage | null | undefined;
-  interaction?: APIMessageInteraction | undefined;
-  thread?: APIChannel | undefined;
-  components?:
+  @observable interaction?: APIMessageInteraction | undefined;
+  @observable thread?: APIChannel | undefined;
+  @observable components?:
     | APIActionRowComponent<APIMessageActionRowComponent>[]
     | undefined;
-  sticker_items?: APIStickerItem[] | undefined;
-  stickers?: APISticker[] | undefined;
-  position?: number | undefined;
+  @observable sticker_items?: APIStickerItem[] | undefined;
+  @observable stickers?: APISticker[] | undefined;
+  @observable position?: number | undefined;
 
-  constructor(data: APIMessage) {
+  constructor(domain: DomainStore, data: APIMessage) {
     super();
+    this.domain = domain;
 
     this.id = data.id;
     this.channel_id = data.channel_id;

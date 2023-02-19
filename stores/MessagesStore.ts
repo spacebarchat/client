@@ -2,23 +2,26 @@ import { Snowflake } from "@puyodead1/fosscord-api-types/globals";
 import { APIMessage } from "@puyodead1/fosscord-api-types/v9";
 import { action, makeObservable, observable, ObservableMap } from "mobx";
 import BaseStore from "./BaseStore";
-import MessageStore from "./MessageStore";
+import { DomainStore } from "./DomainStore";
+import MessageStore from "./Message";
 
 export default class MessagesStore extends BaseStore {
+  private readonly domain: DomainStore;
   @observable private readonly messages = new ObservableMap<
     Snowflake,
     MessageStore
   >();
 
-  constructor() {
+  constructor(domain: DomainStore) {
     super();
+    this.domain = domain;
 
     makeObservable(this);
   }
 
   @action
   add(message: APIMessage) {
-    this.messages.set(message.id, new MessageStore(message));
+    this.messages.set(message.id, new MessageStore(this.domain, message));
   }
 
   @action

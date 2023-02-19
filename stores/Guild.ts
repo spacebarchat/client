@@ -3,8 +3,8 @@ import {
   APIEmoji,
   APIGuild,
   APIGuildWelcomeScreen,
-  APIRole,
   APISticker,
+  ChannelType,
   GatewayGuildMemberListUpdateDispatchData,
   GatewayGuildModifyDispatchData,
   GuildDefaultMessageNotifications,
@@ -19,11 +19,13 @@ import {
 } from "@puyodead1/fosscord-api-types/v9";
 import { action, makeObservable, observable } from "mobx";
 import BaseStore from "./BaseStore";
-import ChannelStore from "./ChannelStore";
+import ChannelStore from "./Channel";
 import { DomainStore } from "./DomainStore";
 import GuildMemberListStore from "./GuildMemberListStore";
+import GuildMembersStore from "./GuildMembersStore";
+import RolesStore from "./RolesStore";
 
-export default class GuildStore extends BaseStore {
+export default class Guild extends BaseStore {
   private readonly domain: DomainStore;
 
   id: string;
@@ -40,7 +42,7 @@ export default class GuildStore extends BaseStore {
   @observable verification_level: GuildVerificationLevel;
   @observable default_message_notifications: GuildDefaultMessageNotifications;
   @observable explicit_content_filter: GuildExplicitContentFilter;
-  @observable roles: APIRole[];
+  @observable roles: RolesStore;
   @observable emojis: APIEmoji[];
   @observable features: GuildFeature[];
   @observable mfa_level: GuildMFALevel;
@@ -70,14 +72,13 @@ export default class GuildStore extends BaseStore {
   @observable splash: string | null;
   @observable memberList: GuildMemberListStore | null = null;
   @observable channels: Map<string, ChannelStore> = new Map();
-  @observable channelList: {
-    title?: string;
-    data: ChannelStore[];
-  }[] = [];
+  @observable members: GuildMembersStore;
 
   constructor(domain: DomainStore, guild: APIGuild) {
     super();
     this.domain = domain;
+    this.roles = new RolesStore(domain);
+    this.members = new GuildMembersStore(domain);
 
     this.id = guild.id;
     this.name = guild.name;
@@ -96,7 +97,7 @@ export default class GuildStore extends BaseStore {
     this.verification_level = guild.verification_level;
     this.default_message_notifications = guild.default_message_notifications;
     this.explicit_content_filter = guild.explicit_content_filter;
-    this.roles = guild.roles;
+    this.roles.addAll(guild.roles);
     this.emojis = guild.emojis;
     this.features = guild.features;
     this.mfa_level = guild.mfa_level;
@@ -121,6 +122,7 @@ export default class GuildStore extends BaseStore {
     this.stickers = guild.stickers;
     this.premium_progress_bar_enabled = guild.premium_progress_bar_enabled;
     this.hub_type = guild.hub_type;
+
     if (guild.channels)
       guild.channels
         .sort((a, b) => a.position - b.position)
@@ -130,8 +132,6 @@ export default class GuildStore extends BaseStore {
         });
 
     makeObservable(this);
-
-    this.computeChannelList();
   }
 
   @action
@@ -144,19 +144,21 @@ export default class GuildStore extends BaseStore {
     if (this.memberList) {
       this.memberList.update(data);
     } else {
-      this.memberList = new GuildMemberListStore(data);
+      this.memberList = new GuildMemberListStore(this, data);
     }
   }
 
-  @action
-  public computeChannelList() {
+  get channelList(): {
+    title?: string;
+    data: ChannelStore[];
+  }[] {
     const channels = this.domain.channels.getGuildChannels(this.id);
     const channelsWithoutCategory = channels.filter(
-      (x) => !x.parent_id && x.type !== 4
+      (x) => !x.parent_id && x.type !== ChannelType.GuildCategory
     ); // TODO: we should be checking if its a guild channel, not just not a category
 
     const mapped = channels
-      .filter((x) => x.type === 4) // FIXME: cant resolve @puyodead1/fosscord-types??
+      .filter((x) => x.type === ChannelType.GuildCategory)
       .map((category) => {
         const channelsInCategory = channels.filter(
           (channel) => channel.parent_id === category.id
@@ -167,6 +169,6 @@ export default class GuildStore extends BaseStore {
         };
       });
 
-    this.channelList = [...mapped, { data: channelsWithoutCategory }];
+    return [...mapped, { data: channelsWithoutCategory }];
   }
 }

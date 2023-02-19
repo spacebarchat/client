@@ -3,7 +3,7 @@ import React from "react";
 import { SectionList, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { CustomTheme } from "../constants/Colors";
-import GuildStore from "../stores/GuildStore";
+import GuildStore from "../stores/Guild";
 import Container from "./Container";
 
 interface Props {

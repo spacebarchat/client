@@ -3,7 +3,7 @@ import React from "react";
 import Moment from "react-moment";
 import { Avatar, Text, useTheme } from "react-native-paper";
 import { CustomTheme } from "../constants/Colors";
-import MessageStore from "../stores/MessageStore";
+import MessageStore from "../stores/Message";
 import { CDNRoutes, DefaultUserAvatarAssets } from "../utils/Endpoints";
 import { calendarStrings } from "../utils/i18n/date";
 import REST from "../utils/REST";
