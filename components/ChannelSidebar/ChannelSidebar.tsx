@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Link } from "@react-navigation/native";
 import { observer } from "mobx-react";
 import React from "react";
 import { ScrollView, SectionList } from "react-native";
@@ -62,13 +63,17 @@ function ChannelSidebar({ guild }: Props) {
 											style={{ marginRight: 5 }}
 										/>
 									)}
-									<Text
-										style={{
-											color: theme.colors.textMuted,
-										}}
+									<Link
+										to={`/channels/${guild!.id}/${item.id}`}
 									>
-										{item.name}
-									</Text>
+										<Text
+											style={{
+												color: theme.colors.textMuted,
+											}}
+										>
+											{item.name}
+										</Text>
+									</Link>
 								</Container>
 							)}
 							renderSectionHeader={({ section: { title } }) => {
