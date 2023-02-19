@@ -1,3 +1,4 @@
+import { observer } from "mobx-react";
 import React from "react";
 import { Button, Text, TextInput } from "react-native-paper";
 import Container from "../../../components/Container";
@@ -80,4 +81,4 @@ function Settings({ navigation }: ChannelsStackScreenProps<"Settings">) {
 	);
 }
 
-export default Settings;
+export default observer(Settings);

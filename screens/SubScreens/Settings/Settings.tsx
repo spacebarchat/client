@@ -1,3 +1,4 @@
+import { observer } from "mobx-react";
 import React from "react";
 import { Text } from "react-native-paper";
 import Container from "../../../components/Container";
@@ -10,4 +11,4 @@ function Settings() {
 	);
 }
 
-export default Settings;
+export default observer(Settings);

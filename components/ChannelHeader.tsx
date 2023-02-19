@@ -1,3 +1,4 @@
+import { observer } from "mobx-react";
 import { Platform } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { CustomTheme } from "../constants/Colors";
@@ -8,7 +9,7 @@ interface Props {
 	channel: Channel;
 }
 
-export default function ChannelHeader({ channel }: Props) {
+function ChannelHeader({ channel }: Props) {
 	const theme = useTheme<CustomTheme>();
 
 	const containerProps = Platform.isMobile
@@ -38,3 +39,5 @@ export default function ChannelHeader({ channel }: Props) {
 		</Container>
 	);
 }
+
+export default observer(ChannelHeader);

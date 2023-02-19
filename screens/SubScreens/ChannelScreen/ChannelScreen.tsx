@@ -1,7 +1,8 @@
+import { observer } from "mobx-react";
 import React from "react";
 import { Button, Text, TextInput, useTheme } from "react-native-paper";
 import ChannelHeader from "../../../components/ChannelHeader";
-import ChannelSidebar from "../../../components/ChannelSidebar";
+import ChannelSidebar from "../../../components/ChannelSidebar/ChannelSidebar";
 import Container from "../../../components/Container";
 import MemberList from "../../../components/MemberList";
 import MessageList from "../../../components/MessageList";
@@ -158,4 +159,4 @@ function ChannelScreen({
 	);
 }
 
-export default ChannelScreen;
+export default observer(ChannelScreen);

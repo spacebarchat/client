@@ -1,9 +1,10 @@
+import { observer } from "mobx-react";
 import React from "react";
 import { Text, useTheme } from "react-native-paper";
 import ChannelHeader from "../../../components/ChannelHeader";
-import ChannelsSidebarMobile from "../../../components/ChannelsSidebarMobile";
+import ChannelSidebar from "../../../components/ChannelSidebar/ChannelSidebar";
 import Container from "../../../components/Container";
-import GuildSidebarMobile from "../../../components/GuildSidebarMobile";
+import GuildSidebar from "../../../components/GuildSidebar/GuildSidebar";
 import MembersListMobile from "../../../components/MembersListMobile";
 import MessageList from "../../../components/MessageList";
 import Swiper from "../../../components/Swiper";
@@ -26,8 +27,8 @@ function ChannelScreen(props: ChannelsStackScreenProps<"Channel">) {
    */
 	const leftAction = (
 		<Container flexOne row>
-			<GuildSidebarMobile {...props} />
-			<ChannelsSidebarMobile guild={guild} />
+			<GuildSidebar />
+			<ChannelSidebar guild={guild} />
 		</Container>
 	);
 
@@ -68,4 +69,4 @@ function ChannelScreen(props: ChannelsStackScreenProps<"Channel">) {
 	);
 }
 
-export default ChannelScreen;
+export default observer(ChannelScreen);

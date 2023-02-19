@@ -1,4 +1,4 @@
-import { observable } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import { Platform, StyleSheet, useWindowDimensions } from "react-native";
 import {
@@ -180,4 +180,4 @@ const styles = StyleSheet.create({
 	buttonLabel: { fontWeight: "400", fontSize: 16 },
 });
 
-export default observable(TempSettingsScreen);
+export default observer(TempSettingsScreen);

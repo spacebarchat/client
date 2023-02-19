@@ -5,7 +5,7 @@ import { FlatList } from "react-native";
 import Channel from "../stores/Channel";
 import { DomainContext } from "../stores/DomainStore";
 import Guild from "../stores/Guild";
-import ChatInput from "./ChatInput";
+import ChatInput from "./ChatInput/ChatInput";
 import ChatMessage from "./ChatMessage";
 import Container from "./Container";
 

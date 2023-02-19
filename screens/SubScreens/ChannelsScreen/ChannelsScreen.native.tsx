@@ -1,11 +1,10 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import {
-	BottomTabBar,
-	createBottomTabNavigator,
-} from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { observer } from "mobx-react";
 import React from "react";
 import { Animated } from "react-native";
 import { useTheme } from "react-native-paper";
+import BottomTabBar from "../../../components/ReactNavigationBottomTabs/views/BottomTabBar";
 import { CustomTheme } from "../../../constants/Colors";
 import BottomTabBarProgressContext from "../../../contexts/BottomTabBarProgressContext";
 import { ChannelsParamList } from "../../../types";
@@ -69,4 +68,4 @@ function ChannelsScreen() {
 	);
 }
 
-export default ChannelsScreen;
+export default observer(ChannelsScreen);

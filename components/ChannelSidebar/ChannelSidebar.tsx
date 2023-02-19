@@ -1,16 +1,17 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
-import { ScrollView, SectionList, View } from "react-native";
+import { ScrollView, SectionList } from "react-native";
 import { Avatar, Text, useTheme } from "react-native-paper";
-import { CustomTheme } from "../constants/Colors";
-import { DomainContext } from "../stores/DomainStore";
-import Guild from "../stores/Guild";
-import Container from "./Container";
+import { CustomTheme } from "../../constants/Colors";
+import { DomainContext } from "../../stores/DomainStore";
+import Guild from "../../stores/Guild";
+import Container from "../Container";
 
 interface Props {
-	guild: Guild;
+	guild: Guild | undefined;
 }
 
-const ChannelSidebar = ({ guild }: Props) => {
+function ChannelSidebar({ guild }: Props) {
 	const theme = useTheme<CustomTheme>();
 	const domain = React.useContext(DomainContext);
 
@@ -36,22 +37,40 @@ const ChannelSidebar = ({ guild }: Props) => {
 					isSurface
 					elevation={1}
 				>
-					<Text>{guild.name}</Text>
+					<Text>{guild?.name}</Text>
 				</Container>
 				<Container displayFlex flexOne>
 					<ScrollView style={{ padding: 10 }}>
 						<SectionList
-							sections={guild.channelList}
+							sections={guild?.channelList ?? []}
 							keyExtractor={(item, index) => item.id + index}
 							renderItem={({ item }) => (
-								<View style={{ marginHorizontal: 10 }}>
-									<Text>#{item.name}</Text>
-								</View>
+								<Container
+									row
+									horizontalCenter
+									style={{ marginHorizontal: 10 }}
+								>
+									{item.channelIcon && (
+										<MaterialCommunityIcons
+											name={item.channelIcon! as any}
+											size={16}
+											color={theme.colors.textMuted}
+											style={{ marginRight: 5 }}
+										/>
+									)}
+									<Text
+										style={{
+											color: theme.colors.textMuted,
+										}}
+									>
+										{item.name}
+									</Text>
+								</Container>
 							)}
 							renderSectionHeader={({ section: { title } }) => {
 								if (!title) return null;
 								return (
-									<View
+									<Container
 										style={{
 											backgroundColor:
 												theme.colors.palette
@@ -59,7 +78,7 @@ const ChannelSidebar = ({ guild }: Props) => {
 										}}
 									>
 										<Text>{title.toUpperCase()}</Text>
-									</View>
+									</Container>
 								);
 							}}
 							stickySectionHeadersEnabled={true}
@@ -101,6 +120,6 @@ const ChannelSidebar = ({ guild }: Props) => {
 			</Container>
 		</Container>
 	);
-};
+}
 
 export default ChannelSidebar;
