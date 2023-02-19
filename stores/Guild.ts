@@ -71,14 +71,14 @@ export default class Guild extends BaseStore {
   @observable icon: string | null;
   @observable splash: string | null;
   @observable memberList: GuildMemberListStore | null = null;
-  @observable channels: Map<string, ChannelStore> = new Map();
+  @observable channels = observable.map<string, ChannelStore>();
   @observable members: GuildMembersStore;
 
   constructor(domain: DomainStore, guild: APIGuild) {
     super();
     this.domain = domain;
     this.roles = new RolesStore(domain);
-    this.members = new GuildMembersStore(domain);
+    this.members = new GuildMembersStore(domain, this);
 
     this.id = guild.id;
     this.name = guild.name;

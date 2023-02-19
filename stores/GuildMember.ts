@@ -6,14 +6,17 @@ import {
 import { action, observable } from "mobx";
 import BaseStore from "./BaseStore";
 import { DomainStore } from "./DomainStore";
+import Guild from "./Guild";
+import Role from "./Role";
 
-export default class GuildMember extends BaseStore implements APIGuildMember {
+export default class GuildMember extends BaseStore {
   private readonly domain: DomainStore;
+  private readonly guild: Guild;
 
   @observable user?: APIUser | undefined;
   @observable nick?: string | null | undefined;
   @observable avatar?: string | null | undefined;
-  @observable roles: string[];
+  @observable roles: Role[];
   @observable joined_at: string;
   @observable premium_since?: string | null | undefined;
   @observable deaf: boolean;
@@ -22,14 +25,17 @@ export default class GuildMember extends BaseStore implements APIGuildMember {
   @observable pending?: boolean | undefined;
   @observable communication_disabled_until?: string | null | undefined;
 
-  constructor(domain: DomainStore, data: APIGuildMember) {
+  constructor(domain: DomainStore, guild: Guild, data: APIGuildMember) {
     super();
     this.domain = domain;
+    this.guild = guild;
 
     this.user = data.user;
     this.nick = data.nick;
     this.avatar = data.avatar;
-    this.roles = data.roles;
+    this.roles = data.roles
+      .map((role) => guild.roles.get(role))
+      .filter((x) => x) as Role[];
     this.joined_at = data.joined_at;
     this.premium_since = data.premium_since;
     this.deaf = data.deaf;

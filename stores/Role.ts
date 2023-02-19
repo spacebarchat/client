@@ -9,7 +9,7 @@ export default class Role extends BaseStore {
 
   id: string;
   @observable name: string;
-  @observable color: number;
+  @observable color: string;
   @observable hoist: boolean;
   @observable icon?: string | null | undefined;
   @observable unicode_emoji?: string | null | undefined;
@@ -25,7 +25,7 @@ export default class Role extends BaseStore {
 
     this.id = data.id;
     this.name = data.name;
-    this.color = data.color;
+    this.color = "#" + data.color.toString(16).padStart(6, "0");
     this.hoist = data.hoist;
     this.icon = data.icon;
     this.unicode_emoji = data.unicode_emoji;
