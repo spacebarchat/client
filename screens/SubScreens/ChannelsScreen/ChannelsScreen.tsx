@@ -8,6 +8,7 @@ import { CustomTheme } from "../../../constants/Colors";
 import { DomainContext } from "../../../stores/DomainStore";
 import { ChannelsParamList, RootStackScreenProps } from "../../../types";
 import ChannelScreen from "../ChannelScreen/ChannelScreen";
+import Settings from "../Settings/Settings";
 
 const Stack = createNativeStackNavigator<ChannelsParamList>();
 
@@ -80,6 +81,7 @@ function ChannelsScreen({ navigation }: RootStackScreenProps<"Channels">) {
 						component={ChannelScreen}
 						initialParams={{ guildId: "me" }}
 					/>
+					<Stack.Screen name="Settings" component={Settings} />
 				</Stack.Navigator>
 			</Container>
 		</Container>
