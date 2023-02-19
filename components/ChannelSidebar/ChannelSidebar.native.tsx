@@ -1,11 +1,11 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { observer } from "mobx-react";
 import React from "react";
 import { SectionList } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { Surface, Text, useTheme } from "react-native-paper";
 import { CustomTheme } from "../../constants/Colors";
 import Guild from "../../stores/Guild";
 import Container from "../Container";
+import ChannelItem from "./ChannelItem";
 
 interface Props {
 	guild: Guild;
@@ -36,7 +36,7 @@ function ChannelSidebar({ guild }: Props) {
 					borderTopRightRadius: 10,
 					backgroundColor: theme.colors.palette.backgroundPrimary70,
 				}}
-				isSurface
+				element={Surface}
 				elevation={1}
 			>
 				{/* TODO: private channels  */}
@@ -47,25 +47,7 @@ function ChannelSidebar({ guild }: Props) {
 				<SectionList
 					sections={guild?.channelList ?? []}
 					keyExtractor={(item, index) => item.id + index}
-					renderItem={({ item }) => (
-						<Container
-							row
-							horizontalCenter
-							style={{ marginHorizontal: 10 }}
-						>
-							{item.channelIcon && (
-								<MaterialCommunityIcons
-									name={item.channelIcon! as any}
-									size={16}
-									color={theme.colors.textMuted}
-									style={{ marginRight: 5 }}
-								/>
-							)}
-							<Text style={{ color: theme.colors.textMuted }}>
-								{item.name}
-							</Text>
-						</Container>
-					)}
+					renderItem={({ item }) => <ChannelItem channel={item} />}
 					renderSectionHeader={({ section: { title } }) => {
 						if (!title) return null;
 						return (

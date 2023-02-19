@@ -8,6 +8,7 @@ import {
 	Text,
 	TextInput,
 } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Container from "../components/Container";
 import { DefaultRouteSettings, Globals } from "../constants/Globals";
 import { RootStackScreenProps } from "../types";
@@ -46,7 +47,7 @@ function TempSettingsScreen({ navigation }: RootStackScreenProps<"Settings">) {
 			horizontalCenter
 			verticalCenter
 			flexOne
-			isSafe
+			element={SafeAreaView}
 		>
 			<Surface
 				testID="innerContainer"
