@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
+import React from "react";
 import { Platform, SectionList } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { CustomTheme } from "../../constants/Colors";
@@ -13,19 +13,19 @@ interface Props {
 	channel: Channel;
 }
 
+// TODO: user avatar and status
+// TODO: user activity
 function MemberList({ guild, channel }: Props) {
 	const theme = useTheme<CustomTheme>();
 	const domain = React.useContext(DomainContext);
 
-	useEffect(() => {
+	React.useEffect(() => {
 		domain.gateway.onChannelOpen(guild.id, channel.id);
 	}, [guild]);
 
-	if (!guild.memberList) return null;
-
 	return (
 		<SectionList
-			sections={guild.memberList.listData || []}
+			sections={guild.memberList?.listData || []}
 			keyExtractor={(item, index) => index + item.user?.id!}
 			renderItem={({ item }) => {
 				const highestRoleId = item.roles[0];

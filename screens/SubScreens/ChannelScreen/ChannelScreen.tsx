@@ -151,7 +151,7 @@ function ChannelScreen({
 						}}
 						displayFlex
 					>
-						<MemberList channel={channel} guild={guild} />
+						<MemberList guild={guild} channel={channel} />
 					</Container>
 				</Container>
 			</Container>

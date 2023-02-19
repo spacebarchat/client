@@ -12,6 +12,9 @@ interface Props {
 	guild: Guild | undefined;
 }
 
+// TODO: lighter background color for current channel item
+// TODO: ability to click a channel item to switch to that channel
+// TODO: hover color for channel items
 function ChannelSidebar({ guild }: Props) {
 	const theme = useTheme<CustomTheme>();
 	const domain = React.useContext(DomainContext);

@@ -11,6 +11,8 @@ interface Props {
 	guild: Guild;
 }
 
+// TODO: lighter background color for current channel item
+// TODO: ability to click a channel item to switch to that channel
 function ChannelSidebar({ guild }: Props) {
 	const theme = useTheme<CustomTheme>();
 
