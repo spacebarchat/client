@@ -1,11 +1,11 @@
 import { Platform } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { CustomTheme } from "../constants/Colors";
-import ChannelStore from "../stores/ChannelStore";
+import Channel from "../stores/Channel";
 import Container from "./Container";
 
 interface Props {
-	channel: ChannelStore;
+	channel: Channel;
 }
 
 export default function ChannelHeader({ channel }: Props) {

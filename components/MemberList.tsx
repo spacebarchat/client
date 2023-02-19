@@ -3,14 +3,13 @@ import React, { useEffect } from "react";
 import { Platform, SectionList, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { CustomTheme } from "../constants/Colors";
-import ChannelStore from "../stores/ChannelStore";
+import Channel from "../stores/Channel";
 import { DomainContext } from "../stores/DomainStore";
-import GuildStore from "../stores/GuildStore";
-import Container from "./Container";
+import Guild from "../stores/Guild";
 
 interface Props {
-	guild: GuildStore;
-	channel: ChannelStore;
+	guild: Guild;
+	channel: Channel;
 }
 
 const MemberList = observer(({ guild, channel }: Props) => {

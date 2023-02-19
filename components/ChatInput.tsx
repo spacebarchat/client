@@ -1,22 +1,15 @@
 import { RESTPostAPIChannelMessageJSONBody } from "@puyodead1/fosscord-api-types/v9";
 import React from "react";
-import {
-	NativeSyntheticEvent,
-	Platform,
-	TextInput,
-	TextInputKeyPressEventData,
-	View,
-} from "react-native";
-import { IconButton, Text, useTheme } from "react-native-paper";
+import { Platform, TextInput } from "react-native";
+import { IconButton, useTheme } from "react-native-paper";
 import { CustomTheme } from "../constants/Colors";
-import ChannelStore from "../stores/ChannelStore";
+import Channel from "../stores/Channel";
 import { DomainContext, DomainStore } from "../stores/DomainStore";
-import Container from "./Container";
 import { Routes } from "../utils/Endpoints";
-import { RootStackScreenProps } from "../types";
+import Container from "./Container";
 
 interface Props {
-	channel: ChannelStore;
+	channel: Channel;
 }
 
 const postMessage = (

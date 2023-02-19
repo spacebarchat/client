@@ -1,19 +1,17 @@
-import React, { useState } from "react";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import { observer } from "mobx-react";
+import React from "react";
 import { FlatList } from "react-native";
-import ChannelStore from "../stores/ChannelStore";
+import Channel from "../stores/Channel";
 import { DomainContext } from "../stores/DomainStore";
-import GuildStore from "../stores/GuildStore";
+import Guild from "../stores/Guild";
+import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import Container from "./Container";
-import { CommonActions, useNavigation } from "@react-navigation/native";
-import ChatInput from "./ChatInput";
-import MessageStore from "../stores/MessageStore";
-import MessagesStore from "../stores/MessagesStore";
-import { observer } from "mobx-react";
 
 interface Props {
-	channel: ChannelStore;
-	guild: GuildStore;
+	channel: Channel;
+	guild: Guild;
 }
 
 const MessageList = observer(({ channel }: Props) => {
