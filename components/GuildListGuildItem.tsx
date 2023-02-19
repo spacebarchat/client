@@ -3,7 +3,7 @@ import React from "react";
 import { Platform, Pressable, StyleSheet } from "react-native";
 import { Avatar } from "react-native-paper";
 import { Popable, usePopable } from "react-native-popable";
-import GuildStore from "../stores/GuildStore";
+import GuildStore from "../stores/Guild";
 import { CDNRoutes } from "../utils/Endpoints";
 import REST from "../utils/REST";
 

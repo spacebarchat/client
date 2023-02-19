@@ -1858,10 +1858,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@puyodead1/fosscord-api-types@^0.37.40":
-  version "0.37.40"
-  resolved "https://registry.yarnpkg.com/@puyodead1/fosscord-api-types/-/fosscord-api-types-0.37.40.tgz#1f72a045bfbd93d4e5bedcae2432230c251e7200"
-  integrity sha512-2+fsLEjHYsP+vvw+rsbtgTArBp0vFDDR1ZM0KD1wXelNO60SjuS/lOGfcuXH+0Xk0RxN3bWv1ha0Iy4/rZaVjQ==
+"@puyodead1/fosscord-api-types@^0.37.41":
+  version "0.37.41"
+  resolved "https://registry.yarnpkg.com/@puyodead1/fosscord-api-types/-/fosscord-api-types-0.37.41.tgz#65ab1cbb9d3fe8d2cf501866a5a8cf65cf10a461"
+  integrity sha512-CxeOwtORgczK4DoF3x46IJQ0MZ7ZrLNGrv/7hf3P9U2QC7lejKJEi7QintvkJJ7Vo0FFMspRn/pZB0Q+M57Hiw==
 
 "@react-native-async-storage/async-storage@~1.17.3":
   version "1.17.11"

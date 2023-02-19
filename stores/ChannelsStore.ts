@@ -1,20 +1,24 @@
 import { APIChannel, Snowflake } from "@puyodead1/fosscord-api-types/v9";
 import { action, makeObservable, observable, ObservableMap } from "mobx";
 import BaseStore from "./BaseStore";
-import ChannelStore from "./ChannelStore";
+import ChannelStore from "./Channel";
+import { DomainStore } from "./DomainStore";
 
 export default class ChannelsStore extends BaseStore {
+  private readonly domain: DomainStore;
+
   @observable readonly channels = new ObservableMap<Snowflake, ChannelStore>();
 
-  constructor() {
+  constructor(domain: DomainStore) {
     super();
+    this.domain = domain;
 
     makeObservable(this);
   }
 
   @action
   add(channel: APIChannel) {
-    this.channels.set(channel.id, new ChannelStore(channel));
+    this.channels.set(channel.id, new ChannelStore(this.domain, channel));
     return this.channels.get(channel.id);
   }
 

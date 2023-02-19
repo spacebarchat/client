@@ -17,10 +17,10 @@ import UsersStore from "./UsersStore";
 export class DomainStore extends BaseStore {
   @observable isI18NInitialized: boolean = false;
   @observable isDarkTheme: boolean = true;
-  @observable account: AccountStore = new AccountStore();
-  @observable users: UsersStore = new UsersStore();
+  @observable account: AccountStore = new AccountStore(this);
+  @observable users: UsersStore = new UsersStore(this);
   @observable guilds: GuildsStore = new GuildsStore(this);
-  @observable channels: ChannelsStore = new ChannelsStore();
+  @observable channels: ChannelsStore = new ChannelsStore(this);
   @observable gateway: GatewayStore = new GatewayStore(this);
   @observable isAppLoading: boolean = true;
   @observable isNetworkConnected: boolean | null = null;

@@ -3,18 +3,21 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { action, makeObservable, observable, reaction } from "mobx";
 import BaseStore from "./BaseStore";
 import { DomainStore } from "./DomainStore";
-import UserStore from "./UserStore";
+import UserStore from "./User";
 
 /**
  * Handles all account related data and actions
  */
 export default class AccountStore extends BaseStore {
+  private readonly domain: DomainStore;
+
   @observable isAuthenticated: boolean = false;
   @observable token: string | null = null;
   @observable user: UserStore | null = null;
 
-  constructor() {
+  constructor(domain: DomainStore) {
     super();
+    this.domain = domain;
 
     makeObservable(this);
 
@@ -74,6 +77,6 @@ export default class AccountStore extends BaseStore {
 
   @action
   setUser(user: APIUser) {
-    this.user = new UserStore(user);
+    this.user = new UserStore(this.domain, user);
   }
 }

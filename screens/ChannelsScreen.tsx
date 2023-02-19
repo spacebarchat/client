@@ -1,7 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { RESTPostAPIChannelMessageJSONBody } from "@puyodead1/fosscord-api-types/v9";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { CommonActions } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { observer } from "mobx-react";
 import React from "react";
@@ -35,25 +33,6 @@ import {
 	ChannelsStackScreenProps,
 	RootStackScreenProps,
 } from "../types";
-
-const sectionPlaceholderData = [
-	{
-		title: "Section 1",
-		data: ["member1", "member2", "member3", "member4", "member4"],
-	},
-	{
-		title: "Section 2",
-		data: ["member1", "member2", "member3", "member4", "member4"],
-	},
-	{
-		title: "Section 3",
-		data: ["member1", "member2", "member3", "member4", "member4"],
-	},
-	{
-		title: "Section 4",
-		data: ["member1", "member2", "member3", "member4", "member4"],
-	},
-];
 
 const Stack = createNativeStackNavigator<ChannelsParamList>();
 const Tab = createBottomTabNavigator<ChannelsParamList>();
@@ -375,7 +354,10 @@ const ChannelMobile = observer((props: ChannelsStackScreenProps<"Channel">) => {
 	/**
 	 * Constructs the Member list component for the right side of the swiper
 	 */
-	const rightAction = guild && channel ? <MembersListMobile guild={guild} channel={channel} /> : null;
+	const rightAction =
+		guild && channel ? (
+			<MembersListMobile guild={guild} channel={channel} />
+		) : null;
 
 	return (
 		<Swiper

@@ -436,7 +436,6 @@ export default class GatewayStore extends BaseStore {
       return;
     }
     this.domain.channels.add(data);
-    guild.computeChannelList();
   };
 
   private onChannelDelete = (data: GatewayChannelDeleteDispatchData) => {
@@ -451,7 +450,6 @@ export default class GatewayStore extends BaseStore {
       return;
     }
     this.domain.channels.remove(data.id);
-    guild.computeChannelList();
   };
 
   private onMessageCreate = (data: GatewayMessageCreateDispatchData) => {

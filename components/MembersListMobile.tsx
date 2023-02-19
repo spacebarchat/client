@@ -1,16 +1,15 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { SectionList, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { CustomTheme } from "../constants/Colors";
-import ChannelStore from "../stores/ChannelStore";
-import GuildStore from "../stores/GuildStore";
+import Channel from "../stores/Channel";
+import Guild from "../stores/Guild";
 import Container from "./Container";
 import MemberList from "./MemberList";
 
 interface Props {
-	guild: GuildStore;
-	channel: ChannelStore;
+	guild: Guild;
+	channel: Channel;
 }
 
 function MembersListMobile({ guild, channel }: Props) {
