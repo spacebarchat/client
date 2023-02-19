@@ -4,7 +4,7 @@ import { Button, Text, TextInput, useTheme } from "react-native-paper";
 import ChannelHeader from "../../../components/ChannelHeader";
 import ChannelSidebar from "../../../components/ChannelSidebar/ChannelSidebar";
 import Container from "../../../components/Container";
-import MemberList from "../../../components/MemberList";
+import MemberList from "../../../components/MemberList/MemberList";
 import MessageList from "../../../components/MessageList";
 import { CustomTheme } from "../../../constants/Colors";
 import { DefaultRouteSettings, Globals } from "../../../constants/Globals";

@@ -1,18 +1,19 @@
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
-import { Platform, SectionList, View } from "react-native";
+import { Platform, SectionList } from "react-native";
 import { Text, useTheme } from "react-native-paper";
-import { CustomTheme } from "../constants/Colors";
-import Channel from "../stores/Channel";
-import { DomainContext } from "../stores/DomainStore";
-import Guild from "../stores/Guild";
+import { CustomTheme } from "../../constants/Colors";
+import Channel from "../../stores/Channel";
+import { DomainContext } from "../../stores/DomainStore";
+import Guild from "../../stores/Guild";
+import Container from "../Container";
 
 interface Props {
 	guild: Guild;
 	channel: Channel;
 }
 
-const MemberList = observer(({ guild, channel }: Props) => {
+function MemberList({ guild, channel }: Props) {
 	const theme = useTheme<CustomTheme>();
 	const domain = React.useContext(DomainContext);
 
@@ -26,13 +27,22 @@ const MemberList = observer(({ guild, channel }: Props) => {
 		<SectionList
 			sections={guild.memberList.listData || []}
 			keyExtractor={(item, index) => index + item.user?.id!}
-			renderItem={({ item }) => (
-				<View>
-					<Text>{item.user?.username}</Text>
-				</View>
-			)}
+			renderItem={({ item }) => {
+				const highestRoleId = item.roles[0];
+				const role = highestRoleId
+					? guild.roles.get(highestRoleId)
+					: undefined;
+				const colorStyle = role ? { color: role.color } : {};
+
+				// TODO: get member presence and set opacity (~0.2) for offline members
+				return (
+					<Container>
+						<Text style={colorStyle}>{item.user?.username}</Text>
+					</Container>
+				);
+			}}
 			renderSectionHeader={({ section: { title } }) => (
-				<View
+				<Container
 					style={{
 						backgroundColor: Platform.isMobile
 							? theme.colors.palette.backgroundPrimary100
@@ -47,12 +57,12 @@ const MemberList = observer(({ guild, channel }: Props) => {
 					>
 						{title}
 					</Text>
-				</View>
+				</Container>
 			)}
 			stickySectionHeadersEnabled={Platform.isMobile}
 			contentContainerStyle={{ padding: 10 }}
 		/>
 	);
-});
+}
 
-export default MemberList;
+export default observer(MemberList);

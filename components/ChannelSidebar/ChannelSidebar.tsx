@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { observer } from "mobx-react";
 import React from "react";
 import { ScrollView, SectionList } from "react-native";
 import { Avatar, Text, useTheme } from "react-native-paper";
@@ -122,4 +123,4 @@ function ChannelSidebar({ guild }: Props) {
 	);
 }
 
-export default ChannelSidebar;
+export default observer(ChannelSidebar);

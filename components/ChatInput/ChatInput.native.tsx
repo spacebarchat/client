@@ -1,4 +1,5 @@
 import { RESTPostAPIChannelMessageJSONBody } from "@puyodead1/fosscord-api-types/v9";
+import { observer } from "mobx-react";
 import React from "react";
 import { TextInput } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
@@ -73,4 +74,4 @@ function ChatInput({ channel }: Props) {
 	);
 }
 
-export default ChatInput;
+export default observer(ChatInput);

@@ -1,18 +1,18 @@
 import { observer } from "mobx-react";
 import React from "react";
 import { Text, useTheme } from "react-native-paper";
-import { CustomTheme } from "../constants/Colors";
-import Channel from "../stores/Channel";
-import Guild from "../stores/Guild";
-import Container from "./Container";
-import MemberList from "./MemberList";
+import { CustomTheme } from "../../constants/Colors";
+import Channel from "../../stores/Channel";
+import Guild from "../../stores/Guild";
+import Container from "../Container";
+import MemberListComponent from "./MemberList";
 
 interface Props {
 	guild: Guild;
 	channel: Channel;
 }
 
-function MembersListMobile({ guild, channel }: Props) {
+function MemberList({ guild, channel }: Props) {
 	const theme = useTheme<CustomTheme>();
 
 	return (
@@ -45,10 +45,10 @@ function MembersListMobile({ guild, channel }: Props) {
 					backgroundColor: theme.colors.palette.backgroundPrimary100,
 				}}
 			>
-				<MemberList channel={channel} guild={guild} />
+				<MemberListComponent channel={channel} guild={guild} />
 			</Container>
 		</Container>
 	);
 }
 
-export default observer(MembersListMobile);
+export default observer(MemberList);

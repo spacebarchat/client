@@ -5,7 +5,7 @@ import ChannelHeader from "../../../components/ChannelHeader";
 import ChannelSidebar from "../../../components/ChannelSidebar/ChannelSidebar";
 import Container from "../../../components/Container";
 import GuildSidebar from "../../../components/GuildSidebar/GuildSidebar";
-import MembersListMobile from "../../../components/MembersListMobile";
+import MemberList from "../../../components/MemberList/MemberList";
 import MessageList from "../../../components/MessageList";
 import Swiper from "../../../components/Swiper";
 import { CustomTheme } from "../../../constants/Colors";
@@ -37,7 +37,7 @@ function ChannelScreen(props: ChannelsStackScreenProps<"Channel">) {
 	 */
 	const rightAction =
 		guild && channel ? (
-			<MembersListMobile guild={guild} channel={channel} />
+			<MemberList guild={guild} channel={channel} />
 		) : null;
 
 	return (
