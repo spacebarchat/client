@@ -46,6 +46,7 @@ const tsLoaderConfiguration = {
   // exclude: /node_modules/,
   include: [
     path.resolve(appDirectory, 'node_modules', 'react-native-error-boundary'),
+    path.resolve(appDirectory, 'node_modules', 'react-native-vector-icons'),
     path.resolve(appDirectory, 'src'),
   ],
   loader: 'ts-loader',
@@ -84,6 +85,15 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'index.html'),
       favicon: path.join(__dirname, '../assets/images/favicon.png'),
+    }),
+    // `process.env.NODE_ENV === 'production'` must be `true` for production
+    // builds to eliminate development checks and reduce build size. You may
+    // wish to include additional optimizations.
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(
+        process.env.NODE_ENV || 'development',
+      ),
+      __DEV__: process.env.NODE_ENV !== 'production' || true,
     }),
   ],
 

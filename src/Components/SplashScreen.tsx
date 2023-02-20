@@ -1,5 +1,6 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, Text} from 'react-native';
+import {ActivityIndicator, StyleSheet} from 'react-native';
+import {Text} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Container from './Container';
 

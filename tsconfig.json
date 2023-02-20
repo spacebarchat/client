@@ -2,6 +2,12 @@
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
     "jsx": "react",
-    "noEmit": false
+    "noEmit": false,
+    "strict": true,
+    "useDefineForClassFields": true,
+    "experimentalDecorators": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "isolatedModules": false
   }
 }
