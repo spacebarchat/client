@@ -43,7 +43,11 @@ const imageLoaderConfiguration = {
 
 const tsLoaderConfiguration = {
   test: /\.(tsx|ts|jsx|js|mjs)$/,
-  exclude: /node_modules/,
+  // exclude: /node_modules/,
+  include: [
+    path.resolve(appDirectory, 'node_modules', 'react-native-error-boundary'),
+    path.resolve(appDirectory, 'src'),
+  ],
   loader: 'ts-loader',
 };
 
@@ -57,8 +61,8 @@ module.exports = {
 
   // configures where the build ends up
   output: {
-    filename: 'bundle.web.js',
-    path: path.resolve(appDirectory, 'dist'),
+    filename: '[chunkhash].js',
+    path: path.resolve(appDirectory, 'web-build'),
   },
 
   module: {
@@ -73,7 +77,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, './index.html'),
     }),
-    new webpack.HotModuleReplacementPlugin(),
   ],
 
   resolve: {
@@ -96,7 +99,8 @@ module.exports = {
     ],
   },
   devServer: {
-    static: path.join(__dirname, 'dist'),
+    // static: path.join(__dirname, 'dist'),
+    static: path.resolve(appDirectory, 'web', 'public'),
     compress: true,
     port: 4000,
   },
