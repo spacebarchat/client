@@ -1,0 +1,13 @@
+{
+  "TITLE": "Login to $t(common:APP_NAME)",
+  "LABEL_EMAIL": "Email",
+  "LABEL_PASSWORD": "Password",
+  "BUTTON_LOGIN": "Log In",
+  "LABEL_FORGOT_PASSWORD": "Forgot Password?",
+  "NEED_ACCOUNT": "Need an account?",
+  "REGISTER": "Register",
+  "MFA_TITLE": "Two-Factor Authentication",
+  "MFA_SUBTITLE": "Enter the code from your authenticator app or use a backup code.",
+  "LABEL_OTP": "6-digit auth code/8-digit backup code",
+  "BACK_TO_LOGIN": "Back to Login"
+}

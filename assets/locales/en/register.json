@@ -1,0 +1,13 @@
+{
+  "TITLE": "Create an account",
+  "LABEL_EMAIL": "Email",
+  "LABEL_USERNAME": "Username",
+  "LABEL_PASSWORD": "Password",
+  "LABEL_BIRTHDAY": "Date of Birth",
+  "REGISTRATION_TERMS": "By creating an account, you agree to our {{TERMS_OF_SERVICE}} and {{PRIVACY_POLICY}}.",
+  "TERMS_OF_SERVICE": "Terms of Service",
+  "PRIVACY_POLICY": "Privacy Policy",
+  "BUTTON_CONTINUE": "Continue",
+  "BUTTON_CREATE_ACCOUNT": "Create Account",
+  "LINK_LOGIN": "Already have an account?"
+}
