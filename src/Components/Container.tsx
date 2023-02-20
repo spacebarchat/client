@@ -1,6 +1,6 @@
 import React from 'react';
 import {Pressable, PressableProps, View, ViewProps} from 'react-native';
-// import {Surface} from 'react-native-paper';
+import {Surface} from 'react-native-paper';
 
 interface ContainerProps {
   verticalCenter?: boolean;
@@ -13,7 +13,7 @@ interface ContainerProps {
     | string
     | React.ComponentClass<ViewProps, any>
     | React.FunctionComponent<ViewProps>
-    // | typeof Surface
+    | typeof Surface
     | typeof Pressable;
 }
 

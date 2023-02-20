@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import SplashScreen from './Components/SplashScreen';
 
 function App() {
@@ -31,9 +32,11 @@ const styles = StyleSheet.create({
 
 function Main() {
   return (
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
+    <SafeAreaProvider>
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    </SafeAreaProvider>
   );
 }
 
