@@ -3,6 +3,9 @@
 #include "pch.h"
 #include "AutolinkedNativeModules.g.h"
 
+// Includes from @react-native-async-storage/async-storage
+#include <winrt/ReactNativeAsyncStorage.h>
+
 // Includes from @react-native-community/netinfo
 #include <winrt/ReactNativeNetInfo.h>
 
@@ -14,6 +17,8 @@ namespace winrt::Microsoft::ReactNative
 
 void RegisterAutolinkedNativeModulePackages(winrt::Windows::Foundation::Collections::IVector<winrt::Microsoft::ReactNative::IReactPackageProvider> const& packageProviders)
 { 
+    // IReactPackageProviders from @react-native-async-storage/async-storage
+    packageProviders.Append(winrt::ReactNativeAsyncStorage::ReactPackageProvider());
     // IReactPackageProviders from @react-native-community/netinfo
     packageProviders.Append(winrt::ReactNativeNetInfo::ReactPackageProvider());
     // IReactPackageProviders from react-native-screens

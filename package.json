@@ -13,6 +13,8 @@
     "build:web": "cd web && webpack --mode production"
   },
   "dependencies": {
+    "@puyodead1/fosscord-api-types": "^0.37.41",
+    "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-community/netinfo": "^9.3.7",
     "@react-navigation/native": "^6.1.4",
     "@react-navigation/native-stack": "^6.9.10",

@@ -70,6 +70,7 @@ module.exports = {
   output: {
     filename: '[chunkhash].js',
     path: path.resolve(appDirectory, 'web-build'),
+    publicPath: '/',
   },
 
   module: {
@@ -85,6 +86,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'index.html'),
       favicon: path.join(__dirname, '../assets/images/favicon.png'),
+      publicPath: '/',
     }),
     // `process.env.NODE_ENV === 'production'` must be `true` for production
     // builds to eliminate development checks and reduce build size. You may
@@ -121,5 +123,6 @@ module.exports = {
     static: path.resolve(appDirectory, 'web', 'public'),
     compress: true,
     port: 4000,
+    historyApiFallback: true,
   },
 };

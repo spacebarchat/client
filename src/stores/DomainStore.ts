@@ -8,7 +8,7 @@ import useLogger from '../hooks/useLogger';
 import BaseStore from './BaseStore';
 // import {localeLogger} from '../utils/i18n/locale-detector';
 // import REST from '../utils/REST';
-// import AccountStore from './AccountStore';
+import AccountStore from './AccountStore';
 // import BaseStore from './BaseStore';
 // import ChannelsStore from './ChannelsStore';
 // import GatewayStore from './GatewayStore';
@@ -18,7 +18,7 @@ import BaseStore from './BaseStore';
 export class DomainStore extends BaseStore {
   @observable isI18NInitialized: boolean = false;
   @observable isDarkTheme: boolean = true;
-  //   @observable account: AccountStore = new AccountStore(this);
+  @observable account: AccountStore = new AccountStore(this);
   //   @observable users: UsersStore = new UsersStore(this);
   //   @observable guilds: GuildsStore = new GuildsStore(this);
   //   @observable channels: ChannelsStore = new ChannelsStore(this);
