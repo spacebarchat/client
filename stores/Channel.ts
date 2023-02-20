@@ -53,7 +53,7 @@ export default class Channel extends BaseStore {
 	constructor(domain: DomainStore, data: APIChannel) {
 		super();
 		this.domain = domain;
-		this.messages = new MessagesStore(domain);
+		this.messages = new MessagesStore(domain, this);
 
 		this.id = data.id;
 		this.created_at = data.created_at;
