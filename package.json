@@ -9,7 +9,8 @@
     "start": "react-native start",
     "test": "jest",
     "windows": "react-native run-windows",
-    "web": "cd web && webpack-dev-server --mode development"
+    "web": "cd web && webpack-dev-server --mode development",
+    "build:web": "cd web && webpack --mode production"
   },
   "dependencies": {
     "@types/getenv": "^1.0.0",
