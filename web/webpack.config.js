@@ -51,6 +51,12 @@ const tsLoaderConfiguration = {
   loader: 'ts-loader',
 };
 
+const ttfLoaderConfiguration = {
+  test: /\.ttf$/,
+  loader: 'url-loader', // or directly file-loader
+  include: path.resolve(__dirname, '../node_modules/react-native-vector-icons'),
+};
+
 module.exports = {
   entry: [
     // load any web API polyfills
@@ -70,12 +76,14 @@ module.exports = {
       tsLoaderConfiguration,
       babelLoaderConfiguration,
       imageLoaderConfiguration,
+      ttfLoaderConfiguration,
     ],
   },
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, './index.html'),
+      template: path.join(__dirname, 'index.html'),
+      favicon: path.join(__dirname, '../assets/images/favicon.png'),
     }),
   ],
 

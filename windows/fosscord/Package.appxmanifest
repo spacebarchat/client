@@ -14,8 +14,8 @@
   <mp:PhoneIdentity PhoneProductId="a44d518a-7716-4c6f-ac14-ea147b627484" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>fosscord</DisplayName>
-    <PublisherDisplayName>23562</PublisherDisplayName>
+    <DisplayName>Fosscord</DisplayName>
+    <PublisherDisplayName>Fosscord</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -33,12 +33,13 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="fosscord.App">
       <uap:VisualElements
-        DisplayName="fosscord"
+        DisplayName="Fosscord"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="fosscord"
+        Description="Fosscord"
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png">
+        </uap:DefaultTile >
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
