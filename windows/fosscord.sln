@@ -39,6 +39,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RNCNetInfoCPP", "..\node_mo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReactNativeAsyncStorage", "..\node_modules\@react-native-async-storage\async-storage\windows\ReactNativeAsyncStorage\ReactNativeAsyncStorage.vcxproj", "{4855D892-E16C-404D-8286-0089E0F7F9C4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RNDeviceInfoCPP", "..\node_modules\react-native-device-info\windows\RNDeviceInfoCPP\RNDeviceInfoCPP.vcxproj", "{3E3931F2-4735-4417-8CB0-33668A7314D6}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\node_modules\react-native-windows\Shared\Shared.vcxitems*{2049dbe9-8d13-42c9-ae4b-413ae38fffd0}*SharedItemsImports = 9
@@ -176,6 +178,18 @@ Global
 		{4855D892-E16C-404D-8286-0089E0F7F9C4}.Release|x86.Build.0 = Release|Win32
 		{4855D892-E16C-404D-8286-0089E0F7F9C4}.Release|ARM64.ActiveCfg = Release|ARM64
 		{4855D892-E16C-404D-8286-0089E0F7F9C4}.Release|ARM64.Build.0 = Release|ARM64
+		{3E3931F2-4735-4417-8CB0-33668A7314D6}.Debug|x64.ActiveCfg = Debug|x64
+		{3E3931F2-4735-4417-8CB0-33668A7314D6}.Debug|x64.Build.0 = Debug|x64
+		{3E3931F2-4735-4417-8CB0-33668A7314D6}.Debug|x86.ActiveCfg = Debug|Win32
+		{3E3931F2-4735-4417-8CB0-33668A7314D6}.Debug|x86.Build.0 = Debug|Win32
+		{3E3931F2-4735-4417-8CB0-33668A7314D6}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{3E3931F2-4735-4417-8CB0-33668A7314D6}.Debug|ARM64.Build.0 = Debug|ARM64
+		{3E3931F2-4735-4417-8CB0-33668A7314D6}.Release|x64.ActiveCfg = Release|x64
+		{3E3931F2-4735-4417-8CB0-33668A7314D6}.Release|x64.Build.0 = Release|x64
+		{3E3931F2-4735-4417-8CB0-33668A7314D6}.Release|x86.ActiveCfg = Release|Win32
+		{3E3931F2-4735-4417-8CB0-33668A7314D6}.Release|x86.Build.0 = Release|Win32
+		{3E3931F2-4735-4417-8CB0-33668A7314D6}.Release|ARM64.ActiveCfg = Release|ARM64
+		{3E3931F2-4735-4417-8CB0-33668A7314D6}.Release|ARM64.Build.0 = Release|ARM64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

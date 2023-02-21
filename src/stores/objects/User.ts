@@ -4,6 +4,8 @@ import {
   UserPremiumType,
 } from '@puyodead1/fosscord-api-types/v9';
 import {action, makeObservable, observable} from 'mobx';
+import {CDNRoutes, DefaultUserAvatarAssets} from '../../utils/Endpoints';
+import REST from '../../utils/REST';
 import BaseStore from '../BaseStore';
 import {DomainStore} from '../DomainStore';
 
@@ -29,7 +31,7 @@ export default class User extends BaseStore implements APIUser {
   @observable premium_type?: UserPremiumType | undefined;
   @observable premium_since?: string | undefined;
   @observable public_flags?: UserFlags | undefined;
-  //   @observable avatarURL: string;
+  @observable avatarURL: string;
 
   constructor(domain: DomainStore, user: APIUser) {
     super();
@@ -49,17 +51,17 @@ export default class User extends BaseStore implements APIUser {
     this.premium_since = user.premium_since;
     this.public_flags = user.public_flags;
 
-    // if (user.avatar) {
-    //   this.avatarURL = REST.makeCDNUrl(
-    //     CDNRoutes.userAvatar(user.id, user.avatar),
-    //   );
-    // } else {
-    //   this.avatarURL = REST.makeCDNUrl(
-    //     CDNRoutes.defaultUserAvatar(
-    //       (Number(user.discriminator) % 6) as any as DefaultUserAvatarAssets,
-    //     ),
-    //   );
-    // }
+    if (user.avatar) {
+      this.avatarURL = REST.makeCDNUrl(
+        CDNRoutes.userAvatar(user.id, user.avatar),
+      );
+    } else {
+      this.avatarURL = REST.makeCDNUrl(
+        CDNRoutes.defaultUserAvatar(
+          (Number(user.discriminator) % 6) as any as DefaultUserAvatarAssets,
+        ),
+      );
+    }
 
     makeObservable(this);
   }
@@ -68,16 +70,16 @@ export default class User extends BaseStore implements APIUser {
   update(user: APIUser) {
     Object.assign(this, user);
 
-    // if (user.avatar) {
-    //   this.avatarURL = REST.makeCDNUrl(
-    //     CDNRoutes.userAvatar(user.id, user.avatar),
-    //   );
-    // } else {
-    //   this.avatarURL = REST.makeCDNUrl(
-    //     CDNRoutes.defaultUserAvatar(
-    //       (Number(user.discriminator) % 6) as any as DefaultUserAvatarAssets,
-    //     ),
-    //   );
-    // }
+    if (user.avatar) {
+      this.avatarURL = REST.makeCDNUrl(
+        CDNRoutes.userAvatar(user.id, user.avatar),
+      );
+    } else {
+      this.avatarURL = REST.makeCDNUrl(
+        CDNRoutes.defaultUserAvatar(
+          (Number(user.discriminator) % 6) as any as DefaultUserAvatarAssets,
+        ),
+      );
+    }
   }
 }

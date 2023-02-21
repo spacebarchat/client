@@ -25,6 +25,7 @@
     "react": "18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "0.71.0",
+    "react-native-device-info": "^10.4.0",
     "react-native-error-boundary": "^1.2.1",
     "react-native-logs": "^5.0.1",
     "react-native-paper": "^5.2.0",
