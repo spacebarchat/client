@@ -8,7 +8,6 @@ import {LinkingOptions} from '@react-navigation/native';
 import {RootStackParamsList} from '../types';
 import {Linking} from '../utils';
 
-console.log(Linking.createURL('/'));
 const linking: LinkingOptions<RootStackParamsList> = {
   prefixes: [Linking.createURL('/')],
   config: {

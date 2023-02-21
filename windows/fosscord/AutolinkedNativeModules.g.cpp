@@ -12,6 +12,9 @@
 // Includes from react-native-device-info
 #include <winrt/RNDeviceInfoCPP.h>
 
+// Includes from react-native-localize
+#include <winrt/RNLocalize.h>
+
 // Includes from react-native-screens
 #include <winrt/RNScreens.h>
 
@@ -26,6 +29,8 @@ void RegisterAutolinkedNativeModulePackages(winrt::Windows::Foundation::Collecti
     packageProviders.Append(winrt::ReactNativeNetInfo::ReactPackageProvider());
     // IReactPackageProviders from react-native-device-info
     packageProviders.Append(winrt::RNDeviceInfoCPP::ReactPackageProvider());
+    // IReactPackageProviders from react-native-localize
+    packageProviders.Append(winrt::RNLocalize::ReactPackageProvider());
     // IReactPackageProviders from react-native-screens
     packageProviders.Append(winrt::RNScreens::ReactPackageProvider());
 }

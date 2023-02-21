@@ -1,8 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
-const appDirectory = path.resolve(__dirname, '../');
+const appDirectory = path.resolve(__dirname);
 
 // This is needed for webpack to compile JavaScript.
 // Many OSS React Native packages are not compiled to ES5 before being
@@ -10,7 +11,7 @@ const appDirectory = path.resolve(__dirname, '../');
 // errors. To fix this webpack can be configured to compile to the necessary
 // `node_module`.
 const babelLoaderConfiguration = {
-  test: /\.js$/,
+  test: /\.(js|ts)$/,
   // Add every directory that needs to be compiled by Babel during the build.
   include: [
     path.resolve(appDirectory, 'index.web.js'),
@@ -20,11 +21,18 @@ const babelLoaderConfiguration = {
   use: {
     loader: 'babel-loader',
     options: {
-      cacheDirectory: true,
+      // cacheDirectory: true,
       // The 'metro-react-native-babel-preset' preset is recommended to match React Native's packager
-      presets: ['module:metro-react-native-babel-preset'],
+      presets: [
+        'module:metro-react-native-babel-preset',
+        ['@babel/preset-env', {targets: {node: 'current'}}],
+      ],
       // Re-write paths to import only the modules needed by the app
-      plugins: ['react-native-web'],
+      plugins: [
+        'macros',
+        ['@babel/plugin-proposal-decorators', {version: 'legacy'}],
+        'react-native-web',
+      ],
     },
   },
 };
@@ -55,7 +63,7 @@ const tsLoaderConfiguration = {
 const ttfLoaderConfiguration = {
   test: /\.ttf$/,
   loader: 'url-loader', // or directly file-loader
-  include: path.resolve(__dirname, '../node_modules/react-native-vector-icons'),
+  include: path.resolve(__dirname, './node_modules/react-native-vector-icons'),
 };
 
 module.exports = {
@@ -75,17 +83,18 @@ module.exports = {
 
   module: {
     rules: [
-      tsLoaderConfiguration,
       babelLoaderConfiguration,
+      tsLoaderConfiguration,
       imageLoaderConfiguration,
       ttfLoaderConfiguration,
     ],
   },
 
   plugins: [
+    new NodePolyfillPlugin(),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'index.html'),
-      favicon: path.join(__dirname, '../assets/images/favicon.png'),
+      template: path.join(__dirname, './web/index.html'),
+      favicon: path.join(__dirname, './assets/images/favicon.png'),
       publicPath: '/',
     }),
     // `process.env.NODE_ENV === 'production'` must be `true` for production
@@ -117,6 +126,10 @@ module.exports = {
       '.jsx',
       '.js',
     ],
+    fallback: {
+      fs: false,
+      module: false,
+    },
   },
   devServer: {
     // static: path.join(__dirname, 'dist'),
