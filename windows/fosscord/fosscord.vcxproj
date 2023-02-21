@@ -204,6 +204,32 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\MaterialCommunityIcons.ttf" />
+    <Font Include="Assets\SourceCodePro-Black.otf" />
+    <Font Include="Assets\SourceCodePro-BlackIt.otf" />
+    <Font Include="Assets\SourceCodePro-Bold.otf" />
+    <Font Include="Assets\SourceCodePro-BoldIt.otf" />
+    <Font Include="Assets\SourceCodePro-ExtraLight.otf" />
+    <Font Include="Assets\SourceCodePro-ExtraLightIt.otf" />
+    <Font Include="Assets\SourceCodePro-It.otf" />
+    <Font Include="Assets\SourceCodePro-Light.otf" />
+    <Font Include="Assets\SourceCodePro-LightIt.otf" />
+    <Font Include="Assets\SourceCodePro-Medium.otf" />
+    <Font Include="Assets\SourceCodePro-MediumIt.otf" />
+    <Font Include="Assets\SourceCodePro-Regular.otf" />
+    <Font Include="Assets\SourceCodePro-Semibold.otf" />
+    <Font Include="Assets\SourceCodePro-SemiboldIt.otf" />
+    <Font Include="Assets\SourceSans3-Black.otf" />
+    <Font Include="Assets\SourceSans3-BlackIt.otf" />
+    <Font Include="Assets\SourceSans3-Bold.otf" />
+    <Font Include="Assets\SourceSans3-BoldIt.otf" />
+    <Font Include="Assets\SourceSans3-ExtraLight.otf" />
+    <Font Include="Assets\SourceSans3-ExtraLightIt.otf" />
+    <Font Include="Assets\SourceSans3-It.otf" />
+    <Font Include="Assets\SourceSans3-Light.otf" />
+    <Font Include="Assets\SourceSans3-LightIt.otf" />
+    <Font Include="Assets\SourceSans3-Regular.otf" />
+    <Font Include="Assets\SourceSans3-Semibold.otf" />
+    <Font Include="Assets\SourceSans3-SemiboldIt.otf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ReactNativeWindowsTargets">

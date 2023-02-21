@@ -195,5 +195,83 @@
     <Font Include="Assets\MaterialCommunityIcons.ttf">
       <Filter>Assets</Filter>
     </Font>
+    <Font Include="Assets\SourceCodePro-Black.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceCodePro-BlackIt.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceCodePro-Bold.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceCodePro-BoldIt.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceCodePro-ExtraLight.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceCodePro-ExtraLightIt.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceCodePro-It.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceCodePro-Light.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceCodePro-LightIt.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceCodePro-Medium.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceCodePro-MediumIt.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceCodePro-Regular.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceCodePro-Semibold.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceCodePro-SemiboldIt.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceSans3-Black.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceSans3-BlackIt.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceSans3-Bold.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceSans3-BoldIt.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceSans3-ExtraLight.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceSans3-ExtraLightIt.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceSans3-It.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceSans3-Light.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceSans3-LightIt.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceSans3-Regular.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceSans3-Semibold.otf">
+      <Filter>Assets</Filter>
+    </Font>
+    <Font Include="Assets\SourceSans3-SemiboldIt.otf">
+      <Filter>Assets</Filter>
+    </Font>
   </ItemGroup>
 </Project>

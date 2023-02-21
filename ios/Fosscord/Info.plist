@@ -36,7 +36,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -51,5 +51,34 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SourceCodePro-Black.otf</string>
+		<string>SourceCodePro-BlackIt.otf</string>
+		<string>SourceCodePro-Bold.otf</string>
+		<string>SourceCodePro-BoldIt.otf</string>
+		<string>SourceCodePro-ExtraLight.otf</string>
+		<string>SourceCodePro-ExtraLightIt.otf</string>
+		<string>SourceCodePro-It.otf</string>
+		<string>SourceCodePro-Light.otf</string>
+		<string>SourceCodePro-LightIt.otf</string>
+		<string>SourceCodePro-Medium.otf</string>
+		<string>SourceCodePro-MediumIt.otf</string>
+		<string>SourceCodePro-Regular.otf</string>
+		<string>SourceCodePro-Semibold.otf</string>
+		<string>SourceCodePro-SemiboldIt.otf</string>
+		<string>SourceSans3-Black.otf</string>
+		<string>SourceSans3-BlackIt.otf</string>
+		<string>SourceSans3-Bold.otf</string>
+		<string>SourceSans3-BoldIt.otf</string>
+		<string>SourceSans3-ExtraLight.otf</string>
+		<string>SourceSans3-ExtraLightIt.otf</string>
+		<string>SourceSans3-It.otf</string>
+		<string>SourceSans3-Light.otf</string>
+		<string>SourceSans3-LightIt.otf</string>
+		<string>SourceSans3-Regular.otf</string>
+		<string>SourceSans3-Semibold.otf</string>
+		<string>SourceSans3-SemiboldIt.otf</string>
+	</array>
 </dict>
 </plist>
