@@ -16,13 +16,16 @@ function GuildSidebar() {
   return (
     <Container
       testID="guildSidebarContainer"
+      verticalCenter
+      horizontalCenter
       style={{
         width: 72,
-        backgroundColor: theme.colors.palette.backgroundPrimary40,
+        marginTop: 10,
       }}>
       <ScrollView testID="guildSidebarList">
         <Pressable
           testID="guildSidebarListItemActionHome"
+          style={{marginBottom: 5}}
           onPress={() => {
             navigation.dispatch(
               CommonActions.navigate('Channels', {

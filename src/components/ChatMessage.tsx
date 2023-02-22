@@ -60,7 +60,7 @@ function ChatMessage({message}: Props) {
             style={{
               fontWeight: '500',
               fontSize: 16,
-              color: theme.colors.whiteBlack,
+              // color: theme.colors.whiteBlack,
             }}>
             {message.author?.username}
           </Text>
@@ -69,7 +69,7 @@ function ChatMessage({message}: Props) {
             style={{
               fontSize: 12,
               fontWeight: '500',
-              color: theme.colors.whiteBlack,
+              // color: theme.colors.whiteBlack,
               marginLeft: 5,
             }}>
             <Moment element={Text} calendar={calendarStrings}>

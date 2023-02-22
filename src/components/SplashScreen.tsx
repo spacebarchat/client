@@ -1,13 +1,13 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet} from 'react-native';
-import {Text} from 'react-native-paper';
+import {StyleSheet} from 'react-native';
+import {ActivityIndicator, Text} from 'react-native-paper';
 import Container from './Container';
 
 function SplashScreen() {
   return (
     <Container style={styles.container} horizontalCenter verticalCenter>
       <ActivityIndicator size="large" />
-      <Text>Fosscord</Text>
+      <Text variant="headlineLarge">Fosscord</Text>
     </Container>
   );
 }

@@ -26,9 +26,8 @@ function ChannelsScreen() {
         initialRouteName="Channel"
         screenOptions={{
           headerShown: false,
-          // tabBarActiveBackgroundColor: theme.colors.primary,
           tabBarStyle: {
-            backgroundColor: theme.colors.palette.backgroundPrimary0,
+            backgroundColor: theme.colors.palette.neutral40,
           },
           tabBarShowLabel: false,
         }}

@@ -39,16 +39,11 @@ function ChannelScreen(props: ChannelsStackScreenProps<'Channel'>) {
     guild && channel ? <MemberList guild={guild} channel={channel} /> : null;
 
   return (
-    <Swiper
-      leftChildren={leftAction}
-      rightChildren={rightAction}
-      containerStyle={{
-        backgroundColor: theme.colors.palette.backgroundPrimary40,
-      }}>
+    <Swiper leftChildren={leftAction} rightChildren={rightAction}>
       <Container
         flexOne
         style={{
-          backgroundColor: theme.colors.palette.backgroundPrimary90,
+          backgroundColor: theme.colors.palette.neutral50,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
         }}>

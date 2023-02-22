@@ -1,11 +1,12 @@
 import {observer} from 'mobx-react';
 import React from 'react';
 import {ScrollView, SectionList} from 'react-native';
-import {Avatar, Surface, Text, useTheme} from 'react-native-paper';
+import {Surface, Text, useTheme} from 'react-native-paper';
 import {CustomTheme} from '../../constants/Colors';
 import {DomainContext} from '../../stores/DomainStore';
 import Guild from '../../stores/objects/Guild';
 import Container from '../Container';
+import UserActions from '../UserActions';
 import ChannelItem from './ChannelItem';
 
 interface Props {
@@ -23,7 +24,7 @@ function ChannelSidebar({guild}: Props) {
     <Container
       testID="channelSidebar"
       style={{
-        backgroundColor: theme.colors.palette.backgroundPrimary70,
+        backgroundColor: theme.colors.palette.neutral30,
         height: '100%',
         width: 240,
       }}>
@@ -34,10 +35,10 @@ function ChannelSidebar({guild}: Props) {
           horizontalCenter
           style={{
             height: 48,
-            backgroundColor: theme.colors.palette.backgroundPrimary70,
+            backgroundColor: theme.colors.palette.neutral30,
           }}
           element={Surface}
-          elevation={1}>
+          elevation={2}>
           <Text>{guild?.name}</Text>
         </Container>
         <Container displayFlex flexOne>
@@ -53,7 +54,7 @@ function ChannelSidebar({guild}: Props) {
                 return (
                   <Container
                     style={{
-                      backgroundColor: theme.colors.palette.backgroundPrimary70,
+                      backgroundColor: theme.colors.palette.neutral30,
                     }}>
                     <Text>{title.toUpperCase()}</Text>
                   </Container>
@@ -68,31 +69,9 @@ function ChannelSidebar({guild}: Props) {
       <Container
         testID="channelFooter"
         style={{
-          backgroundColor: theme.colors.palette.backgroundPrimary50,
+          backgroundColor: theme.colors.palette.neutral25,
         }}>
-        <Container
-          testID="userActions"
-          displayFlex
-          row
-          horizontalCenter
-          style={{
-            height: 52,
-            paddingVertical: 8,
-            backgroundColor: 'transparent',
-          }}>
-          <Container style={{marginHorizontal: 8}}>
-            <Avatar.Image
-              size={32}
-              source={{uri: domain.account.user?.avatarURL}}
-            />
-          </Container>
-          <Container>
-            <Text>
-              {domain.account.user?.username}#
-              {domain.account.user?.discriminator}
-            </Text>
-          </Container>
-        </Container>
+        <UserActions />
       </Container>
     </Container>
   );

@@ -47,14 +47,14 @@ function ChatInput({channel}: Props) {
         editable
         multiline
         style={{
-          backgroundColor: theme.colors.palette.backgroundPrimary80,
-          color: theme.colors.whiteBlack,
+          backgroundColor: theme.colors.palette.neutral70,
+          color: theme.colors.text,
           padding: 10,
           borderRadius: 10,
           // @ts-ignore
           outlineStyle: 'none',
         }}
-        placeholderTextColor={theme.colors.text}
+        placeholderTextColor={theme.colors.onBackground}
         spellCheck={false}
         onKeyPress={e => {
           // @ts-ignore

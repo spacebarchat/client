@@ -24,7 +24,7 @@ function ChatInput({channel}: Props) {
         row
         horizontalCenter
         style={{
-          backgroundColor: theme.colors.palette.backgroundPrimary60,
+          backgroundColor: theme.colors.palette.neutral40,
           borderRadius: 20,
         }}>
         <TextInput
@@ -35,7 +35,7 @@ function ChatInput({channel}: Props) {
           multiline
           style={{
             backgroundColor: 'transparent',
-            color: theme.colors.whiteBlack,
+            color: theme.colors.text,
             padding: 10,
             flex: 1,
           }}

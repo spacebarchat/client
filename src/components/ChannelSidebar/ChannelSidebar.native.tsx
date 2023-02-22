@@ -21,7 +21,7 @@ function ChannelSidebar({guild}: Props) {
       testID="channelsSidebarContainer"
       flexOne
       style={{
-        backgroundColor: theme.colors.palette.backgroundPrimary70,
+        backgroundColor: theme.colors.palette.neutral35,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
       }}>
@@ -33,7 +33,7 @@ function ChannelSidebar({guild}: Props) {
           height: 74,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
-          backgroundColor: theme.colors.palette.backgroundPrimary70,
+          backgroundColor: theme.colors.palette.neutral35,
         }}
         element={Surface}
         elevation={1}>
@@ -53,7 +53,7 @@ function ChannelSidebar({guild}: Props) {
             return (
               <Container
                 style={{
-                  backgroundColor: theme.colors.palette.backgroundPrimary70,
+                  backgroundColor: theme.colors.palette.neutral35,
                 }}>
                 <Text>{title.toUpperCase()}</Text>
               </Container>

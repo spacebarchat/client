@@ -23,41 +23,44 @@ function MemberList({guild, channel}: Props) {
     domain.gateway.onChannelOpen(guild.id, channel.id);
   }, [guild]);
 
-  return (
-    <SectionList
-      sections={guild.memberList?.listData || []}
-      keyExtractor={(item, index) => index + item.user?.id!}
-      renderItem={({item}) => {
-        const highestRoleId = item.roles[0];
-        const role = highestRoleId ? guild.roles.get(highestRoleId) : undefined;
-        const colorStyle = role ? {color: role.color} : {};
+  return React.useMemo(
+    () => (
+      <SectionList
+        sections={guild.memberList?.listData || []}
+        keyExtractor={(item, index) => index + item.user?.id!}
+        renderItem={({item}) => {
+          const highestRoleId = item.roles[0];
+          const role = highestRoleId
+            ? guild.roles.get(highestRoleId)
+            : undefined;
+          const colorStyle = role ? {color: role.color} : {};
 
-        // TODO: get member presence and set opacity (~0.2) for offline members
-        return (
-          <Container>
-            <Text style={colorStyle}>{item.user?.username}</Text>
-          </Container>
-        );
-      }}
-      renderSectionHeader={({section: {title}}) => (
-        <Container
-          style={{
-            backgroundColor: Platform.isMobile
-              ? theme.colors.palette.backgroundPrimary100
-              : theme.colors.palette.backgroundPrimary70,
-            paddingTop: 10,
-          }}>
-          <Text
+          // TODO: get member presence and set opacity (~0.2) for offline members
+          return (
+            <Container>
+              <Text style={colorStyle}>{item.user?.username}</Text>
+            </Container>
+          );
+        }}
+        renderSectionHeader={({section: {title}}) => (
+          <Container
             style={{
-              color: theme.colors.textMuted,
+              backgroundColor: theme.colors.palette.neutral30,
+              paddingTop: 10,
             }}>
-            {title}
-          </Text>
-        </Container>
-      )}
-      stickySectionHeadersEnabled={Platform.isMobile}
-      contentContainerStyle={{padding: 10}}
-    />
+            <Text
+              style={{
+                color: theme.colors.textMuted,
+              }}>
+              {title}
+            </Text>
+          </Container>
+        )}
+        stickySectionHeadersEnabled={Platform.isMobile}
+        contentContainerStyle={{padding: 10}}
+      />
+    ),
+    [guild.memberList],
   );
 }
 

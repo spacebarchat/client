@@ -17,7 +17,7 @@ function ChannelItem({channel}: Props) {
   const [style, setStyle] = React.useState<StyleProp<ViewStyle>>({});
 
   const onHoverIn = () => {
-    setStyle({backgroundColor: theme.colors.palette.backgroundPrimary90});
+    setStyle({backgroundColor: theme.colors.palette.neutral50});
   };
 
   const onHoverOut = () => {

@@ -70,7 +70,6 @@ function Main() {
         logger.warn(e);
       } finally {
         logger.debug('Loading complete');
-        domain.setAppLoading(false);
       }
     };
 

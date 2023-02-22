@@ -25,12 +25,16 @@ function ChannelsScreen({navigation}: RootStackScreenProps<'Channels'>) {
           screenOptions={{
             headerShown: false,
           }}>
-          <Stack.Screen
-            name="Channel"
-            component={ChannelScreen}
-            initialParams={{guildId: 'me'}}
-          />
-          <Stack.Screen name="Settings" component={Settings} />
+          <Stack.Group>
+            <Stack.Screen
+              name="Channel"
+              component={ChannelScreen}
+              initialParams={{guildId: 'me'}}
+            />
+          </Stack.Group>
+          <Stack.Group screenOptions={{presentation: 'modal'}}>
+            <Stack.Screen name="Settings" component={Settings} />
+          </Stack.Group>
         </Stack.Navigator>
       </Container>
     </Container>

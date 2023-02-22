@@ -112,6 +112,8 @@ function Swiper({
       renderRightActions={rightChildren ? renderRightAction : undefined}
       onSwipeableLeftWillOpen={bringUpActionSheet}
       onActivated={closeDownBottomSheet}
+      overshootLeft={false}
+      overshootRight={false}
       childrenContainerStyle={{flex: 1}}
       containerStyle={{flex: 1}}>
       {children}

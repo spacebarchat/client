@@ -18,7 +18,6 @@ function GuildSidebar() {
       testID="guildSidebarContainer"
       style={{
         height: '100%',
-        backgroundColor: theme.colors.palette.backgroundPrimary40,
         width: 72,
         zIndex: 3,
       }}
@@ -26,6 +25,10 @@ function GuildSidebar() {
       horizontalCenter>
       <ScrollView style={{overflow: 'visible'}}>
         <Pressable
+          style={{
+            marginTop: 10,
+            marginBottom: 5,
+          }}
           onPress={() => {
             navigation.navigate('Channels', {
               screen: 'Channel',

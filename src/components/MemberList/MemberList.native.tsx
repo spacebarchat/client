@@ -1,7 +1,7 @@
 import {observer} from 'mobx-react';
 import React from 'react';
 import {Platform, SectionList} from 'react-native';
-import {Text, useTheme} from 'react-native-paper';
+import {Surface, Text, useTheme} from 'react-native-paper';
 import {CustomTheme} from '../../constants/Colors';
 import {DomainContext} from '../../stores/DomainStore';
 import Channel from '../../stores/objects/Channel';
@@ -23,6 +23,45 @@ function MemberList({guild, channel}: Props) {
     domain.gateway.onChannelOpen(guild.id, channel.id);
   }, [guild, channel]);
 
+  const list = React.useMemo(
+    () => (
+      <SectionList
+        sections={guild.memberList?.listData || []}
+        keyExtractor={(item, index) => index + item.user?.id!}
+        renderItem={({item}) => {
+          const highestRoleId = item.roles[0];
+          const role = highestRoleId
+            ? guild.roles.get(highestRoleId)
+            : undefined;
+          const colorStyle = role ? {color: role.color} : {};
+
+          // TODO: get member presence and set opacity (~0.2) for offline members
+          return (
+            <Container>
+              <Text style={colorStyle}>{item.user?.username}</Text>
+            </Container>
+          );
+        }}
+        renderSectionHeader={({section: {title}}) => (
+          <Container
+            style={{
+              paddingTop: 10,
+            }}>
+            <Text
+              style={{
+                color: theme.colors.textMuted,
+              }}>
+              {title}
+            </Text>
+          </Container>
+        )}
+        stickySectionHeadersEnabled={Platform.isMobile}
+        contentContainerStyle={{padding: 10}}
+      />
+    ),
+    [guild.memberList],
+  );
+
   return (
     <Container
       testID="memberListContainer"
@@ -30,7 +69,7 @@ function MemberList({guild, channel}: Props) {
       style={{
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
-        backgroundColor: theme.colors.palette.backgroundPrimary70,
+        backgroundColor: theme.colors.palette.neutral35,
       }}>
       <Container
         testID="memberListHeader"
@@ -39,7 +78,11 @@ function MemberList({guild, channel}: Props) {
         style={{
           height: 74,
           padding: 10,
-        }}>
+          zIndex: 100,
+          backgroundColor: theme.colors.palette.neutral35,
+        }}
+        element={Surface}
+        elevation={2}>
         <Text>Member List Header</Text>
       </Container>
       <Container
@@ -48,44 +91,9 @@ function MemberList({guild, channel}: Props) {
         flexOne
         style={{
           padding: 10,
-          backgroundColor: theme.colors.palette.backgroundPrimary100,
+          backgroundColor: theme.colors.palette.neutral35,
         }}>
-        <SectionList
-          sections={guild.memberList?.listData || []}
-          keyExtractor={(item, index) => index + item.user?.id!}
-          renderItem={({item}) => {
-            const highestRoleId = item.roles[0];
-            const role = highestRoleId
-              ? guild.roles.get(highestRoleId)
-              : undefined;
-            const colorStyle = role ? {color: role.color} : {};
-
-            // TODO: get member presence and set opacity (~0.2) for offline members
-            return (
-              <Container>
-                <Text style={colorStyle}>{item.user?.username}</Text>
-              </Container>
-            );
-          }}
-          renderSectionHeader={({section: {title}}) => (
-            <Container
-              style={{
-                backgroundColor: Platform.isMobile
-                  ? theme.colors.palette.backgroundPrimary100
-                  : theme.colors.palette.backgroundPrimary70,
-                paddingTop: 10,
-              }}>
-              <Text
-                style={{
-                  color: theme.colors.textMuted,
-                }}>
-                {title}
-              </Text>
-            </Container>
-          )}
-          stickySectionHeadersEnabled={Platform.isMobile}
-          contentContainerStyle={{padding: 10}}
-        />
+        {list}
       </Container>
     </Container>
   );
