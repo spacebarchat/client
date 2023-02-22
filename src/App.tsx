@@ -19,6 +19,7 @@ import i18n from './utils/i18n';
 Platform.isDesktop = Platform.OS === 'macos' || Platform.OS === 'windows';
 Platform.isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
 Platform.isWeb = Platform.OS === 'web';
+Platform.isWindows = Platform.OS === 'windows';
 
 function Main() {
   // if (
@@ -76,17 +77,14 @@ function Main() {
     init();
   }, []);
 
+  const theme = domain.isDarkTheme ? CombinedDarkTheme : CombinedLightTheme;
+
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <SafeAreaProvider>
         <ErrorBoundary>
-          <PaperProvider
-            theme={domain.isDarkTheme ? CombinedDarkTheme : CombinedLightTheme}>
-            <NavigationContainer
-              linking={linking}
-              theme={
-                domain.isDarkTheme ? CombinedDarkTheme : CombinedLightTheme
-              }>
+          <PaperProvider theme={theme}>
+            <NavigationContainer linking={linking} theme={theme}>
               {domain.isAppReady ? <RootNavigator /> : <SplashScreen />}
             </NavigationContainer>
           </PaperProvider>

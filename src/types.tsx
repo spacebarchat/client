@@ -39,5 +39,6 @@ declare module 'react-native' {
     isDesktop?: boolean;
     isMobile?: boolean;
     isWeb?: boolean;
+    isWindows?: boolean;
   }
 }

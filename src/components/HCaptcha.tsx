@@ -70,10 +70,10 @@ const patchPostMessageJsCode = `(${String(function () {
 })})();`;
 
 const getWebViewComponent = () => {
-  if (Platform.isMobile) {
-    return RNWebViewNative;
+  if (Platform.isWeb) {
+    return RNWebViewWeb;
   }
-  return RNWebViewWeb;
+  return RNWebViewNative;
 };
 
 function HCaptcha({siteKey, theme, onMessage}: HCaptchaProps) {

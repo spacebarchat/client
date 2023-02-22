@@ -13,7 +13,6 @@ import {
   IconButton,
   Modal,
   Portal,
-  Surface,
   Text,
   TextInput,
 } from 'react-native-paper';
@@ -53,12 +52,37 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
   const hideCaptchaModal = () => setCaptchaModalVisible(false);
   const showCaptchaModal = () => setCaptchaModalVisible(true);
 
+  React.useEffect(() => {
+    if (Object.values(errors).some(Boolean)) {
+      setIsLoading(false);
+    }
+  }, [errors]);
+
+  // clears the captcha key and site key
+  const resetCaptcha = () => {
+    setCaptchaKey(undefined);
+    setCaptchaSiteKey(undefined);
+  };
+
+  // handles login button press
   const handleSubmit = (e?: GestureResponderEvent) => {
     if (isLoading && !captchaKey) {
       return;
     }
+
     e?.preventDefault();
     setIsLoading(true);
+
+    if (!login || login === '') {
+      setErrors({login: t('common:errors.INVALID_LOGIN')!});
+      return;
+    }
+
+    if (!password || password === '') {
+      setErrors({password: t('common:errors.INVALID_LOGIN')!});
+      return;
+    }
+
     domain.rest
       .post<LoginSchema, IAPILoginResponse>(Routes.login(), {
         login,
@@ -79,18 +103,14 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
             setErrors({
               login: `Unhandled captcha_service ${captcha_service} `,
             });
-            setCaptchaKey(undefined);
-            setCaptchaSiteKey(undefined);
-            setIsLoading(false);
+            resetCaptcha();
             return;
           }
 
           setErrors({
             login: `Unhandled captcha_key ${captcha_key} `,
           });
-          setCaptchaKey(undefined);
-          setCaptchaSiteKey(undefined);
-          setIsLoading(false);
+          resetCaptcha();
           return;
         } else if ('mfa' in res) {
           // TODO: handle webauthn
@@ -101,9 +121,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
         } else if ('token' in res) {
           logger.debug('success', res);
           domain.account.setToken(res.token);
-          setCaptchaKey(undefined);
-          setCaptchaSiteKey(undefined);
-          setIsLoading(false);
+          resetCaptcha();
           return;
         } else {
           if ('code' in res) {
@@ -112,26 +130,20 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
               if (t) {
                 const {field, error} = t;
                 setErrors({[field ?? 'login']: error});
-                setCaptchaKey(undefined);
-                setCaptchaSiteKey(undefined);
-                setIsLoading(false);
+                resetCaptcha();
                 return;
               }
             }
 
             setErrors({login: res.message});
-            setCaptchaKey(undefined);
-            setCaptchaSiteKey(undefined);
-            setIsLoading(false);
+            resetCaptcha();
             return;
           }
 
           setErrors({
             login: t('common:errors.UNKNOWN_ERROR') as string,
           });
-          setCaptchaKey(undefined);
-          setCaptchaSiteKey(undefined);
-          setIsLoading(false);
+          resetCaptcha();
           return;
         }
       })
@@ -139,9 +151,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
         setErrors({
           login: e.message,
         });
-        setCaptchaKey(undefined);
-        setCaptchaSiteKey(undefined);
-        setIsLoading(false);
+        resetCaptcha();
       });
   };
 
@@ -154,12 +164,13 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
     if (isLoading) {
       return;
     }
+
     setIsLoading(true);
-    if (!login || login == '') {
+
+    if (!login || login === '') {
       setErrors({
         login: t('common:errors.INVALID_LOGIN') as string,
       });
-      setIsLoading(false);
       return;
     }
 
@@ -232,7 +243,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
         </Modal>
       </Portal>
 
-      <Surface
+      <Container
         testID="innerContainer"
         style={[
           styles.loginContainer,
@@ -321,7 +332,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
             <Button
               mode="contained"
               disabled={isLoading}
-              loading={isLoading}
+              loading={!Platform.isWindows && isLoading}
               onPress={handleSubmit}
               style={{marginVertical: 16}}
               labelStyle={styles.buttonLabel}>
@@ -329,7 +340,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
             </Button>
           </Container>
         </Container>
-      </Surface>
+      </Container>
     </Container>
   );
 }

@@ -46,17 +46,17 @@ jobs:
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn --pure-lockfile
 
-    - name: Decode PFX
-      run: |
-        $PfxBytes = [System.Convert]::FromBase64String("${{ secrets.PFX }}")
-        $PfxPath = [System.IO.Path]::GetFullPath( (Join-Path -Path ProjectDirectoryPath -ChildPath GitHubActionsWorkflow.pfx) )
-        [System.IO.File]::WriteAllBytes("$PfxPath", $PfxBytes)
+    # - name: Decode PFX
+    #   run: |
+    #     $PfxBytes = [System.Convert]::FromBase64String("${{ secrets.PFX }}")
+    #     $PfxPath = [System.IO.Path]::GetFullPath( (Join-Path -Path ProjectDirectoryPath -ChildPath GitHubActionsWorkflow.pfx) )
+    #     [System.IO.File]::WriteAllBytes("$PfxPath", $PfxBytes)
 
     - name: Build
-      run: yarn react-native run-windows --logging --no-packager --no-launch --no-deploy --arch ${{ matrix.architecture }} ${{ matrix.configuration == 'Release' && '--release' || '' }} --msbuildprops PackageCertificateKeyFile=ProjectDirectoryPath\GitHubActionsWorkflow.pfx
+      run: yarn react-native run-windows --logging --no-packager --no-launch --no-deploy --arch ${{ matrix.architecture }} ${{ matrix.configuration == 'Release' && '--release' || '' }} --msbuildprops PackageCertificateKeyFile=${{ github.workspace }}\windows\fosscord\fosscord_TemporaryKey.pfx
 
-    - name: Remove PFX
-      run: |
-        $certificatePath = Join-Path -Path ProjectDirectoryPath -ChildPath GitHubActionsWorkflow.pfx
-        Write-Host $certificatePath
-        Remove-Item -path $certificatePath
+    # - name: Remove PFX
+    #   run: |
+    #     $certificatePath = Join-Path -Path ProjectDirectoryPath -ChildPath GitHubActionsWorkflow.pfx
+    #     Write-Host $certificatePath
+    #     Remove-Item -path $certificatePath

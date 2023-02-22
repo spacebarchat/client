@@ -78,6 +78,11 @@ const RNWWFileLoaderConfiguration = {
   },
 };
 
+const fontLoaderConfiguration = {
+  test: /\.(woff|woff2|eot|otf)$/i,
+  type: 'asset/resource',
+};
+
 module.exports = {
   entry: [
     // load any web API polyfills
@@ -99,6 +104,7 @@ module.exports = {
       tsLoaderConfiguration,
       imageLoaderConfiguration,
       ttfLoaderConfiguration,
+      fontLoaderConfiguration,
       RNWWFileLoaderConfiguration,
     ],
   },
