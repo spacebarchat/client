@@ -138,7 +138,12 @@ function ChannelScreen({
 				displayFlex
 				flexOne
 			>
-				<ChannelHeader channel={channel} />
+				<ChannelHeader
+					channel={channel}
+					style = {{
+						padding-left: 1%,
+					}}
+					/>
 				<Container testID="chat" displayFlex flexOne row>
 					<MessageList channel={channel} guild={guild}></MessageList>
 
