@@ -5,7 +5,7 @@ on:
   #   branches:
   #     - dev/bare
   workflow_dispatch:
-  
+
 jobs:
   build:
     name: Build 
@@ -46,5 +46,17 @@ jobs:
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn --pure-lockfile
 
+    - name: Decode PFX
+      run: |
+        $PfxBytes = [System.Convert]::FromBase64String("${{ secrets.PFX }}")
+        $PfxPath = [System.IO.Path]::GetFullPath( (Join-Path -Path ProjectDirectoryPath -ChildPath GitHubActionsWorkflow.pfx) )
+        [System.IO.File]::WriteAllBytes("$PfxPath", $PfxBytes)
+
     - name: Build
-      run: npx react-native run-windows --logging --no-packager --no-launch --no-deploy --arch ${{ matrix.architecture }} ${{ matrix.configuration == 'Release' && '--release' || '' }}
+      run: yarn react-native run-windows --logging --no-packager --no-launch --no-deploy --arch ${{ matrix.architecture }} ${{ matrix.configuration == 'Release' && '--release' || '' }} --msbuildprops PackageCertificateKeyFile=ProjectDirectoryPath\GitHubActionsWorkflow.pfx
+
+    - name: Remove PFX
+      run: |
+        $certificatePath = Join-Path -Path ProjectDirectoryPath -ChildPath GitHubActionsWorkflow.pfx
+        Write-Host $certificatePath
+        Remove-Item -path $certificatePath

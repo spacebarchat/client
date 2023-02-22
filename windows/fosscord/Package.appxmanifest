@@ -8,8 +8,8 @@
 
   <Identity
     Name="a44d518a-7716-4c6f-ac14-ea147b627484"
-    Publisher="CN=23562"
-    Version="1.0.0.0" />
+    Publisher="CN=Fosscord"
+    Version="0.0.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="a44d518a-7716-4c6f-ac14-ea147b627484" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
