@@ -1,8 +1,8 @@
 name: Android CI
 on:
-  # push:
-  #   branches:
-  #     - dev/bare
+  push:
+    branches:
+      - dev/bare
   workflow_dispatch:
 
 jobs:
