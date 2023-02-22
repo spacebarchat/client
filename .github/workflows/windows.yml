@@ -1,8 +1,8 @@
 name: Windows CI
 on:
-  push:
-    branches:
-      - dev/bare
+  # push:
+  #   branches:
+  #     - dev/bare
   workflow_dispatch:
     inputs:
       comments:
@@ -17,8 +17,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        architecture: [x86, x64, ARM64]
-        configuration: [Debug, Release]
+        #architecture: [x86, x64, ARM64]
+        #configuration: [Debug, Release]
+        architecture: [x64]
+        configuration: [Debug]
 
     steps:
     - name: Checkout Code
@@ -32,6 +34,8 @@ jobs:
 
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1.1
+      with:
+        vs-version: 16.8
 
     - name: Check node modules cache
       uses: actions/cache@v3
