@@ -1,15 +1,11 @@
 name: Windows CI
+
 on:
   # push:
   #   branches:
   #     - dev/bare
   workflow_dispatch:
-    inputs:
-      comments:
-        description: 'Comments'
-        required: true
-        default: 'Manual build Actions'
-
+  
 jobs:
   build:
     name: Build 
