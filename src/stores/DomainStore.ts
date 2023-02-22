@@ -5,6 +5,7 @@ import NetInfo, {
 import {action, makeObservable, observable} from 'mobx';
 import {createContext} from 'react';
 import useLogger from '../hooks/useLogger';
+import {localeLogger} from '../utils/i18n/locale-detector';
 import REST from '../utils/REST';
 import AccountStore from './AccountStore';
 import BaseStore from './BaseStore';
@@ -64,7 +65,7 @@ export class DomainStore extends BaseStore {
   @action
   setI18NInitialized() {
     this.isI18NInitialized = true;
-    // localeLogger.info('I18N Initialized');
+    localeLogger.info('I18N Initialized');
   }
 
   get isAppReady() {

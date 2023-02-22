@@ -5,7 +5,9 @@ export default abstract class BaseStore {
 
   constructor() {
     this.logger = Logger.extend(this.constructor.name);
-    this.storeCreated();
+
+    // Causes too much spam for Object stores
+    // this.storeCreated();
   }
 
   protected storeCreated() {

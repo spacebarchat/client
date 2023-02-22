@@ -1,13 +1,14 @@
 import {NavigationContainer} from '@react-navigation/native';
+import {observer} from 'mobx-react';
 import React from 'react';
-// import {Platform} from 'react-native';
-import {I18nManager} from 'react-native';
+import {I18nManager, Platform} from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {Globals} from './Components/Globals';
-import SplashScreen from './Components/SplashScreen';
+import SplashScreen from './components/SplashScreen';
 import {CombinedDarkTheme, CombinedLightTheme} from './constants/Colors';
+import {Globals} from './constants/Globals';
 import useColorScheme from './hooks/useColorScheme';
 import useLogger from './hooks/useLogger';
 import {RootNavigator} from './navigation';
@@ -15,9 +16,9 @@ import linking from './navigation/LinkingConfiguration';
 import {DomainContext} from './stores/DomainStore';
 import i18n from './utils/i18n';
 
-// Platform.isDesktop = Platform.OS === 'macos' || Platform.OS === 'windows';
-// Platform.isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
-// Platform.isWeb = Platform.OS === 'web';
+Platform.isDesktop = Platform.OS === 'macos' || Platform.OS === 'windows';
+Platform.isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
+Platform.isWeb = Platform.OS === 'web';
 
 function Main() {
   // if (
@@ -63,32 +64,36 @@ function Main() {
           });
 
         // load token from storage
-        domain.account.loadToken(domain);
+        await domain.account.loadToken(domain);
       } catch (e) {
         logger.warn(e);
       } finally {
+        logger.debug('Loading complete');
         domain.setAppLoading(false);
       }
     };
 
     init();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <SafeAreaProvider>
-      <ErrorBoundary>
-        <PaperProvider
-          theme={domain.isDarkTheme ? CombinedDarkTheme : CombinedLightTheme}>
-          <NavigationContainer
-            linking={linking}
+    <GestureHandlerRootView style={{flex: 1}}>
+      <SafeAreaProvider>
+        <ErrorBoundary>
+          <PaperProvider
             theme={domain.isDarkTheme ? CombinedDarkTheme : CombinedLightTheme}>
-            {domain.isAppReady ? <RootNavigator /> : <SplashScreen />}
-          </NavigationContainer>
-        </PaperProvider>
-      </ErrorBoundary>
-    </SafeAreaProvider>
+            <NavigationContainer
+              linking={linking}
+              theme={
+                domain.isDarkTheme ? CombinedDarkTheme : CombinedLightTheme
+              }>
+              {domain.isAppReady ? <RootNavigator /> : <SplashScreen />}
+            </NavigationContainer>
+          </PaperProvider>
+        </ErrorBoundary>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 
-export default Main;
+export default observer(Main);

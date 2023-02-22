@@ -17,6 +17,8 @@ const babelLoaderConfiguration = {
     path.resolve(appDirectory, 'index.web.js'),
     path.resolve(appDirectory, 'src'),
     path.resolve(appDirectory, 'node_modules/react-native-uncompiled'),
+    path.resolve(appDirectory, 'node_modules/react-native-reanimated'),
+    path.resolve(appDirectory, 'node_modules/react-native-webview'),
   ],
   use: {
     loader: 'babel-loader',
@@ -66,6 +68,16 @@ const ttfLoaderConfiguration = {
   include: path.resolve(__dirname, './node_modules/react-native-vector-icons'),
 };
 
+const RNWWFileLoaderConfiguration = {
+  test: /postMock.html$/,
+  use: {
+    loader: 'file-loader',
+    options: {
+      name: '[name].[ext]',
+    },
+  },
+};
+
 module.exports = {
   entry: [
     // load any web API polyfills
@@ -87,6 +99,7 @@ module.exports = {
       tsLoaderConfiguration,
       imageLoaderConfiguration,
       ttfLoaderConfiguration,
+      RNWWFileLoaderConfiguration,
     ],
   },
 
@@ -106,12 +119,15 @@ module.exports = {
       ),
       __DEV__: process.env.NODE_ENV !== 'production' || true,
     }),
+    new webpack.EnvironmentPlugin({JEST_WORKER_ID: null}),
+    new webpack.DefinePlugin({process: {env: {}}}),
   ],
 
   resolve: {
     // This will only alias the exact import "react-native"
     alias: {
       'react-native$': 'react-native-web',
+      'react-native-webview': 'react-native-web-webview',
     },
     // If you're working on a multi-platform React Native app, web-specific
     // module implementations should be written in files using the extension

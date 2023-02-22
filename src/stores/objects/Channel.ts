@@ -8,6 +8,8 @@ import {
   ChannelType,
   GatewayVoiceState,
   RESTGetAPIChannelMessagesResult,
+  RESTPostAPIChannelMessageJSONBody,
+  RESTPostAPIChannelMessageResult,
   Routes,
 } from '@puyodead1/fosscord-api-types/v9';
 import {action, observable} from 'mobx';
@@ -154,5 +156,19 @@ export default class Channel extends BaseStore {
       // })
     );
     this.hasFetchedMessages = true;
+  }
+
+  async sendMessage(content: string) {
+    if (!content || !content.trim() || !content.replace(/\r?\n|\r/g, '')) {
+      return;
+    }
+
+    this.domain.rest.post<
+      RESTPostAPIChannelMessageJSONBody,
+      RESTPostAPIChannelMessageResult
+    >(Routes.channelMessages(this.id), {
+      content: content,
+      nonce: Date.now().toString(),
+    });
   }
 }

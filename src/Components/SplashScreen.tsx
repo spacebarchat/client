@@ -1,16 +1,11 @@
 import React from 'react';
 import {ActivityIndicator, StyleSheet} from 'react-native';
 import {Text} from 'react-native-paper';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import Container from './Container';
 
 function SplashScreen() {
   return (
-    <Container
-      style={styles.container}
-      horizontalCenter
-      verticalCenter
-      element={SafeAreaView}>
+    <Container style={styles.container} horizontalCenter verticalCenter>
       <ActivityIndicator size="large" />
       <Text>Fosscord</Text>
     </Container>

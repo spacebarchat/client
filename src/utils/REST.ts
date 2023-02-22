@@ -1,5 +1,5 @@
 import {reaction} from 'mobx';
-import {Globals} from '../Components/Globals';
+import {Globals} from '../constants/Globals';
 import useLogger from '../hooks/useLogger';
 import {DomainStore} from '../stores/DomainStore';
 

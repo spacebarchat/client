@@ -26,7 +26,7 @@ import {
 import {action, makeObservable, observable, reaction} from 'mobx';
 import {Platform} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import {Globals} from '../Components/Globals';
+import {Globals} from '../constants/Globals';
 import BaseStore from './BaseStore';
 import {DomainStore} from './DomainStore';
 
