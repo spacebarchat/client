@@ -16,7 +16,7 @@ import {
   TextInput,
 } from 'react-native-paper';
 import useLogger from '../hooks/useLogger';
-import {IAPIMFAResponse, TotpSchema} from '../interfaces/api';
+import {IAPIMFAResponse, IAPITOTPRequest} from '../interfaces/api';
 import {DomainContext} from '../stores/DomainStore';
 import {Routes} from '../utils/Endpoints';
 import {t} from '../utils/i18n';
@@ -56,7 +56,7 @@ function MFAInput({close, mfaTicket}: MFAInputProps) {
     }
 
     domain.rest
-      .post<TotpSchema, IAPIMFAResponse>(Routes.totp(), {
+      .post<IAPITOTPRequest, IAPIMFAResponse>(Routes.totp(), {
         code,
         ticket: mfaTicket,
       })

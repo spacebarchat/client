@@ -68,7 +68,7 @@ export type IAPILoginResponse =
 
 export type IAPIMFAResponse = IAPILoginResponseSuccess | IAPIError;
 
-export interface LoginSchema {
+export interface IAPILoginRequest {
   login: string;
   password: string;
   undelete?: boolean;
@@ -77,9 +77,14 @@ export interface LoginSchema {
   gift_code_sku_id?: string;
 }
 
-export interface TotpSchema {
+export interface IAPITOTPRequest {
   code: string;
   ticket: string;
   gift_code_sku_id?: string | null;
   login_source?: string | null;
+}
+
+export interface IAPIPasswordResetRequest {
+  login: string;
+  captcha_key?: string;
 }

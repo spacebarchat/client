@@ -84,6 +84,12 @@ export const Routes = {
   totp() {
     return '/auth/mfa/totp';
   },
+  forgotPassword() {
+    return '/auth/forgot';
+  },
+  resetPassword() {
+    return '/auth/reset';
+  },
   minVersion(os: 'android' | 'ios') {
     // TODO: this route should be implemented in fosscord-server and then implemented for mobile versions of the client
     return `/apps/${os}/versions.json`;

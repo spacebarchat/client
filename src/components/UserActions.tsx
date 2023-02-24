@@ -38,13 +38,7 @@ function UserActions() {
         </Container>
       </Container>
       <Container>
-        <IconButton
-          mode="contained"
-          icon="cog"
-          onPress={openSettings}
-          size={24}
-          style={{backgroundColor: 'transparent'}}
-        />
+        <IconButton icon="cog" onPress={openSettings} size={24} />
       </Container>
     </Container>
   );
