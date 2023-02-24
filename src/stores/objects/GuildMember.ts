@@ -1,6 +1,7 @@
 import {
   APIGuildMember,
   APIUser,
+  GatewayGuildMemberListUpdateMember,
   GuildMemberFlags,
 } from '@puyodead1/fosscord-api-types/v9';
 import {action, observable} from 'mobx';
@@ -25,7 +26,11 @@ export default class GuildMember extends BaseStore {
   @observable pending?: boolean | undefined;
   @observable communication_disabled_until?: string | null | undefined;
 
-  constructor(domain: DomainStore, guild: Guild, data: APIGuildMember) {
+  constructor(
+    domain: DomainStore,
+    guild: Guild,
+    data: APIGuildMember | GatewayGuildMemberListUpdateMember,
+  ) {
     super();
     this.domain = domain;
     this.guild = guild;
@@ -43,10 +48,18 @@ export default class GuildMember extends BaseStore {
     this.flags = data.flags;
     this.pending = data.pending;
     this.communication_disabled_until = data.communication_disabled_until;
+
+    if ('presence' in data) {
+      this.domain.presences.add(data.presence);
+    }
   }
 
   @action
-  update(member: APIGuildMember) {
+  update(member: APIGuildMember | GatewayGuildMemberListUpdateMember) {
     Object.assign(this, member);
+
+    if ('presence' in member) {
+      this.domain.presences.add(member.presence);
+    }
   }
 }

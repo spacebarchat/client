@@ -18,6 +18,7 @@ import {
   GatewayMessageDeleteDispatchData,
   GatewayMessageUpdateDispatchData,
   GatewayOpcodes,
+  GatewayPresenceUpdateDispatchData,
   GatewayReadyDispatchData,
   GatewayReceivePayload,
   GatewaySendPayload,
@@ -129,6 +130,11 @@ export default class GatewayStore extends BaseStore {
     this.dispatchHandlers.set(
       GatewayDispatchEvents.MessageDelete,
       this.onMessageDelete,
+    );
+
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.PresenceUpdate,
+      this.onPresenceUpdate,
     );
   }
 
@@ -498,5 +504,9 @@ export default class GatewayStore extends BaseStore {
     }
 
     channel.messages.remove(data.id);
+  };
+
+  private onPresenceUpdate = (data: GatewayPresenceUpdateDispatchData) => {
+    this.domain.presences.add(data);
   };
 }

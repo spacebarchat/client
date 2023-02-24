@@ -12,16 +12,18 @@ import BaseStore from './BaseStore';
 import ChannelStore from './ChannelStore';
 import GatewayStore from './GatewayStore';
 import GuildStore from './GuildStore';
+import PresenceStore from './PresenceStore';
 import UserStore from './UserStore';
 
 export class DomainStore extends BaseStore {
   @observable isI18NInitialized: boolean = false;
   @observable isDarkTheme: boolean = true;
-  @observable account: AccountStore = new AccountStore(this);
-  @observable users: UserStore = new UserStore(this);
-  @observable guilds: GuildStore = new GuildStore(this);
-  @observable channels: ChannelStore = new ChannelStore(this);
-  @observable gateway: GatewayStore = new GatewayStore(this);
+  @observable account = new AccountStore(this);
+  @observable users = new UserStore(this);
+  @observable guilds = new GuildStore(this);
+  @observable channels = new ChannelStore(this);
+  @observable gateway = new GatewayStore(this);
+  @observable presences = new PresenceStore(this);
   @observable isAppLoading: boolean = true;
   @observable isNetworkConnected: boolean | null = null;
 

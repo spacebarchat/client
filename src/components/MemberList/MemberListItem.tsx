@@ -1,8 +1,15 @@
-import {DefaultUserAvatarAssets} from '@puyodead1/fosscord-api-types/v9';
+import {
+  DefaultUserAvatarAssets,
+  PresenceUpdateStatus,
+} from '@puyodead1/fosscord-api-types/v9';
 import React from 'react';
-import {Avatar, Text} from 'react-native-paper';
+import {StyleSheet} from 'react-native';
+import {Avatar, Badge, Text, useTheme} from 'react-native-paper';
+import {DomainContext} from '../../stores/DomainStore';
 import Guild from '../../stores/objects/Guild';
 import GuildMember from '../../stores/objects/GuildMember';
+import PresenceStore from '../../stores/PresenceStore';
+import {CustomTheme} from '../../types';
 import {CDNRoutes} from '../../utils/Endpoints';
 import REST from '../../utils/REST';
 import Container from '../Container';
@@ -13,6 +20,10 @@ interface Props {
 }
 
 function MemberListItem({member, guild}: Props) {
+  const domain = React.useContext(DomainContext);
+  const theme = useTheme<CustomTheme>();
+
+  const presence = domain.presences.presences.get(member.user?.id!);
   const highestRole = member.roles[0];
   const colorStyle = highestRole ? {color: highestRole.color} : {};
 
@@ -22,6 +33,7 @@ function MemberListItem({member, guild}: Props) {
       horizontalCenter
       style={{
         paddingVertical: 5,
+        opacity: presence === PresenceUpdateStatus.Offline ? 0.3 : 1,
       }}>
       <Container>
         <Avatar.Image
@@ -41,6 +53,25 @@ function MemberListItem({member, guild}: Props) {
           }}
           style={{backgroundColor: 'transparent'}}
         />
+        <Container
+          style={[
+            styles.dotContainer,
+            {backgroundColor: theme.colors.palette.neutral30},
+          ]}
+          verticalCenter
+          horizontalCenter>
+          <Badge
+            style={[
+              styles.dot,
+              {
+                backgroundColor: PresenceStore.getStatusColor(
+                  presence ?? PresenceUpdateStatus.Offline,
+                ),
+              },
+            ]}
+            size={10}
+          />
+        </Container>
       </Container>
       <Container style={{marginLeft: 10}}>
         <Text style={colorStyle}>{member.user?.username}</Text>
@@ -48,5 +79,19 @@ function MemberListItem({member, guild}: Props) {
     </Container>
   );
 }
+
+const styles = StyleSheet.create({
+  dotContainer: {
+    width: 13, // +3 from dot size
+    height: 13, // +3 from dot size
+    borderRadius: 6,
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+  },
+  dot: {
+    alignSelf: 'auto',
+  },
+});
 
 export default MemberListItem;

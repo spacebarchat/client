@@ -1,5 +1,4 @@
 import {
-  APIGuildMember,
   GatewayGuildMemberListUpdateDispatchData,
   GatewayGuildMemberListUpdateGroup,
   GatewayGuildMemberListUpdateOperation,
@@ -54,18 +53,7 @@ export default class GuildMemberListStore extends BaseStore {
   }
 
   private computeListData(
-    ops: {
-      op: keyof typeof GatewayGuildMemberListUpdateOperation;
-      range: number[];
-      items: (
-        | {group: GatewayGuildMemberListUpdateGroup}
-        | {member: APIGuildMember}
-      )[];
-      index: number;
-      item:
-        | {group: GatewayGuildMemberListUpdateGroup}
-        | {member: APIGuildMember};
-    }[],
+    ops: GatewayGuildMemberListUpdateDispatchData['ops'],
   ) {
     for (const i of ops) {
       const {op, items, range, item, index} = i;

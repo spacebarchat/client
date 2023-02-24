@@ -1742,10 +1742,10 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/semantic-conventions/-/semantic-conventions-1.9.1.tgz#ad3367684a57879392513479e0a436cb2ac46dad"
   integrity sha512-oPQdbFDmZvjXk5ZDoBGXG8B4tSB/qW5vQunJWQMFUBp7Xe8O1ByPANueJ+Jzg58esEBegyyxZ7LRmfJr7kFcFg==
 
-"@puyodead1/fosscord-api-types@^0.37.41":
-  version "0.37.41"
-  resolved "https://registry.yarnpkg.com/@puyodead1/fosscord-api-types/-/fosscord-api-types-0.37.41.tgz#65ab1cbb9d3fe8d2cf501866a5a8cf65cf10a461"
-  integrity sha512-CxeOwtORgczK4DoF3x46IJQ0MZ7ZrLNGrv/7hf3P9U2QC7lejKJEi7QintvkJJ7Vo0FFMspRn/pZB0Q+M57Hiw==
+"@puyodead1/fosscord-api-types@^0.37.42":
+  version "0.37.42"
+  resolved "https://registry.yarnpkg.com/@puyodead1/fosscord-api-types/-/fosscord-api-types-0.37.42.tgz#2dfe914e233e1d1c1701c02f386ae82b5194f063"
+  integrity sha512-nDQ0l8wRAIhr2R7DEO5t9t8ScydEMyRcy0YRqEpEb3lFA8/SK+jTvrxy7xFwuJbeoUQs6JC/qMNMTaDUPSaJkw==
 
 "@react-native-async-storage/async-storage@^1.17.11":
   version "1.17.11"
