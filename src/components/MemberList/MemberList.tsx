@@ -1,11 +1,13 @@
 import {observer} from 'mobx-react-lite';
 import React from 'react';
 import {Platform, SectionList} from 'react-native';
-import {Text, useTheme} from 'react-native-paper';
+import {Avatar, Text, useTheme} from 'react-native-paper';
 import {CustomTheme} from '../../constants/Colors';
 import {DomainContext} from '../../stores/DomainStore';
 import Channel from '../../stores/objects/Channel';
 import Guild from '../../stores/objects/Guild';
+import {CDNRoutes, DefaultUserAvatarAssets} from '../../utils/Endpoints';
+import REST from '../../utils/REST';
 import Container from '../Container';
 
 interface Props {
@@ -37,8 +39,38 @@ function MemberList({guild, channel}: Props) {
 
           // TODO: get member presence and set opacity (~0.2) for offline members
           return (
-            <Container>
-              <Text style={colorStyle}>{item.user?.username}</Text>
+            // TODO: move this to a separate component
+            <Container
+              row
+              horizontalCenter
+              style={{
+                paddingVertical: 5,
+              }}>
+              <Container>
+                <Avatar.Image
+                  testID="messageAvatar"
+                  size={32}
+                  source={{
+                    uri: item.avatar
+                      ? REST.makeCDNUrl(
+                          CDNRoutes.userAvatar(
+                            item.user?.id!,
+                            item.user?.avatar!,
+                          ),
+                        )
+                      : REST.makeCDNUrl(
+                          CDNRoutes.defaultUserAvatar(
+                            (Number(item.user?.discriminator) %
+                              6) as DefaultUserAvatarAssets,
+                          ),
+                        ),
+                  }}
+                  style={{backgroundColor: 'transparent'}}
+                />
+              </Container>
+              <Container style={{marginLeft: 10}}>
+                <Text style={colorStyle}>{item.user?.username}</Text>
+              </Container>
             </Container>
           );
         }}

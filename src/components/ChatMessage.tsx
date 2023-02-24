@@ -1,8 +1,7 @@
 import 'moment-timezone';
 import React from 'react';
 import Moment from 'react-moment';
-import {Avatar, Text, useTheme} from 'react-native-paper';
-import {CustomTheme} from '../constants/Colors';
+import {Avatar, Text} from 'react-native-paper';
 import Message from '../stores/objects/Message';
 import {CDNRoutes, DefaultUserAvatarAssets} from '../utils/Endpoints';
 import {calendarStrings} from '../utils/i18n/date';
@@ -14,8 +13,6 @@ interface Props {
 }
 
 function ChatMessage({message}: Props) {
-  const theme = useTheme<CustomTheme>();
-
   return (
     <Container
       testID="messageContainer"
