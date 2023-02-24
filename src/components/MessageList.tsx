@@ -16,7 +16,7 @@ interface Props {
   guild: Guild;
 }
 
-const MessageList = observer(({channel}: Props) => {
+const MessageList = ({channel}: Props) => {
   const theme = useTheme<CustomTheme>();
   const domain = React.useContext(DomainContext);
   const navigation = useNavigation();
@@ -27,28 +27,21 @@ const MessageList = observer(({channel}: Props) => {
     channel.getChannelMessages(domain, 50).catch(console.error);
   }, [channel]);
 
-  const list = React.useMemo(
-    () => (
-      <FlatList
-        data={channel.messages.asList().reverse() ?? []}
-        renderItem={({item}) => <ChatMessage message={item} />}
-        keyExtractor={item => item.id}
-        inverted={true}
-      />
-    ),
-    [channel.messages],
-  );
-
   return (
     <Container
       testID="chatContent"
       displayFlex
       flexOne
       style={{backgroundColor: theme.colors.palette.neutral60}}>
-      {list}
+      <FlatList
+        data={channel.messages.asList().reverse() ?? []}
+        renderItem={({item}) => <ChatMessage message={item} />}
+        keyExtractor={item => item.id}
+        inverted={true}
+      />
       <ChatInput channel={channel} />
     </Container>
   );
-});
+};
 
 export default observer(MessageList);
