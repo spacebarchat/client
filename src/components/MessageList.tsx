@@ -51,4 +51,4 @@ const MessageList = observer(({channel}: Props) => {
   );
 });
 
-export default MessageList;
+export default observer(MessageList);
