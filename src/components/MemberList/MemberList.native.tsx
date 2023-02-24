@@ -7,6 +7,7 @@ import {DomainContext} from '../../stores/DomainStore';
 import Channel from '../../stores/objects/Channel';
 import Guild from '../../stores/objects/Guild';
 import Container from '../Container';
+import MemberListItem from './MemberListItem';
 
 interface Props {
   guild: Guild;
@@ -28,20 +29,7 @@ function MemberList({guild, channel}: Props) {
       <SectionList
         sections={guild.memberList?.listData || []}
         keyExtractor={(item, index) => index + item.user?.id!}
-        renderItem={({item}) => {
-          const highestRoleId = item.roles[0];
-          const role = highestRoleId
-            ? guild.roles.get(highestRoleId)
-            : undefined;
-          const colorStyle = role ? {color: role.color} : {};
-
-          // TODO: get member presence and set opacity (~0.2) for offline members
-          return (
-            <Container>
-              <Text style={colorStyle}>{item.user?.username}</Text>
-            </Container>
-          );
-        }}
+        renderItem={({item}) => <MemberListItem member={item} guild={guild} />}
         renderSectionHeader={({section: {title}}) => (
           <Container
             style={{

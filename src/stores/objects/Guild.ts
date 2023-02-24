@@ -145,7 +145,7 @@ export default class Guild extends BaseStore {
     if (this.memberList) {
       this.memberList.update(data);
     } else {
-      this.memberList = new GuildMemberListStore(this, data);
+      this.memberList = new GuildMemberListStore(this.domain, this, data);
     }
   }
 

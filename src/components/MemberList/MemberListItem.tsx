@@ -1,23 +1,20 @@
-import {
-  APIGuildMember,
-  DefaultUserAvatarAssets,
-} from '@puyodead1/fosscord-api-types/v9';
+import {DefaultUserAvatarAssets} from '@puyodead1/fosscord-api-types/v9';
 import React from 'react';
 import {Avatar, Text} from 'react-native-paper';
 import Guild from '../../stores/objects/Guild';
+import GuildMember from '../../stores/objects/GuildMember';
 import {CDNRoutes} from '../../utils/Endpoints';
 import REST from '../../utils/REST';
 import Container from '../Container';
 
 interface Props {
-  member: APIGuildMember;
+  member: GuildMember;
   guild: Guild;
 }
 
 function MemberListItem({member, guild}: Props) {
-  const highestRoleId = member.roles[0];
-  const role = highestRoleId ? guild.roles.get(highestRoleId) : undefined;
-  const colorStyle = role ? {color: role.color} : {};
+  const highestRole = member.roles[0];
+  const colorStyle = highestRole ? {color: highestRole.color} : {};
 
   return (
     <Container

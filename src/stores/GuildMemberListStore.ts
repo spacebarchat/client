@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   APIGuildMember,
   GatewayGuildMemberListUpdateDispatchData,
@@ -8,9 +7,13 @@ import {
 import {action, observable} from 'mobx';
 
 import BaseStore from './BaseStore';
+import {DomainStore} from './DomainStore';
 import Guild from './objects/Guild';
+import GuildMember from './objects/GuildMember';
 
 export default class GuildMemberListStore extends BaseStore {
+  private readonly domain: DomainStore;
+
   id: string;
   private readonly guild: Guild;
   @observable groups: GatewayGuildMemberListUpdateGroup[] = [];
@@ -18,11 +21,16 @@ export default class GuildMemberListStore extends BaseStore {
   @observable online_count: number;
   @observable listData: {
     title: string;
-    data: APIGuildMember[];
+    data: GuildMember[];
   }[] = [];
 
-  constructor(guild: Guild, data: GatewayGuildMemberListUpdateDispatchData) {
+  constructor(
+    domain: DomainStore,
+    guild: Guild,
+    data: GatewayGuildMemberListUpdateDispatchData,
+  ) {
     super();
+    this.domain = domain;
     this.guild = guild;
 
     const {groups, id, member_count, online_count, ops} = data;
@@ -65,7 +73,7 @@ export default class GuildMemberListStore extends BaseStore {
         case GatewayGuildMemberListUpdateOperation.SYNC:
           let listData: {
             title: string;
-            data: APIGuildMember[];
+            data: GuildMember[];
           }[] = [];
 
           for (const item of items) {
@@ -77,7 +85,17 @@ export default class GuildMemberListStore extends BaseStore {
                 data: [],
               });
             } else {
-              listData[listData.length - 1].data.push(item.member);
+              // try to get the existing member
+              if (item.member.user?.id) {
+                const member = this.guild.members.get(item.member.user.id);
+                if (member) {
+                  listData[listData.length - 1].data.push(member);
+                  return;
+                }
+              }
+              listData[listData.length - 1].data.push(
+                new GuildMember(this.domain, this.guild, item.member),
+              );
             }
           }
 
@@ -144,7 +162,20 @@ export default class GuildMemberListStore extends BaseStore {
               data: [],
             });
           } else {
-            this.listData[index].data.splice(index, 0, item.member);
+            // try to get the existing member
+            if (item.member.user?.id) {
+              const member = this.guild.members.get(item.member.user.id);
+              if (member) {
+                this.listData[index].data.push(member);
+                return;
+              }
+            }
+
+            this.listData[index].data.splice(
+              index,
+              0,
+              new GuildMember(this.domain, this.guild, item.member),
+            );
           }
           break;
         default:
