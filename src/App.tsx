@@ -1,12 +1,13 @@
 import {NavigationContainer} from '@react-navigation/native';
+import {reaction} from 'mobx';
 import {observer} from 'mobx-react';
 import React from 'react';
+import FPSStats from 'react-fps-stats';
 import {I18nManager, Platform} from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import SplashScreen from './components/SplashScreen';
 import {CombinedDarkTheme, CombinedLightTheme} from './constants/Colors';
 import {Globals} from './constants/Globals';
 import useColorScheme from './hooks/useColorScheme';
@@ -15,6 +16,7 @@ import {RootNavigator} from './navigation';
 import linking from './navigation/LinkingConfiguration';
 import {DomainContext} from './stores/DomainStore';
 import i18n from './utils/i18n';
+import {localeLogger} from './utils/i18n/locale-detector';
 
 Platform.isDesktop = Platform.OS === 'macos' || Platform.OS === 'windows';
 Platform.isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
@@ -34,14 +36,21 @@ function Main() {
   const colorScheme = useColorScheme();
   const logger = useLogger('App');
 
+  // handles the initial loading of the app
   React.useEffect(() => {
     // TODO: try to get the theme from storage
     domain.setDarkTheme(colorScheme === 'dark');
 
     const init = async () => {
       try {
+        // hack because we dont have gateway yet
+        // domain.setGatewayReady(true);
+        // setTimeout(() => {
+        //   domain.setGatewayReady(true);
+        // }, 10000);
+
         // load "constant" globals
-        await Globals.init();
+        await Globals.load();
 
         // initialize localization
         await i18n
@@ -58,23 +67,41 @@ function Main() {
               // TODO: how do we reload the app?
             }
 
-            domain.setI18NInitialized();
+            localeLogger.info('I18n initialized');
           })
           .catch(e => {
             logger.warn('Something went wrong while initializing i18n:', e);
           });
 
-        // load token from storage
-        await domain.account.loadToken(domain);
+        await domain.loadToken();
       } catch (e) {
         logger.warn(e);
       } finally {
         logger.debug('Loading complete');
+        domain.setAppLoading(false);
       }
     };
 
     init();
   }, []);
+
+  // Handles gateway connection/disconnection on token change
+  reaction(
+    () => domain.token,
+    value => {
+      if (value) {
+        domain.setGatewayReady(false);
+        domain.gateway.connect(Globals.routeSettings.gateway);
+      } else {
+        if (domain.gateway.readyState === WebSocket.OPEN) {
+          domain.gateway.disconnect(1000, 'user is no longer authenticated');
+        }
+      }
+    },
+    {
+      fireImmediately: true,
+    },
+  );
 
   const theme = domain.isDarkTheme ? CombinedDarkTheme : CombinedLightTheme;
 
@@ -84,7 +111,8 @@ function Main() {
         <ErrorBoundary>
           <PaperProvider theme={theme}>
             <NavigationContainer linking={linking} theme={theme}>
-              {domain.isAppReady ? <RootNavigator /> : <SplashScreen />}
+              {__DEV__ && domain.showFPS && Platform.isWeb && <FPSStats />}
+              <RootNavigator />
             </NavigationContainer>
           </PaperProvider>
         </ErrorBoundary>

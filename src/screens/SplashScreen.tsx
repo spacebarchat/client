@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {ActivityIndicator, Text} from 'react-native-paper';
-import Container from './Container';
+import Container from '../components/Container';
 
 function SplashScreen() {
   return (

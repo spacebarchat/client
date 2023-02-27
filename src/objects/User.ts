@@ -3,32 +3,28 @@ import {
   UserFlags,
   UserPremiumType,
 } from '@puyodead1/fosscord-api-types/v9';
-import {observable} from 'mobx';
-import BaseStore from './BaseStore';
 
-export default class AccountStore extends BaseStore {
+export default class {
   id: string;
-  @observable username: string;
-  @observable discriminator: string;
-  @observable avatar: string | null;
-  @observable avatarDecoration?: unknown;
-  @observable email: string | null = null;
-  @observable verified: boolean = false;
-  @observable bot: boolean = false;
-  @observable system: boolean = false;
-  @observable mfaEnabled: boolean = false;
-  @observable premiumType?:
+  username: string;
+  discriminator: string;
+  avatar: string | null;
+  avatarDecoration?: unknown;
+  email: string | null = null;
+  verified: boolean = false;
+  bot: boolean = false;
+  system: boolean = false;
+  mfaEnabled: boolean = false;
+  premiumType?:
     | UserPremiumType.NitroClassic
     | UserPremiumType.Nitro
     | UserPremiumType.NitroBasic;
-  @observable flags?: UserFlags;
-  @observable publicFlags?: UserFlags;
+  flags?: UserFlags;
+  publicFlags?: UserFlags;
   //   phone: string | null;
   //   nsfwAllowed: boolean | null;
 
   constructor(user: APIUser) {
-    super();
-
     this.id = user.id;
     this.username = user.username;
     this.discriminator = user.discriminator;
@@ -61,4 +57,8 @@ export default class AccountStore extends BaseStore {
     // this.phone = user.phone;
     // this.nsfwAllowed = user.nsfw_allowed;
   }
+
+  // hasFlag
+  // isStaff
+  // hasAnyStaffLevel
 }

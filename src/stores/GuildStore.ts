@@ -1,43 +1,34 @@
-import {APIGuild, Snowflake} from '@puyodead1/fosscord-api-types/v9';
-import {action, makeObservable, observable} from 'mobx';
+import {GatewayGuild} from '@puyodead1/fosscord-api-types/v9';
+import {action, computed, observable} from 'mobx';
 import BaseStore from './BaseStore';
-import {DomainStore} from './DomainStore';
 import Guild from './objects/Guild';
 
 export default class GuildStore extends BaseStore {
-  private readonly domain: DomainStore;
-  @observable private readonly guilds = observable.map<Snowflake, Guild>();
+  @observable initialGuildsLoaded = false;
+  @observable readonly guilds = observable.map<string, Guild>();
 
-  constructor(domain: DomainStore) {
+  constructor() {
     super();
-    this.domain = domain;
-
-    makeObservable(this);
   }
 
   @action
-  add(guild: APIGuild) {
-    this.guilds.set(guild.id, new Guild(this.domain, guild));
+  setInitialGuildsLoaded() {
+    this.initialGuildsLoaded = true;
+    this.logger.debug('Initial guilds loaded');
   }
 
   @action
-  remove(guild_id: string) {
-    this.guilds.delete(guild_id);
+  add(guild: GatewayGuild) {
+    this.guilds.set(guild.id, new Guild(guild));
   }
 
-  get(id: Snowflake) {
-    return this.guilds.get(id);
+  @action
+  addAll(guilds: GatewayGuild[]) {
+    guilds.forEach(guild => this.add(guild));
   }
 
-  has(id: Snowflake) {
-    return this.guilds.has(id);
-  }
-
-  asList() {
-    return Array.from(this.guilds.values());
-  }
-
-  get size() {
+  @computed
+  get guildCount() {
     return this.guilds.size;
   }
 }

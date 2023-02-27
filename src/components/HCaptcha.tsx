@@ -1,7 +1,6 @@
 // @ts-nocheck
 import React from 'react';
 import {
-  ActivityIndicator,
   Linking,
   Platform,
   StyleSheet,
@@ -10,6 +9,7 @@ import {
 } from 'react-native';
 import {WebView as RNWebViewWeb} from 'react-native-web-webview';
 import {WebView as RNWebViewNative} from 'react-native-webview';
+import ActivityIndicator from './ActivityIndicator';
 
 export interface HCaptchaMessage {
   event:
@@ -166,7 +166,7 @@ function HCaptcha({siteKey, theme, onMessage}: HCaptchaProps) {
   const renderLoading = React.useCallback(
     () => (
       <View style={[styles.loadingOverlay]}>
-        <ActivityIndicator size="large" color="red" />
+        <ActivityIndicator size="large" />
       </View>
     ),
     [],

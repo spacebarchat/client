@@ -28,13 +28,13 @@ export const Globals: {
     warn: (...args: unknown[]) => void;
     error: (...args: unknown[]) => void;
   };
-  init: () => Promise<void>;
+  load: () => Promise<void>;
   save: () => Promise<void>;
   routeSettings: RouteSettings;
 } = {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   logger: useLogger('Globals'),
-  init: async () => {
+  load: async () => {
     return new Promise((resolve, reject) => {
       Globals.logger.info('Initializing Globals');
       AsyncStorage.getItem('routeSettings')

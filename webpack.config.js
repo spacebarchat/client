@@ -19,6 +19,11 @@ const babelLoaderConfiguration = {
     path.resolve(appDirectory, 'node_modules/react-native-uncompiled'),
     path.resolve(appDirectory, 'node_modules/react-native-reanimated'),
     path.resolve(appDirectory, 'node_modules/react-native-webview'),
+    path.resolve(appDirectory, 'node_modules/react-native-animatable'),
+    path.resolve(
+      appDirectory,
+      'node_modules/@qeepsake/react-navigation-overlay',
+    ),
   ],
   use: {
     loader: 'babel-loader',
@@ -100,6 +105,11 @@ module.exports = {
 
   module: {
     rules: [
+      {
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        use: ['@svgr/webpack'],
+      },
       babelLoaderConfiguration,
       tsLoaderConfiguration,
       imageLoaderConfiguration,
