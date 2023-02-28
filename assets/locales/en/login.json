@@ -1,6 +1,6 @@
 {
   "TITLE": "Login to $t(common:APP_NAME)",
-  "LABEL_EMAIL": "Email",
+  "LABEL_LOGIN": "Email or Phone Number",
   "LABEL_PASSWORD": "Password",
   "BUTTON_LOGIN": "Log In",
   "LABEL_FORGOT_PASSWORD": "Forgot Password?",

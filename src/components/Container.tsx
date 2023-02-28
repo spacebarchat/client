@@ -5,7 +5,7 @@ import {Surface} from 'react-native-paper';
 interface ContainerProps {
   verticalCenter?: boolean;
   horizontalCenter?: boolean;
-  flexOne?: boolean;
+  flex?: number;
   displayFlex?: boolean;
   row?: boolean;
   elevation?: 0 | 1 | 2 | 3 | 4 | 5 | undefined;
@@ -25,7 +25,7 @@ function Container(props: ContainerProps & ViewProps & PressableProps) {
       {...props}
       style={[
         props.style,
-        props.flexOne ? {flex: 1} : undefined,
+        props.flex ? {flex: props.flex} : undefined,
         props.displayFlex ? {display: 'flex'} : undefined,
         props.verticalCenter ? {justifyContent: 'center'} : undefined,
         props.horizontalCenter ? {alignItems: 'center'} : undefined,

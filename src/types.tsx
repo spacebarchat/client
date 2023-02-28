@@ -15,6 +15,7 @@ declare global {
 
 export type RootStackParamsList = {
   Splash: undefined;
+  Root: undefined;
   App: undefined;
   Channels: NavigatorScreenParams<ChannelsParamList> | undefined;
   Login: undefined;
@@ -229,6 +230,7 @@ export interface ColorPalette {
 export interface CustomMD3Colors extends MD3Colors {
   text: string;
   textMuted: string;
+  link: string;
 }
 
 export type CustomTheme = ThemeBase & {

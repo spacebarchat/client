@@ -53,7 +53,7 @@
 		"react-native-windows": "0.71.1",
 		"webpack": "^5.75.0",
 		"webpack-dev-server": "^4.11.1",
-		"yup": "^1.0.0"
+		"yup": "^1.0.2"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.20.0",
@@ -70,6 +70,7 @@
 		"@types/react": "^18.0.24",
 		"@types/react-native": "^0.71.3",
 		"@types/react-test-renderer": "^18.0.0",
+		"@types/yup": "^0.32.0",
 		"babel-jest": "^29.2.1",
 		"babel-loader": "^9.1.2",
 		"babel-plugin-macros": "^3.1.0",

@@ -6,7 +6,10 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {observer} from 'mobx-react';
 import * as React from 'react';
+import {Platform} from 'react-native';
+import AppScreen from '../screens/AppScreen';
 import LoginScreen from '../screens/LoginScreen';
+import RegisterScreen from '../screens/RegisterScreen';
 import RootScreen from '../screens/RootScreen';
 import SplashScreen from '../screens/SplashScreen';
 import {DomainContext} from '../stores/DomainStore';
@@ -27,13 +30,15 @@ export const RootNavigator = observer(() => {
 
   const unauthenticatedStack = (
     <>
+      {Platform.isMobile && <Stack.Screen name="Root" component={RootScreen} />}
       <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Register" component={RegisterScreen} />
     </>
   );
 
   const authenticatedStack = (
     <>
-      <Stack.Screen name="App" component={RootScreen} />
+      <Stack.Screen name="App" component={AppScreen} />
     </>
   );
 

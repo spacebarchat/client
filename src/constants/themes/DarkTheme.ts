@@ -196,6 +196,7 @@ const Theme: CustomTheme = {
     palette,
     text: BaseColors.text.hex(),
     textMuted: BaseColors.text.darken(0.3).hex(),
+    link: CommonBaseColors.link.hex(),
     primary: palette.primary80,
     primaryContainer: palette.primary30,
     secondary: palette.secondary80,
@@ -243,7 +244,11 @@ const Theme: CustomTheme = {
       level5: 'rgb(52, 49, 63)', // palette.primary80, alpha 0.14
     },
   },
-  fonts: configureFonts(), // TODO: add typeface
+  fonts: configureFonts({
+    config: {
+      fontFamily: 'source-sans-regular',
+    },
+  }),
   animation: {
     scale: 1.0,
   },

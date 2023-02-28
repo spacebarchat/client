@@ -44,6 +44,7 @@ export class DomainStore extends BaseStore {
     );
   }
 
+  @action
   private onNetChange(state: NetInfoState) {
     this.networkLogger.info(
       `Connection state changed; type: ${state.type}, isConnected: ${state.isConnected}`,
@@ -138,7 +139,7 @@ export class DomainStore extends BaseStore {
    * Whether the app is done loading and ready to be displayed
    */
   get isAppReady() {
-    return !this.isAppLoading && this.isGatewayReady;
+    return !this.isAppLoading && this.isGatewayReady && this.isNetworkConnected;
   }
 }
 

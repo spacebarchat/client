@@ -6,6 +6,7 @@
   "errors": {
     "INVALID_LOGIN": "Invalid username or password.",
     "INVALID_OTP": "Invalid two-factor authentication code.",
-    "UNKNOWN_ERROR": "Something's broken, sound the fire alarm!"
+    "UNKNOWN_ERROR": "Something's broken, sound the fire alarm!",
+    "FIELD_REQUIRED": "This field is required"
   }
 }

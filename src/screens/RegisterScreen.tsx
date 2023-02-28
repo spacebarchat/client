@@ -23,10 +23,10 @@ import {DomainContext} from '../stores/DomainStore';
 import {CustomTheme, RootStackScreenProps} from '../types';
 import {t} from '../utils/i18n';
 
-const maxHeight = Dimensions.get('screen').height / 2.7;
+// const maxHeight = Dimensions.get('screen').height / 2.7;
 const maxWidth = Dimensions.get('screen').width / 2.44;
 
-function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
+function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
   const theme = useTheme<CustomTheme>();
   const domain = React.useContext(DomainContext);
   const [showPassword, setShowPassword] = React.useState(false);
@@ -35,7 +35,9 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
     () =>
       yup.object({
         login: yup.string().required(t('common:errors.FIELD_REQUIRED')!),
-        password: yup.string().required(t('common:errors.FIELD_REQUIRED')!),
+        username: yup.string().required(t('common:errors.FIELD_REQUIRED')!),
+        password: yup.string().required(t('common:errors.FIELD_REQUIRED')!), // TODO: password requirement, discord has 6-72 characters
+        // dob: yup.date().required(t('common:errors.FIELD_REQUIRED')!),
       }),
     [],
   );
@@ -43,7 +45,9 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
   const formik = useFormik({
     initialValues: {
       login: '',
+      username: '',
       password: '',
+      dob: '',
     },
     validationSchema: validationSchema,
     onSubmit: values => {
@@ -72,19 +76,18 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
           styles.contentContainer,
           !Platform.isMobile
             ? {
-                maxHeight,
                 maxWidth,
                 backgroundColor: theme.colors.palette.neutral25,
               }
             : undefined,
         ]}>
         <Container horizontalCenter style={styles.headerContainer}>
-          <Text variant="headlineSmall">{t('login:TITLE')}</Text>
+          <Text variant="headlineSmall">{t('register:TITLE')}</Text>
           <TouchableRipple
             rippleColor={theme.colors.link}
-            onPress={() => navigation.navigate('Register')}>
+            onPress={() => navigation.navigate('Login')}>
             <Text variant="bodyMedium" style={{color: theme.colors.link}}>
-              {t('login:NEED_ACCOUNT')}
+              {t('register:LINK_LOGIN')}
             </Text>
           </TouchableRipple>
         </Container>
@@ -92,17 +95,13 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
         <Container style={styles.formContainer}>
           <View>
             <TextInput
-              placeholder={t('login:LABEL_LOGIN')!}
-              textContentType={
-                isNaN(Number(formik.values.login))
-                  ? 'emailAddress'
-                  : 'telephoneNumber'
-              }
-              keyboardType="ascii-capable"
+              placeholder={t('register:LABEL_EMAIL')!}
+              textContentType="emailAddress"
+              keyboardType="email-address"
+              autoFocus
               value={formik.values.login}
               onChangeText={formik.handleChange('login')}
               onBlur={formik.handleBlur('login')}
-              autoFocus
               style={[
                 styles.input,
                 formik.touched.login && Boolean(formik.errors.login)
@@ -121,6 +120,35 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
             )}
           </View>
 
+          <View style={{marginTop: 10}}>
+            <TextInput
+              placeholder={t('register:LABEL_USERNAME')!}
+              textContentType="username"
+              keyboardType="ascii-capable"
+              value={formik.values.username}
+              onChangeText={formik.handleChange('username')}
+              onBlur={formik.handleBlur('username')}
+              style={[
+                styles.input,
+                formik.touched.username && Boolean(formik.errors.username)
+                  ? styles.inputError
+                  : undefined,
+                {
+                  backgroundColor: theme.colors.surfaceVariant,
+                  color: theme.colors.onSurfaceVariant,
+                },
+              ]}
+            />
+            <HelperText type="info" visible>
+              {t('register:USERNAME_HELPER')}
+            </HelperText>
+            {formik.touched.username && Boolean(formik.errors.username) && (
+              <HelperText type="error" visible>
+                {formik.errors.username}
+              </HelperText>
+            )}
+          </View>
+
           <View>
             <Container
               row
@@ -135,7 +163,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
                   : undefined,
               ]}>
               <TextInput
-                placeholder={t('login:LABEL_PASSWORD')!}
+                placeholder={t('register:LABEL_PASSWORD')!}
                 secureTextEntry={!showPassword}
                 textContentType="password"
                 keyboardType="ascii-capable"
@@ -156,6 +184,12 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
                 onPress={togglePassword}
               />
             </Container>
+            <HelperText type="info" visible>
+              {t('register:PASSWORD_HELPER', {
+                min: 6,
+                max: 72,
+              })}
+            </HelperText>
             {formik.touched.password && Boolean(formik.errors.password) && (
               <HelperText type="error" visible>
                 {formik.errors.password}
@@ -163,21 +197,10 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
             )}
           </View>
 
-          <TouchableRipple
-            rippleColor={theme.colors.link}
-            style={styles.forgotPassword}
-            onPress={() => {}}
-            disabled>
-            {/* // TODO: implement */}
-            <Text
-              variant="bodyMedium"
-              style={{color: theme.colors.link, opacity: 0.7}}>
-              {t('login:LABEL_FORGOT_PASSWORD')}
-            </Text>
-          </TouchableRipple>
-
           <View>
-            <Button mode="contained">{t('login:BUTTON_LOGIN')}</Button>
+            <Button mode="contained" onPress={() => formik.handleSubmit()}>
+              {t('register:BUTTON_CONTINUE')}
+            </Button>
           </View>
         </Container>
       </Container>
@@ -213,4 +236,4 @@ const styles = StyleSheet.create({
   forgotPassword: {alignSelf: 'flex-start', marginVertical: 10},
 });
 
-export default observer(LoginScreen);
+export default observer(RegisterScreen);
