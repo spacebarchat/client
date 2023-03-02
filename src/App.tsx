@@ -8,7 +8,7 @@ import ErrorBoundary from 'react-native-error-boundary';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {CombinedDarkTheme, CombinedLightTheme} from './constants/Colors';
+import {ThemeName} from './constants/Colors';
 import {Globals} from './constants/Globals';
 import useLogger from './hooks/useLogger';
 import {RootNavigator} from './navigation';
@@ -37,9 +37,7 @@ function Main() {
 
   // handles changes to the system theme
   React.useEffect(
-    () =>
-      // TODO: try to get the theme from storage
-      domain.setDarkTheme(colorScheme === 'dark'),
+    () => domain.setTheme(colorScheme as ThemeName),
     [colorScheme],
   );
 
@@ -47,11 +45,7 @@ function Main() {
   React.useEffect(() => {
     const init = async () => {
       try {
-        // hack because we dont have gateway yet
-        // domain.setGatewayReady(true);
-        // setTimeout(() => {
-        //   domain.setGatewayReady(true);
-        // }, 10000);
+        // domain.loadTheme();
 
         // load "constant" globals
         await Globals.load();
@@ -107,14 +101,12 @@ function Main() {
     },
   );
 
-  const theme = domain.isDarkTheme ? CombinedDarkTheme : CombinedLightTheme;
-
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <SafeAreaProvider>
         <ErrorBoundary>
-          <PaperProvider theme={theme}>
-            <NavigationContainer linking={linking} theme={theme}>
+          <PaperProvider theme={domain.theme}>
+            <NavigationContainer linking={linking} theme={domain.theme}>
               {__DEV__ && domain.showFPS && Platform.isWeb && <FPSStats />}
               <RootNavigator />
             </NavigationContainer>

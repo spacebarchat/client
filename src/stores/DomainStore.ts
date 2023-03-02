@@ -6,7 +6,10 @@ import NetInfo, {
 } from '@react-native-community/netinfo';
 import {action, computed, makeObservable, observable} from 'mobx';
 import {createContext} from 'react';
+import {NavigationTheme} from 'react-native-paper/lib/typescript/types';
+import {getTheme, ThemeName, themes} from '../constants/Colors';
 import useLogger from '../hooks/useLogger';
+import {CustomTheme} from '../types';
 import REST from '../utils/REST';
 import AccountStore from './AccountStore';
 import BaseStore from './BaseStore';
@@ -26,7 +29,7 @@ export class DomainStore extends BaseStore {
   @observable users = new UserStore();
   @observable rest = new REST(this);
 
-  @observable isDarkTheme = true;
+  @observable theme: NavigationTheme & CustomTheme = themes.dark;
   @observable isNetworkConnected: boolean | null = null;
   @observable token: string | null = null;
   @observable tokenLoaded = false;
@@ -55,13 +58,23 @@ export class DomainStore extends BaseStore {
   }
 
   @action
-  toggleDarkTheme() {
-    this.isDarkTheme = !this.isDarkTheme;
-  }
+  setTheme(value: ThemeName, save = false) {
+    const theme = getTheme(value);
+    if (!theme) {
+      throw new Error(`Theme ${value} not found.`);
+    }
 
-  @action
-  setDarkTheme(value: boolean) {
-    this.isDarkTheme = value;
+    if (save) {
+      AsyncStorage.setItem('theme', value, err => {
+        if (err) {
+          this.logger.error(`Failed to save theme to storage: ${err}`);
+          return;
+        }
+        this.logger.debug(`Saved theme ${value} to storage.`);
+      });
+    }
+
+    this.theme = theme;
   }
 
   @action
@@ -132,6 +145,18 @@ export class DomainStore extends BaseStore {
         console.error(err);
       } else {
         console.debug('Token removed from storage.');
+      }
+    });
+  }
+
+  @action
+  loadTheme() {
+    AsyncStorage.getItem('theme', (err, result) => {
+      if (err) {
+        this.logger.error(`Failed to load theme: ${err}`);
+      } else if (result) {
+        this.logger.debug(`Loaded theme from storage: ${result}`);
+        this.setTheme(result as ThemeName, false);
       }
     });
   }

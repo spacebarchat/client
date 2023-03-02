@@ -233,7 +233,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
             ? {
                 maxHeight,
                 maxWidth,
-                backgroundColor: theme.colors.palette.neutral25,
+                backgroundColor: theme.colors.palette.background25,
               }
             : undefined,
         ]}>
