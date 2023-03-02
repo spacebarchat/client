@@ -7,6 +7,7 @@ import NetInfo, {
 import {action, computed, makeObservable, observable} from 'mobx';
 import {createContext} from 'react';
 import useLogger from '../hooks/useLogger';
+import REST from '../utils/REST';
 import AccountStore from './AccountStore';
 import BaseStore from './BaseStore';
 import GatewayConnectionStore from './GatewayConnectionStore';
@@ -23,6 +24,7 @@ export class DomainStore extends BaseStore {
   @observable gateway = new GatewayConnectionStore(this);
   @observable guilds = new GuildStore();
   @observable users = new UserStore();
+  @observable rest = new REST(this);
 
   @observable isDarkTheme = true;
   @observable isNetworkConnected: boolean | null = null;

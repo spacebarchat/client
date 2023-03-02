@@ -46,12 +46,29 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
       password: '',
     },
     validationSchema: validationSchema,
-    onSubmit: values => {
-      // TODO:
-    },
+    onSubmit: values => {},
   });
 
   const togglePassword = () => setShowPassword(!showPassword);
+
+  const onPasswordResetPress = async () => {
+    formik.setTouched({login: true});
+
+    if (!formik.values.login || formik.values.login === '') {
+      formik.setFieldError('login', t('common:errors.INVALID_LOGIN') as string);
+      return;
+    }
+
+    // formik.setSubmitting(true);
+    formik.setErrors({login: 'Not implemented'});
+
+    // await domain.rest.post<IAPIPasswordResetRequest, never>(
+    //   Routes.forgotPassword(),
+    //   {
+    //     login: formik.values.login,
+    //   },
+    // );
+  };
 
   return (
     <Container
@@ -82,7 +99,8 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
           <Text variant="headlineSmall">{t('login:TITLE')}</Text>
           <TouchableRipple
             rippleColor={theme.colors.link}
-            onPress={() => navigation.navigate('Register')}>
+            onPress={() => navigation.navigate('Register')}
+            disabled={formik.isSubmitting}>
             <Text variant="bodyMedium" style={{color: theme.colors.link}}>
               {t('login:NEED_ACCOUNT')}
             </Text>
@@ -103,6 +121,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
               onChangeText={formik.handleChange('login')}
               onBlur={formik.handleBlur('login')}
               autoFocus
+              editable={!formik.isSubmitting}
               style={[
                 styles.input,
                 formik.touched.login && Boolean(formik.errors.login)
@@ -142,6 +161,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
                 value={formik.values.password}
                 onChangeText={formik.handleChange('password')}
                 onBlur={formik.handleBlur('password')}
+                editable={!formik.isSubmitting}
                 style={[
                   styles.input,
                   {
@@ -166,18 +186,17 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
           <TouchableRipple
             rippleColor={theme.colors.link}
             style={styles.forgotPassword}
-            onPress={() => {}}
-            disabled>
-            {/* // TODO: implement */}
-            <Text
-              variant="bodyMedium"
-              style={{color: theme.colors.link, opacity: 0.7}}>
+            onPress={onPasswordResetPress}
+            disabled={formik.isSubmitting}>
+            <Text variant="bodyMedium" style={{color: theme.colors.link}}>
               {t('login:LABEL_FORGOT_PASSWORD')}
             </Text>
           </TouchableRipple>
 
           <View>
-            <Button mode="contained">{t('login:BUTTON_LOGIN')}</Button>
+            <Button mode="contained" onPress={() => formik.handleSubmit()}>
+              {t('login:BUTTON_LOGIN')}
+            </Button>
           </View>
         </Container>
       </Container>
