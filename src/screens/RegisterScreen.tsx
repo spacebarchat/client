@@ -12,6 +12,8 @@ import {
 import {
   HelperText,
   IconButton,
+  Modal,
+  Portal,
   Text,
   TouchableRipple,
   useTheme,
@@ -19,43 +21,173 @@ import {
 import * as yup from 'yup';
 import Button from '../components/Button';
 import Container from '../components/Container';
+import HCaptcha, {HCaptchaMessage} from '../components/HCaptcha';
+import useLogger from '../hooks/useLogger';
+import {IAPIRegisterRequest, IAPIRegisterResponse} from '../interfaces/api';
 import {DomainContext} from '../stores/DomainStore';
 import {CustomTheme, RootStackScreenProps} from '../types';
+import {Routes} from '../utils/Endpoints';
 import {t} from '../utils/i18n';
+import {messageFromFieldError} from '../utils/messageFromFieldError';
 
 // const maxHeight = Dimensions.get('screen').height / 2.7;
 const maxWidth = Dimensions.get('screen').width / 2.44;
 
 function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
   const theme = useTheme<CustomTheme>();
+  const logger = useLogger('RegisterScreen.tsx');
   const domain = React.useContext(DomainContext);
   const [showPassword, setShowPassword] = React.useState(false);
+  const [captchaSiteKey, setCaptchaSiteKey] = React.useState<string | null>(
+    null,
+  );
+  const [captchaKey, setCaptchaKey] = React.useState<string>();
+  const [captchaModalVisible, setCaptchaModalVisible] = React.useState(false);
+
+  const hideCaptchaModal = () => setCaptchaModalVisible(false);
+  const showCaptchaModal = () => setCaptchaModalVisible(true);
+
+  const resetCaptcha = () => {
+    setCaptchaSiteKey(null);
+    setCaptchaKey(undefined);
+  };
 
   const validationSchema = React.useMemo(
     () =>
       yup.object({
-        login: yup.string().required(t('common:errors.FIELD_REQUIRED')!),
-        username: yup.string().required(t('common:errors.FIELD_REQUIRED')!),
-        password: yup.string().required(t('common:errors.FIELD_REQUIRED')!), // TODO: password requirement, discord has 6-72 characters
-        // dob: yup.date().required(t('common:errors.FIELD_REQUIRED')!),
+        email: yup
+          .string()
+          .email()
+          .required(t('common:errors.FIELD_REQUIRED')!),
+        username: yup
+          .string()
+          .min(2)
+          .max(32)
+          .required(t('common:errors.FIELD_REQUIRED')!),
+        password: yup
+          .string()
+          .min(1)
+          .max(72)
+          .required(t('common:errors.FIELD_REQUIRED')!), // TODO: password requirement, discord has 6-72 characters
+        // dob: yup
+        //   .string()
+        //   .matches(/\d{4}-\d{2}-\d{2}/)
+        //   .required(t('common:errors.FIELD_REQUIRED')!),
       }),
     [],
   );
 
   const formik = useFormik({
     initialValues: {
-      login: '',
+      email: '',
       username: '',
       password: '',
-      dob: '',
+      // dob: '',
     },
     validationSchema: validationSchema,
-    onSubmit: values => {
-      // TODO:
+    onSubmit: async values => {
+      await domain.rest
+        .post<IAPIRegisterRequest, IAPIRegisterResponse>(Routes.register(), {
+          username: values.username,
+          email: values.email,
+          password: values.password,
+          captcha_key: captchaKey,
+          consent: true, // TODO: consent
+          // date_of_birth: values.dob,
+        })
+        .then(r => {
+          if ('token' in r && 'settings' in r) {
+            // success
+            domain.setToken(r.token);
+            return;
+          } else if ('captcha_key' in r) {
+            // catcha required
+            if (r.captcha_key[0] !== 'captcha-required') {
+              // some kind of captcha error
+              formik.setFieldError(
+                'login',
+                `Captcha Error: ${r.captcha_key[0]}`,
+              );
+            } else if (r.captcha_service !== 'hcaptcha') {
+              // recaptcha or something else
+              formik.setFieldError(
+                'login',
+                `Unsupported captcha service: ${r.captcha_service}`,
+              );
+            } else {
+              // hcaptcha
+              setCaptchaSiteKey(r.captcha_sitekey);
+              showCaptchaModal();
+              return;
+            }
+
+            resetCaptcha();
+          } else if ('message' in r) {
+            // error
+            if (r.errors) {
+              const t = messageFromFieldError(r.errors);
+              if (t) {
+                formik.setFieldError(t.field!, t.error);
+              } else {
+                formik.setFieldError('login', r.message);
+              }
+            } else {
+              formik.setFieldError('login', r.message);
+            }
+
+            resetCaptcha();
+          } else {
+            // unknown error
+            formik.setFieldError(
+              'login',
+              t('common:errors.UNKNOWN_ERROR') as string,
+            );
+            resetCaptcha();
+          }
+        });
     },
   });
 
   const togglePassword = () => setShowPassword(!showPassword);
+
+  const onCaptchaMessage = (message: HCaptchaMessage) => {
+    const {event, data} = message;
+    switch (event) {
+      case 'cancel':
+        logger.debug('[HCaptcha] Captcha cancelled by user');
+        hideCaptchaModal();
+        formik.setFieldError('login', 'Captcha cancelled by user');
+        break;
+      case 'close':
+        logger.debug('[HCaptcha] Captcha closed');
+        break;
+      case 'challenge-expired':
+      case 'data-expired':
+        logger.debug('[HCaptcha] Captcha expired');
+        hideCaptchaModal();
+        formik.setFieldError('login', 'Captcha expired');
+        break;
+      case 'open':
+        logger.debug('[HCaptcha] Captcha opened');
+        break;
+      case 'error':
+        logger.error('[HCaptcha] Captcha error', data);
+        hideCaptchaModal();
+        break;
+      case 'data':
+        logger.debug('[HCaptcha] Captcha data', data);
+        hideCaptchaModal();
+        setCaptchaKey(data);
+        break;
+    }
+  };
+
+  React.useEffect(() => {
+    if (!captchaKey) {
+      return;
+    }
+    formik.submitForm();
+  }, [captchaKey]);
 
   return (
     <Container
@@ -68,6 +200,21 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
           <IconButton icon="arrow-left" onPress={navigation.goBack} />
         </Container>
       )}
+
+      <Portal>
+        <Modal
+          visible={captchaModalVisible}
+          onDismiss={() => {
+            hideCaptchaModal();
+            formik.setSubmitting(false);
+          }}
+          style={styles.modalContainer}
+          contentContainerStyle={styles.modalContentContainer}>
+          {captchaSiteKey && (
+            <HCaptcha siteKey={captchaSiteKey} onMessage={onCaptchaMessage} />
+          )}
+        </Modal>
+      </Portal>
 
       <Container
         element={KeyboardAvoidingView}
@@ -103,12 +250,12 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
               textContentType="emailAddress"
               keyboardType="email-address"
               autoFocus
-              value={formik.values.login}
-              onChangeText={formik.handleChange('login')}
-              onBlur={formik.handleBlur('login')}
+              value={formik.values.email}
+              onChangeText={formik.handleChange('email')}
+              onBlur={formik.handleBlur('email')}
               style={[
                 styles.input,
-                formik.touched.login && Boolean(formik.errors.login)
+                formik.touched.email && Boolean(formik.errors.email)
                   ? {borderColor: theme.colors.error, borderWidth: 1}
                   : undefined,
                 {
@@ -117,9 +264,9 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
                 },
               ]}
             />
-            {formik.touched.login && Boolean(formik.errors.login) && (
+            {formik.touched.email && Boolean(formik.errors.email) && (
               <HelperText type="error" visible>
-                {formik.errors.login}
+                {formik.errors.email}
               </HelperText>
             )}
           </View>
@@ -190,7 +337,7 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
             </Container>
             <HelperText type="info" visible>
               {t('register:PASSWORD_HELPER', {
-                min: 6,
+                min: 1,
                 max: 72,
               })}
             </HelperText>
@@ -202,7 +349,11 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
           </View>
 
           <View>
-            <Button mode="contained" onPress={() => formik.handleSubmit()}>
+            <Button
+              mode="contained"
+              onPress={() => formik.handleSubmit()}
+              disabled={formik.isSubmitting}
+              loading={formik.isSubmitting}>
               {t('register:BUTTON_CONTINUE')}
             </Button>
           </View>
@@ -233,6 +384,15 @@ const styles = StyleSheet.create({
     outlineStyle: 'none',
   },
   forgotPassword: {alignSelf: 'flex-start', marginVertical: 10},
+  modalContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContentContainer: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default observer(RegisterScreen);

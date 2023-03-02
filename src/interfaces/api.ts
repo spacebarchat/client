@@ -77,6 +77,24 @@ export interface IAPILoginRequest {
   gift_code_sku_id?: string;
 }
 
+export interface IAPIRegisterRequest {
+  username: string;
+  password?: string;
+  consent: boolean;
+  email?: string;
+  fingerprint?: string;
+  invite?: string;
+  date_of_birth?: string;
+  gift_code_sku_id?: string;
+  captcha_key?: string;
+  promotional_email_opt_in?: boolean;
+}
+
+export type IAPIRegisterResponse =
+  | IAPILoginResponseCaptchaRequired
+  | IAPILoginResponseSuccess
+  | IAPIError;
+
 export interface IAPITOTPRequest {
   code: string;
   ticket: string;

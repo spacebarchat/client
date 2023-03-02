@@ -284,7 +284,7 @@ const opacity = {
 };
 
 const Theme: CustomTheme = {
-  name: 'Default Dark',
+  name: 'Oceanic',
   dark: true,
   roundness: 4,
   mode: 'adaptive',

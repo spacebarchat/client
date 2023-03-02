@@ -9,28 +9,6 @@ import CustomDarkTheme from './themes/Dark';
 import CustomLightTheme from './themes/Light';
 import CustomOceanicTheme from './themes/Oceanic';
 
-// #262322 this is a nice color, maybe we can use this somewhere
-
-// const {LightTheme, DarkTheme} = adaptNavigationTheme({
-//   reactNavigationLight: NavigationDefaultTheme,
-//   reactNavigationDark: NavigationDarkTheme,
-// });
-
-// export const CombinedLightTheme = merge<
-//   NavigationTheme,
-//   typeof CustomLightTheme
-// >(LightTheme, CustomLightTheme);
-
-// export const CombinedDarkTheme = merge<NavigationTheme, typeof CustomDarkTheme>(
-//   DarkTheme,
-//   CustomDarkTheme,
-// );
-
-// export const Themes = {
-//   light: CombinedLightTheme,
-//   dark: CombinedDarkTheme,
-// }
-
 function combineTheme(
   reactNavigationTheme: NavigationTheme,
   customTheme: typeof CustomLightTheme,

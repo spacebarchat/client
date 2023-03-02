@@ -49,6 +49,11 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
   const hideCaptchaModal = () => setCaptchaModalVisible(false);
   const showCaptchaModal = () => setCaptchaModalVisible(true);
 
+  const resetCaptcha = () => {
+    setCaptchaSiteKey(null);
+    setCaptchaKey(undefined);
+  };
+
   const validationSchema = React.useMemo(
     () =>
       yup.object({
@@ -62,11 +67,6 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
       }),
     [],
   );
-
-  const resetCaptcha = () => {
-    setCaptchaSiteKey(null);
-    setCaptchaKey(undefined);
-  };
 
   const formik = useFormik({
     initialValues: {
