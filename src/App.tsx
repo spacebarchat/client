@@ -3,14 +3,13 @@ import {reaction} from 'mobx';
 import {observer} from 'mobx-react';
 import React from 'react';
 import FPSStats from 'react-fps-stats';
-import {I18nManager, Platform} from 'react-native';
+import {I18nManager, Platform, useColorScheme} from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {CombinedDarkTheme, CombinedLightTheme} from './constants/Colors';
 import {Globals} from './constants/Globals';
-import useColorScheme from './hooks/useColorScheme';
 import useLogger from './hooks/useLogger';
 import {RootNavigator} from './navigation';
 import linking from './navigation/LinkingConfiguration';
@@ -36,11 +35,16 @@ function Main() {
   const colorScheme = useColorScheme();
   const logger = useLogger('App');
 
+  // handles changes to the system theme
+  React.useEffect(
+    () =>
+      // TODO: try to get the theme from storage
+      domain.setDarkTheme(colorScheme === 'dark'),
+    [colorScheme],
+  );
+
   // handles the initial loading of the app
   React.useEffect(() => {
-    // TODO: try to get the theme from storage
-    domain.setDarkTheme(colorScheme === 'dark');
-
     const init = async () => {
       try {
         // hack because we dont have gateway yet
