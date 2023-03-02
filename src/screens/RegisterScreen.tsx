@@ -77,16 +77,20 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
           !Platform.isMobile
             ? {
                 maxWidth,
-                backgroundColor: theme.colors.palette.neutral25,
+                backgroundColor: theme.colors.palette.backgroundSecondary50,
               }
             : undefined,
         ]}>
         <Container horizontalCenter style={styles.headerContainer}>
-          <Text variant="headlineSmall">{t('register:TITLE')}</Text>
+          <Text variant="headlineSmall" style={{textAlign: 'center'}}>
+            {t('register:TITLE')}
+          </Text>
           <TouchableRipple
             rippleColor={theme.colors.link}
             onPress={() => navigation.navigate('Login')}>
-            <Text variant="bodyMedium" style={{color: theme.colors.link}}>
+            <Text
+              variant="bodyMedium"
+              style={{color: theme.colors.link, textAlign: 'center'}}>
               {t('register:LINK_LOGIN')}
             </Text>
           </TouchableRipple>
@@ -105,7 +109,7 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
               style={[
                 styles.input,
                 formik.touched.login && Boolean(formik.errors.login)
-                  ? styles.inputError
+                  ? {borderColor: theme.colors.error, borderWidth: 1}
                   : undefined,
                 {
                   backgroundColor: theme.colors.surfaceVariant,
@@ -131,7 +135,7 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
               style={[
                 styles.input,
                 formik.touched.username && Boolean(formik.errors.username)
-                  ? styles.inputError
+                  ? {borderColor: theme.colors.error, borderWidth: 1}
                   : undefined,
                 {
                   backgroundColor: theme.colors.surfaceVariant,
@@ -159,7 +163,7 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
                   marginTop: 10,
                 },
                 formik.touched.password && Boolean(formik.errors.password)
-                  ? styles.inputError
+                  ? {borderColor: theme.colors.error, borderWidth: 1}
                   : undefined,
               ]}>
               <TextInput
@@ -227,11 +231,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 5,
     outlineStyle: 'none',
-  },
-  inputError: {
-    borderColor: 'red',
-    borderWidth: 1,
-    borderStyle: 'solid',
   },
   forgotPassword: {alignSelf: 'flex-start', marginVertical: 10},
 });

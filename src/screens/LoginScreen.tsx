@@ -29,6 +29,7 @@ import {CustomTheme, RootStackScreenProps} from '../types';
 import {Routes} from '../utils/Endpoints';
 import {t} from '../utils/i18n';
 import {messageFromFieldError} from '../utils/messageFromFieldError';
+import MFAScreen from './MFAScreen';
 
 const maxHeight = Dimensions.get('screen').height / 2.7;
 const maxWidth = Dimensions.get('screen').width / 2.44;
@@ -43,6 +44,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
   );
   const [captchaKey, setCaptchaKey] = React.useState<string>();
   const [captchaModalVisible, setCaptchaModalVisible] = React.useState(false);
+  const [mfaTicket, setMfaTicket] = React.useState<string>();
 
   const hideCaptchaModal = () => setCaptchaModalVisible(false);
   const showCaptchaModal = () => setCaptchaModalVisible(true);
@@ -109,8 +111,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
             resetCaptcha();
           } else if ('ticket' in r) {
             // mfa
-            formik.setFieldError('login', 'MFA required; not implemented');
-            resetCaptcha();
+            setMfaTicket(r.ticket);
             return;
           } else if ('message' in r) {
             // error
@@ -198,6 +199,10 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
     formik.submitForm();
   }, [captchaKey]);
 
+  if (mfaTicket) {
+    return <MFAScreen ticket={mfaTicket} />;
+  }
+
   return (
     <Container
       style={styles.container}
@@ -233,17 +238,21 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
             ? {
                 maxHeight,
                 maxWidth,
-                backgroundColor: theme.colors.palette.background25,
+                backgroundColor: theme.colors.palette.backgroundSecondary50,
               }
             : undefined,
         ]}>
         <Container horizontalCenter style={styles.headerContainer}>
-          <Text variant="headlineSmall">{t('login:TITLE')}</Text>
+          <Text variant="headlineSmall" style={{textAlign: 'center'}}>
+            {t('login:TITLE')}
+          </Text>
           <TouchableRipple
             rippleColor={theme.colors.link}
             onPress={() => navigation.navigate('Register')}
             disabled={formik.isSubmitting}>
-            <Text variant="bodyMedium" style={{color: theme.colors.link}}>
+            <Text
+              variant="bodyMedium"
+              style={{color: theme.colors.link, textAlign: 'center'}}>
               {t('login:NEED_ACCOUNT')}
             </Text>
           </TouchableRipple>
@@ -267,7 +276,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
               style={[
                 styles.input,
                 formik.touched.login && formik.errors.login
-                  ? styles.inputError
+                  ? {borderColor: theme.colors.error, borderWidth: 1}
                   : undefined,
                 {
                   backgroundColor: theme.colors.surfaceVariant,
@@ -292,7 +301,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
                   marginTop: 10,
                 },
                 formik.touched.password && formik.errors.password
-                  ? styles.inputError
+                  ? {borderColor: theme.colors.error, borderWidth: 1}
                   : undefined,
               ]}>
               <TextInput
@@ -369,11 +378,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 5,
     outlineStyle: 'none',
-  },
-  inputError: {
-    borderColor: 'red',
-    borderWidth: 1,
-    borderStyle: 'solid',
   },
   forgotPassword: {alignSelf: 'flex-start', marginVertical: 10},
   modalContainer: {

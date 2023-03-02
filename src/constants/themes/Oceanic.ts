@@ -314,7 +314,7 @@ const Theme: CustomTheme = {
     tertiary: palette.tertiary50,
     tertiaryContainer: palette.tertiary30,
     surface: palette.background50,
-    surfaceVariant: palette.backgroundSecondary50,
+    surfaceVariant: palette.backgroundSecondary60,
     surfaceDisabled: Color(palette.background90)
       .alpha(opacity.level2)
       .rgb()

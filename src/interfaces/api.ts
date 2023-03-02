@@ -66,7 +66,7 @@ export type IAPILoginResponse =
   | IAPILoginResponseSuccess
   | IAPIError;
 
-export type IAPIMFAResponse = IAPILoginResponseSuccess | IAPIError;
+export type IAPITOTPResponse = IAPILoginResponseSuccess | IAPIError;
 
 export interface IAPILoginRequest {
   login: string;
