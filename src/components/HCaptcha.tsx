@@ -7,9 +7,9 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
 import {WebView as RNWebViewWeb} from 'react-native-web-webview';
 import {WebView as RNWebViewNative} from 'react-native-webview';
-import ActivityIndicator from './ActivityIndicator';
 
 export interface HCaptchaMessage {
   event:

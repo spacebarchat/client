@@ -88,3 +88,8 @@ export interface IAPIPasswordResetRequest {
   login: string;
   captcha_key?: string;
 }
+
+export enum APIErrorCodes {
+  ACCOUNT_DELETED = 20011,
+  ACCOUNT_DISABLED = 20013,
+}

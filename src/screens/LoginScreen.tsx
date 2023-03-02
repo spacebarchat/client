@@ -12,6 +12,8 @@ import {
 import {
   HelperText,
   IconButton,
+  Modal,
+  Portal,
   Text,
   TouchableRipple,
   useTheme,
@@ -19,26 +21,50 @@ import {
 import * as yup from 'yup';
 import Button from '../components/Button';
 import Container from '../components/Container';
+import HCaptcha, {HCaptchaMessage} from '../components/HCaptcha';
+import useLogger from '../hooks/useLogger';
+import {IAPILoginRequest, IAPILoginResponse} from '../interfaces/api';
 import {DomainContext} from '../stores/DomainStore';
 import {CustomTheme, RootStackScreenProps} from '../types';
+import {Routes} from '../utils/Endpoints';
 import {t} from '../utils/i18n';
+import {messageFromFieldError} from '../utils/messageFromFieldError';
 
 const maxHeight = Dimensions.get('screen').height / 2.7;
 const maxWidth = Dimensions.get('screen').width / 2.44;
 
 function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
   const theme = useTheme<CustomTheme>();
+  const logger = useLogger('LoginScreen.tsx');
   const domain = React.useContext(DomainContext);
   const [showPassword, setShowPassword] = React.useState(false);
+  const [captchaSiteKey, setCaptchaSiteKey] = React.useState<string | null>(
+    null,
+  );
+  const [captchaKey, setCaptchaKey] = React.useState<string>();
+  const [captchaModalVisible, setCaptchaModalVisible] = React.useState(false);
+
+  const hideCaptchaModal = () => setCaptchaModalVisible(false);
+  const showCaptchaModal = () => setCaptchaModalVisible(true);
 
   const validationSchema = React.useMemo(
     () =>
       yup.object({
-        login: yup.string().required(t('common:errors.FIELD_REQUIRED')!),
-        password: yup.string().required(t('common:errors.FIELD_REQUIRED')!),
+        login: yup
+          .string()
+          .email()
+          .required(t('common:errors.FIELD_REQUIRED') as string),
+        password: yup
+          .string()
+          .required(t('common:errors.FIELD_REQUIRED') as string),
       }),
     [],
   );
+
+  const resetCaptcha = () => {
+    setCaptchaSiteKey(null);
+    setCaptchaKey(undefined);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -46,13 +72,76 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
       password: '',
     },
     validationSchema: validationSchema,
-    onSubmit: values => {},
+    onSubmit: async values => {
+      await domain.rest
+        .post<IAPILoginRequest, IAPILoginResponse>(Routes.login(), {
+          login: values.login,
+          password: values.password,
+          undelete: false,
+          captcha_key: captchaKey,
+        })
+        .then(r => {
+          if ('token' in r && 'settings' in r) {
+            // success
+            domain.setToken(r.token);
+            return;
+          } else if ('captcha_key' in r) {
+            // catcha required
+            if (r.captcha_key[0] !== 'captcha-required') {
+              // some kind of captcha error
+              formik.setFieldError(
+                'login',
+                `Captcha Error: ${r.captcha_key[0]}`,
+              );
+            } else if (r.captcha_service !== 'hcaptcha') {
+              // recaptcha or something else
+              formik.setFieldError(
+                'login',
+                `Unsupported captcha service: ${r.captcha_service}`,
+              );
+            } else {
+              // hcaptcha
+              setCaptchaSiteKey(r.captcha_sitekey);
+              showCaptchaModal();
+              return;
+            }
+
+            resetCaptcha();
+          } else if ('ticket' in r) {
+            // mfa
+            formik.setFieldError('login', 'MFA required; not implemented');
+            resetCaptcha();
+            return;
+          } else if ('message' in r) {
+            // error
+            if (r.errors) {
+              const t = messageFromFieldError(r.errors);
+              if (t) {
+                formik.setFieldError(t.field!, t.error);
+              } else {
+                formik.setFieldError('login', r.message);
+              }
+            } else {
+              formik.setFieldError('login', r.message);
+            }
+
+            resetCaptcha();
+          } else {
+            // unknown error
+            formik.setFieldError(
+              'login',
+              t('common:errors.UNKNOWN_ERROR') as string,
+            );
+            resetCaptcha();
+          }
+        });
+    },
   });
 
   const togglePassword = () => setShowPassword(!showPassword);
 
-  const onPasswordResetPress = async () => {
-    formik.setTouched({login: true});
+  const forgotPasswordPress = async () => {
+    await formik.setTouched({login: true}, true);
 
     if (!formik.values.login || formik.values.login === '') {
       formik.setFieldError('login', t('common:errors.INVALID_LOGIN') as string);
@@ -60,7 +149,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
     }
 
     // formik.setSubmitting(true);
-    formik.setErrors({login: 'Not implemented'});
+    formik.setFieldError('login', 'Not implemented');
 
     // await domain.rest.post<IAPIPasswordResetRequest, never>(
     //   Routes.forgotPassword(),
@@ -69,6 +158,45 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
     //   },
     // );
   };
+
+  const onCaptchaMessage = (message: HCaptchaMessage) => {
+    const {event, data} = message;
+    switch (event) {
+      case 'cancel':
+        logger.debug('[HCaptcha] Captcha cancelled by user');
+        hideCaptchaModal();
+        formik.setFieldError('login', 'Captcha cancelled by user');
+        break;
+      case 'close':
+        logger.debug('[HCaptcha] Captcha closed');
+        break;
+      case 'challenge-expired':
+      case 'data-expired':
+        logger.debug('[HCaptcha] Captcha expired');
+        hideCaptchaModal();
+        formik.setFieldError('login', 'Captcha expired');
+        break;
+      case 'open':
+        logger.debug('[HCaptcha] Captcha opened');
+        break;
+      case 'error':
+        logger.error('[HCaptcha] Captcha error', data);
+        hideCaptchaModal();
+        break;
+      case 'data':
+        logger.debug('[HCaptcha] Captcha data', data);
+        hideCaptchaModal();
+        setCaptchaKey(data);
+        break;
+    }
+  };
+
+  React.useEffect(() => {
+    if (!captchaKey) {
+      return;
+    }
+    formik.submitForm();
+  }, [captchaKey]);
 
   return (
     <Container
@@ -81,6 +209,20 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
           <IconButton icon="arrow-left" onPress={navigation.goBack} />
         </Container>
       )}
+      <Portal>
+        <Modal
+          visible={captchaModalVisible}
+          onDismiss={() => {
+            hideCaptchaModal();
+            formik.setSubmitting(false);
+          }}
+          style={styles.modalContainer}
+          contentContainerStyle={styles.modalContentContainer}>
+          {captchaSiteKey && (
+            <HCaptcha siteKey={captchaSiteKey} onMessage={onCaptchaMessage} />
+          )}
+        </Modal>
+      </Portal>
 
       <Container
         element={KeyboardAvoidingView}
@@ -124,7 +266,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
               editable={!formik.isSubmitting}
               style={[
                 styles.input,
-                formik.touched.login && Boolean(formik.errors.login)
+                formik.touched.login && formik.errors.login
                   ? styles.inputError
                   : undefined,
                 {
@@ -133,7 +275,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
                 },
               ]}
             />
-            {formik.touched.login && Boolean(formik.errors.login) && (
+            {formik.touched.login && formik.errors.login && (
               <HelperText type="error" visible>
                 {formik.errors.login}
               </HelperText>
@@ -149,7 +291,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
                   borderRadius: 5,
                   marginTop: 10,
                 },
-                formik.touched.password && Boolean(formik.errors.password)
+                formik.touched.password && formik.errors.password
                   ? styles.inputError
                   : undefined,
               ]}>
@@ -176,7 +318,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
                 onPress={togglePassword}
               />
             </Container>
-            {formik.touched.password && Boolean(formik.errors.password) && (
+            {formik.touched.password && formik.errors.password && (
               <HelperText type="error" visible>
                 {formik.errors.password}
               </HelperText>
@@ -186,7 +328,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
           <TouchableRipple
             rippleColor={theme.colors.link}
             style={styles.forgotPassword}
-            onPress={onPasswordResetPress}
+            onPress={forgotPasswordPress}
             disabled={formik.isSubmitting}>
             <Text variant="bodyMedium" style={{color: theme.colors.link}}>
               {t('login:LABEL_FORGOT_PASSWORD')}
@@ -194,7 +336,11 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
           </TouchableRipple>
 
           <View>
-            <Button mode="contained" onPress={() => formik.handleSubmit()}>
+            <Button
+              mode="contained"
+              onPress={() => formik.handleSubmit()}
+              disabled={formik.isSubmitting}
+              loading={formik.isSubmitting}>
               {t('login:BUTTON_LOGIN')}
             </Button>
           </View>
@@ -230,6 +376,15 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
   },
   forgotPassword: {alignSelf: 'flex-start', marginVertical: 10},
+  modalContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContentContainer: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default observer(LoginScreen);
