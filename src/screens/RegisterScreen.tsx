@@ -58,7 +58,7 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
       yup.object({
         email: yup
           .string()
-          .email()
+          .email(t('common:errors.INVALID_EMAIL') as string)
           .required(t('common:errors.FIELD_REQUIRED')!),
         username: yup
           .string()

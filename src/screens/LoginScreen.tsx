@@ -59,7 +59,7 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
       yup.object({
         login: yup
           .string()
-          .email()
+          .email(t('common:errors.INVALID_EMAIL') as string)
           .required(t('common:errors.FIELD_REQUIRED') as string),
         password: yup
           .string()

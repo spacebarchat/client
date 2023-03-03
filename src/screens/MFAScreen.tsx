@@ -38,7 +38,7 @@ function MFAScreen({ticket}: MFAProps) {
       yup.object({
         code: yup
           .string()
-          .matches(/^[0-9]+$/, t('common:errors.FIELD_NUMERIC') as string)
+          .matches(/^[0-9]+$/, t('common:errors.INVALID_OTP') as string)
           .min(6)
           .max(6)
           .required(t('common:errors.FIELD_REQUIRED') as string),
@@ -51,6 +51,8 @@ function MFAScreen({ticket}: MFAProps) {
       code: '',
     },
     validationSchema: validationSchema,
+    validateOnBlur: false,
+    validateOnChange: false,
     onSubmit: async values => {
       await domain.rest
         .post<IAPITOTPRequest, IAPITOTPResponse>(Routes.totp(), {
