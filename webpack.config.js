@@ -24,6 +24,7 @@ const babelLoaderConfiguration = {
       appDirectory,
       'node_modules/@qeepsake/react-navigation-overlay',
     ),
+    path.resolve(appDirectory, 'node_modules/react-native-dropdown-picker'),
   ],
   use: {
     loader: 'babel-loader',

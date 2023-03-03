@@ -19,6 +19,7 @@ import {
   useTheme,
 } from 'react-native-paper';
 import * as yup from 'yup';
+import BirthdayPicker from '../components/BirthdayPicker';
 import Button from '../components/Button';
 import Container from '../components/Container';
 import HCaptcha, {HCaptchaMessage} from '../components/HCaptcha';
@@ -85,6 +86,8 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
       // dob: '',
     },
     validationSchema: validationSchema,
+    validateOnChange: false,
+    validateOnBlur: false,
     onSubmit: async values => {
       await domain.rest
         .post<IAPIRegisterRequest, IAPIRegisterResponse>(Routes.register(), {
@@ -264,14 +267,14 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
                 },
               ]}
             />
-            {formik.touched.email && Boolean(formik.errors.email) && (
-              <HelperText type="error" visible>
-                {formik.errors.email}
-              </HelperText>
-            )}
+            <HelperText
+              type="error"
+              visible={formik.touched.email && Boolean(formik.errors.email)}>
+              {formik.errors.email}
+            </HelperText>
           </View>
 
-          <View style={{marginTop: 10}}>
+          <View>
             <TextInput
               placeholder={t('register:LABEL_USERNAME')!}
               textContentType="username"
@@ -293,11 +296,13 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
             <HelperText type="info" visible>
               {t('register:USERNAME_HELPER')}
             </HelperText>
-            {formik.touched.username && Boolean(formik.errors.username) && (
-              <HelperText type="error" visible>
-                {formik.errors.username}
-              </HelperText>
-            )}
+            <HelperText
+              type="error"
+              visible={
+                formik.touched.username && Boolean(formik.errors.username)
+              }>
+              {formik.errors.username}
+            </HelperText>
           </View>
 
           <View>
@@ -307,7 +312,6 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
                 {
                   backgroundColor: theme.colors.surfaceVariant,
                   borderRadius: 5,
-                  marginTop: 10,
                 },
                 formik.touched.password && Boolean(formik.errors.password)
                   ? {borderColor: theme.colors.error, borderWidth: 1}
@@ -341,14 +345,18 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
                 max: 72,
               })}
             </HelperText>
-            {formik.touched.password && Boolean(formik.errors.password) && (
-              <HelperText type="error" visible>
-                {formik.errors.password}
-              </HelperText>
-            )}
+            <HelperText
+              type="error"
+              visible={
+                formik.touched.password && Boolean(formik.errors.password)
+              }>
+              {formik.errors.password}
+            </HelperText>
           </View>
 
-          <View>
+          <BirthdayPicker />
+
+          <View style={{zIndex: -1}}>
             <Button
               mode="contained"
               onPress={() => formik.handleSubmit()}

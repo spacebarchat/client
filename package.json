@@ -36,6 +36,7 @@
 		"react-moment": "^1.1.3",
 		"react-native": "0.71.0",
 		"react-native-device-info": "^10.4.0",
+		"react-native-dropdown-picker": "^5.4.4",
 		"react-native-error-boundary": "^1.2.1",
 		"react-native-gesture-handler": "^2.9.0",
 		"react-native-localize": "^2.2.4",
