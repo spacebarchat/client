@@ -34,6 +34,7 @@ import {messageFromFieldError} from '../utils/messageFromFieldError';
 // const maxHeight = Dimensions.get('screen').height / 2.7;
 const maxWidth = Dimensions.get('screen').width / 2.44;
 
+// TODO: if the user is too young, store dob to localstorage and show age gate screen
 function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
   const theme = useTheme<CustomTheme>();
   const logger = useLogger('RegisterScreen.tsx');
@@ -70,10 +71,10 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
           .min(1)
           .max(72)
           .required(t('common:errors.FIELD_REQUIRED')!), // TODO: password requirement, discord has 6-72 characters
-        // dob: yup
-        //   .string()
-        //   .matches(/\d{4}-\d{2}-\d{2}/)
-        //   .required(t('common:errors.FIELD_REQUIRED')!),
+        date_of_birth: yup
+          .string()
+          .matches(/\d{4}-\d{2}-\d{2}/)
+          .required(t('common:errors.FIELD_REQUIRED')!),
       }),
     [],
   );
@@ -83,7 +84,7 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
       email: '',
       username: '',
       password: '',
-      // dob: '',
+      date_of_birth: '',
     },
     validationSchema: validationSchema,
     validateOnChange: false,
@@ -96,10 +97,10 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
           password: values.password,
           captcha_key: captchaKey,
           consent: true, // TODO: consent
-          // date_of_birth: values.dob,
+          date_of_birth: values.date_of_birth,
         })
         .then(r => {
-          if ('token' in r && 'settings' in r) {
+          if ('token' in r) {
             // success
             domain.setToken(r.token);
             return;
@@ -354,7 +355,17 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
             </HelperText>
           </View>
 
-          <BirthdayPicker />
+          <View>
+            <BirthdayPicker onChange={formik.handleChange('date_of_birth')} />
+            <HelperText
+              type="error"
+              visible={
+                formik.touched.date_of_birth &&
+                Boolean(formik.errors.date_of_birth)
+              }>
+              {formik.errors.date_of_birth}
+            </HelperText>
+          </View>
 
           <View style={{zIndex: -1}}>
             <Button
@@ -362,7 +373,7 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
               onPress={() => formik.handleSubmit()}
               disabled={formik.isSubmitting}
               loading={formik.isSubmitting}>
-              {t('register:BUTTON_CONTINUE')}
+              {t('register:BUTTON_REGISTER')}
             </Button>
           </View>
         </Container>

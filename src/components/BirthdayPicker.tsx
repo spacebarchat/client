@@ -7,7 +7,11 @@ import {DomainContext} from '../stores/DomainStore';
 import {CustomTheme} from '../types';
 import Container from './Container';
 
-function BirthdayPicker() {
+interface Props {
+  onChange: (value: string) => void;
+}
+
+function BirthdayPicker({onChange}: Props) {
   const domain = React.useContext(DomainContext);
   const theme = useTheme<CustomTheme>();
 
@@ -66,6 +70,25 @@ function BirthdayPicker() {
     setDayOpen(false);
   }, []);
 
+  const handleChange = (type: string) => (value: string | null) => {
+    switch (type) {
+      case 'month':
+        setMonth(value);
+        break;
+      case 'day':
+        setDay(value);
+        break;
+      case 'year':
+        setYear(value);
+        break;
+    }
+
+    if (month && day && year) {
+      const date = new Date(`${year}-${month}-${day}`);
+      onChange(date.toISOString().split('T')[0]);
+    }
+  };
+
   return (
     <Container row flex={1} style={styles.container}>
       <DropDownPicker
@@ -76,6 +99,7 @@ function BirthdayPicker() {
         items={months}
         setOpen={setMonthOpen}
         setValue={setMonth}
+        onChangeValue={handleChange('month')}
         onOpen={onMonthOpen}
         containerStyle={styles.picker}
         style={{
@@ -100,6 +124,7 @@ function BirthdayPicker() {
         items={days}
         setOpen={setDayOpen}
         setValue={setDay}
+        onChangeValue={handleChange('day')}
         onOpen={onDayOpen}
         containerStyle={[styles.picker, {marginHorizontal: 10}]}
         style={{
@@ -124,6 +149,7 @@ function BirthdayPicker() {
         items={years}
         setOpen={setYearOpen}
         setValue={setYear}
+        onChangeValue={handleChange('year')}
         onOpen={onYearOpen}
         containerStyle={styles.picker}
         style={{
