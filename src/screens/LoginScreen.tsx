@@ -74,6 +74,8 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
       password: '',
     },
     validationSchema: validationSchema,
+    validateOnBlur: false,
+    validateOnChange: false,
     onSubmit: async values => {
       await domain.rest
         .post<IAPILoginRequest, IAPILoginResponse>(Routes.login(), {
