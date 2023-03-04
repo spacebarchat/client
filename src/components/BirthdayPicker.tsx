@@ -1,52 +1,49 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
 import {useTheme} from 'react-native-paper';
 import {Themes} from '../constants/Colors';
 import {DomainContext} from '../stores/DomainStore';
 import {CustomTheme} from '../types';
 import Container from './Container';
+import Dropdown, {DropdownItem} from './Dropdown';
 
 interface Props {
   onChange: (value: string) => void;
 }
 
+const months = [
+  {label: 'January', value: '01'},
+  {label: 'February', value: '02'},
+  {label: 'March', value: '03'},
+  {label: 'April', value: '04'},
+  {label: 'May', value: '05'},
+  {label: 'June', value: '06'},
+  {label: 'July', value: '07'},
+  {label: 'August', value: '08'},
+  {label: 'September', value: '09'},
+  {label: 'October', value: '10'},
+  {label: 'November', value: '11'},
+  {label: 'December', value: '12'},
+];
+
+const days = Array.from(Array(31).keys()).map(x => {
+  const v = x + 1;
+  return {label: v.toString(), value: v.toString()};
+});
+
+// current year - 3, and go back 73 years
+const years = Array.from(Array(71).keys()).map(x => {
+  const v = new Date().getFullYear() - 3 - x;
+  return {label: v.toString(), value: v.toString()};
+});
+
 function BirthdayPicker({onChange}: Props) {
   const domain = React.useContext(DomainContext);
   const theme = useTheme<CustomTheme>();
 
-  const [months] = React.useState([
-    {label: 'January', value: '01'},
-    {label: 'February', value: '02'},
-    {label: 'March', value: '03'},
-    {label: 'April', value: '04'},
-    {label: 'May', value: '05'},
-    {label: 'June', value: '06'},
-    {label: 'July', value: '07'},
-    {label: 'August', value: '08'},
-    {label: 'September', value: '09'},
-    {label: 'October', value: '10'},
-    {label: 'November', value: '11'},
-    {label: 'December', value: '12'},
-  ]);
-  const [days] = React.useState(
-    Array.from(Array(31).keys()).map(x => {
-      const v = x + 1;
-      return {label: v.toString(), value: v.toString()};
-    }),
-  );
-
-  // current year - 3, and go back 73 years
-  const [years] = React.useState(
-    Array.from(Array(71).keys()).map(x => {
-      const v = new Date().getFullYear() - 3 - x;
-      return {label: v.toString(), value: v.toString()};
-    }),
-  );
-
-  const [month, setMonth] = React.useState<string | null>(null);
-  const [day, setDay] = React.useState<string | null>(null);
-  const [year, setYear] = React.useState<string | null>(null);
+  const [month, setMonth] = React.useState<DropdownItem>();
+  const [day, setDay] = React.useState<DropdownItem | null>(null);
+  const [year, setYear] = React.useState<DropdownItem | null>(null);
 
   const [monthOpen, setMonthOpen] = React.useState(false);
   const [dayOpen, setDayOpen] = React.useState(false);
@@ -70,28 +67,29 @@ function BirthdayPicker({onChange}: Props) {
     setDayOpen(false);
   }, []);
 
-  const handleChange = (type: string) => (value: string | null) => {
-    switch (type) {
-      case 'month':
-        setMonth(value);
-        break;
-      case 'day':
-        setDay(value);
-        break;
-      case 'year':
-        setYear(value);
-        break;
-    }
+  const handleChange =
+    (type: 'month' | 'day' | 'year') => (value: DropdownItem) => {
+      switch (type) {
+        case 'month':
+          setMonth(value);
+          break;
+        case 'day':
+          setDay(value);
+          break;
+        case 'year':
+          setYear(value);
+          break;
+      }
 
-    if (month && day && year) {
-      const date = new Date(`${year}-${month}-${day}`);
-      onChange(date.toISOString().split('T')[0]);
-    }
-  };
+      if (month && day && year) {
+        const date = new Date(`${year}-${month}-${day}`);
+        onChange(date.toISOString().split('T')[0]);
+      }
+    };
 
   return (
-    <Container row flex={1} style={styles.container}>
-      <DropDownPicker
+    <Container row style={styles.container}>
+      {/* <DropDownPicker
         placeholder="Month"
         theme={pickerTheme}
         open={monthOpen}
@@ -166,6 +164,22 @@ function BirthdayPicker({onChange}: Props) {
         zIndex={3000}
         zIndexInverse={1000}
         closeAfterSelecting
+      /> */}
+      <Dropdown
+        label={month?.label ?? 'Month'}
+        data={months}
+        onSelect={handleChange('month')}
+      />
+      <Dropdown
+        label={day?.label ?? 'Day'}
+        data={days}
+        onSelect={handleChange('day')}
+        containerStyle={{marginHorizontal: 10}}
+      />
+      <Dropdown
+        label={year?.label ?? 'Year'}
+        data={years}
+        onSelect={handleChange('year')}
       />
     </Container>
   );
@@ -174,6 +188,7 @@ function BirthdayPicker({onChange}: Props) {
 const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
+    justifyContent: 'space-between',
   },
   picker: {
     flex: 1,
