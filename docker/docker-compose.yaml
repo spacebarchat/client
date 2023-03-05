@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  fosscord-client:
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      API_URL: ${API_URL}
+      CDN_URL: ${CDN_URL}
+      INVITE_URL: ${INVITE_URL}
+      TEMPLATE_URL: ${TEMPLATE_URL}
+      GIFT_URL: ${GIFT_URL}
+      EVENTS_URL: ${EVENTS_URL}
+      GATEWAY_URL: ${GATEWAY_URL}
