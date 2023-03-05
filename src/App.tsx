@@ -88,8 +88,12 @@ function Main() {
     () => domain.token,
     value => {
       if (value) {
-        domain.setGatewayReady(false);
-        domain.gateway.connect(Globals.routeSettings.gateway);
+        if (domain.gateway.readyState === WebSocket.CLOSED) {
+          domain.setGatewayReady(false);
+          domain.gateway.connect(Globals.routeSettings.gateway);
+        } else {
+          logger.debug('Gateway connect called but socket is not closed');
+        }
       } else {
         if (domain.gateway.readyState === WebSocket.OPEN) {
           domain.gateway.disconnect(1000, 'user is no longer authenticated');

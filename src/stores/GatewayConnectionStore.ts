@@ -177,8 +177,15 @@ export default class GatewayConnectionStore extends BaseStore {
   };
 
   private sendJson = (payload: GatewaySendPayload) => {
-    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+    if (!this.socket) {
       this.logger.error('Socket is not open');
+      return;
+    }
+
+    if (this.socket.readyState !== WebSocket.OPEN) {
+      this.logger.error(
+        `Socket is not open; readyState: ${this.socket.readyState}`,
+      );
       return;
     }
     this.logger.debug(`[Gateway] <- ${payload.op}`, payload);
@@ -367,9 +374,12 @@ export default class GatewayConnectionStore extends BaseStore {
         this.heartbeatInterval! / 1000
       ).toFixed(2)} seconds`,
     );
+
     this.socket?.close(4009);
 
     // TODO: reconnect
+    this.cleanup();
+    this.reset();
   };
 
   /**
@@ -388,6 +398,7 @@ export default class GatewayConnectionStore extends BaseStore {
    * Stops heartbeat interval and removes socket
    */
   private cleanup = () => {
+    this.logger.debug('Cleaning up');
     this.stopHeartbeater();
     this.socket = null;
   };
