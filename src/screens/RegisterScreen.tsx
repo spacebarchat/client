@@ -57,24 +57,13 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
   const validationSchema = React.useMemo(
     () =>
       yup.object({
-        email: yup
-          .string()
-          .email(t('common:errors.INVALID_EMAIL') as string)
-          .required(t('common:errors.FIELD_REQUIRED')!),
+        email: yup.string().email(t('common:errors.INVALID_EMAIL') as string),
         username: yup
           .string()
-          .min(2)
-          .max(32)
-          .required(t('common:errors.FIELD_REQUIRED')!),
-        password: yup
-          .string()
           .min(1)
-          .max(72)
-          .required(t('common:errors.FIELD_REQUIRED')!), // TODO: password requirement, discord has 6-72 characters
-        date_of_birth: yup
-          .string()
-          .matches(/\d{4}-\d{2}-\d{2}/)
           .required(t('common:errors.FIELD_REQUIRED')!),
+        password: yup.string().min(1),
+        date_of_birth: yup.string().matches(/\d{4}-\d{2}-\d{2}/),
       }),
     [],
   );
