@@ -1,7 +1,6 @@
 import React from 'react';
 import {Animated, Platform, useWindowDimensions, ViewProps} from 'react-native';
 import {Swipeable} from 'react-native-gesture-handler';
-import BottomTabBarProgressContext from '../contexts/BottomTabBarProgressContext';
 
 const useNativeDriver = Platform.OS !== 'web';
 
@@ -23,23 +22,23 @@ function Swiper({
 }: SwiperProps) {
   const {width} = useWindowDimensions();
 
-  const {progress, setProgress} = React.useContext(BottomTabBarProgressContext);
+  // const {progress, setProgress} = React.useContext(BottomTabBarProgressContext);
 
-  const bringUpActionSheet = () => {
-    Animated.timing(progress, {
-      toValue: 1,
-      duration: 250,
-      useNativeDriver,
-    }).start();
-  };
+  // const openFooter = () => {
+  //   Animated.timing(progress, {
+  //     toValue: 1,
+  //     duration: 250,
+  //     useNativeDriver,
+  //   }).start();
+  // };
 
-  const closeDownBottomSheet = () => {
-    Animated.timing(progress, {
-      toValue: 0,
-      duration: 250,
-      useNativeDriver,
-    }).start();
-  };
+  // const closeFooter = () => {
+  //   Animated.timing(progress, {
+  //     toValue: 0,
+  //     duration: 250,
+  //     useNativeDriver,
+  //   }).start();
+  // };
 
   const renderLeftAction = (
     _: Animated.AnimatedInterpolation<string | number>,
@@ -50,8 +49,6 @@ function Swiper({
     const trans = dragX.interpolate({
       inputRange: [0, w],
       outputRange: [0, 0],
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
     });
 
     return (
@@ -82,8 +79,8 @@ function Swiper({
     const trans = dragX.interpolate({
       inputRange: [0, w],
       outputRange: [0, 0],
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
+      // extrapolateLeft: 'clamp',
+      // extrapolateRight: 'clamp',
     });
 
     return (
@@ -110,12 +107,13 @@ function Swiper({
     <Swipeable
       renderLeftActions={leftChildren ? renderLeftAction : undefined}
       renderRightActions={rightChildren ? renderRightAction : undefined}
-      onSwipeableLeftWillOpen={bringUpActionSheet}
-      onActivated={closeDownBottomSheet}
+      // onSwipeableLeftWillOpen={openFooter}
+      // onSwipeableWillClose={closeFooter}
       overshootLeft={false}
       overshootRight={false}
       childrenContainerStyle={{flex: 1}}
-      containerStyle={{flex: 1}}>
+      containerStyle={{flex: 1}}
+      useNativeAnimations>
       {children}
     </Swipeable>
   );
