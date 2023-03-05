@@ -12,13 +12,13 @@ interface RouteSettings {
 }
 
 export const DefaultRouteSettings: RouteSettings = {
-  api: 'https://staging.fosscord.com/api',
-  cdn: 'https://cdn.staging.fosscord.com',
-  invite: 'https://staging.fosscord.com/invite',
-  template: 'https://staging.fosscord.com/template',
-  gift: 'https://staging.fosscord.com/gift',
-  scheduledEvent: 'https://staging.fosscord.com/events',
-  gateway: 'wss://gateway.staging.fosscord.com',
+  api: 'http://experimenta.cloudycloudy.cloud:3001/api',
+  cdn: 'http://experimenta.cloudycloudy.cloud:3001',
+  invite: 'http://experimenta.cloudycloudy.cloud:3001/invite',
+  template: 'http://experimenta.cloudycloudy.cloud:3001/template',
+  gift: 'http://experimenta.cloudycloudy.cloud:3001/gift',
+  scheduledEvent: 'http://experimenta.cloudycloudy.cloud:3001/events',
+  gateway: 'ws://experimenta.cloudycloudy.cloud:3001',
 };
 
 export const Globals: {
