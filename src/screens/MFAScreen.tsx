@@ -7,10 +7,15 @@ import {
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
-  TextInput,
   View,
 } from 'react-native';
-import {HelperText, IconButton, Text, useTheme} from 'react-native-paper';
+import {
+  HelperText,
+  IconButton,
+  Text,
+  TextInput,
+  useTheme,
+} from 'react-native-paper';
 import * as yup from 'yup';
 import Button from '../components/Button';
 import Container from '../components/Container';
@@ -130,17 +135,17 @@ function MFAScreen({ticket}: MFAProps) {
               onChangeText={formik.handleChange('code')}
               onBlur={formik.handleBlur('code')}
               autoFocus
-              editable={!formik.isSubmitting}
+              disabled={formik.isSubmitting}
+              autoCapitalize="none"
+              autoCorrect={false}
               style={[
                 styles.input,
                 formik.touched.code && formik.errors.code
                   ? {borderColor: theme.colors.error, borderWidth: 1}
                   : undefined,
-                {
-                  backgroundColor: theme.colors.surfaceVariant,
-                  color: theme.colors.onSurfaceVariant,
-                },
               ]}
+              underlineColor="transparent"
+              activeUnderlineColor="transparent"
             />
             {formik.touched.code && formik.errors.code && (
               <HelperText type="error" visible>

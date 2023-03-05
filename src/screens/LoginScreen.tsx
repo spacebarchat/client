@@ -6,7 +6,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
-  TextInput,
   View,
 } from 'react-native';
 import {
@@ -15,6 +14,7 @@ import {
   Modal,
   Portal,
   Text,
+  TextInput,
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
@@ -274,17 +274,17 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
               onChangeText={formik.handleChange('login')}
               onBlur={formik.handleBlur('login')}
               autoFocus
-              editable={!formik.isSubmitting}
+              disabled={formik.isSubmitting}
+              autoCapitalize="none"
+              autoCorrect={false}
               style={[
                 styles.input,
                 formik.touched.login && formik.errors.login
                   ? {borderColor: theme.colors.error, borderWidth: 1}
                   : undefined,
-                {
-                  backgroundColor: theme.colors.surfaceVariant,
-                  color: theme.colors.onSurfaceVariant,
-                },
               ]}
+              underlineColor="transparent"
+              activeUnderlineColor="transparent"
             />
             {formik.touched.login && formik.errors.login && (
               <HelperText type="error" visible>
@@ -314,15 +314,17 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
                 value={formik.values.password}
                 onChangeText={formik.handleChange('password')}
                 onBlur={formik.handleBlur('password')}
-                editable={!formik.isSubmitting}
+                disabled={formik.isSubmitting}
+                autoCapitalize="none"
+                autoCorrect={false}
                 style={[
                   styles.input,
                   {
-                    backgroundColor: theme.colors.surfaceVariant,
-                    color: theme.colors.onSurfaceVariant,
                     flex: 1,
                   },
                 ]}
+                underlineColor="transparent"
+                activeUnderlineColor="transparent"
               />
               <IconButton
                 icon={showPassword ? 'eye-off' : 'eye'}

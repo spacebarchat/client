@@ -15,9 +15,10 @@ import Container from './Container';
 
 interface Props {
   onChange: (value: string) => void;
+  disabled?: boolean;
 }
 
-function BirthdayInput({onChange}: Props) {
+function BirthdayInput({onChange, disabled}: Props) {
   const domain = React.useContext(DomainContext);
   const theme = useTheme<CustomTheme>();
   const date = new Date();
@@ -126,10 +127,15 @@ function BirthdayInput({onChange}: Props) {
             ? {borderColor: theme.colors.error, borderWidth: 1}
             : undefined,
         ]}
-        underlineStyle={{backgroundColor: 'transparent'}}
         maxLength={2}
         onKeyPress={onKeyPress('month')}
         keyboardType="number-pad"
+        onBlur={formik.handleBlur('month')}
+        disabled={formik.isSubmitting}
+        autoCapitalize="none"
+        autoCorrect={false}
+        underlineColor="transparent"
+        activeUnderlineColor="transparent"
       />
       <Text
         style={{
@@ -150,10 +156,15 @@ function BirthdayInput({onChange}: Props) {
             ? {borderColor: theme.colors.error, borderWidth: 1}
             : undefined,
         ]}
-        underlineStyle={{backgroundColor: 'transparent'}}
         maxLength={2}
         onKeyPress={onKeyPress('day')}
         keyboardType="number-pad"
+        onBlur={formik.handleBlur('day')}
+        disabled={formik.isSubmitting}
+        autoCapitalize="none"
+        autoCorrect={false}
+        underlineColor="transparent"
+        activeUnderlineColor="transparent"
       />
       <Text
         style={{
@@ -174,10 +185,15 @@ function BirthdayInput({onChange}: Props) {
             ? {borderColor: theme.colors.error, borderWidth: 1}
             : undefined,
         ]}
-        underlineStyle={{backgroundColor: 'transparent'}}
         maxLength={4}
         onKeyPress={onKeyPress('year')}
         keyboardType="number-pad"
+        onBlur={formik.handleBlur('year')}
+        disabled={formik.isSubmitting}
+        autoCapitalize="none"
+        autoCorrect={false}
+        underlineColor="transparent"
+        activeUnderlineColor="transparent"
       />
     </Container>
   );

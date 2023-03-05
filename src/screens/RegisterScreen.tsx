@@ -6,7 +6,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
-  TextInput,
   View,
 } from 'react-native';
 import {
@@ -15,6 +14,7 @@ import {
   Modal,
   Portal,
   Text,
+  TextInput,
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
@@ -257,16 +257,17 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
               value={formik.values.email}
               onChangeText={formik.handleChange('email')}
               onBlur={formik.handleBlur('email')}
+              disabled={formik.isSubmitting}
+              autoCapitalize="none"
+              autoCorrect={false}
               style={[
                 styles.input,
                 formik.touched.email && Boolean(formik.errors.email)
                   ? {borderColor: theme.colors.error, borderWidth: 1}
                   : undefined,
-                {
-                  backgroundColor: theme.colors.surfaceVariant,
-                  color: theme.colors.onSurfaceVariant,
-                },
               ]}
+              underlineColor="transparent"
+              activeUnderlineColor="transparent"
             />
             <HelperText
               type="error"
@@ -283,16 +284,17 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
               value={formik.values.username}
               onChangeText={formik.handleChange('username')}
               onBlur={formik.handleBlur('username')}
+              disabled={formik.isSubmitting}
+              autoCapitalize="none"
+              autoCorrect={false}
               style={[
                 styles.input,
                 formik.touched.username && Boolean(formik.errors.username)
                   ? {borderColor: theme.colors.error, borderWidth: 1}
                   : undefined,
-                {
-                  backgroundColor: theme.colors.surfaceVariant,
-                  color: theme.colors.onSurfaceVariant,
-                },
               ]}
+              underlineColor="transparent"
+              activeUnderlineColor="transparent"
             />
             <HelperText type="info" visible>
               {t('register:USERNAME_HELPER')}
@@ -326,14 +328,17 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
                 value={formik.values.password}
                 onChangeText={formik.handleChange('password')}
                 onBlur={formik.handleBlur('password')}
+                disabled={formik.isSubmitting}
+                autoCapitalize="none"
+                autoCorrect={false}
                 style={[
                   styles.input,
                   {
-                    backgroundColor: theme.colors.surfaceVariant,
-                    color: theme.colors.onSurfaceVariant,
                     flex: 1,
                   },
                 ]}
+                underlineColor="transparent"
+                activeUnderlineColor="transparent"
               />
               <IconButton
                 icon={showPassword ? 'eye-off' : 'eye'}
@@ -362,6 +367,7 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
                 console.log(e);
                 formik.handleChange('date_of_birth')(e);
               }}
+              disabled={formik.isSubmitting}
             />
             <HelperText
               type="error"
