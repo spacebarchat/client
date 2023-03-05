@@ -19,7 +19,7 @@ import {
   useTheme,
 } from 'react-native-paper';
 import * as yup from 'yup';
-import BirthdayPicker from '../components/BirthdayPicker';
+import BirthdayInput from '../components/BirthdayInput';
 import Button from '../components/Button';
 import Container from '../components/Container';
 import HCaptcha, {HCaptchaMessage} from '../components/HCaptcha';
@@ -248,7 +248,7 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
         </Container>
 
         <Container style={styles.formContainer}>
-          <View>
+          <View style={styles.inputContainer}>
             <TextInput
               placeholder={t('register:LABEL_EMAIL')!}
               textContentType="emailAddress"
@@ -275,7 +275,7 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
             </HelperText>
           </View>
 
-          <View>
+          <View style={styles.inputContainer}>
             <TextInput
               placeholder={t('register:LABEL_USERNAME')!}
               textContentType="username"
@@ -306,7 +306,7 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
             </HelperText>
           </View>
 
-          <View>
+          <View style={styles.inputContainer}>
             <Container
               row
               style={[
@@ -355,8 +355,14 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
             </HelperText>
           </View>
 
-          <View>
-            <BirthdayPicker onChange={formik.handleChange('date_of_birth')} />
+          <View style={styles.inputContainer}>
+            <Text>{t('register:INPUT_BIRTHDAY_LABEL')}</Text>
+            <BirthdayInput
+              onChange={e => {
+                console.log(e);
+                formik.handleChange('date_of_birth')(e);
+              }}
+            />
             <HelperText
               type="error"
               visible={
@@ -367,7 +373,7 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
             </HelperText>
           </View>
 
-          <View style={{zIndex: -1}}>
+          <View style={[styles.inputContainer, styles.buttonSubmit]}>
             <Button
               mode="contained"
               onPress={() => formik.handleSubmit()}
@@ -396,9 +402,12 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 5,
   },
+  inputContainer: {
+    paddingHorizontal: 20,
+  },
   input: {
     height: 50,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     borderRadius: 5,
     outlineStyle: 'none',
   },
@@ -412,6 +421,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  buttonSubmit: {},
 });
 
 export default observer(RegisterScreen);

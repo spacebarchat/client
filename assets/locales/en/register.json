@@ -12,5 +12,6 @@
   "BUTTON_CREATE_ACCOUNT": "Create Account",
   "LINK_LOGIN": "Already have an account?",
   "USERNAME_HELPER": "You can change this later.",
-  "PASSWORD_HELPER": "Password must be {{min, number}}-{{max, number}} characters."
+  "PASSWORD_HELPER": "Password must be {{min, number}}-{{max, number}} characters.",
+  "INPUT_BIRTHDAY_LABEL": "Date of Birth"
 }
