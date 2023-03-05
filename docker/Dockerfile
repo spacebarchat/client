@@ -6,7 +6,7 @@ RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - 
 RUN apt update ; apt install -y yarn nodejs
 
-RUN git clone https://github.com/fosscord/fosscord-client.git ; cd fosscord-client ; git checkout dev/bare-rewrite 
+RUN git clone https://github.com/Casraw/fosscord-client.git ; cd fosscord-client ; git checkout dev/bare-rewrite 
 RUN cd fosscord-client ; yarn install ; yarn build:web
 
 FROM nginx:alpine

@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useLogger from '../hooks/useLogger';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 interface RouteSettings {
   api: string;
@@ -12,13 +15,13 @@ interface RouteSettings {
 }
 
 export const DefaultRouteSettings: RouteSettings = {
-  api: 'https://staging.fosscord.com/api',
-  cdn: 'https://cdn.staging.fosscord.com',
-  invite: 'https://staging.fosscord.com/invite',
-  template: 'https://staging.fosscord.com/template',
-  gift: 'https://staging.fosscord.com/gift',
-  scheduledEvent: 'https://staging.fosscord.com/events',
-  gateway: 'wss://gateway.staging.fosscord.com',
+  api: process.env.API,
+  cdn: process.env.CDN,
+  invite: process.env.INVITE,
+  template: process.env.TEMPLATE,
+  gift: process.env.GIFT,
+  scheduledEvent: process.env.SCHEDULED,
+  gateway: process.env.GATEWAY,
 };
 
 export const Globals: {
