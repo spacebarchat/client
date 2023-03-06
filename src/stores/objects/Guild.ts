@@ -1,9 +1,9 @@
 import {Snowflake} from '@puyodead1/fosscord-api-types/globals';
 import {GatewayGuild} from '@puyodead1/fosscord-api-types/v9';
-import {makeObservable, observable} from 'mobx';
+import {action, makeObservable, observable} from 'mobx';
 import BaseStore from '../BaseStore';
 
-export default class extends BaseStore {
+export default class Guild extends BaseStore {
   id: Snowflake;
   joinedAt: string;
   @observable threads: unknown[];
@@ -43,6 +43,7 @@ export default class extends BaseStore {
   @observable maxMembers: number;
   @observable nsfwLevel: number;
   @observable hubType: number | null = null;
+  @observable acronym: string;
 
   constructor(data: GatewayGuild) {
     super();
@@ -88,6 +89,16 @@ export default class extends BaseStore {
     this.nsfwLevel = data.properties.nsfw_level;
     this.hubType = data.properties.hub_type;
 
+    this.acronym = this.name
+      .split(' ')
+      .map(word => word.substring(0, 1))
+      .join('');
+
     makeObservable(this);
+  }
+
+  @action
+  update(data: GatewayGuild) {
+    Object.assign(this, data);
   }
 }

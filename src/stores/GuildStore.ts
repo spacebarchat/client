@@ -1,11 +1,11 @@
 import {GatewayGuild} from '@puyodead1/fosscord-api-types/v9';
-import {action, computed, observable} from 'mobx';
+import {action, computed, observable, ObservableMap} from 'mobx';
 import BaseStore from './BaseStore';
 import Guild from './objects/Guild';
 
 export default class GuildStore extends BaseStore {
   @observable initialGuildsLoaded = false;
-  @observable readonly guilds = observable.map<string, Guild>();
+  @observable readonly guilds = new ObservableMap<string, Guild>();
 
   constructor() {
     super();
@@ -25,6 +25,15 @@ export default class GuildStore extends BaseStore {
   @action
   addAll(guilds: GatewayGuild[]) {
     guilds.forEach(guild => this.add(guild));
+  }
+
+  get(id: string) {
+    return this.guilds.get(id);
+  }
+
+  @action
+  remove(id: string) {
+    this.guilds.delete(id);
   }
 
   @computed

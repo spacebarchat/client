@@ -1,10 +1,10 @@
 import {APIUser} from '@puyodead1/fosscord-api-types/v9';
-import {action, computed, observable} from 'mobx';
+import {action, computed, observable, ObservableMap} from 'mobx';
 import User from '../objects/User';
 import BaseStore from './BaseStore';
 
 export default class UserStore extends BaseStore {
-  @observable readonly users = observable.map<string, User>();
+  @observable readonly users = new ObservableMap<string, User>();
 
   constructor() {
     super();
