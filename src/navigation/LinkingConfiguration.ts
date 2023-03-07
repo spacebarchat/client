@@ -12,8 +12,7 @@ const linking: LinkingOptions<RootStackParamsList> = {
   prefixes: [Linking.createURL('/')],
   config: {
     screens: {
-      App: '/app',
-      Channels: {
+      App: {
         screens: {
           Channel: 'channels/:guildId/:channelId?',
         },

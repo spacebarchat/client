@@ -1,74 +1,126 @@
+import {useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react';
 import React from 'react';
 import {FlatList, StyleSheet} from 'react-native';
-import {
-  Avatar,
-  AvatarIconProps,
-  AvatarImageProps,
-  AvatarTextProps,
-} from 'react-native-paper';
+import {useTheme} from 'react-native-paper';
 import {DomainContext} from '../stores/DomainStore';
-import Guild from '../stores/objects/Guild';
+import {CustomTheme} from '../types';
+import {CDNRoutes} from '../utils/Endpoints';
+import REST from '../utils/REST';
 import Container from './Container';
-import GuildsSidebarItem from './GuildsSidebarItem';
-
-interface ItemIcon extends AvatarIconProps {
-  type: 'icon';
-}
-
-interface ItemText extends AvatarTextProps {
-  type: 'text';
-}
-
-interface ItemImage extends AvatarImageProps {
-  type: 'image';
-}
+import GuildsSidebarItem, {
+  GuildsSidebarItemProps,
+  GuildsSidebarItemType,
+} from './GuildsSidebarItem';
+import Hr from './Hr';
 
 function GuildsSidebar() {
   const domain = React.useContext(DomainContext);
+  const navigation = useNavigation();
+  const theme = useTheme<CustomTheme>();
+  const count = React.useRef(0);
 
-  // TODO: memo?
   const data: {
     id: string;
-    item: Guild | ItemIcon | ItemText | ItemImage;
+    item: GuildsSidebarItemProps;
   }[] = [
     {
       id: 'home',
       item: {
-        type: 'icon',
-        icon: 'home',
-        size: 48,
-        style: {
-          marginTop: 5,
-          marginBottom: 10,
+        type: GuildsSidebarItemType.ICON,
+        props: {
+          icon: 'home',
+          color: theme.colors.whiteBlack,
+          style: {
+            marginBottom: 10,
+          },
         },
+        onPress: () =>
+          navigation.navigate('App', {
+            screen: 'Channel',
+            params: {guildId: 'me'},
+          }),
+        tooltip: 'Home',
       },
     },
-    ...Array.from(domain.guilds.guilds.values()).map(x => ({
+    ...Array.from(domain.guilds.guilds.values()).map<{
+      id: string;
+      item: GuildsSidebarItemProps;
+    }>(x => ({
       id: x.id,
-      item: x,
+      item: x.icon
+        ? {
+            type: GuildsSidebarItemType.IMAGE,
+            props: {
+              source: {
+                uri: REST.makeCDNUrl(CDNRoutes.guildIcon(x.id, x.icon)),
+              },
+            },
+            onPress: () =>
+              navigation.navigate('App', {
+                screen: 'Channel',
+                params: {guildId: x.id},
+              }),
+            tooltip: x.name,
+          }
+        : {
+            type: GuildsSidebarItemType.TEXT,
+            props: {
+              label: x.acronym,
+              color: theme.colors.whiteBlack,
+            },
+            onPress: () =>
+              navigation.navigate('App', {
+                screen: 'Channel',
+                params: {guildId: x.id},
+              }),
+            tooltip: x.name,
+          },
     })),
+    {
+      id: 'add-server',
+      item: {
+        type: GuildsSidebarItemType.ICON,
+        props: {
+          icon: 'plus',
+          color: theme.colors.palette.green50,
+          style: {
+            marginBottom: 10,
+          },
+        },
+        backgroundColorTo: theme.colors.palette.green50,
+        colorTo: theme.colors.whiteBlack,
+        // onPress: () =>
+        //   navigation.navigate('App', {
+        //     screen: 'Channel',
+        //     params: {guildId: 'me'},
+        //   }),
+        tooltip: 'Add Server',
+      },
+    },
   ];
+
+  const renderSeperator = () => {
+    count.current += 1;
+
+    return count.current === 1 ? (
+      <Hr style={{borderBottomWidth: 2, marginBottom: 5}} />
+    ) : null;
+  };
 
   return (
     <Container style={styles.container}>
       <FlatList
-        contentContainerStyle={{alignItems: 'center'}}
+        contentContainerStyle={{
+          alignItems: 'center',
+          flex: 1,
+        }}
+        style={{overflow: 'visible'}}
         data={data}
         renderItem={({item}) => {
-          if ('type' in item.item) {
-            switch (item.item.type) {
-              case 'icon':
-                return <Avatar.Icon {...item.item} />;
-              case 'text':
-                return <Avatar.Text {...item.item} />;
-              case 'image':
-                return <Avatar.Image {...item.item} />;
-            }
-          } else {
-            return <GuildsSidebarItem guild={item.item} />;
-          }
+          return <GuildsSidebarItem {...item.item} />;
         }}
+        ItemSeparatorComponent={renderSeperator}
         keyExtractor={item => item.id}
       />
     </Container>

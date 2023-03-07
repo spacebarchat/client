@@ -20,7 +20,7 @@ const BaseColors = {
   notifications: Color('#1A1A1A'),
   accent: Color('#FF9800'),
   excludedFilesColor: Color('#323232'),
-  green: Color('#c3e88d'),
+  green: Color('#068819'),
   yellow: Color('#ffcb6b'),
   blue: Color('#82aaff'),
   red: Color('#f07178'),

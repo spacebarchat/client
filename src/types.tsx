@@ -16,8 +16,7 @@ declare global {
 export type RootStackParamsList = {
   Splash: undefined;
   Root: undefined;
-  App: undefined;
-  Channels: NavigatorScreenParams<ChannelsParamList> | undefined;
+  App: NavigatorScreenParams<ChannelsParamList> | undefined;
   Login: undefined;
   Register: undefined;
   ResetPassword: undefined;

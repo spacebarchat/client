@@ -1,51 +1,36 @@
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {observer} from 'mobx-react';
 import React from 'react';
-import {Platform} from 'react-native';
-import {Button, Text, useTheme} from 'react-native-paper';
-import ChannelsSidebar from '../components/ChannelsSidebar';
 import Container from '../components/Container';
 import GuildsSidebar from '../components/GuildsSidebar';
-import MembersSidebar from '../components/MembersSidebar';
-import {DomainContext} from '../stores/DomainStore';
-import {CustomTheme} from '../types';
+import {ChannelsParamList, RootStackScreenProps} from '../types';
+import ChannelScreen from './SubScreens/ChannelScreen';
 
-function AppScreen() {
-  const theme = useTheme<CustomTheme>();
-  const domain = React.useContext(DomainContext);
+const Stack = createNativeStackNavigator<ChannelsParamList>();
 
-  const logout = () => {
-    console.log('logout');
-    domain.logout();
-  };
-
-  const showFps = () => {
-    domain.setShowFPS(!domain.showFPS);
-  };
-
+function AppScreen({navigation}: RootStackScreenProps<'App'>) {
   return (
-    <Container row flex={1}>
+    <Container verticalCenter horizontalCenter row flex={1}>
       <GuildsSidebar />
-      <ChannelsSidebar />
 
-      <Container
-        flex={1}
-        style={{backgroundColor: theme.colors.palette.background70}}>
-        <Text>Root Screen</Text>
-        <Text>Guild Count: {domain.guilds.guildCount}</Text>
-        <Text>User Count: {domain.users.userCount}</Text>
-
-        {Platform.isWeb && __DEV__ && (
-          <Button mode="contained" onPress={showFps}>
-            Show FPS
-          </Button>
-        )}
-
-        <Button mode="contained" onPress={logout}>
-          Logout
-        </Button>
+      <Container flex={1} row style={{height: '100%'}}>
+        <Stack.Navigator
+          initialRouteName="Channel"
+          screenOptions={{
+            headerShown: false,
+          }}>
+          <Stack.Group>
+            <Stack.Screen
+              name="Channel"
+              component={ChannelScreen}
+              initialParams={{guildId: 'me'}}
+            />
+          </Stack.Group>
+          {/* <Stack.Group screenOptions={{presentation: 'modal'}}>
+            <Stack.Screen name="Settings" component={Settings} />
+          </Stack.Group> */}
+        </Stack.Navigator>
       </Container>
-
-      <MembersSidebar />
     </Container>
   );
 }

@@ -519,7 +519,7 @@ export default class GatewayConnectionStore extends BaseStore {
 
   private onGuildUpdate = (data: GatewayGuildModifyDispatchData) => {
     this.logger.debug('Received guild update event');
-    this.domain.guilds.get(data.id)?.update(data);
+    // this.domain.guilds.get(data.id)?.update(data); // TODO: Fix types
   };
 
   private onGuildDelete = (data: GatewayGuildDeleteDispatchData) => {
