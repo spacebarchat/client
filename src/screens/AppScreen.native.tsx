@@ -1,55 +1,62 @@
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {observer} from 'mobx-react';
 import React from 'react';
-import {Platform} from 'react-native';
-import {Button, Text, useTheme} from 'react-native-paper';
+import {Text, useTheme} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Container from '../components/Container';
-import Swiper from '../components/Swiper';
+import BottomTabBar from '../components/ReactNavigationBottomTabs/views/BottomTabBar';
 import {DomainContext} from '../stores/DomainStore';
-import {CustomTheme} from '../types';
+import {ChannelsParamList, CustomTheme} from '../types';
+import ChannelScreen from './SubScreens/ChannelScreen';
+
+const Tab = createBottomTabNavigator<ChannelsParamList>();
+
+function Settings() {
+  return (
+    <Container>
+      <Text>Settings</Text>
+    </Container>
+  );
+}
 
 function AppScreen() {
   const theme = useTheme<CustomTheme>();
   const domain = React.useContext(DomainContext);
 
-  const logout = () => {
-    console.log('logout');
-    domain.logout();
-  };
-
-  const showFps = () => {
-    domain.setShowFPS(!domain.showFPS);
-  };
-
-  const leftAction = (
-    <Container>
-      <Text>Left Action</Text>
-    </Container>
-  );
-
-  const rightAction = (
-    <Container>
-      <Text>Right Action</Text>
-    </Container>
-  );
-
   return (
-    <Swiper leftChildren={leftAction} rightChildren={rightAction}>
-      <Container flex={1} style={{backgroundColor: theme.colors.surface}}>
-        <Text>Root Screen (Native)</Text>
-        <Text>Guild Count: {domain.guilds.guildCount}</Text>
-        <Text>User Count: {domain.users.userCount}</Text>
-
-        {Platform.isWeb && __DEV__ && (
-          <Button mode="contained" onPress={showFps}>
-            Show FPS
-          </Button>
-        )}
-
-        <Button mode="contained" onPress={logout}>
-          Logout
-        </Button>
-      </Container>
-    </Swiper>
+    <Tab.Navigator
+      initialRouteName="Channel"
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: theme.colors.palette.background40,
+        },
+        tabBarShowLabel: false,
+      }}
+      // eslint-disable-next-line react/no-unstable-nested-components
+      tabBar={props => <BottomTabBar {...props} />}>
+      <Tab.Screen
+        name="Channel"
+        component={ChannelScreen}
+        initialParams={{guildId: 'me'}}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({color, size}) => (
+            <Icon name="chat" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={Settings}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({color, size}) => (
+            <Icon name="cog" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
   );
 }
 
