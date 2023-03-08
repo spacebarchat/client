@@ -14,64 +14,64 @@ import MessageStore from '../MessageStore';
 
 export default class Channel extends BaseStore {
   id: Snowflake;
-  created_at: string;
+  createdAt: string;
   name?: string;
   icon?: string | null;
   type: number;
   recipients?: APIUser[];
-  last_message_id?: Snowflake;
-  guild_id?: Snowflake;
-  parent_id: Snowflake;
-  owner_id?: Snowflake;
-  last_pin_timestamp?: number;
-  default_auto_archive_duration?: number;
+  lastMessageId?: Snowflake;
+  guildId?: Snowflake;
+  parentId: Snowflake;
+  ownerId?: Snowflake;
+  lastPinTimestamp?: number;
+  defaultAutoArchiveDuration?: number;
   position?: number;
-  permission_overwrites?: APIOverwrite[];
-  video_quality_mode?: number;
+  permissionOverwrites?: APIOverwrite[];
+  videoQualityMode?: number;
   bitrate?: number;
-  user_limit?: number;
+  userLimit?: number;
   nsfw: boolean;
-  rate_limit_per_user?: number;
+  rateLimiTPerUser?: number;
   topic?: string;
   invites?: APIInvite[];
-  retention_policy_id?: string;
+  retentionPolicyId?: string;
   messages = new MessageStore();
-  voice_states?: GatewayVoiceState[];
-  read_states?: APIReadState[];
+  voiceStates?: GatewayVoiceState[];
+  readStates?: APIReadState[];
   webhooks?: APIWebhook[];
   flags: number;
-  default_thread_rate_limit_per_user: number;
+  defaultThreadRateLimitPerUser: number;
 
   constructor(channel: APIChannel) {
     super();
 
     this.id = channel.id;
-    this.created_at = channel.created_at;
+    this.createdAt = channel.created_at;
     this.name = channel.name;
     this.icon = channel.icon;
     this.type = channel.type;
     this.recipients = channel.recipients;
-    this.last_message_id = channel.last_message_id;
-    this.guild_id = channel.guild_id;
-    this.parent_id = channel.parent_id;
-    this.owner_id = channel.owner_id;
-    this.last_pin_timestamp = channel.last_pin_timestamp;
-    this.default_auto_archive_duration = channel.default_auto_archive_duration;
+    this.lastMessageId = channel.last_message_id;
+    this.guildId = channel.guild_id;
+    this.parentId = channel.parent_id;
+    this.ownerId = channel.owner_id;
+    this.lastPinTimestamp = channel.last_pin_timestamp;
+    this.defaultAutoArchiveDuration = channel.default_auto_archive_duration;
     this.position = channel.position;
-    this.permission_overwrites = channel.permission_overwrites;
-    this.video_quality_mode = channel.video_quality_mode;
+    this.permissionOverwrites = channel.permission_overwrites;
+    this.videoQualityMode = channel.video_quality_mode;
     this.bitrate = channel.bitrate;
-    this.user_limit = channel.user_limit;
+    this.userLimit = channel.user_limit;
     this.nsfw = channel.nsfw;
-    this.rate_limit_per_user = channel.rate_limit_per_user;
+    this.rateLimiTPerUser = channel.rate_limit_per_user;
     this.topic = channel.topic;
     this.invites = channel.invites;
-    this.retention_policy_id = channel.retention_policy_id;
-    this.voice_states = channel.voice_states;
-    this.read_states = channel.read_states;
+    this.retentionPolicyId = channel.retention_policy_id;
+    this.voiceStates = channel.voice_states;
+    this.readStates = channel.read_states;
     this.webhooks = channel.webhooks;
     this.flags = channel.flags;
-    this.default_thread_rate_limit_per_user =
+    this.defaultThreadRateLimitPerUser =
       channel.default_thread_rate_limit_per_user;
 
     if (channel.messages) {

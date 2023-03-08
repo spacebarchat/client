@@ -129,6 +129,7 @@ function PrivateChannelItem({channel}: Props) {
 function ChannelSidebarItem({channel}: Props) {
   const logger = useLogger('ChannelSidebarItem');
   const theme = useTheme<CustomTheme>();
+  const navigation = useNavigation();
   const [bgColor] = React.useState(new Animated.Value(0));
 
   if ([ChannelType.DM, ChannelType.GroupDM].includes(channel.type)) {
@@ -158,7 +159,10 @@ function ChannelSidebarItem({channel}: Props) {
   };
 
   const onPress = () => {
-    logger.info('onPress');
+    navigation.setParams({
+      guildId: channel.guildId,
+      channelId: channel.id,
+    } as any);
   };
 
   return (
