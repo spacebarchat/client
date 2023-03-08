@@ -1,5 +1,5 @@
 import {Snowflake} from '@puyodead1/fosscord-api-types/globals';
-import {GatewayGuild} from '@puyodead1/fosscord-api-types/v9';
+import {APIGuild, GatewayGuild} from '@puyodead1/fosscord-api-types/v9';
 import {action, makeObservable, observable} from 'mobx';
 import BaseStore from '../BaseStore';
 
@@ -98,7 +98,12 @@ export default class Guild extends BaseStore {
   }
 
   @action
-  update(data: GatewayGuild) {
+  update(data: APIGuild | GatewayGuild) {
+    if ('properties' in data) {
+      Object.assign(this, {...data, ...data.properties});
+      return;
+    }
+
     Object.assign(this, data);
   }
 }

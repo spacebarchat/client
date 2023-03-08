@@ -445,7 +445,7 @@ export default class GatewayConnectionStore extends BaseStore {
     this.logger.info(
       `[Ready] took ${Date.now() - this.connectionStartTime!}ms`,
     );
-    const {session_id, guilds, users, user} = data;
+    const {session_id, guilds, users, user, private_channels} = data;
     this.sessionId = session_id;
 
     this.domain.setUser(user);
@@ -459,7 +459,7 @@ export default class GatewayConnectionStore extends BaseStore {
     }
     // TODO: store relationships
     // TODO: store readstates
-    // TODO: store DMS
+    this.domain.privateChannels.addAll(private_channels);
 
     this.domain.setGatewayReady(true);
   };
@@ -519,7 +519,7 @@ export default class GatewayConnectionStore extends BaseStore {
 
   private onGuildUpdate = (data: GatewayGuildModifyDispatchData) => {
     this.logger.debug('Received guild update event');
-    // this.domain.guilds.get(data.id)?.update(data); // TODO: Fix types
+    this.domain.guilds.get(data.id)?.update(data);
   };
 
   private onGuildDelete = (data: GatewayGuildDeleteDispatchData) => {

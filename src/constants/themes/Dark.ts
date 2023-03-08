@@ -23,7 +23,7 @@ const BaseColors = {
   green: Color('#068819'),
   yellow: Color('#ffcb6b'),
   blue: Color('#82aaff'),
-  red: Color('#f07178'),
+  red: Color('#ec3453'), // old: #f07178; seems too bright
   purple: Color('#c792ea'),
   orange: Color('#f78c6c'),
   cyan: Color('#89ddff'),

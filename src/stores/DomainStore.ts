@@ -15,6 +15,7 @@ import AccountStore from './AccountStore';
 import BaseStore from './BaseStore';
 import GatewayConnectionStore from './GatewayConnectionStore';
 import GuildStore from './GuildStore';
+import PrivateChannelStore from './PrivateChannelStore';
 import UserStore from './UserStore';
 
 export class DomainStore extends BaseStore {
@@ -27,6 +28,7 @@ export class DomainStore extends BaseStore {
   @observable gateway = new GatewayConnectionStore(this);
   @observable guilds = new GuildStore();
   @observable users = new UserStore();
+  @observable privateChannels = new PrivateChannelStore();
   @observable rest = new REST(this);
 
   @observable theme: NavigationTheme & CustomTheme = themes.dark;

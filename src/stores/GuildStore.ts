@@ -37,7 +37,7 @@ export default class GuildStore extends BaseStore {
   }
 
   @computed
-  get guildCount() {
+  get count() {
     return this.guilds.size;
   }
 }

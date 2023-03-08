@@ -21,7 +21,7 @@ export default class UserStore extends BaseStore {
   }
 
   @computed
-  get userCount() {
+  get count() {
     return this.users.size;
   }
 }

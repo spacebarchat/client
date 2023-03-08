@@ -1,19 +1,13 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {observer} from 'mobx-react';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
+import ChannelsSidebar from '../../components/ChannelsSidebar';
 import Container from '../../components/Container';
 import GuildsSidebar from '../../components/GuildsSidebar';
 import Swiper from '../../components/Swiper';
 import {DomainContext} from '../../stores/DomainStore';
-import {
-  ChannelsParamList,
-  ChannelsStackScreenProps,
-  CustomTheme,
-} from '../../types';
-
-const Stack = createNativeStackNavigator<ChannelsParamList>();
+import {ChannelsStackScreenProps, CustomTheme} from '../../types';
 
 function ChannelScreen({
   route: {
@@ -26,6 +20,7 @@ function ChannelScreen({
   const leftAction = (
     <Container row>
       <GuildsSidebar />
+      <ChannelsSidebar guildId={guildId} />
     </Container>
   );
 
@@ -41,11 +36,14 @@ function ChannelScreen({
         flex={1}
         style={[
           styles.container,
-          {backgroundColor: theme.colors.palette.background60},
+          {backgroundColor: theme.colors.palette.background70},
         ]}>
         <Text>Channel Screen (Native)</Text>
         <Text>Guild ID: {guildId}</Text>
         <Text>Channel ID: {channelId ?? 'N/A'}</Text>
+        <Text>Guild Count: {domain.guilds.count}</Text>
+        <Text>User Count: {domain.users.count}</Text>
+        <Text>Private Channel Count: {domain.privateChannels.count}</Text>
       </Container>
     </Swiper>
   );
