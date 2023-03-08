@@ -1,11 +1,13 @@
-import {APIChannel} from '@puyodead1/fosscord-api-types/v9';
+import {observer} from 'mobx-react';
 import React from 'react';
 import {FlatList, StyleSheet} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import useGuild from '../hooks/useGuild';
 import {DomainContext} from '../stores/DomainStore';
+import Channel from '../stores/objects/Channel';
 import {CustomTheme} from '../types';
 import {t} from '../utils/i18n';
+import ChannelListHeader from './ChannelListHeader';
 import ChannelSidebarItem from './ChannelSidebarItem';
 import Container from './Container';
 
@@ -20,14 +22,15 @@ function ChannelsSidebar({guildId}: Props) {
   const [data, setData] = React.useState<
     {
       id: string;
-      item: APIChannel;
+      item: Channel;
     }[]
   >([]);
 
   React.useEffect(() => {
     if (guildId === 'me') {
+      // render private channels
       setData(
-        Array.from(domain.privateChannels.channels.values()).map(x => ({
+        domain.privateChannels.getAll().map(x => ({
           id: x.id,
           item: x,
         })),
@@ -37,8 +40,9 @@ function ChannelsSidebar({guildId}: Props) {
         return setData([]);
       }
 
+      // render guild channels
       setData(
-        Array.from(guild.channels.values()).map(x => ({
+        guild.channels.getAll().map(x => ({
           id: x.id,
           item: x,
         })),
@@ -52,30 +56,37 @@ function ChannelsSidebar({guildId}: Props) {
         styles.container,
         {backgroundColor: theme.colors.palette.background60},
       ]}>
-      <FlatList
-        data={data}
-        keyExtractor={x => x.id}
-        renderItem={({item: {item}}) => {
-          return <ChannelSidebarItem channel={item} />;
-        }}
-        // eslint-disable-next-line react/no-unstable-nested-components
-        ListHeaderComponent={() => (
-          <Text style={{color: theme.colors.text}}>
-            {guildId === 'me' ? t('channel:DM_LIST_HEADER') : 'Channels'}
-          </Text>
-        )}
-      />
+      <ChannelListHeader children={<Text>AAAAAAAAA</Text>} />
+      <Container style={styles.listWrapper}>
+        <FlatList
+          data={data}
+          keyExtractor={({item}, index) => `${index}_${item.id}`}
+          renderItem={({item: {item}}) => {
+            return <ChannelSidebarItem channel={item} />;
+          }}
+          // eslint-disable-next-line react/no-unstable-nested-components
+          ListHeaderComponent={() =>
+            guildId === 'me' ? (
+              <Text style={{color: theme.colors.text}}>
+                {t('channel:DM_LIST_HEADER')}
+              </Text>
+            ) : null
+          }
+        />
+      </Container>
     </Container>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
     height: '100%',
     width: 240, // this leaves a bit of a gap between the sidebar and the main content swiper
     // width: '100%', // this makes the sidebar fill the rest of the space, not sure if we should do this or not
   },
+  listWrapper: {
+    padding: 10,
+  },
 });
 
-export default ChannelsSidebar;
+export default observer(ChannelsSidebar);

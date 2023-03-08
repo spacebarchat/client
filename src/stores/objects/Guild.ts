@@ -1,11 +1,8 @@
 import {Snowflake} from '@puyodead1/fosscord-api-types/globals';
-import {
-  APIChannel,
-  APIGuild,
-  GatewayGuild,
-} from '@puyodead1/fosscord-api-types/v9';
+import {APIGuild, GatewayGuild} from '@puyodead1/fosscord-api-types/v9';
 import {action, makeObservable, observable} from 'mobx';
 import BaseStore from '../BaseStore';
+import ChannelStore from '../ChannelStore';
 
 export default class Guild extends BaseStore {
   id: Snowflake;
@@ -19,7 +16,7 @@ export default class Guild extends BaseStore {
   @observable large: boolean;
   @observable guildScheduledEvents: unknown[]; // TODO:
   @observable emojis: unknown[]; // TODO:
-  @observable channels: APIChannel[]; // TODO:
+  @observable channels = new ChannelStore();
   @observable name: string;
   @observable description: string | null = null;
   @observable icon: string | null = null;
@@ -63,7 +60,6 @@ export default class Guild extends BaseStore {
     this.large = data.large;
     this.guildScheduledEvents = data.guild_scheduled_events;
     this.emojis = data.emojis;
-    this.channels = data.channels;
     this.name = data.properties.name;
     this.description = data.properties.description;
     this.icon = data.properties.icon;
@@ -92,6 +88,8 @@ export default class Guild extends BaseStore {
     this.maxMembers = data.properties.max_members!;
     this.nsfwLevel = data.properties.nsfw_level;
     this.hubType = data.properties.hub_type;
+
+    this.channels.addAll(data.channels);
 
     this.acronym = this.name
       .split(' ')

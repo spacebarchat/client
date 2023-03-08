@@ -3,7 +3,7 @@ import {action, computed, observable, ObservableMap} from 'mobx';
 import BaseStore from './BaseStore';
 import Channel from './objects/Channel';
 
-export default class PrivateChannelStore extends BaseStore {
+export default class ChannelStore extends BaseStore {
   @observable readonly channels = new ObservableMap<string, Channel>();
 
   constructor() {

@@ -1,9 +1,11 @@
-import {APIChannel, ChannelType} from '@puyodead1/fosscord-api-types/v9';
+import {ChannelType} from '@puyodead1/fosscord-api-types/v9';
 import {t} from 'i18next';
+import {observer} from 'mobx-react-lite';
 import React from 'react';
 import {Animated, Platform, Pressable, StyleSheet} from 'react-native';
 import {Avatar, HelperText, Text, useTheme} from 'react-native-paper';
 import useLogger from '../hooks/useLogger';
+import Channel from '../stores/objects/Channel';
 import {CustomTheme} from '../types';
 import {CDNRoutes, DefaultUserAvatarAssets} from '../utils/Endpoints';
 import REST from '../utils/REST';
@@ -13,7 +15,7 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const ANIMATION_TIME = 100; // the duration of the hover animation
 
 interface Props {
-  channel: APIChannel;
+  channel: Channel;
 }
 
 function PrivateChannelItem({channel}: Props) {
@@ -206,4 +208,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChannelSidebarItem;
+export default observer(ChannelSidebarItem);

@@ -31,6 +31,11 @@ export default class GuildStore extends BaseStore {
     return this.guilds.get(id);
   }
 
+  @computed
+  getAll() {
+    return Array.from(this.guilds.values());
+  }
+
   @action
   remove(id: string) {
     this.guilds.delete(id);
