@@ -1,12 +1,12 @@
+import {ChannelType} from '@puyodead1/fosscord-api-types/v9';
 import {observer} from 'mobx-react';
 import React from 'react';
-import {FlatList, StyleSheet} from 'react-native';
+import {SectionList, StyleSheet} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import useGuild from '../hooks/useGuild';
 import {DomainContext} from '../stores/DomainStore';
 import Channel from '../stores/objects/Channel';
 import {CustomTheme} from '../types';
-import {t} from '../utils/i18n';
 import ChannelListHeader from './ChannelListHeader';
 import ChannelSidebarItem from './ChannelSidebarItem';
 import Container from './Container';
@@ -21,8 +21,8 @@ function ChannelsSidebar({guildId}: Props) {
   const guild = useGuild(guildId);
   const [data, setData] = React.useState<
     {
-      id: string;
-      item: Channel;
+      title?: string;
+      data: Channel[];
     }[]
   >([]);
 
@@ -30,27 +30,36 @@ function ChannelsSidebar({guildId}: Props) {
     if (guildId === 'me') {
       // render private channels
       // TODO: how do we want to sort these?
-      setData(
-        domain.privateChannels.getAll().map(x => ({
-          id: x.id,
-          item: x,
-        })),
-      );
+      setData([
+        {
+          data: domain.privateChannels.getAll(),
+        },
+      ]);
     } else {
       if (!guild) {
         return setData([]);
       }
 
-      // render guild channels
-      setData(
-        guild.channels
-          .getAll()
-          .sort((a, b) => (a?.position ?? 0) - (b?.position ?? 0))
-          .map(x => ({
-            id: x.id,
-            item: x,
-          })),
-      );
+      const channels = guild.channels
+        .getAll()
+        .sort((a, b) => (a?.position ?? 0) - (b?.position ?? 0));
+      const channelsWithoutCategory = channels.filter(
+        x => !x.parentId && x.type !== ChannelType.GuildCategory,
+      ); // TODO: we should be checking if its a guild channel, not just not a category
+
+      const mapped = channels
+        .filter(x => x.type === ChannelType.GuildCategory)
+        .map(category => {
+          const channelsInCategory = channels.filter(
+            channel => channel.parentId === category.id,
+          );
+          return {
+            title: category.name!,
+            data: channelsInCategory,
+          };
+        });
+
+      setData([...mapped, {data: channelsWithoutCategory}]);
     }
   }, [domain.privateChannels, guildId, guild]);
 
@@ -60,9 +69,11 @@ function ChannelsSidebar({guildId}: Props) {
         styles.container,
         {backgroundColor: theme.colors.palette.background60},
       ]}>
-      <ChannelListHeader children={<Text>AAAAAAAAA</Text>} />
+      <ChannelListHeader
+        children={<Text>{guild?.name ?? 'Direct Messages'}</Text>}
+      />
       <Container>
-        <FlatList
+        {/* <FlatList
           data={data}
           contentContainerStyle={styles.listWrapper}
           keyExtractor={({item}, index) => `${index}_${item.id}`}
@@ -77,6 +88,23 @@ function ChannelsSidebar({guildId}: Props) {
               </Text>
             ) : null
           }
+        /> */}
+        <SectionList
+          sections={data}
+          keyExtractor={(item, index) => `${index}_${item.id}`}
+          renderItem={({item}) => <ChannelSidebarItem channel={item} />}
+          renderSectionHeader={({section: {title}}) => {
+            if (!title) {
+              return null;
+            }
+            return (
+              <Container>
+                <Text>{title.toUpperCase()}</Text>
+              </Container>
+            );
+          }}
+          stickySectionHeadersEnabled={true}
+          contentContainerStyle={{padding: 10}}
         />
       </Container>
     </Container>
