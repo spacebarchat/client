@@ -26,9 +26,27 @@ To build the project you have to install `yarn` (preferred) or `npm`.
 
      cd fosscord-client; yarn install
 
-Then
+Then, either
 
-     yarn start
+<details>
+  <summary>NodeJS == v16.x</summary>
+  
+  ```
+  yarn start
+  ```
+  
+</details>
+
+or
+
+<details>
+  <summary>NodeJS > v16.x</summary>
+  
+  ```
+  NODE_OPTIONS=--openssl-legacy-provider yarn start
+  ```
+  
+</details>
 
 ## Contributing
 
