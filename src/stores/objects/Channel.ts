@@ -5,6 +5,7 @@ import {
   APIReadState,
   APIUser,
   APIWebhook,
+  ChannelType,
   GatewayVoiceState,
   Snowflake,
 } from '@puyodead1/fosscord-api-types/v9';
@@ -41,6 +42,7 @@ export default class Channel extends BaseStore {
   @observable webhooks?: APIWebhook[];
   @observable flags: number;
   @observable defaultThreadRateLimitPerUser: number;
+  @observable channelIcon?: string;
 
   constructor(channel: APIChannel) {
     super();
@@ -76,6 +78,46 @@ export default class Channel extends BaseStore {
 
     if (channel.messages) {
       this.messages.addAll(channel.messages);
+    }
+
+    switch (this.type) {
+      case ChannelType.GuildText:
+        this.channelIcon = 'pound';
+        break;
+      case ChannelType.GuildVoice:
+        this.channelIcon = 'volume-high';
+        break;
+      case ChannelType.GuildAnnouncement:
+      case ChannelType.AnnouncementThread:
+        this.channelIcon = 'bullhorn-variant';
+        break;
+      case ChannelType.GuildStore:
+      case ChannelType.Transactional:
+        this.channelIcon = 'tag';
+        break;
+      case ChannelType.Encrypted:
+      case ChannelType.EncryptedThread:
+        this.channelIcon = 'message-lock';
+        break;
+      case ChannelType.PublicThread:
+      case ChannelType.PrivateThread:
+        this.channelIcon = 'comment-text-multiple';
+        break;
+      case ChannelType.GuildStageVoice:
+        this.channelIcon = 'broadcast';
+        break;
+      case ChannelType.GuildForum:
+        this.channelIcon = 'forum';
+        break;
+      case ChannelType.TicketTracker:
+        this.channelIcon = 'ticket-outline';
+        break;
+      case ChannelType.KanBan:
+        this.channelIcon = 'developer-board';
+        break;
+      case ChannelType.VoicelessWhiteboard:
+        this.channelIcon = 'draw';
+        break;
     }
 
     makeObservable(this);

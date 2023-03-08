@@ -99,7 +99,9 @@ function ChannelsSidebar({guildId}: Props) {
             }
             return (
               <Container>
-                <Text>{title.toUpperCase()}</Text>
+                <Text style={{color: theme.colors.palette.gray100}}>
+                  {title.toUpperCase()}
+                </Text>
               </Container>
             );
           }}

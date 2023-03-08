@@ -5,6 +5,7 @@ import {observer} from 'mobx-react-lite';
 import React from 'react';
 import {Animated, Platform, Pressable, StyleSheet} from 'react-native';
 import {Avatar, HelperText, Text, useTheme} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import useLogger from '../hooks/useLogger';
 import Channel from '../stores/objects/Channel';
 import {CustomTheme} from '../types';
@@ -108,13 +109,20 @@ function PrivateChannelItem({channel}: Props) {
           />
         )}
         <Container>
-          <Text variant="bodySmall">
+          <Text
+            variant="bodySmall"
+            style={{color: theme.colors.palette.gray100}}>
             {channel.type === ChannelType.GroupDM
               ? channel.recipients.map(x => x.username).join(', ')
               : user.username}
           </Text>
           {channel.type === ChannelType.GroupDM && (
-            <HelperText type="info" padding="none" variant="bodySmall" visible>
+            <HelperText
+              type="info"
+              padding="none"
+              variant="bodySmall"
+              visible
+              style={{color: theme.colors.palette.gray100}}>
               {t('channel:GROUP_DM_MEMBER_COUNT', {
                 count: channel.recipients.length,
               })}
@@ -159,10 +167,13 @@ function ChannelSidebarItem({channel}: Props) {
   };
 
   const onPress = () => {
-    navigation.setParams({
-      guildId: channel.guildId,
-      channelId: channel.id,
-    } as any);
+    navigation.navigate('App', {
+      screen: 'Channel',
+      params: {
+        guildId: channel.guildId!,
+        channelId: channel.id,
+      },
+    });
   };
 
   return (
@@ -183,14 +194,18 @@ function ChannelSidebarItem({channel}: Props) {
         },
       ]}>
       <Container row horizontalCenter style={styles.container}>
-        <Avatar.Icon
-          icon="pound"
-          size={24}
-          color={theme.colors.whiteBlack}
-          style={styles.icon}
-        />
+        {channel.channelIcon && (
+          <Icon
+            name={channel.channelIcon! as any}
+            size={16}
+            color={theme.colors.palette.gray80}
+            style={{marginRight: 5}}
+          />
+        )}
         <Container>
-          <Text variant="bodyMedium" style={{color: theme.colors.whiteBlack}}>
+          <Text
+            variant="bodyMedium"
+            style={{color: theme.colors.palette.gray80}}>
             {channel.name}
           </Text>
         </Container>
