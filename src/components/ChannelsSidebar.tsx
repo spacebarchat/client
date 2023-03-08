@@ -57,9 +57,10 @@ function ChannelsSidebar({guildId}: Props) {
         {backgroundColor: theme.colors.palette.background60},
       ]}>
       <ChannelListHeader children={<Text>AAAAAAAAA</Text>} />
-      <Container style={styles.listWrapper}>
+      <Container>
         <FlatList
           data={data}
+          contentContainerStyle={styles.listWrapper}
           keyExtractor={({item}, index) => `${index}_${item.id}`}
           renderItem={({item: {item}}) => {
             return <ChannelSidebarItem channel={item} />;

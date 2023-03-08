@@ -6,16 +6,20 @@ import ChannelHeader from '../../components/ChannelHeader';
 import ChannelsSidebar from '../../components/ChannelsSidebar';
 import Container from '../../components/Container';
 import MembersSidebar from '../../components/MembersSidebar';
+import useChannel from '../../hooks/useChannel';
 import useGuild from '../../hooks/useGuild';
+import useLogger from '../../hooks/useLogger';
 import {DomainContext} from '../../stores/DomainStore';
 import {ChannelsStackScreenProps, CustomTheme} from '../../types';
 
 function ChannelScreen({
+  navigation,
   route: {
     params: {guildId, channelId},
   },
 }: ChannelsStackScreenProps<'Channel'>) {
   const theme = useTheme<CustomTheme>();
+  const logger = useLogger('ChannelScreen');
   const domain = React.useContext(DomainContext);
   const guild = useGuild(guildId);
 
@@ -23,9 +27,23 @@ function ChannelScreen({
     domain.setShowFPS(!domain.showFPS);
   };
 
+  // handles updating the channel id parameter when switching guilds
   React.useEffect(() => {
-    // TODO: update channel id
-    console.log(guildId, channelId);
+    if (guildId === 'me') {
+      return;
+    }
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const channel = useChannel(domain, guildId, channelId);
+    if (!channel) {
+      logger.warn(
+        `Channel was undefined for guild ${guildId} and channel ${channelId}`,
+      );
+      return;
+    }
+    navigation.setParams({
+      channelId: channel.id,
+    });
   }, [guildId, channelId]);
 
   return (

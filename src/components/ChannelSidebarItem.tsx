@@ -1,4 +1,5 @@
 import {ChannelType} from '@puyodead1/fosscord-api-types/v9';
+import {useNavigation} from '@react-navigation/native';
 import {t} from 'i18next';
 import {observer} from 'mobx-react-lite';
 import React from 'react';
@@ -21,6 +22,7 @@ interface Props {
 function PrivateChannelItem({channel}: Props) {
   const logger = useLogger('PrivateChannelItem');
   const theme = useTheme<CustomTheme>();
+  const navigation = useNavigation();
   const [bgColor] = React.useState(new Animated.Value(0));
 
   if (!channel.recipients) {
@@ -63,7 +65,10 @@ function PrivateChannelItem({channel}: Props) {
   };
 
   const onPress = () => {
-    logger.info('onPress');
+    navigation.setParams({
+      guildId: 'me',
+      channelId: channel.id,
+    } as any);
   };
 
   return (
