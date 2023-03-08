@@ -1,5 +1,9 @@
 import {Snowflake} from '@puyodead1/fosscord-api-types/globals';
-import {APIGuild, GatewayGuild} from '@puyodead1/fosscord-api-types/v9';
+import {
+  APIChannel,
+  APIGuild,
+  GatewayGuild,
+} from '@puyodead1/fosscord-api-types/v9';
 import {action, makeObservable, observable} from 'mobx';
 import BaseStore from '../BaseStore';
 
@@ -15,7 +19,7 @@ export default class Guild extends BaseStore {
   @observable large: boolean;
   @observable guildScheduledEvents: unknown[]; // TODO:
   @observable emojis: unknown[]; // TODO:
-  @observable channels: unknown[]; // TODO:
+  @observable channels: APIChannel[]; // TODO:
   @observable name: string;
   @observable description: string | null = null;
   @observable icon: string | null = null;
