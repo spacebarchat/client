@@ -118,6 +118,9 @@ export default class Channel extends BaseStore {
       case ChannelType.VoicelessWhiteboard:
         this.channelIcon = 'draw';
         break;
+      case ChannelType.GuildDirectory:
+        this.channelIcon = 'folder';
+        break;
     }
 
     makeObservable(this);
