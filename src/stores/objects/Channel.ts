@@ -8,39 +8,39 @@ import {
   GatewayVoiceState,
   Snowflake,
 } from '@puyodead1/fosscord-api-types/v9';
-import {action, makeObservable} from 'mobx';
+import {action, makeObservable, observable} from 'mobx';
 import BaseStore from '../BaseStore';
 import MessageStore from '../MessageStore';
 
 export default class Channel extends BaseStore {
   id: Snowflake;
   createdAt: Date;
-  name?: string;
-  icon?: string | null;
+  @observable name?: string;
+  @observable icon?: string | null;
   type: number;
-  recipients?: APIUser[];
-  lastMessageId?: Snowflake;
+  @observable recipients?: APIUser[];
+  @observable lastMessageId?: Snowflake;
   guildId?: Snowflake;
-  parentId: Snowflake;
+  @observable parentId: Snowflake;
   ownerId?: Snowflake;
-  lastPinTimestamp?: number;
-  defaultAutoArchiveDuration?: number;
-  position?: number;
-  permissionOverwrites?: APIOverwrite[];
-  videoQualityMode?: number;
-  bitrate?: number;
-  userLimit?: number;
-  nsfw: boolean;
-  rateLimiTPerUser?: number;
-  topic?: string;
-  invites?: APIInvite[];
-  retentionPolicyId?: string;
-  messages = new MessageStore();
-  voiceStates?: GatewayVoiceState[];
-  readStates?: APIReadState[];
-  webhooks?: APIWebhook[];
-  flags: number;
-  defaultThreadRateLimitPerUser: number;
+  @observable lastPinTimestamp?: number;
+  @observable defaultAutoArchiveDuration?: number;
+  @observable position?: number;
+  @observable permissionOverwrites?: APIOverwrite[];
+  @observable videoQualityMode?: number;
+  @observable bitrate?: number;
+  @observable userLimit?: number;
+  @observable nsfw: boolean;
+  @observable rateLimiTPerUser?: number;
+  @observable topic?: string;
+  @observable invites?: APIInvite[];
+  @observable retentionPolicyId?: string;
+  @observable messages = new MessageStore();
+  @observable voiceStates?: GatewayVoiceState[];
+  @observable readStates?: APIReadState[];
+  @observable webhooks?: APIWebhook[];
+  @observable flags: number;
+  @observable defaultThreadRateLimitPerUser: number;
 
   constructor(channel: APIChannel) {
     super();
