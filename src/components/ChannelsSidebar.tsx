@@ -29,6 +29,7 @@ function ChannelsSidebar({guildId}: Props) {
   React.useEffect(() => {
     if (guildId === 'me') {
       // render private channels
+      // TODO: how do we want to sort these?
       setData(
         domain.privateChannels.getAll().map(x => ({
           id: x.id,
@@ -42,10 +43,13 @@ function ChannelsSidebar({guildId}: Props) {
 
       // render guild channels
       setData(
-        guild.channels.getAll().map(x => ({
-          id: x.id,
-          item: x,
-        })),
+        guild.channels
+          .getAll()
+          .sort((a, b) => (a?.position ?? 0) - (b?.position ?? 0))
+          .map(x => ({
+            id: x.id,
+            item: x,
+          })),
       );
     }
   }, [domain.privateChannels, guildId, guild]);

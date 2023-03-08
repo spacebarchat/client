@@ -14,7 +14,7 @@ import MessageStore from '../MessageStore';
 
 export default class Channel extends BaseStore {
   id: Snowflake;
-  createdAt: string;
+  createdAt: Date;
   name?: string;
   icon?: string | null;
   type: number;
@@ -46,7 +46,7 @@ export default class Channel extends BaseStore {
     super();
 
     this.id = channel.id;
-    this.createdAt = channel.created_at;
+    this.createdAt = new Date(channel.created_at);
     this.name = channel.name;
     this.icon = channel.icon;
     this.type = channel.type;
