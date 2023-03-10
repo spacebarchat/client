@@ -1,18 +1,21 @@
 import {APIChannel} from '@puyodead1/fosscord-api-types/v9';
 import {action, computed, observable, ObservableMap} from 'mobx';
 import BaseStore from './BaseStore';
+import {DomainStore} from './DomainStore';
 import Channel from './objects/Channel';
 
 export default class PrivateChannelStore extends BaseStore {
+  private readonly domain: DomainStore;
   @observable readonly channels = new ObservableMap<string, Channel>();
 
-  constructor() {
+  constructor(domain: DomainStore) {
     super();
+    this.domain = domain;
   }
 
   @action
   add(channel: APIChannel) {
-    this.channels.set(channel.id, new Channel(channel));
+    this.channels.set(channel.id, new Channel(this.domain, channel));
   }
 
   @action

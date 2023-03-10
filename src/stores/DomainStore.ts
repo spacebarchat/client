@@ -26,9 +26,9 @@ export class DomainStore extends BaseStore {
 
   @observable account: AccountStore | null = null;
   @observable gateway = new GatewayConnectionStore(this);
-  @observable guilds = new GuildStore();
+  @observable guilds = new GuildStore(this);
   @observable users = new UserStore();
-  @observable privateChannels = new PrivateChannelStore();
+  @observable privateChannels = new PrivateChannelStore(this);
   @observable rest = new REST(this);
 
   @observable theme: NavigationTheme & CustomTheme = themes.dark;

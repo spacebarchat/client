@@ -1,8 +1,12 @@
 import iconFont from 'react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf';
+import SSL from './assets/fonts/SourceSans/SourceSans3-Light.otf';
 import SSR from './assets/fonts/SourceSans/SourceSans3-Regular.otf';
+import SSSB from './assets/fonts/SourceSans/SourceSans3-Semibold.otf';
 
 const fonts = [
-  {font: SSR, name: 'source-sans-regular'},
+  {font: SSR, name: 'SourceSans3-Regular'},
+  {font: SSSB, name: 'SourceSans3-Semibold'},
+  {font: SSL, name: 'SourceSans3-Light'},
   {font: iconFont, name: 'MaterialCommunityIcons'},
 ];
 

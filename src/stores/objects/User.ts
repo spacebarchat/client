@@ -1,6 +1,8 @@
 import {Snowflake} from '@puyodead1/fosscord-api-types/globals';
 import {APIUser} from '@puyodead1/fosscord-api-types/v9';
 import {makeObservable, observable} from 'mobx';
+import {CDNRoutes} from '../../utils/Endpoints';
+import REST from '../../utils/REST';
 import BaseStore from '../BaseStore';
 
 export default class User extends BaseStore {
@@ -16,6 +18,7 @@ export default class User extends BaseStore {
   @observable accent_color: unknown | null;
   @observable pronouns?: string;
   @observable theme_colors?: unknown;
+  @observable avatarURL: string;
 
   constructor(user: APIUser) {
     super();
@@ -42,6 +45,16 @@ export default class User extends BaseStore {
     this.pronouns = user.pronouns;
     this.theme_colors = user.theme_colors;
     this.accent_color = user.accent_color;
+
+    if (user.avatar) {
+      this.avatarURL = REST.makeCDNUrl(
+        CDNRoutes.userAvatar(user.id, user.avatar),
+      );
+    } else {
+      this.avatarURL = REST.makeCDNUrl(
+        CDNRoutes.defaultUserAvatar(user.discriminator),
+      );
+    }
 
     makeObservable(this);
   }

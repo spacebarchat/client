@@ -3,6 +3,7 @@ import {APIGuild, GatewayGuild} from '@puyodead1/fosscord-api-types/v9';
 import {action, makeObservable, observable} from 'mobx';
 import BaseStore from '../BaseStore';
 import ChannelStore from '../ChannelStore';
+import {DomainStore} from '../DomainStore';
 
 export default class Guild extends BaseStore {
   id: Snowflake;
@@ -16,7 +17,7 @@ export default class Guild extends BaseStore {
   @observable large: boolean;
   @observable guildScheduledEvents: unknown[]; // TODO:
   @observable emojis: unknown[]; // TODO:
-  @observable channels = new ChannelStore();
+  @observable channels: ChannelStore;
   @observable name: string;
   @observable description: string | null = null;
   @observable icon: string | null = null;
@@ -46,8 +47,9 @@ export default class Guild extends BaseStore {
   @observable hubType: number | null = null;
   @observable acronym: string;
 
-  constructor(data: GatewayGuild) {
+  constructor(domain: DomainStore, data: GatewayGuild) {
     super();
+    this.channels = new ChannelStore(domain);
 
     this.id = data.id;
     this.joinedAt = data.joined_at;

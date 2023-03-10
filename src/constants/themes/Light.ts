@@ -356,7 +356,7 @@ const Theme: CustomTheme = {
   },
   fonts: configureFonts({
     config: {
-      fontFamily: 'source-sans-regular',
+      fontFamily: 'SourceSans3-Regular',
     },
   }),
   animation: {
