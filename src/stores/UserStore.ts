@@ -1,10 +1,10 @@
 import {APIUser} from '@puyodead1/fosscord-api-types/v9';
-import {action, computed, observable} from 'mobx';
-import User from '../objects/User';
+import {action, computed, observable, ObservableMap} from 'mobx';
 import BaseStore from './BaseStore';
+import User from './objects/User';
 
 export default class UserStore extends BaseStore {
-  @observable readonly users = observable.map<string, User>();
+  @observable readonly users = new ObservableMap<string, User>();
 
   constructor() {
     super();
@@ -20,8 +20,18 @@ export default class UserStore extends BaseStore {
     users.forEach(user => this.add(user));
   }
 
+  @action
+  get(id: string) {
+    return this.users.get(id);
+  }
+
   @computed
-  get userCount() {
+  getAll() {
+    return Array.from(this.users.values());
+  }
+
+  @computed
+  get count() {
     return this.users.size;
   }
 }

@@ -21,7 +21,7 @@ import {RootStackParamsList} from '../types';
  */
 const Stack = createNativeStackNavigator<RootStackParamsList>();
 
-export const RootNavigator = observer(() => {
+function RootNavigator() {
   const domain = React.useContext(DomainContext);
 
   if (!domain.isAppReady) {
@@ -49,4 +49,6 @@ export const RootNavigator = observer(() => {
         : authenticatedStack}
     </Stack.Navigator>
   );
-});
+}
+
+export default observer(RootNavigator);

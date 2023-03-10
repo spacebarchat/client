@@ -1,4 +1,3 @@
-import {reaction} from 'mobx';
 import {Globals} from '../constants/Globals';
 import useLogger from '../hooks/useLogger';
 import {DomainStore} from '../stores/DomainStore';
@@ -17,17 +16,14 @@ export default class REST {
       accept: 'application/json',
       'Content-Type': 'application/json',
     };
+  }
 
-    reaction(
-      () => this.domain.token,
-      token => {
-        if (token) {
-          this.headers.Authorization = token;
-        } else {
-          delete this.headers.Authorization;
-        }
-      },
-    );
+  public setToken(token: string | null) {
+    if (token) {
+      this.headers.Authorization = token;
+    } else {
+      delete this.headers.Authorization;
+    }
   }
 
   public static makeAPIUrl(

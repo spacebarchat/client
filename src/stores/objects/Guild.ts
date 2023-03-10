@@ -1,9 +1,10 @@
 import {Snowflake} from '@puyodead1/fosscord-api-types/globals';
-import {GatewayGuild} from '@puyodead1/fosscord-api-types/v9';
-import {makeObservable, observable} from 'mobx';
+import {APIGuild, GatewayGuild} from '@puyodead1/fosscord-api-types/v9';
+import {action, makeObservable, observable} from 'mobx';
 import BaseStore from '../BaseStore';
+import ChannelStore from '../ChannelStore';
 
-export default class extends BaseStore {
+export default class Guild extends BaseStore {
   id: Snowflake;
   joinedAt: string;
   @observable threads: unknown[];
@@ -15,7 +16,7 @@ export default class extends BaseStore {
   @observable large: boolean;
   @observable guildScheduledEvents: unknown[]; // TODO:
   @observable emojis: unknown[]; // TODO:
-  @observable channels: unknown[]; // TODO:
+  @observable channels = new ChannelStore();
   @observable name: string;
   @observable description: string | null = null;
   @observable icon: string | null = null;
@@ -43,6 +44,7 @@ export default class extends BaseStore {
   @observable maxMembers: number;
   @observable nsfwLevel: number;
   @observable hubType: number | null = null;
+  @observable acronym: string;
 
   constructor(data: GatewayGuild) {
     super();
@@ -58,7 +60,6 @@ export default class extends BaseStore {
     this.large = data.large;
     this.guildScheduledEvents = data.guild_scheduled_events;
     this.emojis = data.emojis;
-    this.channels = data.channels;
     this.name = data.properties.name;
     this.description = data.properties.description;
     this.icon = data.properties.icon;
@@ -88,6 +89,23 @@ export default class extends BaseStore {
     this.nsfwLevel = data.properties.nsfw_level;
     this.hubType = data.properties.hub_type;
 
+    this.channels.addAll(data.channels);
+
+    this.acronym = this.name
+      .split(' ')
+      .map(word => word.substring(0, 1))
+      .join('');
+
     makeObservable(this);
+  }
+
+  @action
+  update(data: APIGuild | GatewayGuild) {
+    if ('properties' in data) {
+      Object.assign(this, {...data, ...data.properties});
+      return;
+    }
+
+    Object.assign(this, data);
   }
 }
