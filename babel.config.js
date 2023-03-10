@@ -6,6 +6,7 @@ module.exports = {
   plugins: [
     'macros',
     ['@babel/plugin-proposal-decorators', {version: 'legacy'}],
+    ["module:react-native-dotenv"],
     'react-native-reanimated/plugin', // needs to be last
   ],
   env: {
