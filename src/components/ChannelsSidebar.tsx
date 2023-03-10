@@ -73,22 +73,6 @@ function ChannelsSidebar({guildId}: Props) {
         children={<Text>{guild?.name ?? 'Direct Messages'}</Text>}
       />
       <Container>
-        {/* <FlatList
-          data={data}
-          contentContainerStyle={styles.listWrapper}
-          keyExtractor={({item}, index) => `${index}_${item.id}`}
-          renderItem={({item: {item}}) => {
-            return <ChannelSidebarItem channel={item} />;
-          }}
-          // eslint-disable-next-line react/no-unstable-nested-components
-          ListHeaderComponent={() =>
-            guildId === 'me' ? (
-              <Text style={{color: theme.colors.text}}>
-                {t('channel:DM_LIST_HEADER')}
-              </Text>
-            ) : null
-          }
-        /> */}
         <SectionList
           sections={data}
           keyExtractor={(item, index) => `${index}_${item.id}`}

@@ -7,10 +7,13 @@ import {
   APIWebhook,
   ChannelType,
   GatewayVoiceState,
+  RESTGetAPIChannelMessagesResult,
   Snowflake,
 } from '@puyodead1/fosscord-api-types/v9';
 import {action, makeObservable, observable} from 'mobx';
+import {Routes} from '../../utils/Endpoints';
 import BaseStore from '../BaseStore';
+import {DomainStore} from '../DomainStore';
 import MessageStore from '../MessageStore';
 
 export default class Channel extends BaseStore {
@@ -43,6 +46,7 @@ export default class Channel extends BaseStore {
   @observable flags: number;
   @observable defaultThreadRateLimitPerUser: number;
   @observable channelIcon?: string;
+  private hasFetchedMessages = false;
 
   constructor(channel: APIChannel) {
     super();
@@ -129,5 +133,30 @@ export default class Channel extends BaseStore {
   @action
   update(data: APIChannel) {
     Object.assign(this, data);
+  }
+
+  @action
+  async getChannelMessages(domain: DomainStore, limit?: number) {
+    if (this.hasFetchedMessages) {
+      return;
+    }
+
+    this.logger.info(`Fetching messags for ${this.id}`);
+    // TODO: catch errors
+    const messages = await domain.rest.get<RESTGetAPIChannelMessagesResult>(
+      Routes.channelMessages(this.id),
+      {
+        limit: limit || 50,
+      },
+    );
+    this.messages.addAll(
+      messages.filter(x => !this.messages.has(x.id)).reverse(),
+      // .sort((a, b) => {
+      //   const aTimestamp = new Date(a.timestamp as unknown as string);
+      //   const bTimestamp = new Date(b.timestamp as unknown as string);
+      //   return aTimestamp.getTime() - bTimestamp.getTime();
+      // })
+    );
+    this.hasFetchedMessages = true;
   }
 }

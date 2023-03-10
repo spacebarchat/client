@@ -29,6 +29,11 @@ export default class MessageStore extends BaseStore {
     return Array.from(this.messages.values());
   }
 
+  @computed
+  has(id: string) {
+    return this.messages.has(id);
+  }
+
   @action
   remove(id: string) {
     this.messages.delete(id);

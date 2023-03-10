@@ -6,10 +6,10 @@ import {CustomTheme} from '../types';
 import Container from './Container';
 
 interface Props {
-  //   channel: APIChannel;
+  title: string;
 }
 
-function ChannelHeader(props: Props) {
+function ChannelHeader({title}: Props) {
   const theme = useTheme<CustomTheme>();
 
   return (
@@ -22,7 +22,7 @@ function ChannelHeader(props: Props) {
       ]}
       element={Surface}
       elevation={1}>
-      <Text>Channel Header</Text>
+      <Text>{title}</Text>
     </Container>
   );
 }

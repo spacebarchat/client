@@ -1,11 +1,12 @@
 import {observer} from 'mobx-react';
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Button, Text, useTheme} from 'react-native-paper';
+import {useTheme} from 'react-native-paper';
 import ChannelHeader from '../../components/ChannelHeader';
 import ChannelsSidebar from '../../components/ChannelsSidebar';
 import Container from '../../components/Container';
 import MembersSidebar from '../../components/MembersSidebar';
+import MessageList from '../../components/MessageList';
 import useChannel from '../../hooks/useChannel';
 import useGuild from '../../hooks/useGuild';
 import useLogger from '../../hooks/useLogger';
@@ -22,6 +23,7 @@ function ChannelScreen({
   const logger = useLogger('ChannelScreen');
   const domain = React.useContext(DomainContext);
   const guild = useGuild(guildId);
+  const channel = useChannel(domain, guildId, channelId);
 
   const showFps = () => {
     domain.setShowFPS(!domain.showFPS);
@@ -33,8 +35,6 @@ function ChannelScreen({
       return;
     }
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const channel = useChannel(domain, guildId, channelId);
     if (!channel) {
       logger.warn(
         `Channel was undefined for guild ${guildId} and channel ${channelId}`,
@@ -44,14 +44,15 @@ function ChannelScreen({
     navigation.setParams({
       channelId: channel.id,
     });
-  }, [guildId, channelId]);
+    channel.getChannelMessages(domain);
+  }, [guildId, channelId, channel]);
 
   return (
     <Container flex={1} row>
       <ChannelsSidebar guildId={guildId} />
       <Container flex={1}>
-        <ChannelHeader />
-        <Container
+        <ChannelHeader title={channel?.name ?? 'Unknown Channel'} />
+        {/* <Container
           flex={1}
           style={[
             styles.container,
@@ -68,7 +69,8 @@ function ChannelScreen({
           <Button mode="contained" onPress={showFps}>
             Show FPS
           </Button>
-        </Container>
+        </Container> */}
+        {channel && <MessageList channel={channel} />}
       </Container>
       {guildId !== 'me' && <MembersSidebar />}
     </Container>

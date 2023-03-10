@@ -167,6 +167,24 @@ function ChannelSidebarItem({channel}: Props) {
   };
 
   const onPress = () => {
+    // ignore non-text based channels
+    // TODO: make this nicer
+    // TODO: do something with these other channel types
+    if (
+      [
+        ChannelType.DM,
+        ChannelType.GroupDM,
+        ChannelType.VoicelessWhiteboard,
+        ChannelType.GuildVoice,
+        ChannelType.GuildStageVoice,
+        ChannelType.GuildCategory,
+        ChannelType.GuildDirectory,
+        ChannelType.GuildStore,
+      ].includes(channel.type)
+    ) {
+      return;
+    }
+
     navigation.navigate('App', {
       screen: 'Channel',
       params: {
