@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useLogger from '../hooks/useLogger';
-import {SERVER_URL} from "@env"
+import { SERVER_URL } from "@env"
 
 interface RouteSettings {
   api: string;
@@ -13,13 +13,13 @@ interface RouteSettings {
 }
 
 export const DefaultRouteSettings: RouteSettings = {
-  api: 'https://${SERVER_URL}/api',
-  cdn: 'https://${SERVER_URL}',
-  invite: 'https://${SERVER_URL}/invite',
-  template: 'https://${SERVER_URL}/template',
-  gift: 'https://${SERVER_URL}/gift',
-  scheduledEvent: 'https://${SERVER_URL}/events',
-  gateway: 'wss://${SERVER_URL}',
+  api: `https://${SERVER_URL}/api`,
+  cdn: `https://${SERVER_URL}`,
+  invite: `https://${SERVER_URL}/invite`,
+  template: `https://${SERVER_URL}/template`,
+  gift: `https://${SERVER_URL}/gift`,
+  scheduledEvent: `https://${SERVER_URL}/events`,
+  gateway: `wss://${SERVER_URL}`,
 };
 
 export const Globals: {
