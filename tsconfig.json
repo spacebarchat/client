@@ -9,6 +9,7 @@
     "target": "ESNext",
     "module": "ESNext",
     "isolatedModules": false,
+    "typeRoots": ["./src/types"],
     "types": ["node"]
   }
 }
