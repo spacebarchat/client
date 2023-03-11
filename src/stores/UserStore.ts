@@ -34,4 +34,8 @@ export default class UserStore extends BaseStore {
   get count() {
     return this.users.size;
   }
+
+  has(id: string) {
+    return this.users.has(id);
+  }
 }

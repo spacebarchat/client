@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import useLogger from '../hooks/useLogger';
 import Channel from '../stores/objects/Channel';
 import {CustomTheme} from '../types';
-import {CDNRoutes, DefaultUserAvatarAssets} from '../utils/Endpoints';
+import {CDNRoutes} from '../utils/Endpoints';
 import REST from '../utils/REST';
 import Container from './Container';
 
@@ -37,11 +37,7 @@ function PrivateChannelItem({channel}: Props) {
       ? undefined
       : user.avatar
       ? REST.makeCDNUrl(CDNRoutes.userAvatar(user.id, user.avatar))
-      : REST.makeCDNUrl(
-          CDNRoutes.defaultUserAvatar(
-            (Number(user.discriminator) % 5) as DefaultUserAvatarAssets,
-          ),
-        );
+      : REST.makeCDNUrl(CDNRoutes.defaultUserAvatar(user.discriminator));
 
   const onHoverIn = () => {
     if (!Platform.isWeb) {

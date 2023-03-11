@@ -21,8 +21,11 @@ import {
 } from '@puyodead1/fosscord-api-types/v9';
 import {observable} from 'mobx';
 import BaseStore from '../BaseStore';
+import {DomainStore} from '../DomainStore';
+import User from './User';
 
 export default class Message extends BaseStore {
+  private readonly domain: DomainStore;
   /**
    * ID of the message
    */
@@ -39,7 +42,7 @@ export default class Message extends BaseStore {
    *
    * See https://discord.com/developers/docs/resources/user#user-object
    */
-  author: APIUser;
+  author: User;
   /**
    * Contents of the message
    *
@@ -228,13 +231,12 @@ export default class Message extends BaseStore {
    */
   position?: number;
 
-  constructor(message: APIMessage) {
+  constructor(domain: DomainStore, message: APIMessage) {
     super();
+    this.domain = domain;
 
     this.id = message.id;
     this.channel_id = message.channel_id;
-    this.author = message.author;
-    // this.author = message.author ? new User(message.author) : undefined;
     // this.member = message.member ? new GuildMember(message.member) : undefined;
     this.content = message.content;
     this.timestamp = new Date(message.timestamp);
@@ -265,5 +267,13 @@ export default class Message extends BaseStore {
     this.sticker_items = message.sticker_items;
     this.stickers = message.stickers;
     this.position = message.position;
+
+    if (this.domain.users.has(message.author.id)) {
+      this.author = this.domain.users.get(message.author.id) as User;
+    } else {
+      const user = new User(message.author);
+      this.domain.users.users.set(user.id, user);
+      this.author = user;
+    }
   }
 }

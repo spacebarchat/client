@@ -1,3 +1,4 @@
+import {runInAction} from 'mobx';
 import {observer} from 'mobx-react';
 import React from 'react';
 import {StyleSheet} from 'react-native';
@@ -41,10 +42,14 @@ function ChannelScreen({
       );
       return;
     }
+
     navigation.setParams({
       channelId: channel.id,
     });
-    channel.getChannelMessages(domain);
+
+    runInAction(() => {
+      channel.getChannelMessages(domain);
+    });
   }, [guildId, channelId, channel]);
 
   return (

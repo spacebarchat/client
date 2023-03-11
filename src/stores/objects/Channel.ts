@@ -17,6 +17,8 @@ import {DomainStore} from '../DomainStore';
 import MessageStore from '../MessageStore';
 
 export default class Channel extends BaseStore {
+  private readonly domain: DomainStore;
+
   id: Snowflake;
   createdAt: Date;
   @observable name?: string;
@@ -39,7 +41,7 @@ export default class Channel extends BaseStore {
   @observable topic?: string;
   @observable invites?: APIInvite[];
   @observable retentionPolicyId?: string;
-  @observable messages = new MessageStore();
+  @observable messages: MessageStore;
   @observable voiceStates?: GatewayVoiceState[];
   @observable readStates?: APIReadState[];
   @observable webhooks?: APIWebhook[];
@@ -48,8 +50,11 @@ export default class Channel extends BaseStore {
   @observable channelIcon?: string;
   private hasFetchedMessages = false;
 
-  constructor(channel: APIChannel) {
+  constructor(domain: DomainStore, channel: APIChannel) {
     super();
+    this.domain = domain;
+
+    this.messages = new MessageStore(domain);
 
     this.id = channel.id;
     this.createdAt = new Date(channel.created_at);
@@ -141,6 +146,7 @@ export default class Channel extends BaseStore {
       return;
     }
 
+    this.hasFetchedMessages = true;
     this.logger.info(`Fetching messags for ${this.id}`);
     // TODO: catch errors
     const messages = await domain.rest.get<RESTGetAPIChannelMessagesResult>(
@@ -157,6 +163,5 @@ export default class Channel extends BaseStore {
       //   return aTimestamp.getTime() - bTimestamp.getTime();
       // })
     );
-    this.hasFetchedMessages = true;
   }
 }

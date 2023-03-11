@@ -1,3 +1,4 @@
+import {runInAction} from 'mobx';
 import {observer} from 'mobx-react';
 import React from 'react';
 import {StyleSheet} from 'react-native';
@@ -5,8 +6,10 @@ import {Text, useTheme} from 'react-native-paper';
 import ChannelsSidebar from '../../components/ChannelsSidebar';
 import Container from '../../components/Container';
 import GuildsSidebar from '../../components/GuildsSidebar';
+import MessageList from '../../components/MessageList';
 import Swiper from '../../components/Swiper';
 import useChannel from '../../hooks/useChannel';
+import useGuild from '../../hooks/useGuild';
 import useLogger from '../../hooks/useLogger';
 import {DomainContext} from '../../stores/DomainStore';
 import {ChannelsStackScreenProps, CustomTheme} from '../../types';
@@ -20,6 +23,8 @@ function ChannelScreen({
   const theme = useTheme<CustomTheme>();
   const logger = useLogger('ChannelScreen');
   const domain = React.useContext(DomainContext);
+  const guild = useGuild(guildId);
+  const channel = useChannel(domain, guildId, channelId);
 
   // handles updating the channel id parameter when switching guilds
   React.useEffect(() => {
@@ -27,16 +32,19 @@ function ChannelScreen({
       return;
     }
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const channel = useChannel(domain, guildId, channelId);
     if (!channel) {
       logger.warn(
         `Channel was undefined for guild ${guildId} and channel ${channelId}`,
       );
       return;
     }
+
     navigation.setParams({
       channelId: channel.id,
+    });
+
+    runInAction(() => {
+      channel.getChannelMessages(domain);
     });
   }, [guildId, channelId]);
 
@@ -55,7 +63,8 @@ function ChannelScreen({
 
   return (
     <Swiper leftChildren={leftAction} rightChildren={rightAction}>
-      <Container
+      {channel && <MessageList channel={channel} />}
+      {/* <Container
         flex={1}
         style={[
           styles.container,
@@ -67,7 +76,7 @@ function ChannelScreen({
         <Text>Guild Count: {domain.guilds.count}</Text>
         <Text>User Count: {domain.users.count}</Text>
         <Text>Private Channel Count: {domain.privateChannels.count}</Text>
-      </Container>
+      </Container> */}
     </Swiper>
   );
 }

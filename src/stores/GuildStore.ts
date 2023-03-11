@@ -1,14 +1,17 @@
 import {GatewayGuild} from '@puyodead1/fosscord-api-types/v9';
 import {action, computed, observable, ObservableMap} from 'mobx';
 import BaseStore from './BaseStore';
+import {DomainStore} from './DomainStore';
 import Guild from './objects/Guild';
 
 export default class GuildStore extends BaseStore {
+  private readonly domain: DomainStore;
   @observable initialGuildsLoaded = false;
   @observable readonly guilds = new ObservableMap<string, Guild>();
 
-  constructor() {
+  constructor(domain: DomainStore) {
     super();
+    this.domain = domain;
   }
 
   @action
@@ -19,7 +22,7 @@ export default class GuildStore extends BaseStore {
 
   @action
   add(guild: GatewayGuild) {
-    this.guilds.set(guild.id, new Guild(guild));
+    this.guilds.set(guild.id, new Guild(this.domain, guild));
   }
 
   @action

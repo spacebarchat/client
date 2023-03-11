@@ -128,7 +128,9 @@ export const CDNRoutes = {
    *
    * This route supports the extension: PNG
    */
-  defaultUserAvatar(userDiscriminator: DefaultUserAvatarAssets) {
+  defaultUserAvatar(userDiscriminator: string | number) {
+    userDiscriminator = Number(userDiscriminator);
+    userDiscriminator %= 5;
     return `/embed/avatars/${userDiscriminator}.png` as const;
   },
 
