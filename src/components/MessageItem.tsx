@@ -10,33 +10,45 @@ import Container from './Container';
 
 interface Props {
   message: Message;
+  isHeader?: boolean;
 }
 
-function MessageItem({message}: Props) {
+function MessageItem({message, isHeader}: Props) {
   const theme = useTheme<CustomTheme>();
 
   return (
-    <Container testID="message" row flex={1} style={styles.container}>
-      <Avatar.Image
-        testID="messageAvatar"
-        size={40}
-        source={{uri: message.author.avatarURL}}
-        style={styles.avatar}
-      />
-      <Container testID="messageContentContainer" flex={1}>
-        <Container testID="messageHeader" row flex={1}>
-          <Text testID="messageAuthor" style={styles.messageAuthor}>
-            {message.author.username}
-          </Text>
-          <Container>
-            <Moment
-              element={Text}
-              calendar={calendarStrings}
-              style={{color: theme.colors.palette.gray100, marginLeft: 10}}>
-              {message.timestamp}
-            </Moment>
+    <Container
+      testID="message"
+      row
+      flex={1}
+      style={[styles.container, isHeader ? styles.containerHeader : undefined]}>
+      {isHeader && (
+        <Avatar.Image
+          testID="messageAvatar"
+          size={40}
+          source={{uri: message.author.avatarURL}}
+          style={styles.avatar}
+        />
+      )}
+      <Container
+        testID="messageContentContainer"
+        flex={1}
+        style={!isHeader ? {marginLeft: 50} : undefined}>
+        {isHeader && (
+          <Container testID="messageHeader" row flex={1}>
+            <Text testID="messageAuthor" style={styles.messageAuthor}>
+              {message.author.username}
+            </Text>
+            <Container>
+              <Moment
+                element={Text}
+                calendar={calendarStrings}
+                style={{color: theme.colors.palette.gray100, marginLeft: 10}}>
+                {message.timestamp}
+              </Moment>
+            </Container>
           </Container>
-        </Container>
+        )}
         <Text style={styles.messageContent}>{message.content}</Text>
       </Container>
     </Container>
@@ -44,8 +56,10 @@ function MessageItem({message}: Props) {
 }
 
 const styles = StyleSheet.create({
+  containerHeader: {
+    marginTop: 10,
+  },
   container: {
-    marginVertical: 10,
     marginHorizontal: 5,
   },
   avatar: {

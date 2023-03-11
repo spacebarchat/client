@@ -22,10 +22,20 @@ function MessageList({channel}: Props) {
         data={
           channel.messages
             .getAll()
-            .map(x => ({id: x.id, item: x}))
+            .map((x, i, arr) => {
+              const isHeader = i === 0 || x.author.id !== arr[i - 1].author.id;
+              console.debug(`message ${x.id} isHeader: ${isHeader}`);
+              return {
+                id: x.id,
+                item: x,
+                isHeader,
+              };
+            })
             .reverse() ?? []
         }
-        renderItem={({item}) => <MessageItem message={item.item} />}
+        renderItem={({item}) => (
+          <MessageItem message={item.item} isHeader={item.isHeader} />
+        )}
         keyExtractor={({item}) => item.id}
         inverted
       />
