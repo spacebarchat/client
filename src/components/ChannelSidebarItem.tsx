@@ -14,7 +14,7 @@ import REST from '../utils/REST';
 import Container from './Container';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-const ANIMATION_TIME = 100; // the duration of the hover animation
+const ANIMATION_TIME = 50; // the duration of the hover animation
 
 interface Props {
   channel: Channel;

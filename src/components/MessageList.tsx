@@ -23,7 +23,12 @@ function MessageList({channel}: Props) {
           channel.messages
             .getAll()
             .map((x, i, arr) => {
-              const isHeader = i === 0 || x.author.id !== arr[i - 1].author.id;
+              // group by author, and only if the previous message is not older than a day
+              const t = 1 * 24 * 60 * 60 * 1000;
+              const isHeader =
+                i === 0 ||
+                x.author.id !== arr[i - 1].author.id ||
+                x.timestamp.getTime() - arr[i - 1].timestamp.getTime() > t;
               return {
                 id: x.id,
                 item: x,
