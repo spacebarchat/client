@@ -24,7 +24,6 @@ function MessageList({channel}: Props) {
             .getAll()
             .map((x, i, arr) => {
               const isHeader = i === 0 || x.author.id !== arr[i - 1].author.id;
-              console.debug(`message ${x.id} isHeader: ${isHeader}`);
               return {
                 id: x.id,
                 item: x,
