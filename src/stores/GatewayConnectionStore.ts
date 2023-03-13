@@ -474,14 +474,14 @@ export default class GatewayConnectionStore extends BaseStore {
     this.domain.setGatewayReady(true);
   };
 
-  public onChannelOpen = (guild_id: Snowflake, channelId: Snowflake) => {
+  public onChannelOpen = (guildId: Snowflake, channelId: Snowflake) => {
     let payload: GatewayLazyRequestData;
 
-    const guildChannels = this.lazyRequestChannels.get(guild_id);
+    const guildChannels = this.lazyRequestChannels.get(guildId);
 
     if (!guildChannels) {
       payload = {
-        guild_id,
+        guild_id: guildId,
         activities: true,
         threads: true,
         typing: true,
@@ -489,7 +489,7 @@ export default class GatewayConnectionStore extends BaseStore {
           [channelId]: [[0, 99]],
         },
       };
-      this.lazyRequestChannels.set(guild_id, [channelId]);
+      this.lazyRequestChannels.set(guildId, [channelId]);
 
       this.sendJson({
         op: GatewayOpcodes.LazyRequest,
@@ -503,7 +503,7 @@ export default class GatewayConnectionStore extends BaseStore {
       const d: Record<string, [number, number][]> = {};
       guildChannels.forEach(x => (d[x] = [[0, 99]]));
       payload = {
-        guild_id,
+        guild_id: guildId,
         channels: d,
       };
       guildChannels.push(channelId);
