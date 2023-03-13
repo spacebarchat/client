@@ -61,7 +61,6 @@ function MessageInput({channel}: Props) {
               // send message
               e.preventDefault();
 
-              // postMessage(message, channel.id);
               channel.sendMessage({
                 content: text,
               });
