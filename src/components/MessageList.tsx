@@ -1,6 +1,6 @@
 import {observer} from 'mobx-react';
 import React from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import Channel from '../stores/objects/Channel';
 import {CustomTheme} from '../types';
@@ -43,8 +43,16 @@ function MessageList({channel}: Props) {
         keyExtractor={({item}) => item.id}
         inverted
       />
+      <Container style={styles.spacer} />
     </Container>
   );
 }
+
+const styles = StyleSheet.create({
+  spacer: {
+    height: 30,
+    width: 1,
+  },
+});
 
 export default observer(MessageList);
