@@ -7,7 +7,7 @@ import Message from './objects/Message';
 export default class MessageStore extends BaseStore {
   private readonly domain: DomainStore;
 
-  @observable readonly messages = observable.array<Message>([]);
+  @observable private readonly messagesArr = observable.array<Message>([]);
 
   constructor(domain: DomainStore) {
     super();
@@ -18,7 +18,7 @@ export default class MessageStore extends BaseStore {
 
   @action
   add(message: APICustomMessage) {
-    this.messages.push(new Message(this.domain, message));
+    this.messagesArr.push(new Message(this.domain, message));
   }
 
   @action
@@ -27,17 +27,18 @@ export default class MessageStore extends BaseStore {
   }
 
   get(id: string) {
-    return this.messages.find(message => message.id === id);
+    return this.messagesArr.find(message => message.id === id);
   }
 
-  getAll() {
-    return Array.from(this.messages.values()).sort(
-      (a, b) => a.timestamp.getTime() - b.timestamp.getTime(),
-    );
+  @computed
+  get messages() {
+    return this.messagesArr
+      .slice()
+      .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
   }
 
   has(id: string) {
-    return this.messages.some(message => message.id === id);
+    return this.messagesArr.some(message => message.id === id);
   }
 
   @action
@@ -46,7 +47,7 @@ export default class MessageStore extends BaseStore {
     if (!message) {
       return;
     }
-    this.messages.remove(message);
+    this.messagesArr.remove(message);
   }
 
   @action
@@ -57,11 +58,11 @@ export default class MessageStore extends BaseStore {
     }
     const newMessage = new Message(this.domain, message);
     // replace
-    this.messages[this.messages.indexOf(oldMessage)] = newMessage;
+    this.messagesArr[this.messagesArr.indexOf(oldMessage)] = newMessage;
   }
 
   @computed
   get count() {
-    return this.messages.length;
+    return this.messagesArr.length;
   }
 }
