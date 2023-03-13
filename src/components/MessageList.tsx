@@ -2,6 +2,7 @@ import {observer} from 'mobx-react';
 import React from 'react';
 import {FlatList, StyleSheet} from 'react-native';
 import {useTheme} from 'react-native-paper';
+import {DomainContext} from '../stores/DomainStore';
 import Channel from '../stores/objects/Channel';
 import {CustomTheme} from '../types';
 import Container from './Container';
@@ -13,12 +14,21 @@ interface Props {
 
 function MessageList({channel}: Props) {
   const theme = useTheme<CustomTheme>();
+  const domain = React.useContext(DomainContext);
+
+  const fetchMore = async () => {
+    // get first message in the list to use as before
+    const before = channel.messages.getAll()[0].id;
+    await channel.getChannelMessages(domain, false, 50, before);
+  };
 
   return (
     <Container
       style={{backgroundColor: theme.colors.palette.background70}}
       flex={1}>
       <FlatList
+        onEndReached={fetchMore}
+        onEndReachedThreshold={0.7}
         data={
           channel.messages
             .getAll()

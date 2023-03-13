@@ -7,6 +7,7 @@ import {
   APIWebhook,
   ChannelType,
   GatewayVoiceState,
+  RESTGetAPIChannelMessagesQuery,
   RESTGetAPIChannelMessagesResult,
   RESTPostAPIChannelMessageJSONBody,
   RESTPostAPIChannelMessageResult,
@@ -144,9 +145,30 @@ export default class Channel extends BaseStore {
   }
 
   @action
-  async getChannelMessages(domain: DomainStore, limit?: number) {
-    if (this.hasFetchedMessages) {
+  async getChannelMessages(
+    domain: DomainStore,
+    isInitial: boolean,
+    limit?: number,
+    before?: SnowflakeType,
+    after?: SnowflakeType,
+    around?: SnowflakeType,
+  ) {
+    if (isInitial && this.hasFetchedMessages) {
       return;
+    }
+
+    let opts: RESTGetAPIChannelMessagesQuery = {
+      limit: limit || 50,
+    };
+
+    if (before) {
+      opts = {...opts, before};
+    }
+    if (after) {
+      opts = {...opts, after};
+    }
+    if (around) {
+      opts = {...opts, around};
     }
 
     this.hasFetchedMessages = true;
@@ -154,9 +176,7 @@ export default class Channel extends BaseStore {
     // TODO: catch errors
     const messages = await domain.rest.get<RESTGetAPIChannelMessagesResult>(
       Routes.channelMessages(this.id),
-      {
-        limit: limit || 50,
-      },
+      opts,
     );
     this.messages.addAll(
       messages.filter(x => !this.messages.has(x.id)).reverse(),

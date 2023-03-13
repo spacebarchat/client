@@ -51,7 +51,7 @@ function ChannelScreen({
     domain.gateway.onChannelOpen(guildId, channel.id);
 
     runInAction(() => {
-      channel.getChannelMessages(domain);
+      channel.getChannelMessages(domain, true);
     });
   }, [guildId, channelId, channel]);
 
