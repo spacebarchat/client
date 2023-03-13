@@ -1,4 +1,3 @@
-import {APIMessage} from '@puyodead1/fosscord-api-types/v9';
 import {
   action,
   computed,
@@ -6,6 +5,7 @@ import {
   observable,
   ObservableMap,
 } from 'mobx';
+import {APICustomMessage} from '../interfaces/api';
 import BaseStore from './BaseStore';
 import {DomainStore} from './DomainStore';
 import Message from './objects/Message';
@@ -23,12 +23,12 @@ export default class MessageStore extends BaseStore {
   }
 
   @action
-  add(message: APIMessage) {
+  add(message: APICustomMessage) {
     this.messages.set(message.id, new Message(this.domain, message));
   }
 
   @action
-  addAll(messages: APIMessage[]) {
+  addAll(messages: APICustomMessage[]) {
     messages.forEach(message => this.add(message));
   }
 
@@ -47,6 +47,11 @@ export default class MessageStore extends BaseStore {
   @action
   remove(id: string) {
     this.messages.delete(id);
+  }
+
+  @action
+  update(message: APICustomMessage) {
+    this.messages.set(message.id, new Message(this.domain, message));
   }
 
   @computed

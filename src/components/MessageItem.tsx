@@ -97,7 +97,13 @@ function MessageItem({message, isHeader}: Props) {
                 </Container>
               </Container>
             )}
-            <Text style={styles.messageContent}>{message.content}</Text>
+            <Text
+              style={[
+                styles.messageContent,
+                message.ghost ? {opacity: 0.5} : undefined,
+              ]}>
+              {message.content}
+            </Text>
           </Container>
         </Container>
       </AnimatedPressable>

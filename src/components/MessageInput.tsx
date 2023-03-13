@@ -8,7 +8,7 @@ import {CustomTheme} from '../types';
 import Container from './Container';
 
 const dimensions = Dimensions.get('window');
-const MAX_LENGTH = 2048; // TODO: some kind of server side config for non-premium, length for premium, etc
+const MAX_LENGTH = 2000; // TODO: some kind of server side config for non-premium, length for premium, etc
 
 interface Props {
   channel: Channel;
@@ -55,6 +55,19 @@ function MessageInput({channel}: Props) {
           onChange={adjustTextInputSize}
           onLayout={adjustTextInputSize}
           maxLength={MAX_LENGTH}
+          onKeyPress={e => {
+            // @ts-ignore
+            if (e.which === 13 && !e.shiftKey) {
+              // send message
+              e.preventDefault();
+
+              // postMessage(message, channel.id);
+              channel.sendMessage({
+                content: text,
+              });
+              setText('');
+            }
+          }}
         />
       </Container>
     </Container>

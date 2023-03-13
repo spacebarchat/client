@@ -1,3 +1,5 @@
+import {APIMessage} from '@puyodead1/fosscord-api-types/v9';
+
 export interface IAPILoginResponseMFARequired {
   token: null;
   mfa: true;
@@ -110,4 +112,8 @@ export interface IAPIPasswordResetRequest {
 export enum APIErrorCodes {
   ACCOUNT_DELETED = 20011,
   ACCOUNT_DISABLED = 20013,
+}
+
+export interface APICustomMessage extends APIMessage {
+  ghost?: boolean;
 }
