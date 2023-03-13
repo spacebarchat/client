@@ -1,4 +1,7 @@
 import {
+  ChannelType,
+  GatewayChannelCreateDispatchData,
+  GatewayChannelDeleteDispatchData,
   GatewayCloseCodes,
   GatewayDispatchEvents,
   GatewayDispatchPayload,
@@ -9,10 +12,16 @@ import {
   GatewayHeartbeat,
   GatewayHelloData,
   GatewayIdentify,
+  GatewayLazyRequest,
+  GatewayLazyRequestData,
+  GatewayMessageCreateDispatchData,
+  GatewayMessageDeleteDispatchData,
+  GatewayMessageUpdateDispatchData,
   GatewayOpcodes,
   GatewayReadyDispatchData,
   GatewayReceivePayload,
   GatewaySendPayload,
+  Snowflake,
 } from '@puyodead1/fosscord-api-types/v9';
 import {action, makeObservable, observable, runInAction} from 'mobx';
 import {Platform} from 'react-native';
@@ -38,6 +47,7 @@ export default class GatewayConnectionStore extends BaseStore {
   private identifyStartTime?: number;
   private sequence: number = 0;
   private heartbeatAck: boolean = true;
+  private lazyRequestChannels = new Map<string, Snowflake[]>(); // guild, channels
 
   constructor(domain: DomainStore) {
     super();
@@ -101,27 +111,27 @@ export default class GatewayConnectionStore extends BaseStore {
     //   this.onGuildMemberListUpdate,
     // );
 
-    // this.dispatchHandlers.set(
-    //   GatewayDispatchEvents.ChannelCreate,
-    //   this.onChannelCreate,
-    // );
-    // this.dispatchHandlers.set(
-    //   GatewayDispatchEvents.ChannelDelete,
-    //   this.onChannelDelete,
-    // );
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.ChannelCreate,
+      this.onChannelCreate,
+    );
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.ChannelDelete,
+      this.onChannelDelete,
+    );
 
-    // this.dispatchHandlers.set(
-    //   GatewayDispatchEvents.MessageCreate,
-    //   this.onMessageCreate,
-    // );
-    // this.dispatchHandlers.set(
-    //   GatewayDispatchEvents.MessageUpdate,
-    //   this.onMessageUpdate,
-    // );
-    // this.dispatchHandlers.set(
-    //   GatewayDispatchEvents.MessageDelete,
-    //   this.onMessageDelete,
-    // );
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.MessageCreate,
+      this.onMessageCreate,
+    );
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.MessageUpdate,
+      this.onMessageUpdate,
+    );
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.MessageDelete,
+      this.onMessageDelete,
+    );
 
     // this.dispatchHandlers.set(
     //   GatewayDispatchEvents.PresenceUpdate,
@@ -464,46 +474,46 @@ export default class GatewayConnectionStore extends BaseStore {
     this.domain.setGatewayReady(true);
   };
 
-  //   public onChannelOpen = (guild_id: Snowflake, channelId: Snowflake) => {
-  //     let payload: GatewayLazyRequestData;
+  public onChannelOpen = (guild_id: Snowflake, channelId: Snowflake) => {
+    let payload: GatewayLazyRequestData;
 
-  //     const guildChannels = this.lazyRequestChannels.get(guild_id);
+    const guildChannels = this.lazyRequestChannels.get(guild_id);
 
-  //     if (!guildChannels) {
-  //       payload = {
-  //         guild_id,
-  //         activities: true,
-  //         threads: true,
-  //         typing: true,
-  //         channels: {
-  //           [channelId]: [[0, 99]],
-  //         },
-  //       };
-  //       this.lazyRequestChannels.set(guild_id, [channelId]);
+    if (!guildChannels) {
+      payload = {
+        guild_id,
+        activities: true,
+        threads: true,
+        typing: true,
+        channels: {
+          [channelId]: [[0, 99]],
+        },
+      };
+      this.lazyRequestChannels.set(guild_id, [channelId]);
 
-  //       this.sendJson({
-  //         op: GatewayOpcodes.LazyRequest,
-  //         d: payload,
-  //       } as GatewayLazyRequest);
-  //     } else {
-  //       if (guildChannels.includes(channelId)) {
-  //         return;
-  //       }
+      this.sendJson({
+        op: GatewayOpcodes.LazyRequest,
+        d: payload,
+      } as GatewayLazyRequest);
+    } else {
+      if (guildChannels.includes(channelId)) {
+        return;
+      }
 
-  //       const d: Record<string, [number, number][]> = {};
-  //       guildChannels.forEach(x => (d[x] = [[0, 99]]));
-  //       payload = {
-  //         guild_id,
-  //         channels: d,
-  //       };
-  //       guildChannels.push(channelId);
+      const d: Record<string, [number, number][]> = {};
+      guildChannels.forEach(x => (d[x] = [[0, 99]]));
+      payload = {
+        guild_id,
+        channels: d,
+      };
+      guildChannels.push(channelId);
 
-  //       this.sendJson({
-  //         op: GatewayOpcodes.LazyRequest,
-  //         d: payload,
-  //       } as GatewayLazyRequest);
-  //     }
-  //   };
+      this.sendJson({
+        op: GatewayOpcodes.LazyRequest,
+        d: payload,
+      } as GatewayLazyRequest);
+    }
+  };
 
   // Start dispatch handlers
 
@@ -544,73 +554,96 @@ export default class GatewayConnectionStore extends BaseStore {
   //     guild.onMemberListUpdate(data);
   //   };
 
-  //   private onChannelCreate = (data: GatewayChannelCreateDispatchData) => {
-  //     if (data.type === ChannelType.DM || data.type === ChannelType.GroupDM) {
-  //       return;
-  //     } // TODO: handle these
+  private onChannelCreate = (data: GatewayChannelCreateDispatchData) => {
+    if (data.type === ChannelType.DM || data.type === ChannelType.GroupDM) {
+      this.domain.privateChannels.add(data);
+      return;
+    }
 
-  //     const guild = this.domain.guilds.get(data.guild_id!);
-  //     if (!guild) {
-  //       this.logger.warn(
-  //         `[ChannelCreate] Guild ${data.guild_id} not found for channel ${data.id}`,
-  //       );
-  //       return;
-  //     }
-  //     this.domain.channels.add(data);
-  //   };
+    const guild = this.domain.guilds.get(data.guild_id!);
+    if (!guild) {
+      this.logger.warn(
+        `[ChannelCreate] Guild ${data.guild_id} not found for channel ${data.id}`,
+      );
+      return;
+    }
+    guild.channels.add(data);
+  };
 
-  //   private onChannelDelete = (data: GatewayChannelDeleteDispatchData) => {
-  //     if (data.type === ChannelType.DM || data.type === ChannelType.GroupDM) {
-  //       return;
-  //     } // TODO: handle these
+  private onChannelDelete = (data: GatewayChannelDeleteDispatchData) => {
+    if (data.type === ChannelType.DM || data.type === ChannelType.GroupDM) {
+      this.domain.privateChannels.remove(data.id);
+      return;
+    }
 
-  //     const guild = this.domain.guilds.get(data.guild_id!);
-  //     if (!guild) {
-  //       this.logger.warn(
-  //         `[ChannelDelete] Guild ${data.guild_id} not found for channel ${data.id}`,
-  //       );
-  //       return;
-  //     }
-  //     this.domain.channels.remove(data.id);
-  //   };
+    const guild = this.domain.guilds.get(data.guild_id!);
+    if (!guild) {
+      this.logger.warn(
+        `[ChannelDelete] Guild ${data.guild_id} not found for channel ${data.id}`,
+      );
+      return;
+    }
+    guild.channels.remove(data.id);
+  };
 
-  //   private onMessageCreate = (data: GatewayMessageCreateDispatchData) => {
-  //     const channel = this.domain.channels.get(data.channel_id);
-  //     if (!channel) {
-  //       this.logger.warn(
-  //         `[MessageCreate] Channel ${data.channel_id} not found for message ${data.id}`,
-  //       );
-  //       return;
-  //     }
+  private onMessageCreate = (data: GatewayMessageCreateDispatchData) => {
+    const guild = this.domain.guilds.get(data.guild_id!);
+    if (!guild) {
+      this.logger.warn(
+        `[MessageCreate] Guild ${data.guild_id} not found for channel ${data.id}`,
+      );
+      return;
+    }
+    const channel = guild.channels.get(data.channel_id);
+    if (!channel) {
+      this.logger.warn(
+        `[MessageCreate] Channel ${data.channel_id} not found for message ${data.id}`,
+      );
+      return;
+    }
 
-  //     channel.messages.add(data);
-  //   };
+    channel.messages.add(data);
+  };
 
-  //   private onMessageUpdate = (data: GatewayMessageUpdateDispatchData) => {
-  //     const channel = this.domain.channels.get(data.channel_id);
-  //     if (!channel) {
-  //       this.logger.warn(
-  //         `[MessageCreate] Channel ${data.channel_id} not found for message ${data.id}`,
-  //       );
-  //       return;
-  //     }
+  private onMessageUpdate = (data: GatewayMessageUpdateDispatchData) => {
+    const guild = this.domain.guilds.get(data.guild_id!);
+    if (!guild) {
+      this.logger.warn(
+        `[MessageUpdate] Guild ${data.guild_id} not found for channel ${data.id}`,
+      );
+      return;
+    }
+    const channel = guild.channels.get(data.channel_id);
+    if (!channel) {
+      this.logger.warn(
+        `[MessageUpdate] Channel ${data.channel_id} not found for message ${data.id}`,
+      );
+      return;
+    }
 
-  //     // channel.messages.update(data)
-  //   };
+    // channel.messages.update(data); // TODO:
+  };
 
-  //   private onMessageDelete = (data: GatewayMessageDeleteDispatchData) => {
-  //     const channel = this.domain.channels.get(data.channel_id);
-  //     if (!channel) {
-  //       this.logger.warn(
-  //         `[MessageCreate] Channel ${data.channel_id} not found for message ${data.id}`,
-  //       );
-  //       return;
-  //     }
+  private onMessageDelete = (data: GatewayMessageDeleteDispatchData) => {
+    const guild = this.domain.guilds.get(data.guild_id!);
+    if (!guild) {
+      this.logger.warn(
+        `[MessageDelete] Guild ${data.guild_id} not found for channel ${data.id}`,
+      );
+      return;
+    }
+    const channel = guild.channels.get(data.channel_id);
+    if (!channel) {
+      this.logger.warn(
+        `[MessageDelete] Channel ${data.channel_id} not found for message ${data.id}`,
+      );
+      return;
+    }
 
-  //     channel.messages.remove(data.id);
-  //   };
+    channel.messages.remove(data.id);
+  };
 
-  //   private onPresenceUpdate = (data: GatewayPresenceUpdateDispatchData) => {
-  //     this.domain.presences.add(data);
-  //   };
+  // private onPresenceUpdate = (data: GatewayPresenceUpdateDispatchData) => {
+  //   this.domain.presences.add(data);
+  // };
 }
