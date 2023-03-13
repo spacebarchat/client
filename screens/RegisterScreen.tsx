@@ -11,22 +11,35 @@ import {
 	Button,
 	HelperText,
 	IconButton,
+	Modal,
+	Portal,
 	Surface,
 	Text,
 	TextInput,
 } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Container from "../components/Container";
+import HCaptcha, { HCaptchaMessage } from "../components/HCaptcha";
+import { IAPIRegisterResponse, RegisterSchema } from "../interfaces/api";
+import { DomainContext } from "../stores/DomainStore";
 import { RootStackScreenProps } from "../types";
+import { Routes } from "../utils/Endpoints";
 import { t } from "../utils/i18n";
+import Logger from "../utils/Logger";
 
 function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
 	const dimensions = useWindowDimensions();
+	const domain = React.useContext(DomainContext);
 
 	const [email, setEmail] = React.useState("");
 	const [username, setUsername] = React.useState("");
 	const [password, setPassword] = React.useState("");
 	const [dob, setDob] = React.useState("");
+	const [captchaModalVisible, setCaptchaModalVisible] = React.useState(false);
+	const [captchaSiteKey, setCaptchaSiteKey] = React.useState<
+		string | undefined
+	>();
+	const [captchaKey, setCaptchaKey] = React.useState<string | undefined>();
 	const [error, setError] = React.useState<{
 		email?: string;
 		username?: string;
@@ -34,24 +47,102 @@ function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
 		dob?: string;
 	}>({ email: "", username: "", password: "", dob: "" });
 	const [isLoading, setIsLoading] = React.useState(false);
+	const hideCaptchaModal = () => setCaptchaModalVisible(false);
+	const showCaptchaModal = () => setCaptchaModalVisible(true);
 
-	const handleSubmit = (e: GestureResponderEvent) => {
-		e.preventDefault();
+	const handleSubmit = (e?: GestureResponderEvent) => {
+		e?.preventDefault();
 		setIsLoading(true);
 
-		setTimeout(() => {
-			setIsLoading(false);
-			setError({
-				email: "this is a test error",
-				username: "this is a test error",
-				password: "this is a test error",
-				dob: "this is a test error",
+		domain.rest
+			.post<RegisterSchema, IAPIRegisterResponse>(Routes.register(), {
+				consent: true,
+				username,
+				email,
+				password,
+				date_of_birth: dob || new Date("2000-01-01").toISOString(),
+				captcha_key: captchaKey,
+			})
+			.then((res) => {
+				if ("message" in res) {
+					Logger.debug("error", res);
+					setError({
+						email: res.message,
+					});
+					setIsLoading(false);
+				} else if ("token" in res) {
+					Logger.debug("success", res);
+					domain.account.setToken(res.token);
+					setIsLoading(false);
+				} else if ("captcha_key" in res) {
+					const { captcha_key, captcha_service, captcha_sitekey } =
+						res;
+					if (captcha_key[0] === "captcha-required") {
+						if (captcha_service === "hcaptcha") {
+							Logger.debug("hCaptcha required");
+							setCaptchaSiteKey(captcha_sitekey);
+							showCaptchaModal();
+							return;
+						}
+
+						setError({
+							email: `Unhandled captcha_service ${captcha_service} `,
+						});
+						setCaptchaKey(undefined);
+						setCaptchaSiteKey(undefined);
+						setIsLoading(false);
+						return;
+					}
+
+					setError({
+						email: `Unhandled captcha_key ${captcha_key} `,
+					});
+					setCaptchaKey(undefined);
+					setCaptchaSiteKey(undefined);
+					setIsLoading(false);
+				}
 			});
-		}, 2000);
 	};
+
+	React.useEffect(() => {
+		if (!captchaKey) return;
+		setCaptchaSiteKey(undefined);
+
+		handleSubmit();
+	}, [captchaKey]);
 
 	const handleBack = () => {
 		navigation.goBack();
+	};
+
+	const onCaptchaMessage = (message: HCaptchaMessage) => {
+		const { event, data } = message;
+		switch (event) {
+			case "cancel":
+				Logger.debug("[HCaptcha] Captcha cancelled by user");
+				hideCaptchaModal();
+				break;
+			case "close":
+				Logger.debug("[HCaptcha] Captcha closed");
+				break;
+			case "challenge-expired":
+			case "data-expired":
+				Logger.debug("[HCaptcha] Captcha expired");
+				hideCaptchaModal();
+				break;
+			case "open":
+				Logger.debug("[HCaptcha] Captcha opened");
+				break;
+			case "error":
+				Logger.error("[HCaptcha] Captcha error", error);
+				hideCaptchaModal();
+				break;
+			case "data":
+				Logger.debug("[HCaptcha] Captcha data", data);
+				hideCaptchaModal();
+				setCaptchaKey(data);
+				break;
+		}
 	};
 
 	return (
@@ -62,6 +153,24 @@ function RegisterScreen({ navigation }: RootStackScreenProps<"Register">) {
 			flexOne
 			element={SafeAreaView}
 		>
+			<Portal>
+				<Modal
+					visible={captchaModalVisible}
+					onDismiss={() => {
+						hideCaptchaModal();
+						setIsLoading(false);
+					}}
+					style={styles.modalContainer}
+					contentContainerStyle={styles.modalContentContainer}
+				>
+					{captchaSiteKey && (
+						<HCaptcha
+							siteKey={captchaSiteKey}
+							onMessage={onCaptchaMessage}
+						/>
+					)}
+				</Modal>
+			</Portal>
 			<Surface
 				testID="innerContainer"
 				style={[
@@ -223,6 +332,15 @@ const styles = StyleSheet.create({
 		color: "#7289da",
 	},
 	buttonLabel: { fontWeight: "400", fontSize: 16 },
+	modalContainer: {
+		backgroundColor: "rgba(0, 0, 0, 0.5)",
+	},
+	modalContentContainer: {
+		width: "100%",
+		height: "100%",
+		justifyContent: "center",
+		alignItems: "center",
+	},
 });
 
 export default observer(RegisterScreen);
