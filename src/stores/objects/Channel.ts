@@ -7,11 +7,15 @@ import {
   APIWebhook,
   ChannelType,
   GatewayVoiceState,
+  RESTGetAPIChannelMessagesQuery,
   RESTGetAPIChannelMessagesResult,
-  Snowflake,
+  RESTPostAPIChannelMessageJSONBody,
+  RESTPostAPIChannelMessageResult,
+  Snowflake as SnowflakeType,
 } from '@puyodead1/fosscord-api-types/v9';
 import {action, makeObservable, observable} from 'mobx';
 import {Routes} from '../../utils/Endpoints';
+import Snowflake from '../../utils/Snowflake';
 import BaseStore from '../BaseStore';
 import {DomainStore} from '../DomainStore';
 import MessageStore from '../MessageStore';
@@ -19,16 +23,16 @@ import MessageStore from '../MessageStore';
 export default class Channel extends BaseStore {
   private readonly domain: DomainStore;
 
-  id: Snowflake;
+  id: SnowflakeType;
   createdAt: Date;
   @observable name?: string;
   @observable icon?: string | null;
   type: number;
   @observable recipients?: APIUser[];
-  @observable lastMessageId?: Snowflake;
-  guildId?: Snowflake;
-  @observable parentId: Snowflake;
-  ownerId?: Snowflake;
+  @observable lastMessageId?: SnowflakeType;
+  guildId?: SnowflakeType;
+  @observable parentId: SnowflakeType;
+  ownerId?: SnowflakeType;
   @observable lastPinTimestamp?: number;
   @observable defaultAutoArchiveDuration?: number;
   @observable position?: number;
@@ -141,9 +145,30 @@ export default class Channel extends BaseStore {
   }
 
   @action
-  async getChannelMessages(domain: DomainStore, limit?: number) {
-    if (this.hasFetchedMessages) {
+  async getChannelMessages(
+    domain: DomainStore,
+    isInitial: boolean,
+    limit?: number,
+    before?: SnowflakeType,
+    after?: SnowflakeType,
+    around?: SnowflakeType,
+  ) {
+    if (isInitial && this.hasFetchedMessages) {
       return;
+    }
+
+    let opts: RESTGetAPIChannelMessagesQuery = {
+      limit: limit || 50,
+    };
+
+    if (before) {
+      opts = {...opts, before};
+    }
+    if (after) {
+      opts = {...opts, after};
+    }
+    if (around) {
+      opts = {...opts, around};
     }
 
     this.hasFetchedMessages = true;
@@ -151,9 +176,7 @@ export default class Channel extends BaseStore {
     // TODO: catch errors
     const messages = await domain.rest.get<RESTGetAPIChannelMessagesResult>(
       Routes.channelMessages(this.id),
-      {
-        limit: limit || 50,
-      },
+      opts,
     );
     this.messages.addAll(
       messages.filter(x => !this.messages.has(x.id)).reverse(),
@@ -163,5 +186,52 @@ export default class Channel extends BaseStore {
       //   return aTimestamp.getTime() - bTimestamp.getTime();
       // })
     );
+  }
+
+  @action
+  async sendMessage(data: RESTPostAPIChannelMessageJSONBody) {
+    data.nonce = Snowflake.generate();
+    // check if the message is empty, contains only spaces, or contains only newlines
+    if (
+      !data.content ||
+      !data.content.trim() ||
+      !data.content.replace(/\r?\n|\r/g, '')
+    ) {
+      return;
+    }
+
+    // const partial = {
+    //   ...data,
+    //   id: data.nonce,
+    //   author: {
+    //     id: this.domain.account!.id,
+    //     username: this.domain.account!.username,
+    //     discriminator: this.domain.account!.discriminator,
+    //     avatar: this.domain.account!.avatar,
+    //   },
+    //   channel_id: this.id,
+    //   timestamp: new Date().toISOString(),
+    //   edited_timestamp: null,
+    //   flags: undefined,
+    //   type: MessageType.Default,
+    //   mention_everyone: false,
+    //   mentions: [],
+    //   mention_roles: [],
+    //   attachments: [],
+    //   pinned: false,
+    //   ghost: true,
+    // };
+
+    // this.messages.add(partial as APICustomMessage);
+    // TODO: handle errors
+    return this.domain.rest
+      .post<RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult>(
+        Routes.channelMessages(this.id),
+        data,
+      )
+      .then(res => {
+        this.messages.add(res);
+        return res;
+      });
   }
 }

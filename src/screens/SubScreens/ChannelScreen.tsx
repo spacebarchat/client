@@ -7,6 +7,7 @@ import ChannelHeader from '../../components/ChannelHeader';
 import ChannelsSidebar from '../../components/ChannelsSidebar';
 import Container from '../../components/Container';
 import MembersSidebar from '../../components/MembersSidebar';
+import MessageInput from '../../components/MessageInput';
 import MessageList from '../../components/MessageList';
 import useChannel from '../../hooks/useChannel';
 import useGuild from '../../hooks/useGuild';
@@ -47,8 +48,10 @@ function ChannelScreen({
       channelId: channel.id,
     });
 
+    domain.gateway.onChannelOpen(guildId, channel.id);
+
     runInAction(() => {
-      channel.getChannelMessages(domain);
+      channel.getChannelMessages(domain, true);
     });
   }, [guildId, channelId, channel]);
 
@@ -76,6 +79,7 @@ function ChannelScreen({
           </Button>
         </Container> */}
         {channel && <MessageList channel={channel} />}
+        {channel && <MessageInput channel={channel} />}
       </Container>
       {guildId !== 'me' && <MembersSidebar />}
     </Container>

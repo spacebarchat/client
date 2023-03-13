@@ -5,7 +5,6 @@ import {
   APIChannel,
   APIChannelMention,
   APIEmbed,
-  APIMessage,
   APIMessageActionRowComponent,
   APIMessageActivity,
   APIMessageInteraction,
@@ -19,7 +18,8 @@ import {
   MessageType,
   Snowflake,
 } from '@puyodead1/fosscord-api-types/v9';
-import {observable} from 'mobx';
+import {action, observable} from 'mobx';
+import {APICustomMessage} from '../../interfaces/api';
 import BaseStore from '../BaseStore';
 import {DomainStore} from '../DomainStore';
 import User from './User';
@@ -191,7 +191,7 @@ export default class Message extends BaseStore {
    *
    * See https://discord.com/developers/docs/resources/channel#message-object
    */
-  referenced_message?: APIMessage | null;
+  referenced_message?: APICustomMessage | null;
   /**
    * Sent if the message is a response to an Interaction
    */
@@ -230,8 +230,12 @@ export default class Message extends BaseStore {
    * It can be used to estimate the relative position of the message in a thread in company with `total_message_sent` on parent thread
    */
   position?: number;
+  /**
+   * Controls if the message is rendered with opacity or not
+   */
+  ghost: boolean = false;
 
-  constructor(domain: DomainStore, message: APIMessage) {
+  constructor(domain: DomainStore, message: APICustomMessage) {
     super();
     this.domain = domain;
 
@@ -267,6 +271,9 @@ export default class Message extends BaseStore {
     this.sticker_items = message.sticker_items;
     this.stickers = message.stickers;
     this.position = message.position;
+    if (message.ghost) {
+      this.ghost = message.ghost;
+    }
 
     if (this.domain.users.has(message.author.id)) {
       this.author = this.domain.users.get(message.author.id) as User;
@@ -274,6 +281,19 @@ export default class Message extends BaseStore {
       const user = new User(message.author);
       this.domain.users.users.set(user.id, user);
       this.author = user;
+    }
+  }
+
+  @action
+  update(message: APICustomMessage) {
+    Object.assign(this, message);
+
+    this.timestamp = new Date(message.timestamp);
+    this.edited_timestamp = message.edited_timestamp
+      ? new Date(message.edited_timestamp)
+      : null;
+    if (message.ghost) {
+      this.ghost = message.ghost;
     }
   }
 }

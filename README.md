@@ -23,18 +23,19 @@ TODO
 ## Building
 
 To build the project you have to install `yarn` (preferred) or `npm`.
+Install dependencies: `yarn install`
 
-     cd fosscord-client; yarn install
-
-Then
-
-     yarn start
+Start metro for development with: `yarn start`
+Start in development for Android: `yarn android`
+Start in development for iOS: `yarn ios`
+Start in development for Windows: `yarn windows`
+To build static files for web: `yarn build:web`, files will be built to `web-build`
 
 ## Contributing
 
 ### To contribute:
 
--   Fork the repository
--   Run the building instructions.
--   Commit & Push.
--   Pull Request & Done!
+- Fork the repository
+- Run the building instructions.
+- Commit & Push.
+- Pull Request & Done!
