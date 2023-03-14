@@ -20,15 +20,6 @@ function MessageList({channel}: Props) {
   const logger = useLogger('MessageList.tsx');
   const listRef = React.useRef<FlashList<any>>(null);
 
-  const fetchMore = async () => {
-    // get first message in the list to use as before
-    const before = channel.messages.messages[0].id;
-    logger.debug(
-      `Fetching 50 messages before ${before} for channel ${channel.id}`,
-    );
-    await channel.getChannelMessages(domain, false, 50, before);
-  };
-
   React.useEffect(() => {
     if (!Platform.isWeb) {
       return;
@@ -46,6 +37,18 @@ function MessageList({channel}: Props) {
 
     return () => scrollNode.removeEventListener('wheel', listener);
   }, [Platform.isWeb]);
+
+  const fetchMore = async () => {
+    if (!channel.messages.count) {
+      return;
+    }
+    // get first message in the list to use as before
+    const before = channel.messages.messages[0].id;
+    logger.debug(
+      `Fetching 50 messages before ${before} for channel ${channel.id}`,
+    );
+    await channel.getChannelMessages(domain, false, 50, before);
+  };
 
   return (
     <Container
@@ -71,7 +74,7 @@ function MessageList({channel}: Props) {
         renderItem={({item}) => (
           <MessageItem message={item.item} isHeader={item.isHeader} />
         )}
-        keyExtractor={({item}, index) => `${item.id}_${index}`}
+        keyExtractor={({item}, index) => item.id}
         inverted
         ref={listRef}
       />

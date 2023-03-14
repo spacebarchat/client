@@ -233,7 +233,7 @@ export default class Message extends BaseStore {
   /**
    * Controls if the message is rendered with opacity or not
    */
-  ghost: boolean = false;
+  @observable ghost: boolean = false;
 
   constructor(domain: DomainStore, message: APICustomMessage) {
     super();

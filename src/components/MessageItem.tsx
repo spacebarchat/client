@@ -1,3 +1,4 @@
+import {observer} from 'mobx-react';
 import 'moment-timezone';
 import React from 'react';
 import Moment from 'react-moment';
@@ -131,4 +132,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(MessageItem);
+export default observer(MessageItem);

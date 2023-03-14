@@ -223,14 +223,11 @@ export default class Channel extends BaseStore {
     // };
 
     // this.messages.add(partial as APICustomMessage);
-    // TODO: handle errors
+
+    // TODO: handle errors, highlight message as failed
     return this.domain.rest.post<
       RESTPostAPIChannelMessageJSONBody,
       RESTPostAPIChannelMessageResult
     >(Routes.channelMessages(this.id), data);
-    // .then(res => {
-    //   // this.messages.add(res);
-    //   return res;
-    // });
   }
 }
