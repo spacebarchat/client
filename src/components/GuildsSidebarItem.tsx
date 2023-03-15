@@ -246,6 +246,7 @@ function GuildsSidebarItem(props: GuildsSidebarItemProps) {
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
+    alignItems: 'center',
   },
 });
 

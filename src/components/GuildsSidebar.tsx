@@ -1,7 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
+import {FlashList} from '@shopify/flash-list';
 import {observer} from 'mobx-react';
 import React from 'react';
-import {FlatList, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import {DomainContext} from '../stores/DomainStore';
 import {CustomTheme} from '../types';
@@ -19,6 +20,10 @@ function GuildsSidebar() {
   const navigation = useNavigation();
   const theme = useTheme<CustomTheme>();
   const count = React.useRef(0);
+
+  React.useEffect(() => {
+    count.current = 0;
+  }, []);
 
   const data: {
     id: string;
@@ -104,18 +109,20 @@ function GuildsSidebar() {
     count.current += 1;
 
     return count.current === 1 ? (
-      <Hr style={{borderBottomWidth: 2, marginBottom: 5}} />
+      <Hr
+        style={{
+          borderBottomWidth: 2,
+          marginBottom: 5,
+          marginHorizontal: 10,
+        }}
+      />
     ) : null;
   };
 
   return (
     <Container style={styles.container}>
-      <FlatList
-        contentContainerStyle={{
-          alignItems: 'center',
-          flex: 1,
-        }}
-        style={{overflow: 'visible'}}
+      <FlashList
+        estimatedItemSize={48}
         data={data}
         renderItem={({item}) => {
           return <GuildsSidebarItem {...item.item} />;
