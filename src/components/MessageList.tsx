@@ -74,7 +74,7 @@ function MessageList({channel}: Props) {
         renderItem={({item}) => (
           <MessageItem message={item.item} isHeader={item.isHeader} />
         )}
-        keyExtractor={({item}, index) => item.id}
+        keyExtractor={({item}) => item.id}
         inverted
         ref={listRef}
       />

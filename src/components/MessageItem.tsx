@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SourceSans3-Semibold',
   },
   messageContent: {
-    fontFamily: 'SourceSans3-Light',
+    fontFamily: 'SourceSans3-Regular',
   },
 });
 
