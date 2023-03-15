@@ -1,5 +1,11 @@
 import React from 'react';
-import {Animated, Platform, useWindowDimensions, ViewProps} from 'react-native';
+import {
+  Animated,
+  Keyboard,
+  Platform,
+  useWindowDimensions,
+  ViewProps,
+} from 'react-native';
 import {Swipeable} from 'react-native-gesture-handler';
 import {useTheme} from 'react-native-paper';
 import BottomTabBarProgressContext from '../contexts/BottomTabBarProgressContext';
@@ -42,6 +48,13 @@ function Swiper({
       duration: 250,
       useNativeDriver,
     }).start();
+  };
+
+  const dismissKeyboard = () => {
+    if (Platform.OS === 'web') {
+      return;
+    }
+    Keyboard.dismiss();
   };
 
   const renderLeftAction = (
@@ -113,6 +126,7 @@ function Swiper({
       renderRightActions={rightChildren ? renderRightAction : undefined}
       onSwipeableLeftWillOpen={openFooter}
       onSwipeableWillClose={closeFooter}
+      onActivated={dismissKeyboard}
       overshootLeft={false}
       overshootRight={false}
       childrenContainerStyle={{
