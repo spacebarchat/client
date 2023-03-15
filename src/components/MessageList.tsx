@@ -56,7 +56,7 @@ function MessageList({channel}: Props) {
       flex={1}>
       <FlashList
         onEndReached={fetchMore}
-        estimatedItemSize={100}
+        estimatedItemSize={30}
         data={channel.messages.messages
           .map((x, i, arr) => {
             // group by author, and only if the previous message is not older than a day
