@@ -1,12 +1,13 @@
 name: Android CI
 on:
-  # push:
-  #   branches:
-  #     - dev/bare-rewrite
+  push:
+    branches:
+      - dev/bare-rewrite
   workflow_dispatch:
 
 jobs:
   build:
+    if: "contains(toJSON(github.event.commits.*.message), '[ci]')"
     name: Build
     runs-on: ubuntu-latest
 
