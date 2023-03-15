@@ -145,7 +145,7 @@ export default class Channel extends BaseStore {
   }
 
   @action
-  async getChannelMessages(
+  async getMessages(
     domain: DomainStore,
     isInitial: boolean,
     limit?: number,

@@ -46,7 +46,7 @@ function ChannelScreen({
     });
 
     runInAction(() => {
-      channel.getChannelMessages(domain, true);
+      channel.getMessages(domain, true);
     });
   }, [guildId, channelId]);
 

@@ -47,7 +47,7 @@ function MessageList({channel}: Props) {
     logger.debug(
       `Fetching 50 messages before ${before} for channel ${channel.id}`,
     );
-    await channel.getChannelMessages(domain, false, 50, before);
+    await channel.getMessages(domain, false, 50, before);
   };
 
   return (
