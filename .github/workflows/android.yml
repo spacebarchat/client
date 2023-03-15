@@ -2,7 +2,7 @@ name: Android CI
 on:
   push:
     branches:
-      - dev/bare
+      - dev/bare-rewrite
   workflow_dispatch:
 
 jobs:

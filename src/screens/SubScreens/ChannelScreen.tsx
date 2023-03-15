@@ -7,7 +7,7 @@ import ChannelHeader from '../../components/ChannelHeader';
 import ChannelsSidebar from '../../components/ChannelsSidebar';
 import Container from '../../components/Container';
 import MembersSidebar from '../../components/MembersSidebar';
-import MessageInput from '../../components/MessageInput';
+import MessageInput from '../../components/MessageInput.web';
 import MessageList from '../../components/MessageList';
 import useChannel from '../../hooks/useChannel';
 import useGuild from '../../hooks/useGuild';

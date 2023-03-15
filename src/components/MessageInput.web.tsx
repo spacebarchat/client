@@ -2,7 +2,7 @@ import Color from 'color';
 import {observer} from 'mobx-react';
 import React from 'react';
 import {Dimensions, StyleSheet, TextInput} from 'react-native';
-import {IconButton, useTheme} from 'react-native-paper';
+import {useTheme} from 'react-native-paper';
 import Channel from '../stores/objects/Channel';
 import {CustomTheme} from '../types';
 import Container from './Container';
@@ -17,7 +17,16 @@ interface Props {
 function MessageInput({channel}: Props) {
   const theme = useTheme<CustomTheme>();
   const [text, setText] = React.useState('');
-  const [height, setHeight] = React.useState(0);
+
+  // taken from https://github.com/necolas/react-native-web/issues/795#issuecomment-1297511068
+  const adjustTextInputSize = (evt: any) => {
+    const el = evt?.target || evt?.nativeEvent?.target;
+    if (el) {
+      el.style.height = 0;
+      const newHeight = el.offsetHeight - el.clientHeight + el.scrollHeight;
+      el.style.height = `${newHeight}px`;
+    }
+  };
 
   return (
     <Container
@@ -25,19 +34,13 @@ function MessageInput({channel}: Props) {
         styles.container,
         {backgroundColor: theme.colors.palette.background70},
       ]}>
-      <Container
-        row
-        horizontalCenter
-        style={[
-          styles.wrapper,
-          {backgroundColor: theme.colors.palette.backgroundSecondary70},
-        ]}>
+      <Container style={styles.wrapper}>
         <TextInput
           style={[
             styles.input,
             {
+              backgroundColor: theme.colors.palette.backgroundSecondary70,
               color: theme.colors.whiteBlack,
-              height,
             },
           ]}
           multiline
@@ -49,19 +52,20 @@ function MessageInput({channel}: Props) {
             .hex()}
           value={text}
           onChangeText={setText}
-          onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-          onLayout={e => setHeight(e.nativeEvent.layout.height)}
+          onChange={adjustTextInputSize}
+          onLayout={adjustTextInputSize}
           maxLength={MAX_LENGTH}
-        />
-        <IconButton
-          icon="send"
-          size={20}
-          onPress={() => {
-            channel.sendMessage({
-              content: text,
-            });
-            setText('');
-            setHeight(0);
+          onKeyPress={e => {
+            // @ts-ignore
+            if (e.which === 13 && !e.shiftKey) {
+              // send message
+              e.preventDefault();
+
+              channel.sendMessage({
+                content: text,
+              });
+              setText('');
+            }
           }}
         />
       </Container>
@@ -75,10 +79,11 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     marginBottom: 24,
-    borderRadius: 8,
   },
   input: {
-    flex: 1,
+    // @ts-ignore
+    outlineStyle: 'none',
+    borderRadius: 8,
     maxHeight: dimensions.width / 2,
     minHeight: 42,
     paddingHorizontal: 12,

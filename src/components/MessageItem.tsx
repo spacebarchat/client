@@ -1,3 +1,4 @@
+import {observer} from 'mobx-react';
 import 'moment-timezone';
 import React from 'react';
 import Moment from 'react-moment';
@@ -127,8 +128,8 @@ const styles = StyleSheet.create({
     fontFamily: 'SourceSans3-Semibold',
   },
   messageContent: {
-    fontFamily: 'SourceSans3-Light',
+    fontFamily: 'SourceSans3-Regular',
   },
 });
 
-export default React.memo(MessageItem);
+export default observer(MessageItem);

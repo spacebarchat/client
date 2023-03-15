@@ -19,6 +19,7 @@
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/native": "^6.1.4",
     "@react-navigation/native-stack": "^6.9.10",
+    "@shopify/flash-list": "^1.4.1",
     "@types/react-native-vector-icons": "^6.4.13",
     "color": "4.2.3",
     "file-loader": "^6.2.0",

@@ -3,9 +3,11 @@ import {observer} from 'mobx-react';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
+import ChannelHeader from '../../components/ChannelHeader';
 import ChannelsSidebar from '../../components/ChannelsSidebar';
 import Container from '../../components/Container';
 import GuildsSidebar from '../../components/GuildsSidebar';
+import MessageInput from '../../components/MessageInput';
 import MessageList from '../../components/MessageList';
 import Swiper from '../../components/Swiper';
 import useChannel from '../../hooks/useChannel';
@@ -63,20 +65,9 @@ function ChannelScreen({
 
   return (
     <Swiper leftChildren={leftAction} rightChildren={rightAction}>
+      <ChannelHeader title={channel?.name ?? 'Unknown Channel'} />
       {channel && <MessageList channel={channel} />}
-      {/* <Container
-        flex={1}
-        style={[
-          styles.container,
-          {backgroundColor: theme.colors.palette.background70},
-        ]}>
-        <Text>Channel Screen (Native)</Text>
-        <Text>Guild ID: {guildId}</Text>
-        <Text>Channel ID: {channelId ?? 'N/A'}</Text>
-        <Text>Guild Count: {domain.guilds.count}</Text>
-        <Text>User Count: {domain.users.count}</Text>
-        <Text>Private Channel Count: {domain.privateChannels.count}</Text>
-      </Container> */}
+      {channel && <MessageInput channel={channel} />}
     </Swiper>
   );
 }

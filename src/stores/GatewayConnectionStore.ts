@@ -26,6 +26,7 @@ import {
 import {action, makeObservable, observable, runInAction} from 'mobx';
 import {Platform} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+import {APICustomMessage} from '../interfaces/api';
 import BaseStore from './BaseStore';
 import {DomainStore} from './DomainStore';
 
@@ -621,7 +622,7 @@ export default class GatewayConnectionStore extends BaseStore {
       return;
     }
 
-    // channel.messages.update(data); // TODO:
+    channel.messages.update(data as APICustomMessage);
   };
 
   private onMessageDelete = (data: GatewayMessageDeleteDispatchData) => {
