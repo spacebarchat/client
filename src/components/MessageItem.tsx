@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingVertical: 2,
-    paddingLeft: 12,
+    paddingHorizontal: 12,
   },
   avatar: {
     marginRight: 10,
