@@ -1,7 +1,9 @@
 import React from 'react';
 import {Animated, Platform, useWindowDimensions, ViewProps} from 'react-native';
 import {Swipeable} from 'react-native-gesture-handler';
+import {useTheme} from 'react-native-paper';
 import BottomTabBarProgressContext from '../contexts/BottomTabBarProgressContext';
+import {CustomTheme} from '../types';
 
 const useNativeDriver = Platform.OS !== 'web';
 
@@ -21,6 +23,7 @@ function Swiper({
   rightProps,
   children,
 }: SwiperProps) {
+  const theme = useTheme<CustomTheme>();
   const {width} = useWindowDimensions();
 
   const {progress, setProgress} = React.useContext(BottomTabBarProgressContext);
@@ -112,7 +115,10 @@ function Swiper({
       onSwipeableWillClose={closeFooter}
       overshootLeft={false}
       overshootRight={false}
-      childrenContainerStyle={{flex: 1}}
+      childrenContainerStyle={{
+        flex: 1,
+        backgroundColor: theme.colors.palette.background70,
+      }}
       containerStyle={{flex: 1}}
       useNativeAnimations>
       {children}
