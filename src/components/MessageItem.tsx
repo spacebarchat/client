@@ -2,8 +2,15 @@ import {observer} from 'mobx-react';
 import 'moment-timezone';
 import React from 'react';
 import Moment from 'react-moment';
-import {Animated, Platform, Pressable, StyleSheet} from 'react-native';
+import {
+  Animated,
+  NativeSyntheticEvent,
+  Platform,
+  Pressable,
+  StyleSheet,
+} from 'react-native';
 import {Avatar, Text, useTheme} from 'react-native-paper';
+import {ContextMenuContext} from '../contexts/ContextMenuContext';
 import Message from '../stores/objects/Message';
 import {CustomTheme} from '../types';
 import {calendarStrings} from '../utils/i18n/date';
@@ -19,6 +26,7 @@ interface Props {
 
 function MessageItem({message, isHeader}: Props) {
   const theme = useTheme<CustomTheme>();
+  const contextMenu = React.useContext(ContextMenuContext);
   const [bgColor] = React.useState(new Animated.Value(0));
 
   const onHoverIn = () => {
@@ -51,6 +59,24 @@ function MessageItem({message, isHeader}: Props) {
       <AnimatedPressable
         onHoverIn={onHoverIn}
         onHoverOut={onHoverOut}
+        onContextMenu={(e: NativeSyntheticEvent<any>) => {
+          e.preventDefault();
+          contextMenu.open({
+            position: {
+              x: e.nativeEvent.pageX,
+              y: e.nativeEvent.pageY,
+            },
+            items: [
+              {
+                label: 'Copy ID',
+                onPress: () => {
+                  // @ts-ignore
+                  navigator.clipboard.writeText(message.id);
+                },
+              },
+            ],
+          });
+        }}
         style={[
           Platform.isWeb
             ? {

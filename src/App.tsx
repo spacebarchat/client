@@ -10,6 +10,7 @@ import {Provider as PaperProvider} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {ThemeName} from './constants/Colors';
 import {Globals} from './constants/Globals';
+import {ContextMenuContextProvider} from './contexts/ContextMenuContext';
 import useLogger from './hooks/useLogger';
 import linking from './navigation/LinkingConfiguration';
 import RootNavigator from './navigation/RootNavigator';
@@ -103,15 +104,25 @@ function Main() {
     },
   );
 
+  const children = (
+    <NavigationContainer linking={linking} theme={domain.theme}>
+      {__DEV__ && domain.showFPS && Platform.isWeb && <FPSStats />}
+      <RootNavigator />
+    </NavigationContainer>
+  );
+
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <SafeAreaProvider>
         <ErrorBoundary>
           <PaperProvider theme={domain.theme}>
-            <NavigationContainer linking={linking} theme={domain.theme}>
-              {__DEV__ && domain.showFPS && Platform.isWeb && <FPSStats />}
-              <RootNavigator />
-            </NavigationContainer>
+            {Platform.isWeb ? (
+              <ContextMenuContextProvider>
+                {children}
+              </ContextMenuContextProvider>
+            ) : (
+              children
+            )}
           </PaperProvider>
         </ErrorBoundary>
       </SafeAreaProvider>
