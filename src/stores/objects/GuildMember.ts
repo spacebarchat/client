@@ -51,7 +51,7 @@ export default class GuildMember extends BaseStore {
 
     if ('presence' in data) {
       // TODO:
-      //   this.domain.presences.add(data.presence);
+      this.domain.presences.add(data.presence);
     }
   }
 
@@ -61,7 +61,7 @@ export default class GuildMember extends BaseStore {
 
     if ('presence' in member) {
       // TODO:
-      //   this.domain.presences.add(member.presence);
+      this.domain.presences.add(member.presence);
     }
   }
 }

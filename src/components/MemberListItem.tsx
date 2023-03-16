@@ -1,9 +1,14 @@
-import {DefaultUserAvatarAssets} from '@puyodead1/fosscord-api-types/v9';
+import {
+  DefaultUserAvatarAssets,
+  PresenceUpdateStatus,
+} from '@puyodead1/fosscord-api-types/v9';
 import {observer} from 'mobx-react';
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Avatar, Text, useTheme} from 'react-native-paper';
+import {Avatar, Badge, Text, useTheme} from 'react-native-paper';
+import {DomainContext} from '../stores/DomainStore';
 import GuildMember from '../stores/objects/GuildMember';
+import PresenceStore from '../stores/PresenceStore';
 import {CustomTheme} from '../types';
 import {CDNRoutes} from '../utils/Endpoints';
 import REST from '../utils/REST';
@@ -14,13 +19,22 @@ interface Props {
 }
 
 function MemberListItem({member}: Props) {
+  const domain = React.useContext(DomainContext);
   const theme = useTheme<CustomTheme>();
 
+  const presence = domain.presences.presences.get(member.user?.id!);
+  console.log(presence);
   const highestRole = member.roles[0];
   const colorStyle = highestRole ? {color: highestRole.color} : {};
 
   return (
-    <Container row horizontalCenter style={[styles.container, {opacity: 0.3}]}>
+    <Container
+      row
+      horizontalCenter
+      style={[
+        styles.container,
+        {opacity: presence === PresenceUpdateStatus.Offline ? 0.3 : 1},
+      ]}>
       <Container>
         <Avatar.Image
           testID="messageAvatar"
@@ -39,7 +53,7 @@ function MemberListItem({member}: Props) {
           }}
           style={{backgroundColor: 'transparent'}}
         />
-        {/* <Container
+        <Container
           style={[
             styles.dotContainer,
             {backgroundColor: theme.colors.palette.background30},
@@ -57,7 +71,7 @@ function MemberListItem({member}: Props) {
             ]}
             size={10}
           />
-        </Container> */}
+        </Container>
       </Container>
       <Container style={{marginLeft: 10}}>
         <Text style={colorStyle}>{member.user?.username}</Text>

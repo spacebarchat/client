@@ -19,9 +19,11 @@ import {
   GatewayMessageDeleteDispatchData,
   GatewayMessageUpdateDispatchData,
   GatewayOpcodes,
+  GatewayPresenceUpdateDispatchData,
   GatewayReadyDispatchData,
   GatewayReceivePayload,
   GatewaySendPayload,
+  PresenceUpdateStatus,
   Snowflake,
 } from '@puyodead1/fosscord-api-types/v9';
 import {action, makeObservable, observable, runInAction} from 'mobx';
@@ -135,10 +137,10 @@ export default class GatewayConnectionStore extends BaseStore {
       this.onMessageDelete,
     );
 
-    // this.dispatchHandlers.set(
-    //   GatewayDispatchEvents.PresenceUpdate,
-    //   this.onPresenceUpdate,
-    // );
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.PresenceUpdate,
+      this.onPresenceUpdate,
+    );
   }
 
   private onopen = () => {
@@ -244,6 +246,12 @@ export default class GatewayConnectionStore extends BaseStore {
             browser_user_agent: ua ?? undefined,
           },
           compress: false,
+          presence: {
+            status: PresenceUpdateStatus.Online,
+            since: Date.now(),
+            activities: [],
+            afk: false,
+          },
         },
       };
       this.sendJson(payload);
@@ -645,7 +653,7 @@ export default class GatewayConnectionStore extends BaseStore {
     channel.messages.remove(data.id);
   };
 
-  // private onPresenceUpdate = (data: GatewayPresenceUpdateDispatchData) => {
-  //   this.domain.presences.add(data);
-  // };
+  private onPresenceUpdate = (data: GatewayPresenceUpdateDispatchData) => {
+    this.domain.presences.add(data);
+  };
 }
