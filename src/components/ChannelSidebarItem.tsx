@@ -3,9 +3,15 @@ import {useNavigation} from '@react-navigation/native';
 import {t} from 'i18next';
 import {observer} from 'mobx-react-lite';
 import React from 'react';
-import {Animated, Platform, Pressable, StyleSheet} from 'react-native';
+import {
+  Animated,
+  NativeSyntheticEvent,
+  Pressable,
+  StyleSheet,
+} from 'react-native';
 import {Avatar, HelperText, Text, useTheme} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {ContextMenuContext} from '../contexts/ContextMenuContext';
 import useLogger from '../hooks/useLogger';
 import Channel from '../stores/objects/Channel';
 import {CustomTheme} from '../types';
@@ -24,6 +30,7 @@ function PrivateChannelItem({channel}: Props) {
   const logger = useLogger('PrivateChannelItem');
   const theme = useTheme<CustomTheme>();
   const navigation = useNavigation();
+  const contextMenu = React.useContext(ContextMenuContext);
   const [bgColor] = React.useState(new Animated.Value(0));
 
   if (!channel.recipients) {
@@ -40,9 +47,6 @@ function PrivateChannelItem({channel}: Props) {
       : REST.makeCDNUrl(CDNRoutes.defaultUserAvatar(user.discriminator));
 
   const onHoverIn = () => {
-    if (!Platform.isWeb) {
-      return;
-    }
     Animated.timing(bgColor, {
       toValue: 1,
       duration: ANIMATION_TIME,
@@ -51,9 +55,6 @@ function PrivateChannelItem({channel}: Props) {
   };
 
   const onHoverOut = () => {
-    if (!Platform.isWeb) {
-      return;
-    }
     Animated.timing(bgColor, {
       toValue: 0,
       duration: ANIMATION_TIME,
@@ -72,6 +73,25 @@ function PrivateChannelItem({channel}: Props) {
     <AnimatedPressable
       onHoverIn={onHoverIn}
       onHoverOut={onHoverOut}
+      // @ts-expect-error - this is web-only
+      onContextMenu={(e: NativeSyntheticEvent<any>) => {
+        e.preventDefault();
+        contextMenu.open({
+          position: {
+            x: e.nativeEvent.pageX,
+            y: e.nativeEvent.pageY,
+          },
+          items: [
+            {
+              label: 'Copy ID',
+              onPress: () => {
+                // @ts-expect-error - this is web-only
+                navigator.clipboard.writeText(channel.id);
+              },
+            },
+          ],
+        });
+      }}
       onPress={onPress}
       style={[
         styles.pressable,
@@ -134,6 +154,7 @@ function ChannelSidebarItem({channel}: Props) {
   const logger = useLogger('ChannelSidebarItem');
   const theme = useTheme<CustomTheme>();
   const navigation = useNavigation();
+  const contextMenu = React.useContext(ContextMenuContext);
   const [bgColor] = React.useState(new Animated.Value(0));
 
   if ([ChannelType.DM, ChannelType.GroupDM].includes(channel.type)) {
@@ -141,9 +162,6 @@ function ChannelSidebarItem({channel}: Props) {
   }
 
   const onHoverIn = () => {
-    if (!Platform.isWeb) {
-      return;
-    }
     Animated.timing(bgColor, {
       toValue: 1,
       duration: ANIMATION_TIME,
@@ -152,9 +170,6 @@ function ChannelSidebarItem({channel}: Props) {
   };
 
   const onHoverOut = () => {
-    if (!Platform.isWeb) {
-      return;
-    }
     Animated.timing(bgColor, {
       toValue: 0,
       duration: ANIMATION_TIME,
@@ -194,6 +209,25 @@ function ChannelSidebarItem({channel}: Props) {
     <AnimatedPressable
       onHoverIn={onHoverIn}
       onHoverOut={onHoverOut}
+      // @ts-expect-error - this is web-only
+      onContextMenu={(e: NativeSyntheticEvent<any>) => {
+        e.preventDefault();
+        contextMenu.open({
+          position: {
+            x: e.nativeEvent.pageX,
+            y: e.nativeEvent.pageY,
+          },
+          items: [
+            {
+              label: 'Copy ID',
+              onPress: () => {
+                // @ts-expect-error - this is web-only
+                navigator.clipboard.writeText(channel.id);
+              },
+            },
+          ],
+        });
+      }}
       onPress={onPress}
       style={[
         styles.pressable,

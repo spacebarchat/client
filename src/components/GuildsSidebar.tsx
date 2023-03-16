@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {useTheme} from 'react-native-paper';
+import {ContextMenuContext} from '../contexts/ContextMenuContext';
 import {DomainContext} from '../stores/DomainStore';
 import {CustomTheme} from '../types';
 import {CDNRoutes} from '../utils/Endpoints';
@@ -13,17 +14,12 @@ import GuildsSidebarItem, {
   GuildsSidebarItemProps,
   GuildsSidebarItemType,
 } from './GuildsSidebarItem';
-import Hr from './Hr';
 
 function GuildsSidebar() {
   const domain = React.useContext(DomainContext);
   const navigation = useNavigation();
   const theme = useTheme<CustomTheme>();
-  const count = React.useRef(0);
-
-  React.useEffect(() => {
-    count.current = 0;
-  }, []);
+  const contextMenu = React.useContext(ContextMenuContext);
 
   const data: {
     id: string;
@@ -51,37 +47,56 @@ function GuildsSidebar() {
     ...Array.from(domain.guilds.guilds.values()).map<{
       id: string;
       item: GuildsSidebarItemProps;
-    }>(x => ({
-      id: x.id,
-      item: x.icon
-        ? {
-            type: GuildsSidebarItemType.IMAGE,
-            props: {
-              source: {
-                uri: REST.makeCDNUrl(CDNRoutes.guildIcon(x.id, x.icon)),
+    }>(x => {
+      const commonProps: Partial<GuildsSidebarItemProps> = {
+        onPress: () =>
+          navigation.navigate('App', {
+            screen: 'Channel',
+            params: {guildId: x.id},
+          }),
+        tooltip: x.name,
+        onContextMenu: e => {
+          e.preventDefault();
+          contextMenu.open({
+            position: {
+              x: e.nativeEvent.pageX,
+              y: e.nativeEvent.pageY,
+            },
+            items: [
+              {
+                label: 'Copy ID',
+                onPress: () => {
+                  // @ts-expect-error - this is web-only
+                  navigator.clipboard.writeText(x.id);
+                },
+              },
+            ],
+          });
+        },
+      };
+
+      return {
+        id: x.id,
+        item: x.icon
+          ? {
+              ...commonProps,
+              type: GuildsSidebarItemType.IMAGE,
+              props: {
+                source: {
+                  uri: REST.makeCDNUrl(CDNRoutes.guildIcon(x.id, x.icon)),
+                },
+              },
+            }
+          : {
+              ...commonProps,
+              type: GuildsSidebarItemType.TEXT,
+              props: {
+                label: x.acronym,
+                color: theme.colors.whiteBlack,
               },
             },
-            onPress: () =>
-              navigation.navigate('App', {
-                screen: 'Channel',
-                params: {guildId: x.id},
-              }),
-            tooltip: x.name,
-          }
-        : {
-            type: GuildsSidebarItemType.TEXT,
-            props: {
-              label: x.acronym,
-              color: theme.colors.whiteBlack,
-            },
-            onPress: () =>
-              navigation.navigate('App', {
-                screen: 'Channel',
-                params: {guildId: x.id},
-              }),
-            tooltip: x.name,
-          },
-    })),
+      };
+    }),
     {
       id: 'add-server',
       item: {
@@ -105,19 +120,19 @@ function GuildsSidebar() {
     },
   ];
 
-  const renderSeperator = () => {
-    count.current += 1;
+  // const renderSeperator = () => {
+  //   count.current += 1;
 
-    return count.current === 1 ? (
-      <Hr
-        style={{
-          borderBottomWidth: 2,
-          marginBottom: 5,
-          marginHorizontal: 10,
-        }}
-      />
-    ) : null;
-  };
+  //   return count.current === 1 ? (
+  //     <Hr
+  //       style={{
+  //         borderBottomWidth: 2,
+  //         marginBottom: 5,
+  //         marginHorizontal: 10,
+  //       }}
+  //     />
+  //   ) : null;
+  // };
 
   return (
     <Container style={styles.container}>
@@ -127,7 +142,6 @@ function GuildsSidebar() {
         renderItem={({item}) => {
           return <GuildsSidebarItem {...item.item} />;
         }}
-        ItemSeparatorComponent={renderSeperator}
         keyExtractor={item => item.id}
       />
     </Container>

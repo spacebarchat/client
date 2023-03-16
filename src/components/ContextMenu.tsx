@@ -27,10 +27,10 @@ function ContextMenu({position, close, items}: Props) {
     const listener = () => {
       close();
     };
-    // @ts-ignore
+    // @ts-expect-error - this is web-only
     document.addEventListener('click', listener);
     return () => {
-      // @ts-ignore
+      // @ts-expect-error - this is web-only
       document.removeEventListener('click', listener);
     };
   }, []);

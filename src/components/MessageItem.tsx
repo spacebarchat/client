@@ -30,9 +30,6 @@ function MessageItem({message, isHeader}: Props) {
   const [bgColor] = React.useState(new Animated.Value(0));
 
   const onHoverIn = () => {
-    if (!Platform.isWeb) {
-      return;
-    }
     Animated.timing(bgColor, {
       toValue: 1,
       duration: ANIMATION_TIME,
@@ -41,9 +38,6 @@ function MessageItem({message, isHeader}: Props) {
   };
 
   const onHoverOut = () => {
-    if (!Platform.isWeb) {
-      return;
-    }
     Animated.timing(bgColor, {
       toValue: 0,
       duration: ANIMATION_TIME,
@@ -70,7 +64,7 @@ function MessageItem({message, isHeader}: Props) {
               {
                 label: 'Copy ID',
                 onPress: () => {
-                  // @ts-ignore
+                  // @ts-expect-error - this is web-only
                   navigator.clipboard.writeText(message.id);
                 },
               },
@@ -87,7 +81,7 @@ function MessageItem({message, isHeader}: Props) {
                     theme.colors.palette.background65,
                   ],
                 }),
-                // @ts-ignore
+                // @ts-expect-error - this is web-only
                 cursor: 'inherit',
               }
             : undefined,
