@@ -13,6 +13,7 @@ import {CustomTheme} from '../types';
 import REST from '../utils/REST';
 import AccountStore from './AccountStore';
 import BaseStore from './BaseStore';
+import ExperimentsStore from './ExperimentsStore';
 import GatewayConnectionStore from './GatewayConnectionStore';
 import GuildStore from './GuildStore';
 import PrivateChannelStore from './PrivateChannelStore';
@@ -30,6 +31,7 @@ export class DomainStore extends BaseStore {
   @observable users = new UserStore();
   @observable privateChannels = new PrivateChannelStore(this);
   @observable rest = new REST(this);
+  @observable experiments = new ExperimentsStore();
 
   @observable theme: NavigationTheme & CustomTheme = themes.dark;
   @observable isNetworkConnected: boolean | null = null;
