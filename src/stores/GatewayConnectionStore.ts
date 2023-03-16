@@ -8,6 +8,7 @@ import {
   GatewayGuild,
   GatewayGuildCreateDispatchData,
   GatewayGuildDeleteDispatchData,
+  GatewayGuildMemberListUpdateDispatchData,
   GatewayGuildModifyDispatchData,
   GatewayHeartbeat,
   GatewayHelloData,
@@ -107,10 +108,10 @@ export default class GatewayConnectionStore extends BaseStore {
       GatewayDispatchEvents.GuildDelete,
       this.onGuildDelete,
     );
-    // this.dispatchHandlers.set(
-    //   GatewayDispatchEvents.GuildMemberListUpdate,
-    //   this.onGuildMemberListUpdate,
-    // );
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.GuildMemberListUpdate,
+      this.onGuildMemberListUpdate,
+    );
 
     this.dispatchHandlers.set(
       GatewayDispatchEvents.ChannelCreate,
@@ -540,20 +541,20 @@ export default class GatewayConnectionStore extends BaseStore {
     });
   };
 
-  //   private onGuildMemberListUpdate = (
-  //     data: GatewayGuildMemberListUpdateDispatchData,
-  //   ) => {
-  //     this.logger.debug('Received GuildMemberListUpdate event');
-  //     const {guild_id} = data;
-  //     const guild = this.domain.guilds.get(guild_id);
+  private onGuildMemberListUpdate = (
+    data: GatewayGuildMemberListUpdateDispatchData,
+  ) => {
+    this.logger.debug('Received GuildMemberListUpdate event');
+    const {guild_id} = data;
+    const guild = this.domain.guilds.get(guild_id);
 
-  //     if (!guild) {
-  //       this.logger.warn(`[GuildMemberListUpdate] Guild ${guild_id} not found`);
-  //       return;
-  //     }
+    if (!guild) {
+      this.logger.warn(`[GuildMemberListUpdate] Guild ${guild_id} not found`);
+      return;
+    }
 
-  //     guild.onMemberListUpdate(data);
-  //   };
+    guild.updateMemberList(data);
+  };
 
   private onChannelCreate = (data: GatewayChannelCreateDispatchData) => {
     if (data.type === ChannelType.DM || data.type === ChannelType.GroupDM) {

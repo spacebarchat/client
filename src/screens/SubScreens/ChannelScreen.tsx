@@ -110,7 +110,7 @@ function ChannelScreen({
         {channel && <MessageList channel={channel} />}
         {channel && <MessageInput channel={channel} />}
       </Container>
-      {guildId !== 'me' && <MembersSidebar />}
+      {guild && guildId !== 'me' && <MembersSidebar guild={guild} />}
     </Container>
   );
 }

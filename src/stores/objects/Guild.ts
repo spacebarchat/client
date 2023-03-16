@@ -1,17 +1,26 @@
 import {Snowflake} from '@puyodead1/fosscord-api-types/globals';
-import {APIGuild, GatewayGuild} from '@puyodead1/fosscord-api-types/v9';
-import {action, makeObservable, observable} from 'mobx';
+import {
+  APIGuild,
+  GatewayGuild,
+  GatewayGuildMemberListUpdateDispatchData,
+} from '@puyodead1/fosscord-api-types/v9';
+import {action, computed, makeObservable, observable} from 'mobx';
 import BaseStore from '../BaseStore';
 import ChannelStore from '../ChannelStore';
 import {DomainStore} from '../DomainStore';
+import GuildMemberListStore from '../GuildMemberListStore';
+import GuildMemberStore from '../GuildMemberStore';
+import RoleStore from '../RoleStore';
 
 export default class Guild extends BaseStore {
+  private readonly domain: DomainStore;
+
   id: Snowflake;
   joinedAt: string;
   @observable threads: unknown[];
   @observable stickers: unknown[]; // TODO:
   @observable stageInstances: unknown[]; // TODO:
-  @observable roles: unknown[]; // TODO:
+  @observable roles: RoleStore;
   @observable memberCount: number;
   @observable lazy: boolean;
   @observable large: boolean;
@@ -46,17 +55,21 @@ export default class Guild extends BaseStore {
   @observable nsfwLevel: number;
   @observable hubType: number | null = null;
   @observable acronym: string;
+  @observable members: GuildMemberStore;
+  @observable private memberListStore: GuildMemberListStore | null = null;
 
   constructor(domain: DomainStore, data: GatewayGuild) {
     super();
+    this.domain = domain;
+    this.roles = new RoleStore(domain);
     this.channels = new ChannelStore(domain);
+    this.members = new GuildMemberStore(domain, this);
 
     this.id = data.id;
     this.joinedAt = data.joined_at;
     this.threads = data.threads;
     this.stickers = data.stickers;
     this.stageInstances = data.stage_instances;
-    this.roles = data.roles;
     this.memberCount = data.member_count;
     this.lazy = data.lazy;
     this.large = data.large;
@@ -91,6 +104,7 @@ export default class Guild extends BaseStore {
     this.nsfwLevel = data.properties.nsfw_level;
     this.hubType = data.properties.hub_type;
 
+    this.roles.addAll(data.roles);
     this.channels.addAll(data.channels);
 
     this.acronym = this.name
@@ -109,5 +123,19 @@ export default class Guild extends BaseStore {
     }
 
     Object.assign(this, data);
+  }
+
+  @action
+  updateMemberList(data: GatewayGuildMemberListUpdateDispatchData) {
+    if (this.memberListStore) {
+      this.memberListStore.update(data);
+    } else {
+      this.memberListStore = new GuildMemberListStore(this.domain, this, data);
+    }
+  }
+
+  @computed
+  get memberList() {
+    return this.memberListStore?.list ?? [];
   }
 }
