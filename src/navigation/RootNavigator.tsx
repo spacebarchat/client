@@ -49,7 +49,9 @@ function RootNavigator() {
       {domain.tokenLoaded && !domain.token
         ? unauthenticatedStack
         : authenticatedStack}
-      <Stack.Screen name="Settings" component={Settings} />
+      {!Platform.isMobile && (
+        <Stack.Screen name="Settings" component={Settings} />
+      )}
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}

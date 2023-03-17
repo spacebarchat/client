@@ -2,7 +2,7 @@ import {runInAction} from 'mobx';
 import {observer} from 'mobx-react';
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Button, Text, useTheme} from 'react-native-paper';
+import {Text, useTheme} from 'react-native-paper';
 import ChannelHeader from '../../../components/ChannelHeader';
 import ChannelsSidebar from '../../../components/ChannelsSidebar';
 import Container from '../../../components/Container';
@@ -66,13 +66,6 @@ function ChannelScreen({
   return (
     <Swiper leftChildren={leftAction} rightChildren={rightAction}>
       <ChannelHeader title={channel?.name ?? 'Unknown Channel'} />
-      {!channel && (
-        <Button
-          mode="contained"
-          onPress={() => navigation.navigate('Settings')}>
-          Settings
-        </Button>
-      )}
       {channel && <MessageList channel={channel} />}
       {channel && <MessageInput channel={channel} />}
     </Swiper>
