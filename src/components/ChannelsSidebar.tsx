@@ -1,4 +1,5 @@
 import {ChannelType} from '@puyodead1/fosscord-api-types/v9';
+import {RouteProp, useRoute} from '@react-navigation/native';
 import {observer} from 'mobx-react';
 import React from 'react';
 import {SectionList, StyleSheet} from 'react-native';
@@ -6,7 +7,7 @@ import {Text, useTheme} from 'react-native-paper';
 import useGuild from '../hooks/useGuild';
 import {DomainContext} from '../stores/DomainStore';
 import Channel from '../stores/objects/Channel';
-import {CustomTheme} from '../types';
+import {ChannelsParamList, CustomTheme} from '../types';
 import ChannelListHeader from './ChannelListHeader';
 import ChannelSidebarItem from './ChannelSidebarItem';
 import Container from './Container';
@@ -25,6 +26,8 @@ function ChannelsSidebar({guildId}: Props) {
       data: Channel[];
     }[]
   >([]);
+  const route = useRoute<RouteProp<ChannelsParamList, 'Channel'>>();
+  const selectedChannel = route.params?.channelId;
 
   React.useEffect(() => {
     if (guildId === 'me') {
@@ -76,7 +79,12 @@ function ChannelsSidebar({guildId}: Props) {
         <SectionList
           sections={data}
           keyExtractor={(item, index) => `${index}_${item.id}`}
-          renderItem={({item}) => <ChannelSidebarItem channel={item} />}
+          renderItem={({item}) => (
+            <ChannelSidebarItem
+              channel={item}
+              selected={selectedChannel === item.id}
+            />
+          )}
           renderSectionHeader={({section: {title}}) => {
             if (!title) {
               return null;

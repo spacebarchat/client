@@ -24,9 +24,10 @@ const ANIMATION_TIME = 50; // the duration of the hover animation
 
 interface Props {
   channel: Channel;
+  selected: boolean;
 }
 
-function PrivateChannelItem({channel}: Props) {
+function PrivateChannelItem({channel, selected}: Props) {
   const logger = useLogger('PrivateChannelItem');
   const theme = useTheme<CustomTheme>();
   const navigation = useNavigation();
@@ -97,13 +98,15 @@ function PrivateChannelItem({channel}: Props) {
         styles.pressable,
         styles.pressablePM,
         {
-          backgroundColor: bgColor.interpolate({
-            inputRange: [0, 1],
-            outputRange: [
-              theme.colors.palette.background60,
-              theme.colors.palette.background80,
-            ],
-          }),
+          backgroundColor: selected
+            ? theme.colors.palette.background90
+            : bgColor.interpolate({
+                inputRange: [0, 1],
+                outputRange: [
+                  theme.colors.palette.background60,
+                  theme.colors.palette.background80,
+                ],
+              }),
         },
       ]}>
       <Container row horizontalCenter>
@@ -150,7 +153,7 @@ function PrivateChannelItem({channel}: Props) {
   );
 }
 
-function ChannelSidebarItem({channel}: Props) {
+function ChannelSidebarItem({channel, selected}: Props) {
   const logger = useLogger('ChannelSidebarItem');
   const theme = useTheme<CustomTheme>();
   const navigation = useNavigation();
@@ -158,7 +161,7 @@ function ChannelSidebarItem({channel}: Props) {
   const [bgColor] = React.useState(new Animated.Value(0));
 
   if ([ChannelType.DM, ChannelType.GroupDM].includes(channel.type)) {
-    return <PrivateChannelItem channel={channel} />;
+    return <PrivateChannelItem channel={channel} selected={selected} />;
   }
 
   const onHoverIn = () => {
@@ -232,13 +235,15 @@ function ChannelSidebarItem({channel}: Props) {
       style={[
         styles.pressable,
         {
-          backgroundColor: bgColor.interpolate({
-            inputRange: [0, 1],
-            outputRange: [
-              theme.colors.palette.background60,
-              theme.colors.palette.background80,
-            ],
-          }),
+          backgroundColor: selected
+            ? theme.colors.palette.background90
+            : bgColor.interpolate({
+                inputRange: [0, 1],
+                outputRange: [
+                  theme.colors.palette.background60,
+                  theme.colors.palette.background80,
+                ],
+              }),
         },
       ]}>
       <Container row horizontalCenter style={styles.container}>
