@@ -2,19 +2,19 @@ import {runInAction} from 'mobx';
 import {observer} from 'mobx-react';
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Text, useTheme} from 'react-native-paper';
-import ChannelHeader from '../../components/ChannelHeader';
-import ChannelsSidebar from '../../components/ChannelsSidebar';
-import Container from '../../components/Container';
-import GuildsSidebar from '../../components/GuildsSidebar';
-import MessageInput from '../../components/MessageInput';
-import MessageList from '../../components/MessageList';
-import Swiper from '../../components/Swiper';
-import useChannel from '../../hooks/useChannel';
-import useGuild from '../../hooks/useGuild';
-import useLogger from '../../hooks/useLogger';
-import {DomainContext} from '../../stores/DomainStore';
-import {ChannelsStackScreenProps, CustomTheme} from '../../types';
+import {Button, Text, useTheme} from 'react-native-paper';
+import ChannelHeader from '../../../components/ChannelHeader';
+import ChannelsSidebar from '../../../components/ChannelsSidebar';
+import Container from '../../../components/Container';
+import GuildsSidebar from '../../../components/GuildsSidebar';
+import MessageInput from '../../../components/MessageInput';
+import MessageList from '../../../components/MessageList';
+import Swiper from '../../../components/Swiper';
+import useChannel from '../../../hooks/useChannel';
+import useGuild from '../../../hooks/useGuild';
+import useLogger from '../../../hooks/useLogger';
+import {DomainContext} from '../../../stores/DomainStore';
+import {ChannelsStackScreenProps, CustomTheme} from '../../../types';
 
 function ChannelScreen({
   navigation,
@@ -66,6 +66,13 @@ function ChannelScreen({
   return (
     <Swiper leftChildren={leftAction} rightChildren={rightAction}>
       <ChannelHeader title={channel?.name ?? 'Unknown Channel'} />
+      {!channel && (
+        <Button
+          mode="contained"
+          onPress={() => navigation.navigate('Settings')}>
+          Settings
+        </Button>
+      )}
       {channel && <MessageList channel={channel} />}
       {channel && <MessageInput channel={channel} />}
     </Swiper>

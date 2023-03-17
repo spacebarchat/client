@@ -6,7 +6,7 @@ import ContextMenu from '../components/ContextMenu';
 import GuildsSidebar from '../components/GuildsSidebar';
 import {ContextMenuContext} from '../contexts/ContextMenuContext';
 import {ChannelsParamList, RootStackScreenProps} from '../types';
-import ChannelScreen from './SubScreens/ChannelScreen';
+import ChannelScreen from './SubScreens/ChannelScreen/ChannelScreen';
 
 const Stack = createNativeStackNavigator<ChannelsParamList>();
 

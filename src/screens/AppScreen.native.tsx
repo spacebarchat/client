@@ -7,7 +7,7 @@ import Container from '../components/Container';
 import BottomTabBar from '../components/ReactNavigationBottomTabs/views/BottomTabBar';
 import {DomainContext} from '../stores/DomainStore';
 import {ChannelsParamList, CustomTheme} from '../types';
-import ChannelScreen from './SubScreens/ChannelScreen';
+import ChannelScreen from './SubScreens/ChannelScreen/ChannelScreen';
 
 const Tab = createBottomTabNavigator<ChannelsParamList>();
 

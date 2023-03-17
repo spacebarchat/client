@@ -3,20 +3,20 @@ import {observer} from 'mobx-react';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Button, Text, useTheme} from 'react-native-paper';
-import ChannelHeader from '../../components/ChannelHeader';
-import ChannelsSidebar from '../../components/ChannelsSidebar';
-import Container from '../../components/Container';
-import Dropdown from '../../components/Dropdown';
-import Hr from '../../components/Hr';
-import MembersSidebar from '../../components/MembersSidebar';
-import MessageInput from '../../components/MessageInput.web';
-import MessageList from '../../components/MessageList';
-import useChannel from '../../hooks/useChannel';
-import useGuild from '../../hooks/useGuild';
-import useLogger from '../../hooks/useLogger';
-import {DomainContext} from '../../stores/DomainStore';
-import {EXPERIMENT_LIST} from '../../stores/ExperimentsStore';
-import {ChannelsStackScreenProps, CustomTheme} from '../../types';
+import ChannelHeader from '../../../components/ChannelHeader';
+import ChannelsSidebar from '../../../components/ChannelsSidebar';
+import Container from '../../../components/Container';
+import Dropdown from '../../../components/Dropdown';
+import Hr from '../../../components/Hr';
+import MembersSidebar from '../../../components/MembersSidebar';
+import MessageInput from '../../../components/MessageInput';
+import MessageList from '../../../components/MessageList';
+import useChannel from '../../../hooks/useChannel';
+import useGuild from '../../../hooks/useGuild';
+import useLogger from '../../../hooks/useLogger';
+import {DomainContext} from '../../../stores/DomainStore';
+import {EXPERIMENT_LIST} from '../../../stores/ExperimentsStore';
+import {ChannelsStackScreenProps, CustomTheme} from '../../../types';
 
 function ChannelScreen({
   navigation,
@@ -76,14 +76,19 @@ function ChannelScreen({
             <Text>Guild Count: {domain.guilds.count}</Text>
             <Text>User Count: {domain.users.count}</Text>
             <Text>Private Channel Count: {domain.privateChannels.count}</Text>
-            <Hr />
             {domain.experiments.isTreatmentEnabled('test', 0) && (
-              <Text>Test experiment is enabled; Treatment 1</Text>
+              <>
+                <Hr style={{marginVertical: 10}} />
+                <Text>Test experiment is enabled; Treatment 1</Text>
+              </>
             )}
             {domain.experiments.isTreatmentEnabled('test', 1) && (
-              <Text>Test experiment is enabled; Treatment 2</Text>
+              <>
+                <Hr style={{marginVertical: 10}} />
+                <Text>Test experiment is enabled; Treatment 2</Text>
+              </>
             )}
-            <Hr />
+            <Hr style={{marginVertical: 10}} />
             <Text variant="headlineSmall">Experiments</Text>
             {EXPERIMENT_LIST.map(x => (
               <Container key={x.id}>
@@ -101,6 +106,13 @@ function ChannelScreen({
                 />
               </Container>
             ))}
+            <Hr style={{marginVertical: 10}} />
+            <Button
+              mode="contained"
+              onPress={() => navigation.navigate('Settings')}>
+              Settings
+            </Button>
+            <Hr style={{marginVertical: 10}} />
             <Button mode="contained" onPress={showFps}>
               Show FPS
             </Button>

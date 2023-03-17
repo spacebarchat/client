@@ -25,7 +25,7 @@ export const themes = {
   oceanic: combineTheme(NavigationDarkTheme, CustomOceanicTheme),
 };
 
-export enum Themes {
+export enum Theme {
   LIGHT = 'light',
   DARK = 'dark',
   OCEANIC = 'oceanic',

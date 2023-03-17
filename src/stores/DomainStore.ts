@@ -146,6 +146,7 @@ export class DomainStore extends BaseStore {
   @action
   logout() {
     this.token = null;
+    this.tokenLoaded = false;
     AsyncStorage.removeItem('token', err => {
       if (err) {
         console.error(err);

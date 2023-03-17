@@ -9,9 +9,11 @@ import * as React from 'react';
 import {Platform} from 'react-native';
 import AppScreen from '../screens/AppScreen';
 import LoginScreen from '../screens/LoginScreen';
+import NotFoundScreen from '../screens/NotFoundScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import RootScreen from '../screens/RootScreen';
 import SplashScreen from '../screens/SplashScreen';
+import Settings from '../screens/SubScreens/settings/Settings';
 import {DomainContext} from '../stores/DomainStore';
 import {RootStackParamsList} from '../types';
 
@@ -47,6 +49,12 @@ function RootNavigator() {
       {domain.tokenLoaded && !domain.token
         ? unauthenticatedStack
         : authenticatedStack}
+      <Stack.Screen name="Settings" component={Settings} />
+      <Stack.Screen
+        name="NotFound"
+        component={NotFoundScreen}
+        options={{title: 'Oops!'}}
+      />
     </Stack.Navigator>
   );
 }

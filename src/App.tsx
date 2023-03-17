@@ -46,7 +46,7 @@ function Main() {
   React.useEffect(() => {
     const init = async () => {
       try {
-        // domain.loadTheme();
+        domain.loadTheme();
 
         // load "constant" globals
         await Globals.load();
