@@ -8,6 +8,7 @@ import {
   GatewayGuild,
   GatewayGuildCreateDispatchData,
   GatewayGuildDeleteDispatchData,
+  GatewayGuildMemberListUpdateDispatchData,
   GatewayGuildModifyDispatchData,
   GatewayHeartbeat,
   GatewayHelloData,
@@ -18,9 +19,11 @@ import {
   GatewayMessageDeleteDispatchData,
   GatewayMessageUpdateDispatchData,
   GatewayOpcodes,
+  GatewayPresenceUpdateDispatchData,
   GatewayReadyDispatchData,
   GatewayReceivePayload,
   GatewaySendPayload,
+  PresenceUpdateStatus,
   Snowflake,
 } from '@puyodead1/fosscord-api-types/v9';
 import {action, makeObservable, observable, runInAction} from 'mobx';
@@ -107,10 +110,10 @@ export default class GatewayConnectionStore extends BaseStore {
       GatewayDispatchEvents.GuildDelete,
       this.onGuildDelete,
     );
-    // this.dispatchHandlers.set(
-    //   GatewayDispatchEvents.GuildMemberListUpdate,
-    //   this.onGuildMemberListUpdate,
-    // );
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.GuildMemberListUpdate,
+      this.onGuildMemberListUpdate,
+    );
 
     this.dispatchHandlers.set(
       GatewayDispatchEvents.ChannelCreate,
@@ -134,10 +137,10 @@ export default class GatewayConnectionStore extends BaseStore {
       this.onMessageDelete,
     );
 
-    // this.dispatchHandlers.set(
-    //   GatewayDispatchEvents.PresenceUpdate,
-    //   this.onPresenceUpdate,
-    // );
+    this.dispatchHandlers.set(
+      GatewayDispatchEvents.PresenceUpdate,
+      this.onPresenceUpdate,
+    );
   }
 
   private onopen = () => {
@@ -243,6 +246,12 @@ export default class GatewayConnectionStore extends BaseStore {
             browser_user_agent: ua ?? undefined,
           },
           compress: false,
+          presence: {
+            status: PresenceUpdateStatus.Online,
+            since: Date.now(),
+            activities: [],
+            afk: false,
+          },
         },
       };
       this.sendJson(payload);
@@ -540,20 +549,20 @@ export default class GatewayConnectionStore extends BaseStore {
     });
   };
 
-  //   private onGuildMemberListUpdate = (
-  //     data: GatewayGuildMemberListUpdateDispatchData,
-  //   ) => {
-  //     this.logger.debug('Received GuildMemberListUpdate event');
-  //     const {guild_id} = data;
-  //     const guild = this.domain.guilds.get(guild_id);
+  private onGuildMemberListUpdate = (
+    data: GatewayGuildMemberListUpdateDispatchData,
+  ) => {
+    this.logger.debug('Received GuildMemberListUpdate event');
+    const {guild_id} = data;
+    const guild = this.domain.guilds.get(guild_id);
 
-  //     if (!guild) {
-  //       this.logger.warn(`[GuildMemberListUpdate] Guild ${guild_id} not found`);
-  //       return;
-  //     }
+    if (!guild) {
+      this.logger.warn(`[GuildMemberListUpdate] Guild ${guild_id} not found`);
+      return;
+    }
 
-  //     guild.onMemberListUpdate(data);
-  //   };
+    guild.updateMemberList(data);
+  };
 
   private onChannelCreate = (data: GatewayChannelCreateDispatchData) => {
     if (data.type === ChannelType.DM || data.type === ChannelType.GroupDM) {
@@ -644,7 +653,7 @@ export default class GatewayConnectionStore extends BaseStore {
     channel.messages.remove(data.id);
   };
 
-  // private onPresenceUpdate = (data: GatewayPresenceUpdateDispatchData) => {
-  //   this.domain.presences.add(data);
-  // };
+  private onPresenceUpdate = (data: GatewayPresenceUpdateDispatchData) => {
+    this.domain.presences.add(data);
+  };
 }

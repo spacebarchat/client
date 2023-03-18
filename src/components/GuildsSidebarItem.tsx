@@ -1,8 +1,10 @@
 import {useNavigation} from '@react-navigation/native';
+import {observer} from 'mobx-react';
 import React from 'react';
 import {
   Animated,
   ImageProps,
+  NativeSyntheticEvent,
   Platform,
   Pressable,
   StyleSheet,
@@ -29,6 +31,7 @@ export enum GuildsSidebarItemType {
 
 interface CommonProps {
   onPress?: () => void;
+  onContextMenu?: (e: NativeSyntheticEvent<any>) => void;
   backgroundColorTo?: string;
   colorTo?: string;
   tooltip?: string;
@@ -143,7 +146,9 @@ function GuildsSidebarItem(props: GuildsSidebarItemProps) {
       style={[styles.container]}
       onPress={props.onPress}
       onHoverIn={onHoverIn}
-      onHoverOut={onHoverOut}>
+      onHoverOut={onHoverOut}
+      // @ts-expect-error - this is web-only
+      onContextMenu={props.onContextMenu}>
       {props.type === 'image' && (
         <AnimatedAvatarImage
           size={48}
@@ -246,7 +251,8 @@ function GuildsSidebarItem(props: GuildsSidebarItemProps) {
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
+    alignItems: 'center',
   },
 });
 
-export default GuildsSidebarItem;
+export default observer(GuildsSidebarItem);

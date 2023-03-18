@@ -41,6 +41,7 @@
     "react-native-gesture-handler": "^2.9.0",
     "react-native-localize": "^2.2.4",
     "react-native-logs": "^5.0.1",
+    "react-native-modalfy": "^3.4.0",
     "react-native-paper": "^5.2.0",
     "react-native-popable": "^0.4.3",
     "react-native-reanimated": "^2.14.4",

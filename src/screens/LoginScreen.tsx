@@ -271,7 +271,10 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
               }
               keyboardType="ascii-capable"
               value={formik.values.login}
-              onChangeText={formik.handleChange('login')}
+              onChangeText={value => {
+                value = value.trim(); // trim whitespace, one case is autofill adding a space at the end
+                formik.handleChange('login')(value);
+              }}
               onBlur={formik.handleBlur('login')}
               autoFocus
               disabled={formik.isSubmitting}

@@ -244,7 +244,10 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
               keyboardType="email-address"
               autoFocus
               value={formik.values.email}
-              onChangeText={formik.handleChange('email')}
+              onChangeText={value => {
+                value = value.trim(); // trim whitespace, one case is autofill adding a space at the end
+                formik.handleChange('email')(value);
+              }}
               onBlur={formik.handleBlur('email')}
               disabled={formik.isSubmitting}
               autoCapitalize="none"

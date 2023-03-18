@@ -6,10 +6,19 @@ import FPSStats from 'react-fps-stats';
 import {I18nManager, Platform, useColorScheme} from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {
+  createModalStack,
+  ModalOptions,
+  ModalProvider,
+  ModalStackConfig,
+} from 'react-native-modalfy';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import CaptchaModal from './components/Modals/CaptchaModal';
+import TestModal from './components/Modals/TestModal';
 import {ThemeName} from './constants/Colors';
 import {Globals} from './constants/Globals';
+import {ContextMenuContextProvider} from './contexts/ContextMenuContext';
 import useLogger from './hooks/useLogger';
 import linking from './navigation/LinkingConfiguration';
 import RootNavigator from './navigation/RootNavigator';
@@ -21,6 +30,16 @@ Platform.isDesktop = Platform.OS === 'macos' || Platform.OS === 'windows';
 Platform.isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
 Platform.isWeb = Platform.OS === 'web';
 Platform.isWindows = Platform.OS === 'windows';
+
+const modalConfig: ModalStackConfig = {
+  TestModal: TestModal,
+  CaptchaModal: CaptchaModal,
+};
+const modalOptions: ModalOptions = {
+  backdropOpacity: 0.6,
+};
+
+const modalStack = createModalStack(modalConfig, modalOptions);
 
 function Main() {
   // if (
@@ -45,7 +64,7 @@ function Main() {
   React.useEffect(() => {
     const init = async () => {
       try {
-        // domain.loadTheme();
+        domain.loadTheme();
 
         // load "constant" globals
         await Globals.load();
@@ -103,15 +122,27 @@ function Main() {
     },
   );
 
+  const children = (
+    <NavigationContainer linking={linking} theme={domain.theme}>
+      {__DEV__ && domain.showFPS && Platform.isWeb && <FPSStats />}
+      <ModalProvider stack={modalStack}>
+        <RootNavigator />
+      </ModalProvider>
+    </NavigationContainer>
+  );
+
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <SafeAreaProvider>
         <ErrorBoundary>
           <PaperProvider theme={domain.theme}>
-            <NavigationContainer linking={linking} theme={domain.theme}>
-              {__DEV__ && domain.showFPS && Platform.isWeb && <FPSStats />}
-              <RootNavigator />
-            </NavigationContainer>
+            {Platform.isWeb ? (
+              <ContextMenuContextProvider>
+                {children}
+              </ContextMenuContextProvider>
+            ) : (
+              children
+            )}
           </PaperProvider>
         </ErrorBoundary>
       </SafeAreaProvider>

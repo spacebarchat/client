@@ -81,16 +81,24 @@ function MFAScreen({ticket}: MFAProps) {
             } else {
               formik.setFieldError('code', r.message);
             }
+            formik.setFieldValue('code', '');
           } else {
             // unknown error
             formik.setFieldError(
               'code',
               t('common:errors.UNKNOWN_ERROR') as string,
             );
+            formik.setFieldValue('code', '');
           }
         });
     },
   });
+
+  React.useEffect(() => {
+    if (formik.values.code.length === 6) {
+      formik.submitForm();
+    }
+  }, [formik.values.code]);
 
   return (
     <Container

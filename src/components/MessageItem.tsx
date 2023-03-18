@@ -2,8 +2,15 @@ import {observer} from 'mobx-react';
 import 'moment-timezone';
 import React from 'react';
 import Moment from 'react-moment';
-import {Animated, Platform, Pressable, StyleSheet} from 'react-native';
+import {
+  Animated,
+  NativeSyntheticEvent,
+  Platform,
+  Pressable,
+  StyleSheet,
+} from 'react-native';
 import {Avatar, Text, useTheme} from 'react-native-paper';
+import {ContextMenuContext} from '../contexts/ContextMenuContext';
 import Message from '../stores/objects/Message';
 import {CustomTheme} from '../types';
 import {calendarStrings} from '../utils/i18n/date';
@@ -19,12 +26,10 @@ interface Props {
 
 function MessageItem({message, isHeader}: Props) {
   const theme = useTheme<CustomTheme>();
+  const contextMenu = React.useContext(ContextMenuContext);
   const [bgColor] = React.useState(new Animated.Value(0));
 
   const onHoverIn = () => {
-    if (!Platform.isWeb) {
-      return;
-    }
     Animated.timing(bgColor, {
       toValue: 1,
       duration: ANIMATION_TIME,
@@ -33,9 +38,6 @@ function MessageItem({message, isHeader}: Props) {
   };
 
   const onHoverOut = () => {
-    if (!Platform.isWeb) {
-      return;
-    }
     Animated.timing(bgColor, {
       toValue: 0,
       duration: ANIMATION_TIME,
@@ -51,6 +53,24 @@ function MessageItem({message, isHeader}: Props) {
       <AnimatedPressable
         onHoverIn={onHoverIn}
         onHoverOut={onHoverOut}
+        onContextMenu={(e: NativeSyntheticEvent<any>) => {
+          e.preventDefault();
+          contextMenu.open({
+            position: {
+              x: e.nativeEvent.pageX,
+              y: e.nativeEvent.pageY,
+            },
+            items: [
+              {
+                label: 'Copy ID',
+                onPress: () => {
+                  // @ts-expect-error - this is web-only
+                  navigator.clipboard.writeText(message.id);
+                },
+              },
+            ],
+          });
+        }}
         style={[
           Platform.isWeb
             ? {
@@ -61,7 +81,7 @@ function MessageItem({message, isHeader}: Props) {
                     theme.colors.palette.background65,
                   ],
                 }),
-                // @ts-ignore
+                // @ts-expect-error - this is web-only
                 cursor: 'inherit',
               }
             : undefined,
@@ -118,7 +138,7 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingVertical: 2,
-    paddingLeft: 12,
+    paddingHorizontal: 12,
   },
   avatar: {
     marginRight: 10,

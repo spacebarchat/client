@@ -28,7 +28,7 @@ const BaseColors = {
   purple: Color('#7c4dff'),
   orange: Color('#f76d47'),
   cyan: Color('#39adb5'),
-  gray: Color('#AABFC9'),
+  gray: Color('#616161'),
   whiteBlack: Color('#272727'),
   error: Color('#e53935'),
   link: Color('#39ADB5'),
@@ -284,7 +284,7 @@ const opacity = {
 };
 
 const Theme: CustomTheme = {
-  name: 'Default Dark',
+  name: 'Default Light',
   dark: true,
   roundness: 4,
   mode: 'adaptive',

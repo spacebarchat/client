@@ -56,7 +56,7 @@ function MessageInput({channel}: Props) {
           onLayout={adjustTextInputSize}
           maxLength={MAX_LENGTH}
           onKeyPress={e => {
-            // @ts-ignore
+            // @ts-expect-error - this is web-only
             if (e.which === 13 && !e.shiftKey) {
               // send message
               e.preventDefault();
@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   input: {
-    // @ts-ignore
     outlineStyle: 'none',
     borderRadius: 8,
     maxHeight: dimensions.width / 2,

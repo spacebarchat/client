@@ -13,8 +13,10 @@ import {CustomTheme} from '../types';
 import REST from '../utils/REST';
 import AccountStore from './AccountStore';
 import BaseStore from './BaseStore';
+import ExperimentsStore from './ExperimentsStore';
 import GatewayConnectionStore from './GatewayConnectionStore';
 import GuildStore from './GuildStore';
+import PresenceStore from './PresenceStore';
 import PrivateChannelStore from './PrivateChannelStore';
 import UserStore from './UserStore';
 
@@ -30,6 +32,8 @@ export class DomainStore extends BaseStore {
   @observable users = new UserStore();
   @observable privateChannels = new PrivateChannelStore(this);
   @observable rest = new REST(this);
+  @observable experiments = new ExperimentsStore();
+  @observable presences = new PresenceStore(this);
 
   @observable theme: NavigationTheme & CustomTheme = themes.dark;
   @observable isNetworkConnected: boolean | null = null;
@@ -142,6 +146,7 @@ export class DomainStore extends BaseStore {
   @action
   logout() {
     this.token = null;
+    this.tokenLoaded = false;
     AsyncStorage.removeItem('token', err => {
       if (err) {
         console.error(err);
