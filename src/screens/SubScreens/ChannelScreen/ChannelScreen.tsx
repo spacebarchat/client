@@ -2,6 +2,7 @@ import {runInAction} from 'mobx';
 import {observer} from 'mobx-react';
 import React from 'react';
 import {StyleSheet} from 'react-native';
+import {useModal} from 'react-native-modalfy';
 import {Button, Text, useTheme} from 'react-native-paper';
 import ChannelHeader from '../../../components/ChannelHeader';
 import ChannelsSidebar from '../../../components/ChannelsSidebar';
@@ -27,6 +28,7 @@ function ChannelScreen({
   const domain = React.useContext(DomainContext);
   const guild = useGuild(guildId);
   const channel = useChannel(domain, guildId, channelId);
+  const {openModal} = useModal();
 
   const showFps = () => {
     domain.setShowFPS(!domain.showFPS);
@@ -83,6 +85,13 @@ function ChannelScreen({
             <Hr style={{marginVertical: 10}} />
             <Button mode="contained" onPress={showFps}>
               Show FPS
+            </Button>
+            <Button
+              mode="contained"
+              onPress={() => {
+                openModal('TestModal');
+              }}>
+              Open Test Modal
             </Button>
           </Container>
         )}

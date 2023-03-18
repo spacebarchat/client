@@ -19,7 +19,6 @@ const linking: LinkingOptions<RootStackParamsList> = {
       },
       Login: 'login',
       Register: 'register',
-      Modal: 'modal',
       ThemeOverview: 'dev-theme-overview',
       Settings: 'settings',
       NotFound: '*',
