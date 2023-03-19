@@ -114,8 +114,6 @@ export enum APIErrorCodes {
   ACCOUNT_DISABLED = 20013,
 }
 
-export interface APICustomMessage extends APIMessage {
-  ghost?: boolean;
-}
+export interface APICustomMessage extends APIMessage {}
 
 export type RESTAPIPostInviteResponse = {} | IAPIError;

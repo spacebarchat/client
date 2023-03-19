@@ -5,6 +5,7 @@ import {Platform, StyleSheet} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import useLogger from '../../hooks/useLogger';
 import {DomainContext} from '../../stores/DomainStore';
+import {QueuedMessageStatus} from '../../stores/MessageQueue';
 import Channel from '../../stores/objects/Channel';
 import {CustomTheme} from '../../types';
 import Container from '../Container';
@@ -57,23 +58,38 @@ function MessageList({channel}: Props) {
       <FlashList
         onEndReached={fetchMore}
         estimatedItemSize={30}
-        data={channel.messages.messages
+        data={[...channel.messages.messages, ...domain.queue.get(channel.id)]
           .map((x, i, arr) => {
             // group by author, and only if the previous message is not older than a day
             const t = 1 * 24 * 60 * 60 * 1000;
+
             const isHeader =
               i === 0 ||
               x.author.id !== arr[i - 1].author.id ||
               x.timestamp.getTime() - arr[i - 1].timestamp.getTime() > t;
             return {
               item: x,
-              isHeader,
+              isHeader: isHeader,
+              isSending:
+                'status' in x
+                  ? x.status === QueuedMessageStatus.SENDING
+                  : false,
+              isFailed:
+                'status' in x ? x.status === QueuedMessageStatus.FAILED : false,
+              error: 'error' in x ? x.error : undefined,
             };
           })
           .reverse()}
-        renderItem={({item}) => (
-          <Message message={item.item} isHeader={item.isHeader} />
-        )}
+        renderItem={({item}) => {
+          return (
+            <Message
+              message={item.item}
+              isHeader={item.isHeader}
+              sending={item.isSending}
+              failed={item.isFailed}
+            />
+          );
+        }}
         keyExtractor={({item}) => item.id}
         inverted
         ref={listRef}

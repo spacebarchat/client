@@ -16,6 +16,7 @@ import BaseStore from './BaseStore';
 import ExperimentsStore from './ExperimentsStore';
 import GatewayConnectionStore from './GatewayConnectionStore';
 import GuildStore from './GuildStore';
+import MessageQueue from './MessageQueue';
 import PresenceStore from './PresenceStore';
 import PrivateChannelStore from './PrivateChannelStore';
 import UserStore from './UserStore';
@@ -34,6 +35,7 @@ export class DomainStore extends BaseStore {
   @observable rest = new REST(this);
   @observable experiments = new ExperimentsStore();
   @observable presences = new PresenceStore(this);
+  @observable queue = new MessageQueue();
 
   @observable theme: NavigationTheme & CustomTheme = themes.dark;
   @observable isNetworkConnected: boolean | null = null;

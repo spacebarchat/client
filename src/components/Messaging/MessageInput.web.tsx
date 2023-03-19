@@ -3,8 +3,11 @@ import {observer} from 'mobx-react';
 import React from 'react';
 import {Dimensions, StyleSheet, TextInput} from 'react-native';
 import {useTheme} from 'react-native-paper';
+import {DomainContext} from '../../stores/DomainStore';
 import Channel from '../../stores/objects/Channel';
+import User from '../../stores/objects/User';
 import {CustomTheme} from '../../types';
+import Snowflake from '../../utils/Snowflake';
 import Container from '../Container';
 
 const dimensions = Dimensions.get('window');
@@ -16,6 +19,7 @@ interface Props {
 
 function MessageInput({channel}: Props) {
   const theme = useTheme<CustomTheme>();
+  const domain = React.useContext(DomainContext);
   const [text, setText] = React.useState('');
 
   // taken from https://github.com/necolas/react-native-web/issues/795#issuecomment-1297511068
@@ -60,10 +64,27 @@ function MessageInput({channel}: Props) {
             if (e.which === 13 && !e.shiftKey) {
               // send message
               e.preventDefault();
+              if (!channel.canSendMessage(text)) {
+                return;
+              }
 
-              channel.sendMessage({
+              const nonce = Snowflake.generate();
+              domain.queue.add({
+                id: nonce,
+                author: domain.account! as unknown as User,
                 content: text,
+                channel: channel.id,
               });
+
+              channel
+                .sendMessage({
+                  content: text,
+                  nonce,
+                })
+                .catch(error => {
+                  domain.queue.error(nonce, error as string);
+                });
+
               setText('');
             }
           }}

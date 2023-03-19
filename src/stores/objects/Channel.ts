@@ -15,7 +15,6 @@ import {
 } from '@puyodead1/fosscord-api-types/v9';
 import {action, makeObservable, observable} from 'mobx';
 import {Routes} from '../../utils/Endpoints';
-import Snowflake from '../../utils/Snowflake';
 import BaseStore from '../BaseStore';
 import {DomainStore} from '../DomainStore';
 import MessageStore from '../MessageStore';
@@ -190,44 +189,18 @@ export default class Channel extends BaseStore {
 
   @action
   async sendMessage(data: RESTPostAPIChannelMessageJSONBody) {
-    data.nonce = Snowflake.generate();
-    // check if the message is empty, contains only spaces, or contains only newlines
-    if (
-      !data.content ||
-      !data.content.trim() ||
-      !data.content.replace(/\r?\n|\r/g, '')
-    ) {
-      return;
-    }
-
-    // const partial = {
-    //   ...data,
-    //   id: data.nonce,
-    //   author: {
-    //     id: this.domain.account!.id,
-    //     username: this.domain.account!.username,
-    //     discriminator: this.domain.account!.discriminator,
-    //     avatar: this.domain.account!.avatar,
-    //   },
-    //   channel_id: this.id,
-    //   timestamp: new Date().toISOString(),
-    //   edited_timestamp: null,
-    //   flags: undefined,
-    //   type: MessageType.Default,
-    //   mention_everyone: false,
-    //   mentions: [],
-    //   mention_roles: [],
-    //   attachments: [],
-    //   pinned: false,
-    //   ghost: true,
-    // };
-
-    // this.messages.add(partial as APICustomMessage);
-
     // TODO: handle errors, highlight message as failed
     return this.domain.rest.post<
       RESTPostAPIChannelMessageJSONBody,
       RESTPostAPIChannelMessageResult
     >(Routes.channelMessages(this.id), data);
+  }
+
+  canSendMessage(content: string) {
+    if (!content || !content.trim() || !content.replace(/\r?\n|\r/g, '')) {
+      return false;
+    }
+
+    return true;
   }
 }

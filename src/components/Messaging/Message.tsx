@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import {Avatar, Text, useTheme} from 'react-native-paper';
 import {ContextMenuContext} from '../../contexts/ContextMenuContext';
+import {DomainContext} from '../../stores/DomainStore';
+import {QueuedMessage} from '../../stores/MessageQueue';
 import Message from '../../stores/objects/Message';
 import {CustomTheme} from '../../types';
 import {calendarStrings} from '../../utils/i18n/date';
@@ -20,16 +22,21 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const ANIMATION_TIME = 50; // the duration of the hover animation
 
 interface Props {
-  message: Message;
+  message: Message | QueuedMessage;
   isHeader?: boolean;
   failed?: boolean;
   sending?: boolean;
 }
 
-function MessageItem({message, isHeader, sending, failed}: Props) {
+function MessageItem({message, isHeader, failed, sending}: Props) {
   const theme = useTheme<CustomTheme>();
+  const domain = React.useContext(DomainContext);
   const contextMenu = React.useContext(ContextMenuContext);
   const [bgColor] = React.useState(new Animated.Value(0));
+  const author = domain.users.get(
+    typeof message.author === 'string' ? message.author : message.author.id,
+  );
+  const timestamp = 'timestamp' in message ? message.timestamp : new Date();
 
   const onHoverIn = () => {
     Animated.timing(bgColor, {
@@ -94,7 +101,7 @@ function MessageItem({message, isHeader, sending, failed}: Props) {
             <Avatar.Image
               testID="messageAvatar"
               size={40}
-              source={{uri: message.author.avatarURL}}
+              source={{uri: author?.avatarURL}}
               style={styles.avatar}
             />
           )}
@@ -105,7 +112,7 @@ function MessageItem({message, isHeader, sending, failed}: Props) {
             {isHeader && (
               <Container testID="messageHeader" row flex={1}>
                 <Text testID="messageAuthor" style={styles.messageAuthor}>
-                  {message.author.username}
+                  {author?.username}
                 </Text>
                 <Container>
                   <Moment
@@ -115,7 +122,7 @@ function MessageItem({message, isHeader, sending, failed}: Props) {
                       color: theme.colors.palette.gray100,
                       marginLeft: 10,
                     }}>
-                    {message.timestamp}
+                    {timestamp}
                   </Moment>
                 </Container>
               </Container>
@@ -123,7 +130,7 @@ function MessageItem({message, isHeader, sending, failed}: Props) {
             <Text
               style={[
                 styles.messageContent,
-                sending ? {opacity: 0.8} : undefined,
+                sending ? {opacity: 0.5} : undefined,
                 failed ? {color: theme.colors.palette.error50} : undefined,
               ]}>
               {message.content}

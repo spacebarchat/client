@@ -230,10 +230,6 @@ export default class Message extends BaseStore {
    * It can be used to estimate the relative position of the message in a thread in company with `total_message_sent` on parent thread
    */
   position?: number;
-  /**
-   * Controls if the message is rendered with opacity or not
-   */
-  @observable ghost: boolean = false;
 
   constructor(domain: DomainStore, message: APICustomMessage) {
     super();
@@ -271,9 +267,6 @@ export default class Message extends BaseStore {
     this.sticker_items = message.sticker_items;
     this.stickers = message.stickers;
     this.position = message.position;
-    if (message.ghost) {
-      this.ghost = message.ghost;
-    }
 
     if (this.domain.users.has(message.author.id)) {
       this.author = this.domain.users.get(message.author.id) as User;
@@ -292,8 +285,5 @@ export default class Message extends BaseStore {
     this.edited_timestamp = message.edited_timestamp
       ? new Date(message.edited_timestamp)
       : null;
-    if (message.ghost) {
-      this.ghost = message.ghost;
-    }
   }
 }

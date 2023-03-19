@@ -78,7 +78,12 @@ export default class REST {
         headers: this.headers,
         body: body ? JSON.stringify(body) : undefined,
       })
-        .then(res => res.json())
+        .then(res => {
+          if (res.status >= 200 && res.status < 300) {
+            return res.json();
+          }
+          reject('Something went wrong');
+        })
         .then(resolve)
         .catch(reject);
     });

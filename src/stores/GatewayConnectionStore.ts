@@ -613,6 +613,7 @@ export default class GatewayConnectionStore extends BaseStore {
     }
 
     channel.messages.add(data);
+    this.domain.queue.handleIncomingMessage(data);
   };
 
   private onMessageUpdate = (data: GatewayMessageUpdateDispatchData) => {

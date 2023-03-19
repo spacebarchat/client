@@ -3,8 +3,11 @@ import {observer} from 'mobx-react';
 import React from 'react';
 import {Dimensions, StyleSheet, TextInput} from 'react-native';
 import {IconButton, useTheme} from 'react-native-paper';
+import {DomainContext} from '../../stores/DomainStore';
 import Channel from '../../stores/objects/Channel';
+import User from '../../stores/objects/User';
 import {CustomTheme} from '../../types';
+import Snowflake from '../../utils/Snowflake';
 import Container from '../Container';
 
 const dimensions = Dimensions.get('window');
@@ -16,6 +19,7 @@ interface Props {
 
 function MessageInput({channel}: Props) {
   const theme = useTheme<CustomTheme>();
+  const domain = React.useContext(DomainContext);
   const [text, setText] = React.useState('');
   const [height, setHeight] = React.useState(0);
 
@@ -57,9 +61,27 @@ function MessageInput({channel}: Props) {
           icon="send"
           size={20}
           onPress={() => {
-            channel.sendMessage({
+            if (!channel.canSendMessage(text)) {
+              return;
+            }
+
+            const nonce = Snowflake.generate();
+            domain.queue.add({
+              id: nonce,
+              author: domain.account! as unknown as User,
               content: text,
+              channel: channel.id,
             });
+
+            channel
+              .sendMessage({
+                content: text,
+                nonce,
+              })
+              .catch(error => {
+                domain.queue.error(nonce, error as string);
+              });
+
             setText('');
             setHeight(0);
           }}

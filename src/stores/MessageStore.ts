@@ -1,4 +1,10 @@
-import {action, computed, makeObservable, observable} from 'mobx';
+import {
+  action,
+  computed,
+  IObservableArray,
+  makeObservable,
+  observable,
+} from 'mobx';
 import {APICustomMessage} from '../interfaces/api';
 import BaseStore from './BaseStore';
 import {DomainStore} from './DomainStore';
@@ -7,11 +13,13 @@ import Message from './objects/Message';
 export default class MessageStore extends BaseStore {
   private readonly domain: DomainStore;
 
-  @observable private readonly messagesArr = observable.array<Message>([]);
+  @observable private readonly messagesArr: IObservableArray<Message>;
 
   constructor(domain: DomainStore) {
     super();
     this.domain = domain;
+
+    this.messagesArr = observable.array([]);
 
     makeObservable(this);
   }
