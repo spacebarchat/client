@@ -3,12 +3,12 @@ import {observer} from 'mobx-react';
 import React from 'react';
 import {Platform, StyleSheet} from 'react-native';
 import {useTheme} from 'react-native-paper';
-import useLogger from '../hooks/useLogger';
-import {DomainContext} from '../stores/DomainStore';
-import Channel from '../stores/objects/Channel';
-import {CustomTheme} from '../types';
-import Container from './Container';
-import MessageItem from './MessageItem';
+import useLogger from '../../hooks/useLogger';
+import {DomainContext} from '../../stores/DomainStore';
+import Channel from '../../stores/objects/Channel';
+import {CustomTheme} from '../../types';
+import Container from '../Container';
+import Message from './Message';
 
 interface Props {
   channel: Channel;
@@ -72,7 +72,7 @@ function MessageList({channel}: Props) {
           })
           .reverse()}
         renderItem={({item}) => (
-          <MessageItem message={item.item} isHeader={item.isHeader} />
+          <Message message={item.item} isHeader={item.isHeader} />
         )}
         keyExtractor={({item}) => item.id}
         inverted

@@ -10,11 +10,11 @@ import {
   StyleSheet,
 } from 'react-native';
 import {Avatar, Text, useTheme} from 'react-native-paper';
-import {ContextMenuContext} from '../contexts/ContextMenuContext';
-import Message from '../stores/objects/Message';
-import {CustomTheme} from '../types';
-import {calendarStrings} from '../utils/i18n/date';
-import Container from './Container';
+import {ContextMenuContext} from '../../contexts/ContextMenuContext';
+import Message from '../../stores/objects/Message';
+import {CustomTheme} from '../../types';
+import {calendarStrings} from '../../utils/i18n/date';
+import Container from '../Container';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const ANIMATION_TIME = 50; // the duration of the hover animation
@@ -22,9 +22,11 @@ const ANIMATION_TIME = 50; // the duration of the hover animation
 interface Props {
   message: Message;
   isHeader?: boolean;
+  failed?: boolean;
+  sending?: boolean;
 }
 
-function MessageItem({message, isHeader}: Props) {
+function MessageItem({message, isHeader, sending, failed}: Props) {
   const theme = useTheme<CustomTheme>();
   const contextMenu = React.useContext(ContextMenuContext);
   const [bgColor] = React.useState(new Animated.Value(0));
@@ -121,7 +123,8 @@ function MessageItem({message, isHeader}: Props) {
             <Text
               style={[
                 styles.messageContent,
-                message.ghost ? {opacity: 0.5} : undefined,
+                sending ? {opacity: 0.8} : undefined,
+                failed ? {color: theme.colors.palette.error50} : undefined,
               ]}>
               {message.content}
             </Text>

@@ -3,9 +3,9 @@ import {observer} from 'mobx-react';
 import React from 'react';
 import {Dimensions, StyleSheet, TextInput} from 'react-native';
 import {useTheme} from 'react-native-paper';
-import Channel from '../stores/objects/Channel';
-import {CustomTheme} from '../types';
-import Container from './Container';
+import Channel from '../../stores/objects/Channel';
+import {CustomTheme} from '../../types';
+import Container from '../Container';
 
 const dimensions = Dimensions.get('window');
 const MAX_LENGTH = 2000; // TODO: some kind of server side config for non-premium, length for premium, etc
