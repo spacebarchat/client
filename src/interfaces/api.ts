@@ -117,3 +117,5 @@ export enum APIErrorCodes {
 export interface APICustomMessage extends APIMessage {
   ghost?: boolean;
 }
+
+export type RESTAPIPostInviteResponse = {} | IAPIError;

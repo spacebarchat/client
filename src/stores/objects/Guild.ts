@@ -105,7 +105,10 @@ export default class Guild extends BaseStore {
     this.hubType = data.properties.hub_type;
 
     this.roles.addAll(data.roles);
-    this.channels.addAll(data.channels);
+    // FIXME: hack to prevent errors after guild creation where channels is undefined
+    if (data.channels) {
+      this.channels.addAll(data.channels);
+    }
 
     this.acronym = this.name
       .split(' ')

@@ -6,16 +6,9 @@ import FPSStats from 'react-fps-stats';
 import {I18nManager, Platform, useColorScheme} from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {
-  createModalStack,
-  ModalOptions,
-  ModalProvider,
-  ModalStackConfig,
-} from 'react-native-modalfy';
+import {ModalProvider} from 'react-native-modalfy';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import CaptchaModal from './components/Modals/CaptchaModal';
-import TestModal from './components/Modals/TestModal';
 import {ThemeName} from './constants/Colors';
 import {Globals} from './constants/Globals';
 import {ContextMenuContextProvider} from './contexts/ContextMenuContext';
@@ -25,21 +18,12 @@ import RootNavigator from './navigation/RootNavigator';
 import {DomainContext} from './stores/DomainStore';
 import i18n from './utils/i18n';
 import {localeLogger} from './utils/i18n/locale-detector';
+import {modalStack} from './utils/Modals';
 
 Platform.isDesktop = Platform.OS === 'macos' || Platform.OS === 'windows';
 Platform.isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
 Platform.isWeb = Platform.OS === 'web';
 Platform.isWindows = Platform.OS === 'windows';
-
-const modalConfig: ModalStackConfig = {
-  TestModal: TestModal,
-  CaptchaModal: CaptchaModal,
-};
-const modalOptions: ModalOptions = {
-  backdropOpacity: 0.6,
-};
-
-const modalStack = createModalStack(modalConfig, modalOptions);
 
 function Main() {
   // if (

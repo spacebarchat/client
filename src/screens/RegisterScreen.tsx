@@ -355,10 +355,7 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
           <View style={styles.inputContainer}>
             <Text>{t('register:INPUT_BIRTHDAY_LABEL')}</Text>
             <BirthdayInput
-              onChange={e => {
-                console.log(e);
-                formik.handleChange('date_of_birth')(e);
-              }}
+              onChange={formik.handleChange('date_of_birth')}
               disabled={formik.isSubmitting}
             />
             <HelperText

@@ -67,7 +67,7 @@ export default class REST {
 
   public async post<T, U>(
     path: string,
-    body: T,
+    body?: T,
     queryParams: Record<string, any> = {},
   ): Promise<U> {
     return new Promise((resolve, reject) => {
@@ -76,7 +76,7 @@ export default class REST {
       return fetch(url, {
         method: 'POST',
         headers: this.headers,
-        body: JSON.stringify(body),
+        body: body ? JSON.stringify(body) : undefined,
       })
         .then(res => res.json())
         .then(resolve)

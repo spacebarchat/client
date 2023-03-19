@@ -23,7 +23,6 @@ function MemberListItem({member}: Props) {
   const theme = useTheme<CustomTheme>();
 
   const presence = domain.presences.presences.get(member.user?.id!);
-  console.log(presence);
   const highestRole = member.roles[0];
   const colorStyle = highestRole ? {color: highestRole.color} : {};
 

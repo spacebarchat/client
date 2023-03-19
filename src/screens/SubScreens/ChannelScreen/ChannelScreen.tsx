@@ -89,7 +89,7 @@ function ChannelScreen({
             <Button
               mode="contained"
               onPress={() => {
-                openModal('TestModal');
+                openModal('Test');
               }}>
               Open Test Modal
             </Button>

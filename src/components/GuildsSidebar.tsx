@@ -3,6 +3,7 @@ import {FlashList} from '@shopify/flash-list';
 import {observer} from 'mobx-react';
 import React from 'react';
 import {StyleSheet} from 'react-native';
+import {useModal} from 'react-native-modalfy';
 import {useTheme} from 'react-native-paper';
 import {ContextMenuContext} from '../contexts/ContextMenuContext';
 import {DomainContext} from '../stores/DomainStore';
@@ -20,6 +21,7 @@ function GuildsSidebar() {
   const navigation = useNavigation();
   const theme = useTheme<CustomTheme>();
   const contextMenu = React.useContext(ContextMenuContext);
+  const {openModal} = useModal();
 
   const data: {
     id: string;
@@ -110,11 +112,7 @@ function GuildsSidebar() {
         },
         backgroundColorTo: theme.colors.palette.green50,
         colorTo: theme.colors.whiteBlack,
-        // onPress: () =>
-        //   navigation.navigate('App', {
-        //     screen: 'Channel',
-        //     params: {guildId: 'me'},
-        //   }),
+        onPress: () => openModal('AddServer'),
         tooltip: 'Add Server',
       },
     },

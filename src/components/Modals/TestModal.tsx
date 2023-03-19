@@ -13,7 +13,7 @@ function TestModal() {
     <Container style={styles.container}>
       <Text>This is a test modal</Text>
       <Text>You can click outside to close it or press the button below</Text>
-      <Button mode="contained" onPress={() => closeModal('TestModal')}>
+      <Button mode="contained" onPress={() => closeModal('Test')}>
         Close Modal
       </Button>
     </Container>
