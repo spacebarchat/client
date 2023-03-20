@@ -80,7 +80,7 @@ function MessageItem({message, isHeader, failed, sending}: Props) {
     }
 
     setContextMenuOptions(items);
-  }, []);
+  }, [sending, failed]);
 
   const onHoverIn = () => {
     Animated.timing(bgColor, {

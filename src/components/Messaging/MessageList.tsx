@@ -67,6 +67,7 @@ function MessageList({channel}: Props) {
               i === 0 ||
               x.author.id !== arr[i - 1].author.id ||
               x.timestamp.getTime() - arr[i - 1].timestamp.getTime() > t;
+
             return {
               item: x,
               isHeader: isHeader,
