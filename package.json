@@ -53,7 +53,7 @@
     "react-native-web-webview": "^1.0.2",
     "react-native-webview": "^11.26.1",
     "react-native-windows": "0.71.1",
-    "webpack": "^5.75.0",
+    "webpack": "^5.76.0",
     "webpack-dev-server": "^4.11.1",
     "yup": "^1.0.2"
   },
