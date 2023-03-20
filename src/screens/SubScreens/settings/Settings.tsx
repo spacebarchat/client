@@ -150,7 +150,7 @@ function Settings() {
             <HelperText type="info" visible>
               {x.treatments
                 .map(
-                  t => `${t.name}${t.description ? ': ' + x.description : ''}`,
+                  t => `${t.name}${t.description ? ': ' + t.description : ''}`,
                 )
                 .join('\n')}
             </HelperText>
