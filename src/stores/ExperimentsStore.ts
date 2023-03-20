@@ -24,6 +24,10 @@ export const EXPERIMENT_LIST: Experiment[] = [
     defaultTreatment: -1,
     treatments: [
       {
+        id: -1,
+        name: 'Control',
+      },
+      {
         id: 0,
         name: 'Treatment 1',
       },
@@ -39,6 +43,10 @@ export const EXPERIMENT_LIST: Experiment[] = [
     description: 'Makes messages fail by sending invalid payload.',
     defaultTreatment: -1,
     treatments: [
+      {
+        id: -1,
+        name: 'Control',
+      },
       {
         id: 0,
         name: 'Enable',
