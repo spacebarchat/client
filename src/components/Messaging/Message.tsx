@@ -17,6 +17,7 @@ import Message from '../../stores/objects/Message';
 import {CustomTheme} from '../../types';
 import {calendarStrings} from '../../utils/i18n/date';
 import Container from '../Container';
+import {IContextMenuItem} from '../ContextMenu/ContextMenuItem';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const ANIMATION_TIME = 50; // the duration of the hover animation
@@ -33,10 +34,53 @@ function MessageItem({message, isHeader, failed, sending}: Props) {
   const domain = React.useContext(DomainContext);
   const contextMenu = React.useContext(ContextMenuContext);
   const [bgColor] = React.useState(new Animated.Value(0));
+  const [contextMenuItems, setContextMenuOptions] = React.useState<
+    IContextMenuItem[]
+  >([]);
   const author = domain.users.get(
     typeof message.author === 'string' ? message.author : message.author.id,
   );
   const timestamp = 'timestamp' in message ? message.timestamp : new Date();
+
+  // construct the context menu options
+  React.useEffect(() => {
+    // if the message is queued, we don't need a context menu
+    if (sending) {
+      return;
+    }
+
+    const items: IContextMenuItem[] = [
+      {
+        label: 'Copy ID',
+        onPress: () => {
+          // @ts-expect-error - this is web-only
+          navigator.clipboard.writeText(message.id);
+        },
+        iconProps: {
+          name: 'identifier',
+        },
+      },
+    ];
+
+    // add delete/resend option if the current user is the message author
+    if (author?.id === domain.account?.id) {
+      items.push({
+        label: failed ? 'Resend Message' : 'Delete Message',
+        onPress: () => {
+          // TODO: implement
+          console.debug(
+            failed ? 'should resend message' : 'should delete message',
+          );
+        },
+        color: theme.colors.palette.red40,
+        iconProps: {
+          name: failed ? 'reload' : 'delete',
+        },
+      });
+    }
+
+    setContextMenuOptions(items);
+  }, []);
 
   const onHoverIn = () => {
     Animated.timing(bgColor, {
@@ -63,21 +107,16 @@ function MessageItem({message, isHeader, failed, sending}: Props) {
         onHoverIn={onHoverIn}
         onHoverOut={onHoverOut}
         onContextMenu={(e: NativeSyntheticEvent<any>) => {
+          if (sending) {
+            return;
+          }
           e.preventDefault();
           contextMenu.open({
             position: {
               x: e.nativeEvent.pageX,
               y: e.nativeEvent.pageY,
             },
-            items: [
-              {
-                label: 'Copy ID',
-                onPress: () => {
-                  // @ts-expect-error - this is web-only
-                  navigator.clipboard.writeText(message.id);
-                },
-              },
-            ],
+            items: contextMenuItems,
           });
         }}
         style={[

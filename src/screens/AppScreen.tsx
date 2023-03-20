@@ -2,7 +2,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {observer} from 'mobx-react';
 import React from 'react';
 import Container from '../components/Container';
-import ContextMenu from '../components/ContextMenu';
+import ContextMenu from '../components/ContextMenu/ContextMenu';
 import GuildsSidebar from '../components/GuildsSidebar';
 import {ContextMenuContext} from '../contexts/ContextMenuContext';
 import {ChannelsParamList, RootStackScreenProps} from '../types';
@@ -15,6 +15,7 @@ function AppScreen({navigation}: RootStackScreenProps<'App'>) {
 
   return (
     <Container verticalCenter horizontalCenter row flex={1}>
+      {/* TODO: replace with modal stack */}
       {contextMenu.visible && <ContextMenu {...contextMenu} />}
       <GuildsSidebar />
 

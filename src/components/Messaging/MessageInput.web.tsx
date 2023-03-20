@@ -64,7 +64,11 @@ function MessageInput({channel}: Props) {
             if (e.which === 13 && !e.shiftKey) {
               // send message
               e.preventDefault();
-              if (!channel.canSendMessage(text)) {
+              const testErrors = domain.experiments.isTreatmentEnabled(
+                'message_failure',
+                0,
+              );
+              if (!channel.canSendMessage(text) && !testErrors) {
                 return;
               }
 
@@ -78,7 +82,7 @@ function MessageInput({channel}: Props) {
 
               channel
                 .sendMessage({
-                  content: text,
+                  content: testErrors ? undefined : text,
                   nonce,
                 })
                 .catch(error => {

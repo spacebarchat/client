@@ -1,6 +1,6 @@
 import {action, computed, makeAutoObservable, ObservableMap} from 'mobx';
 
-export type ExperimentType = 'test';
+export type ExperimentType = 'test' | 'message_failure';
 
 export interface ExperimentTreatment {
   id: number;
@@ -30,6 +30,18 @@ export const EXPERIMENT_LIST: Experiment[] = [
       {
         id: 1,
         name: 'Treatment 2',
+      },
+    ],
+  },
+  {
+    id: 'message_failure',
+    name: 'Message Failure',
+    description: 'Makes messages fail by sending invalid payload.',
+    defaultTreatment: -1,
+    treatments: [
+      {
+        id: 0,
+        name: 'Enable',
       },
     ],
   },
