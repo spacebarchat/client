@@ -19,7 +19,11 @@ import {
 import * as yup from 'yup';
 import Button from '../components/Button';
 import Container from '../components/Container';
-import {IAPITOTPRequest, IAPITOTPResponse} from '../interfaces/api';
+import {
+  IAPIError,
+  IAPILoginResponseSuccess,
+  IAPITOTPRequest,
+} from '../interfaces/api';
 import {DomainContext} from '../stores/DomainStore';
 import {CustomTheme} from '../types';
 import {Routes} from '../utils/Endpoints';
@@ -60,7 +64,7 @@ function MFAScreen({ticket}: MFAProps) {
     validateOnChange: false,
     onSubmit: async values => {
       await domain.rest
-        .post<IAPITOTPRequest, IAPITOTPResponse>(Routes.totp(), {
+        .post<IAPITOTPRequest, IAPILoginResponseSuccess>(Routes.totp(), {
           code: values.code,
           ticket,
         })
@@ -69,7 +73,17 @@ function MFAScreen({ticket}: MFAProps) {
             // success
             domain.setToken(r.token);
             return;
-          } else if ('message' in r) {
+          } else {
+            // unknown error
+            formik.setFieldError(
+              'code',
+              t('common:errors.UNKNOWN_ERROR') as string,
+            );
+            formik.setFieldValue('code', '');
+          }
+        })
+        .catch((r: IAPIError) => {
+          if ('message' in r) {
             // error
             if (r.errors) {
               const t = messageFromFieldError(r.errors);

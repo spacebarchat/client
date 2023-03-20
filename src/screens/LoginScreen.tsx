@@ -23,7 +23,11 @@ import Button from '../components/Button';
 import Container from '../components/Container';
 import HCaptcha, {HCaptchaMessage} from '../components/HCaptcha';
 import useLogger from '../hooks/useLogger';
-import {IAPILoginRequest, IAPILoginResponse} from '../interfaces/api';
+import {
+  IAPILoginRequest,
+  IAPILoginResponse,
+  IAPILoginResponseError,
+} from '../interfaces/api';
 import {DomainContext} from '../stores/DomainStore';
 import {CustomTheme, RootStackScreenProps} from '../types';
 import {Routes} from '../utils/Endpoints';
@@ -89,7 +93,21 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
             // success
             domain.setToken(r.token);
             return;
-          } else if ('captcha_key' in r) {
+          } else if ('ticket' in r) {
+            // mfa
+            setMfaTicket(r.ticket);
+            return;
+          } else {
+            // unknown error
+            formik.setFieldError(
+              'login',
+              t('common:errors.UNKNOWN_ERROR') as string,
+            );
+            resetCaptcha();
+          }
+        })
+        .catch((r: IAPILoginResponseError) => {
+          if ('captcha_key' in r) {
             // catcha required
             if (r.captcha_key[0] !== 'captcha-required') {
               // some kind of captcha error
@@ -111,10 +129,6 @@ function LoginScreen({navigation}: RootStackScreenProps<'Login'>) {
             }
 
             resetCaptcha();
-          } else if ('ticket' in r) {
-            // mfa
-            setMfaTicket(r.ticket);
-            return;
           } else if ('message' in r) {
             // error
             if (r.errors) {
