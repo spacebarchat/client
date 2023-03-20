@@ -24,7 +24,11 @@ import Button from '../components/Button';
 import Container from '../components/Container';
 import HCaptcha, {HCaptchaMessage} from '../components/HCaptcha';
 import useLogger from '../hooks/useLogger';
-import {IAPIRegisterRequest, IAPIRegisterResponse} from '../interfaces/api';
+import {
+  IAPILoginResponseSuccess,
+  IAPIRegisterRequest,
+  IAPIRegisterResponseError,
+} from '../interfaces/api';
 import {DomainContext} from '../stores/DomainStore';
 import {CustomTheme, RootStackScreenProps} from '../types';
 import {Routes} from '../utils/Endpoints';
@@ -80,20 +84,33 @@ function RegisterScreen({navigation}: RootStackScreenProps<'Register'>) {
     validateOnBlur: false,
     onSubmit: async values => {
       await domain.rest
-        .post<IAPIRegisterRequest, IAPIRegisterResponse>(Routes.register(), {
-          username: values.username,
-          email: values.email,
-          password: values.password,
-          captcha_key: captchaKey,
-          consent: true, // TODO: consent
-          date_of_birth: values.date_of_birth,
-        })
+        .post<IAPIRegisterRequest, IAPILoginResponseSuccess>(
+          Routes.register(),
+          {
+            username: values.username,
+            email: values.email,
+            password: values.password,
+            captcha_key: captchaKey,
+            consent: true, // TODO: consent
+            date_of_birth: values.date_of_birth,
+          },
+        )
         .then(r => {
           if ('token' in r) {
             // success
             domain.setToken(r.token);
             return;
-          } else if ('captcha_key' in r) {
+          } else {
+            // unknown error
+            formik.setFieldError(
+              'login',
+              t('common:errors.UNKNOWN_ERROR') as string,
+            );
+            resetCaptcha();
+          }
+        })
+        .catch((r: IAPIRegisterResponseError) => {
+          if ('captcha_key' in r) {
             // catcha required
             if (r.captcha_key[0] !== 'captcha-required') {
               // some kind of captcha error

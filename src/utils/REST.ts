@@ -78,13 +78,24 @@ export default class REST {
         headers: this.headers,
         body: body ? JSON.stringify(body) : undefined,
       })
-        .then(res => {
-          if (res.status >= 200 && res.status < 300) {
-            return res.json();
+        .then(async res => {
+          if (res.ok) {
+            resolve(await res.json());
+          } else {
+            // reject with json if content type is json
+            if (res.headers.get('content-type')?.includes('application/json')) {
+              return reject(await res.json());
+            }
+
+            // if theres content, reject with text
+            if (res.headers.get('content-length') !== '0') {
+              return reject(await res.text());
+            }
+
+            // reject with status code if theres no content
+            return reject(res.statusText);
           }
-          reject('Something went wrong');
         })
-        .then(resolve)
         .catch(reject);
     });
   }

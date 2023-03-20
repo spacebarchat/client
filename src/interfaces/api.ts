@@ -37,7 +37,7 @@ export interface IAPILoginResponseCaptchaRequiredHCaptcha {
   captcha_service: 'hcaptcha';
 }
 
-export type IAPILoginResponseCaptchaRequired =
+export type IAPIResponseCaptchaRequired =
   | IAPILoginResponseCaptchaRequiredRecaptcha
   | IAPILoginResponseCaptchaRequiredHCaptcha;
 
@@ -63,12 +63,13 @@ export interface IAPIError {
 }
 
 export type IAPILoginResponse =
-  | IAPILoginResponseMFARequired
-  | IAPILoginResponseCaptchaRequired
   | IAPILoginResponseSuccess
-  | IAPIError;
+  | IAPILoginResponseMFARequired;
 
-export type IAPITOTPResponse = IAPILoginResponseSuccess | IAPIError;
+export type IAPILoginResponseError =
+  | IAPILoginResponseMFARequired
+  | IAPIResponseCaptchaRequired
+  | IAPIError;
 
 export interface IAPILoginRequest {
   login: string;
@@ -92,10 +93,7 @@ export interface IAPIRegisterRequest {
   promotional_email_opt_in?: boolean;
 }
 
-export type IAPIRegisterResponse =
-  | IAPILoginResponseCaptchaRequired
-  | IAPILoginResponseSuccess
-  | IAPIError;
+export type IAPIRegisterResponseError = IAPIResponseCaptchaRequired | IAPIError;
 
 export interface IAPITOTPRequest {
   code: string;
