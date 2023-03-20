@@ -4,6 +4,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {
   Button,
+  HelperText,
   IconButton,
   Text,
   TextInput,
@@ -119,15 +120,12 @@ function Settings() {
           </Button>
         )}
         <Hr style={{marginVertical: 10}} />
-        {domain.experiments.isTreatmentEnabled('test', 0) && (
+        {domain.experiments.isExperimentEnabled('test') && (
           <>
-            <Text>Test experiment is enabled; Treatment 1</Text>
-            <Hr style={{marginVertical: 10}} />
-          </>
-        )}
-        {domain.experiments.isTreatmentEnabled('test', 1) && (
-          <>
-            <Text>Test experiment is enabled; Treatment 2</Text>
+            <Text>
+              Test experiment is enabled;{' '}
+              {domain.experiments.getTreatment('test')?.name}
+            </Text>
             <Hr style={{marginVertical: 10}} />
           </>
         )}
@@ -135,8 +133,10 @@ function Settings() {
         <Text variant="headlineSmall">Experiments</Text>
         {EXPERIMENT_LIST.map(x => (
           <Container key={x.id}>
-            <Text variant="bodyLarge">{x.name}</Text>
-            <Text variant="labelLarge">{x.description}</Text>
+            <Text variant="bodyLarge" style={{fontWeight: 'bold'}}>
+              {x.name}
+            </Text>
+            <Text variant="labelMedium">{x.id}</Text>
             <Dropdown
               data={x.treatments.map(t => ({
                 label: t.name,
@@ -147,6 +147,14 @@ function Settings() {
                 domain.experiments.setTreatment(x.id, Number(value.value));
               }}
             />
+            <HelperText type="info" visible>
+              {x.treatments
+                .map(
+                  t => `${t.name}${t.description ? ': ' + x.description : ''}`,
+                )
+                .join('\n')}
+            </HelperText>
+            <Hr />
           </Container>
         ))}
       </Container>
