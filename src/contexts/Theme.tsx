@@ -2,7 +2,16 @@ import { observer } from "mobx-react-lite";
 import { createGlobalStyle } from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 
-export type ThemeVariables = "primary" | "secondary" | "background" | "text";
+export type ThemeVariables =
+  | "brandPrimary"
+  | "brandSecondary"
+  | "primary"
+  | "primaryAlt"
+  | "secondary"
+  | "tertiary"
+  | "text"
+  | "textMuted"
+  | "inputBackground";
 
 export type Overrides = {
   [variable in ThemeVariables]: string;
@@ -14,16 +23,26 @@ export type Theme = Overrides & {
 
 export const ThemePresets: Record<string, Theme> = {
   light: {
-    primary: "#FF5F00",
-    secondary: "#FF3D00",
-    background: "#e9e2e1",
+    brandPrimary: "#FF5F00",
+    brandSecondary: "#FF3D00",
+    primary: "#ede8e7",
+    primaryAlt: "",
+    secondary: "#ebe5e4",
+    tertiary: "#e9e2e1",
     text: "#000000",
+    textMuted: "#232120",
+    inputBackground: "#757575",
   },
   dark: {
-    primary: "#FF5F00",
-    secondary: "#FF3D00",
-    background: "#141212",
+    brandPrimary: "#FF5F00",
+    brandSecondary: "#FF3D00",
+    primary: "#232120",
+    primaryAlt: "#312e2d",
+    secondary: "#1b1918",
+    tertiary: "#141212",
     text: "#e9e2e1",
+    textMuted: "#85898f",
+    inputBackground: "#121212",
   },
 };
 

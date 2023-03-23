@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
 export default styled.div`
-  background-color: var(--background);
+  background-color: var(--tertiary);
   color: var(--text);
 `;

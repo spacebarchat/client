@@ -1,7 +1,12 @@
 import Container from "../components/Container";
+import Text from "../components/Text";
 
 function NotFoundPage() {
-  return <Container>NotFound</Container>;
+  return (
+    <Container>
+      <Text>NotFound</Text>
+    </Container>
+  );
 }
 
 export default NotFoundPage;
