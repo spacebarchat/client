@@ -1,3 +1,4 @@
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import Container from "../components/Container";
 
@@ -47,7 +48,7 @@ const SubHeader = styled.h2`
   font-size: 16px;
 `;
 
-const FormContainer = styled.div`
+const FormContainer = styled.form`
   width: 100%;
 `;
 
@@ -70,8 +71,7 @@ const InputWrapper = styled.div`
   display: flex;
 `;
 
-const Input = styled.input`
-  border: none;
+const Input = styled.input<{invalid?: boolean}>`
   outline: none;
   background: var(--secondary);
   padding: 10px;
@@ -80,6 +80,8 @@ const Input = styled.input`
   border-radius: 12px;
   color: var(--text);
   margin: 0;
+  border: ${(props) => props.invalid ? "1px solid red" : "none"};
+  aria-invalid: ${(props) => props.invalid ? "true" : "false"};
 `;
 
 const PasswordResetLink = styled.a`
@@ -122,6 +124,11 @@ const RegisterLink = styled.a`
 `;
 
 function LoginPage() {
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const onSubmit = (data: any) => console.log(data);
+
+  console.log(errors)
+
   return (
     <Wrapper>
       <LoginBox>
@@ -130,23 +137,23 @@ function LoginPage() {
           <SubHeader>We're so excited to see you again!</SubHeader>
         </HeaderContainer>
 
-        <FormContainer>
+        <FormContainer onSubmit={handleSubmit(onSubmit)}>
           <InputContainer marginBottom={true} style={{ marginTop: 0 }}>
             <InputLabel>Email</InputLabel>
             <InputWrapper>
-              <Input />
+              <Input type="email" autoFocus {...register("email", {required: true})} invalid={!!errors.email} />
             </InputWrapper>
           </InputContainer>
 
           <InputContainer marginBottom={false}>
             <InputLabel>Password</InputLabel>
             <InputWrapper>
-              <Input />
+              <Input type="password" {...register("password", {required: true})} invalid={!!errors.password} />
             </InputWrapper>
           </InputContainer>
 
           <PasswordResetLink href="#">Forgot your password?</PasswordResetLink>
-          <Button>Log In</Button>
+          <Button type="submit">Log In</Button>
 
           <RegisterContainer>
             <RegisterLabel>Don't have an account?&nbsp;</RegisterLabel>
