@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import Button from "../components/Button";
 import Container from "../components/Container";
 
 const Wrapper = styled(Container)`
@@ -11,10 +12,10 @@ const Wrapper = styled(Container)`
 `;
 
 const LoginBox = styled(Container)`
-  background-color: var(--primaryAlt);
+  background-color: var(--primary-alt);
   padding: 32px;
   font-size: 18px;
-  color: var(--textMuted);
+  color: var(--text-muted);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,7 +44,7 @@ const Header = styled.h1`
 `;
 
 const SubHeader = styled.h2`
-  color: var(--textMuted);
+  color: var(--text-muted);
   font-weight: 400;
   font-size: 16px;
 `;
@@ -59,9 +60,20 @@ const InputContainer = styled.h1<{ marginBottom: boolean }>`
   align-items: flex-start;
 `;
 
-const InputLabel = styled.label`
-  color: #b1b5bc;
+const LabelWrapper = styled.div<{ error?: boolean }>`
+  display: flex;
+  flex-direction: row;
   margin-bottom: 8px;
+  color: ${(props) => (props.error ? "var(--error)" : "#b1b5bc")};
+`;
+
+const InputErrorText = styled.label`
+  font-size: 14px;
+  font-weight: 400;
+  font-style: italic;
+`;
+
+const InputLabel = styled.label`
   font-size: 14px;
   font-weight: 700;
 `;
@@ -71,7 +83,7 @@ const InputWrapper = styled.div`
   display: flex;
 `;
 
-const Input = styled.input<{invalid?: boolean}>`
+const Input = styled.input<{ error?: boolean }>`
   outline: none;
   background: var(--secondary);
   padding: 10px;
@@ -80,8 +92,8 @@ const Input = styled.input<{invalid?: boolean}>`
   border-radius: 12px;
   color: var(--text);
   margin: 0;
-  border: ${(props) => props.invalid ? "1px solid red" : "none"};
-  aria-invalid: ${(props) => props.invalid ? "true" : "false"};
+  border: none;
+  aria-invalid: ${(props) => (props.error ? "true" : "false")};
 `;
 
 const PasswordResetLink = styled.a`
@@ -93,16 +105,11 @@ const PasswordResetLink = styled.a`
   text-decoration: none;
 `;
 
-const Button = styled.button`
-  background: var(--brandPrimary);
-  color: var(--text);
-  font-size: 16px;
+const LoginButton = styled(Button)`
   margin-bottom: 8px;
   width: 100%;
   min-width: 130px;
   min-height: 44px;
-  border-radius: 8px;
-  border: none;
 `;
 
 const RegisterContainer = styled.div`
@@ -123,11 +130,18 @@ const RegisterLink = styled.a`
   }
 `;
 
-function LoginPage() {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const onSubmit = (data: any) => console.log(data);
+const Divider = styled.span`
+  padding: 0 4px;
+`;
 
-  console.log(errors)
+function LoginPage() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data: any) => console.log(data);
 
   return (
     <Wrapper>
@@ -139,21 +153,46 @@ function LoginPage() {
 
         <FormContainer onSubmit={handleSubmit(onSubmit)}>
           <InputContainer marginBottom={true} style={{ marginTop: 0 }}>
-            <InputLabel>Email</InputLabel>
+            <LabelWrapper error={!!errors.email}>
+              <InputLabel>Email</InputLabel>
+              {errors.email && (
+                <InputErrorText>
+                  <Divider>-</Divider>Email error here
+                </InputErrorText>
+              )}
+            </LabelWrapper>
             <InputWrapper>
-              <Input type="email" autoFocus {...register("email", {required: true})} invalid={!!errors.email} />
+              <Input
+                type="email"
+                autoFocus
+                {...register("email", { required: true })}
+                error={!!errors.email}
+              />
             </InputWrapper>
           </InputContainer>
 
           <InputContainer marginBottom={false}>
-            <InputLabel>Password</InputLabel>
+            <LabelWrapper error={!!errors.password}>
+              <InputLabel>Password</InputLabel>
+              {errors.password && (
+                <InputErrorText>
+                  <Divider>-</Divider>Password error here
+                </InputErrorText>
+              )}
+            </LabelWrapper>
             <InputWrapper>
-              <Input type="password" {...register("password", {required: true})} invalid={!!errors.password} />
+              <Input
+                type="password"
+                {...register("password", { required: true })}
+                error={!!errors.password}
+              />
             </InputWrapper>
           </InputContainer>
 
           <PasswordResetLink href="#">Forgot your password?</PasswordResetLink>
-          <Button type="submit">Log In</Button>
+          <LoginButton variant="primary" type="submit">
+            Log In
+          </LoginButton>
 
           <RegisterContainer>
             <RegisterLabel>Don't have an account?&nbsp;</RegisterLabel>
