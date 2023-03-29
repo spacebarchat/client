@@ -8,6 +8,7 @@
     "@fontsource/roboto": "^4.5.8",
     "@mattjennings/react-modal-stack": "^1.0.4",
     "@mui/material": "^5.11.13",
+    "@puyodead1/fosscord-ts": "github:Puyodead1/fosscord.ts",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

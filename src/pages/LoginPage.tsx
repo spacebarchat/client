@@ -1,7 +1,9 @@
+import { APIError, CaptchaError, MFAError } from "@puyodead1/fosscord-ts";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import Button from "../components/Button";
 import Container from "../components/Container";
+import { useAppStore } from "../stores/AppStore";
 
 const Wrapper = styled(Container)`
   display: flex;
@@ -134,14 +136,46 @@ const Divider = styled.span`
   padding: 0 4px;
 `;
 
+type LoginFormValues = {
+  login: string;
+  password: string;
+};
+
 function LoginPage() {
+  const app = useAppStore();
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
-  const onSubmit = (data: any) => console.log(data);
+    setError,
+  } = useForm<LoginFormValues>();
+
+  const onSubmit = handleSubmit((data) => {
+    app.api
+      .login(data)
+      .then((r) => {
+        console.log(r);
+      })
+      .catch((e) => {
+        if (e instanceof MFAError) {
+          console.log("MFA Required", e);
+        } else if (e instanceof CaptchaError) {
+          console.log("Captcha Required", e);
+        } else if (e instanceof APIError) {
+          console.log("APIError", e.message, e.code, e.fieldErrors);
+          e.fieldErrors.forEach((fieldError) => {
+            setError(fieldError.field as any, {
+              type: "manual",
+              message: fieldError.error,
+            });
+          });
+        } else {
+          console.log("General Error", e);
+        }
+      });
+  });
 
   return (
     <Wrapper>
@@ -151,13 +185,16 @@ function LoginPage() {
           <SubHeader>We're so excited to see you again!</SubHeader>
         </HeaderContainer>
 
-        <FormContainer onSubmit={handleSubmit(onSubmit)}>
+        <FormContainer onSubmit={onSubmit}>
           <InputContainer marginBottom={true} style={{ marginTop: 0 }}>
-            <LabelWrapper error={!!errors.email}>
+            <LabelWrapper error={!!errors.login}>
               <InputLabel>Email</InputLabel>
-              {errors.email && (
+              {errors.login && (
                 <InputErrorText>
-                  <Divider>-</Divider>Email error here
+                  <>
+                    <Divider>-</Divider>
+                    {errors.login.message}
+                  </>
                 </InputErrorText>
               )}
             </LabelWrapper>
@@ -165,8 +202,8 @@ function LoginPage() {
               <Input
                 type="email"
                 autoFocus
-                {...register("email", { required: true })}
-                error={!!errors.email}
+                {...register("login", { required: true })}
+                error={!!errors.login}
               />
             </InputWrapper>
           </InputContainer>
@@ -176,7 +213,10 @@ function LoginPage() {
               <InputLabel>Password</InputLabel>
               {errors.password && (
                 <InputErrorText>
-                  <Divider>-</Divider>Password error here
+                  <>
+                    <Divider>-</Divider>
+                    {errors.password.message}
+                  </>
                 </InputErrorText>
               )}
             </LabelWrapper>
