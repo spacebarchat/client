@@ -153,26 +153,23 @@ function LoginPage() {
   } = useForm<LoginFormValues>();
 
   const onSubmit = handleSubmit((data) => {
-    app.api
-      .login(data)
-      .then(app.setToken)
-      .catch((e) => {
-        if (e instanceof MFAError) {
-          console.log("MFA Required", e);
-        } else if (e instanceof CaptchaError) {
-          console.log("Captcha Required", e);
-        } else if (e instanceof APIError) {
-          console.log("APIError", e.message, e.code, e.fieldErrors);
-          e.fieldErrors.forEach((fieldError) => {
-            setError(fieldError.field as any, {
-              type: "manual",
-              message: fieldError.error,
-            });
+    app.api.login(data).catch((e) => {
+      if (e instanceof MFAError) {
+        console.log("MFA Required", e);
+      } else if (e instanceof CaptchaError) {
+        console.log("Captcha Required", e);
+      } else if (e instanceof APIError) {
+        console.log("APIError", e.message, e.code, e.fieldErrors);
+        e.fieldErrors.forEach((fieldError) => {
+          setError(fieldError.field as any, {
+            type: "manual",
+            message: fieldError.error,
           });
-        } else {
-          console.log("General Error", e);
-        }
-      });
+        });
+      } else {
+        console.log("General Error", e);
+      }
+    });
   });
 
   return (

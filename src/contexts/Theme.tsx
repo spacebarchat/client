@@ -40,7 +40,7 @@ export type Theme = Overrides & {
 export const ThemePresets: Record<string, Theme> = {
   light: {
     brandPrimary: "#0185ff",
-    brandSecondary: "#000115",
+    brandSecondary: "#ffffff",
     primary: "#ede8e7",
     primaryAlt: "",
     secondary: "#ebe5e4",
@@ -67,7 +67,7 @@ export const ThemePresets: Record<string, Theme> = {
   },
   dark: {
     brandPrimary: "#0185ff",
-    brandSecondary: "#000115",
+    brandSecondary: "#ffffff",
     primary: "#232120",
     primaryAlt: "#312e2d",
     secondary: "#1b1918",

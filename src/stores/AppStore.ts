@@ -1,6 +1,5 @@
 import { Client } from "@puyodead1/fosscord-ts";
-import { makeAutoObservable, observable } from "mobx";
-import secureLocalStorage from "react-secure-storage";
+import { makeAutoObservable, observable, runInAction } from "mobx";
 import ThemeStore from "./ThemeStore";
 
 export default class AppStore {
@@ -20,12 +19,15 @@ export default class AppStore {
     this.api.on("debug", console.debug);
     this.api.on("warn", console.warn);
     this.api.on("error", console.error);
+    this.api.on("ready", this.onReady.bind(this));
 
     makeAutoObservable(this);
   }
 
-  public setToken(token: string) {
-    secureLocalStorage.setItem("token", token);
+  onReady() {
+    runInAction(() => {
+      this.ready = true;
+    });
   }
 }
 

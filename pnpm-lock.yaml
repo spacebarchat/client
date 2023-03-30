@@ -43,7 +43,7 @@ dependencies:
   '@fontsource/roboto': 4.5.8
   '@mattjennings/react-modal-stack': 1.0.4_react@18.2.0
   '@mui/material': 5.11.13_xqeqsl5kvjjtyxwyi3jhw3yuli
-  '@puyodead1/fosscord-ts': github.com/Puyodead1/fosscord.ts/d736433fa8e05d8b761eb352c813d93f7afb0baf
+  '@puyodead1/fosscord-ts': github.com/Puyodead1/fosscord.ts/eb44aa8023076f6e18f22354143fe1032062fa67
   '@testing-library/jest-dom': 5.16.5
   '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
   '@testing-library/user-event': 13.5.0
@@ -11233,8 +11233,8 @@ packages:
       - debug
     dev: false
 
-  github.com/Puyodead1/fosscord.ts/d736433fa8e05d8b761eb352c813d93f7afb0baf:
-    resolution: {tarball: https://codeload.github.com/Puyodead1/fosscord.ts/tar.gz/d736433fa8e05d8b761eb352c813d93f7afb0baf}
+  github.com/Puyodead1/fosscord.ts/eb44aa8023076f6e18f22354143fe1032062fa67:
+    resolution: {tarball: https://codeload.github.com/Puyodead1/fosscord.ts/tar.gz/eb44aa8023076f6e18f22354143fe1032062fa67}
     name: '@puyodead1/fosscord-ts'
     version: 0.0.1
     prepare: true
