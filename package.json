@@ -28,6 +28,7 @@
     "react-loading-skeleton": "^3.2.0",
     "react-router-dom": "^6.9.0",
     "react-scripts": "5.0.1",
+    "react-secure-storage": "^1.2.0",
     "react-spinners": "^0.13.8",
     "reoverlay": "^1.0.3",
     "slate": "^0.91.4",

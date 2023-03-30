@@ -155,9 +155,7 @@ function LoginPage() {
   const onSubmit = handleSubmit((data) => {
     app.api
       .login(data)
-      .then((r) => {
-        console.log(r);
-      })
+      .then(app.setToken)
       .catch((e) => {
         if (e instanceof MFAError) {
           console.log("MFA Required", e);

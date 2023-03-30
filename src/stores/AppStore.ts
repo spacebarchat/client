@@ -1,5 +1,6 @@
 import { Client } from "@puyodead1/fosscord-ts";
 import { makeAutoObservable, observable } from "mobx";
+import secureLocalStorage from "react-secure-storage";
 import ThemeStore from "./ThemeStore";
 
 export default class AppStore {
@@ -21,6 +22,10 @@ export default class AppStore {
     this.api.on("error", console.error);
 
     makeAutoObservable(this);
+  }
+
+  public setToken(token: string) {
+    secureLocalStorage.setItem("token", token);
   }
 }
 

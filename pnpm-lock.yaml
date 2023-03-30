@@ -29,6 +29,7 @@ specifiers:
   react-loading-skeleton: ^3.2.0
   react-router-dom: ^6.9.0
   react-scripts: 5.0.1
+  react-secure-storage: ^1.2.0
   react-spinners: ^0.13.8
   reoverlay: ^1.0.3
   slate: ^0.91.4
@@ -42,7 +43,7 @@ dependencies:
   '@fontsource/roboto': 4.5.8
   '@mattjennings/react-modal-stack': 1.0.4_react@18.2.0
   '@mui/material': 5.11.13_xqeqsl5kvjjtyxwyi3jhw3yuli
-  '@puyodead1/fosscord-ts': github.com/Puyodead1/fosscord.ts/a8c0c2b06cd919f07194e94c9d3adcdbd1f0da94
+  '@puyodead1/fosscord-ts': github.com/Puyodead1/fosscord.ts/d736433fa8e05d8b761eb352c813d93f7afb0baf
   '@testing-library/jest-dom': 5.16.5
   '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
   '@testing-library/user-event': 13.5.0
@@ -62,6 +63,7 @@ dependencies:
   react-loading-skeleton: 3.2.0_react@18.2.0
   react-router-dom: 6.9.0_biqbaboplfbrettd7655fr4n2y
   react-scripts: 5.0.1_j5ip3o3v6sktjzl5cxtjyfbuo4
+  react-secure-storage: 1.2.0
   react-spinners: 0.13.8_biqbaboplfbrettd7655fr4n2y
   reoverlay: 1.0.3_biqbaboplfbrettd7655fr4n2y
   slate: 0.91.4
@@ -4354,6 +4356,10 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
 
+  /crypto-js/4.1.1:
+    resolution: {integrity: sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==}
+    dev: false
+
   /crypto-random-string/2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
     engines: {node: '>=8'}
@@ -7701,6 +7707,10 @@ packages:
       dns-packet: 5.4.0
       thunky: 1.1.0
 
+  /murmurhash-js/1.0.0:
+    resolution: {integrity: sha512-TvmkNhkv8yct0SVBSy+o8wYzXjE4Zz3PCesbfs8HiCXXdcTuocApFv11UWlNFWKYsP2okqrhb7JNlSm9InBhIw==}
+    dev: false
+
   /nanoid/3.3.4:
     resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -9240,6 +9250,13 @@ packages:
       - webpack-cli
       - webpack-hot-middleware
       - webpack-plugin-serve
+
+  /react-secure-storage/1.2.0:
+    resolution: {integrity: sha512-ZKRky6jG0B4LpK6PmFcK9rv5gX38BuJDFl2wM4+k3Qlxq8WKQOlkxy3JZ0RhnReYJFzErsLLHAh2+KAGycaVIg==}
+    dependencies:
+      crypto-js: 4.1.1
+      murmurhash-js: 1.0.0
+    dev: false
 
   /react-spinners/0.13.8_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-3e+k56lUkPj0vb5NDXPVFAOkPC//XyhKPJjvcGjyMNPWsBKpplfeyialP74G7H7+It7KzhtET+MvGqbKgAqpZA==}
@@ -11216,8 +11233,8 @@ packages:
       - debug
     dev: false
 
-  github.com/Puyodead1/fosscord.ts/a8c0c2b06cd919f07194e94c9d3adcdbd1f0da94:
-    resolution: {tarball: https://codeload.github.com/Puyodead1/fosscord.ts/tar.gz/a8c0c2b06cd919f07194e94c9d3adcdbd1f0da94}
+  github.com/Puyodead1/fosscord.ts/d736433fa8e05d8b761eb352c813d93f7afb0baf:
+    resolution: {tarball: https://codeload.github.com/Puyodead1/fosscord.ts/tar.gz/d736433fa8e05d8b761eb352c813d93f7afb0baf}
     name: '@puyodead1/fosscord-ts'
     version: 0.0.1
     prepare: true
