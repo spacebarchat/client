@@ -16,6 +16,10 @@ export default class AppStore {
       },
     });
 
+    this.api.on("debug", console.debug);
+    this.api.on("warn", console.warn);
+    this.api.on("error", console.error);
+
     makeAutoObservable(this);
   }
 }

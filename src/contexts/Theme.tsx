@@ -39,8 +39,8 @@ export type Theme = Overrides & {
 
 export const ThemePresets: Record<string, Theme> = {
   light: {
-    brandPrimary: "#FF5F00",
-    brandSecondary: "#FF3D00",
+    brandPrimary: "#0185ff",
+    brandSecondary: "#000115",
     primary: "#ede8e7",
     primaryAlt: "",
     secondary: "#ebe5e4",
@@ -66,8 +66,8 @@ export const ThemePresets: Record<string, Theme> = {
     buttonWarningActive: "",
   },
   dark: {
-    brandPrimary: "#FF5F00",
-    brandSecondary: "#FF3D00",
+    brandPrimary: "#0185ff",
+    brandSecondary: "#000115",
     primary: "#232120",
     primaryAlt: "#312e2d",
     secondary: "#1b1918",
@@ -77,9 +77,9 @@ export const ThemePresets: Record<string, Theme> = {
     inputBackground: "#121212",
     error: "#e83f36",
     // buttons
-    buttonPrimary: "#FF5F00",
-    buttonPrimaryHover: "#ff3d00",
-    buttonPrimaryActive: "#BA4500",
+    buttonPrimary: "#0185ff",
+    buttonPrimaryHover: "#0078e6",
+    buttonPrimaryActive: "#006acd",
     buttonSecondary: "#4a4544",
     buttonSecondaryHover: "#746d69",
     buttonSecondaryActive: "#5f5a59",
