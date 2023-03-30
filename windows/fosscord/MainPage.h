@@ -2,7 +2,7 @@
 #include "MainPage.g.h"
 #include <winrt/Microsoft.ReactNative.h>
 
-namespace winrt::fosscord::implementation
+namespace winrt::spacebar::implementation
 {
     struct MainPage : MainPageT<MainPage>
     {
@@ -10,10 +10,9 @@ namespace winrt::fosscord::implementation
     };
 }
 
-namespace winrt::fosscord::factory_implementation
+namespace winrt::spacebar::factory_implementation
 {
     struct MainPage : MainPageT<MainPage, implementation::MainPage>
     {
     };
 }
-

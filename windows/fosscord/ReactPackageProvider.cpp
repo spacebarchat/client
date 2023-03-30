@@ -4,12 +4,12 @@
 
 using namespace winrt::Microsoft::ReactNative;
 
-namespace winrt::fosscord::implementation
+namespace winrt::spacebar::implementation
 {
 
-void ReactPackageProvider::CreatePackage(IReactPackageBuilder const &packageBuilder) noexcept
-{
-    AddAttributedModules(packageBuilder, true);
-}
+    void ReactPackageProvider::CreatePackage(IReactPackageBuilder const &packageBuilder) noexcept
+    {
+        AddAttributedModules(packageBuilder, true);
+    }
 
-} // namespace winrt::fosscord::implementation
+} // namespace winrt::spacebar::implementation

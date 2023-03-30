@@ -13,7 +13,7 @@ function SplashScreen() {
       horizontalCenter
       verticalCenter>
       <ActivityIndicator size="large" />
-      <Text variant="headlineLarge">Fosscord</Text>
+      <Text variant="headlineLarge">Spacebar</Text>
     </Container>
   );
 }

@@ -12,13 +12,13 @@ interface RouteSettings {
 }
 
 export const DefaultRouteSettings: RouteSettings = {
-  api: 'https://staging.fosscord.com/api',
-  cdn: 'https://cdn.staging.fosscord.com',
-  invite: 'https://staging.fosscord.com/invite',
-  template: 'https://staging.fosscord.com/template',
-  gift: 'https://staging.fosscord.com/gift',
-  scheduledEvent: 'https://staging.fosscord.com/events',
-  gateway: 'wss://gateway.staging.fosscord.com',
+  api: 'https://staging.spacebar.com/api',
+  cdn: 'https://cdn.staging.spacebar.com',
+  invite: 'https://staging.spacebar.com/invite',
+  template: 'https://staging.spacebar.com/template',
+  gift: 'https://staging.spacebar.com/gift',
+  scheduledEvent: 'https://staging.spacebar.com/events',
+  gateway: 'wss://gateway.staging.spacebar.com',
 };
 
 export const Globals: {

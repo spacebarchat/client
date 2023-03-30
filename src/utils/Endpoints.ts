@@ -91,7 +91,7 @@ export const Routes = {
     return '/auth/reset';
   },
   minVersion(os: 'android' | 'ios') {
-    // TODO: this route should be implemented in fosscord-server and then implemented for mobile versions of the client
+    // TODO: this route should be implemented in spacebar-server and then implemented for mobile versions of the client
     return `/apps/${os}/versions.json`;
   },
   invite(code: string) {

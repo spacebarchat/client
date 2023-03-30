@@ -93,9 +93,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.fosscord"
+    namespace "com.spacebar"
     defaultConfig {
-        applicationId "com.fosscord"
+        applicationId "com.spacebar"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

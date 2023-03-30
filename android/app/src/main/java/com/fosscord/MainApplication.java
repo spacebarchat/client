@@ -1,4 +1,4 @@
-package com.fosscord;
+package com.spacebar;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
