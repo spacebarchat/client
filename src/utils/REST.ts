@@ -12,7 +12,7 @@ export default class REST {
 
     this.headers = {
       mode: 'cors',
-      'User-Agent': 'Fosscord-Client/1.0',
+      'User-Agent': 'Spacebar-Client/1.0',
       accept: 'application/json',
       'Content-Type': 'application/json',
     };

@@ -1,6 +1,6 @@
 {
   "CFBundleDisplayName": "$t(common:APP_NAME)",
-  "APP_NAME": "Fosscord",
+  "APP_NAME": "Spacebar",
   "TERMS_OF_SERVICE_URL": "https://www.example.com/terms-of-service",
   "PRIVACY_POLICY_URL": "https://www.example.com/privacy-policy",
   "errors": {

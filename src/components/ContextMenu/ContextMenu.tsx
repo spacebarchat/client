@@ -1,8 +1,9 @@
 import React from 'react';
-import {Pressable, StyleSheet, useWindowDimensions} from 'react-native';
-import {Text, useTheme} from 'react-native-paper';
-import {CustomTheme} from '../types';
-import Container from './Container';
+import {Platform, StyleSheet, useWindowDimensions} from 'react-native';
+import {useTheme} from 'react-native-paper';
+import {CustomTheme} from '../../types';
+import Container from '../Container';
+import ContextMenuItem, {IContextMenuItem} from './ContextMenuItem';
 
 interface Props {
   open: (props: Props) => void;
@@ -12,10 +13,7 @@ interface Props {
     x: number;
     y: number;
   };
-  items: {
-    label: string;
-    onPress: () => void;
-  }[];
+  items: IContextMenuItem[];
 }
 
 function ContextMenu({position, close, items}: Props) {
@@ -24,9 +22,14 @@ function ContextMenu({position, close, items}: Props) {
 
   // Close the context menu when the user clicks outside of it
   React.useEffect(() => {
+    if (!Platform.isWeb) {
+      return;
+    }
+
     const listener = () => {
       close();
     };
+
     // @ts-expect-error - this is web-only
     document.addEventListener('click', listener);
     return () => {
@@ -49,14 +52,12 @@ function ContextMenu({position, close, items}: Props) {
       ]}>
       {items.map((item, index) => {
         return (
-          <Pressable
+          <ContextMenuItem
             key={index}
-            onPress={() => {
-              item.onPress();
-              close();
-            }}>
-            <Text>{item.label}</Text>
-          </Pressable>
+            item={item}
+            close={close}
+            index={index}
+          />
         );
       })}
     </Container>

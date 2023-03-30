@@ -53,7 +53,7 @@ jobs:
     #     [System.IO.File]::WriteAllBytes("$PfxPath", $PfxBytes)
 
     - name: Build
-      run: yarn react-native run-windows --logging --no-packager --no-launch --no-deploy --arch ${{ matrix.architecture }} ${{ matrix.configuration == 'Release' && '--release' || '' }} --msbuildprops PackageCertificateKeyFile=${{ github.workspace }}\windows\fosscord\fosscord_TemporaryKey.pfx
+      run: yarn react-native run-windows --logging --no-packager --no-launch --no-deploy --arch ${{ matrix.architecture }} ${{ matrix.configuration == 'Release' && '--release' || '' }} --msbuildprops PackageCertificateKeyFile=${{ github.workspace }}\windows\spacebar\spacebar_TemporaryKey.pfx
 
     # - name: Remove PFX
     #   run: |

@@ -64,7 +64,16 @@ function MessageInput({channel}: Props) {
             if (e.which === 13 && !e.shiftKey) {
               // send message
               e.preventDefault();
-              if (!channel.canSendMessage(text)) {
+              const shouldFail = domain.experiments.isTreatmentEnabled(
+                'message_queue',
+                2,
+              );
+              const shouldSend = !domain.experiments.isTreatmentEnabled(
+                'message_queue',
+                1,
+              );
+
+              if (!channel.canSendMessage(text) && !shouldFail) {
                 return;
               }
 
@@ -76,14 +85,16 @@ function MessageInput({channel}: Props) {
                 channel: channel.id,
               });
 
-              channel
-                .sendMessage({
-                  content: text,
-                  nonce,
-                })
-                .catch(error => {
-                  domain.queue.error(nonce, error as string);
-                });
+              if (shouldSend) {
+                channel
+                  .sendMessage({
+                    content: shouldFail ? undefined : text,
+                    nonce,
+                  })
+                  .catch(error => {
+                    domain.queue.error(nonce, error as string);
+                  });
+              }
 
               setText('');
             }

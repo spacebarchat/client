@@ -9,7 +9,7 @@
 using namespace winrt;
 using namespace xaml;
 
-namespace winrt::fosscord::implementation
+namespace winrt::spacebar::implementation
 {
     MainPage::MainPage()
     {

@@ -1,6 +1,6 @@
 import {action, computed, makeAutoObservable, ObservableMap} from 'mobx';
 
-export type ExperimentType = 'test';
+export type ExperimentType = 'test' | 'message_queue';
 
 export interface ExperimentTreatment {
   id: number;
@@ -12,7 +12,6 @@ export interface Experiment {
   id: ExperimentType;
   name: string;
   description: string;
-  defaultTreatment: number;
   treatments: ExperimentTreatment[];
 }
 
@@ -21,15 +20,39 @@ export const EXPERIMENT_LIST: Experiment[] = [
     id: 'test',
     name: 'Test',
     description: 'This is a test experiment.',
-    defaultTreatment: -1,
     treatments: [
       {
         id: 0,
-        name: 'Treatment 1',
+        name: 'Control',
       },
       {
         id: 1,
+        name: 'Treatment 1',
+      },
+      {
+        id: 2,
         name: 'Treatment 2',
+      },
+    ],
+  },
+  {
+    id: 'message_queue',
+    name: 'Message Queue Testing',
+    description: 'Changes the behavior of messages.',
+    treatments: [
+      {
+        id: 0,
+        name: 'Control',
+      },
+      {
+        id: 1,
+        name: 'Treatment 1',
+        description: 'Stuck in queue',
+      },
+      {
+        id: 2,
+        name: 'Treatment 2',
+        description: 'Failed',
       },
     ],
   },
@@ -40,33 +63,33 @@ export interface Data {
 }
 
 export default class ExperimentsStore {
-  private experiments: ObservableMap<string, ExperimentTreatment> =
-    new ObservableMap();
+  private experiments: ObservableMap<string, number>;
 
   constructor() {
+    this.experiments = new ObservableMap();
     makeAutoObservable(this);
-
-    for (const experiment of EXPERIMENT_LIST) {
-      this.setTreatment(experiment.id, experiment.defaultTreatment);
-    }
   }
 
   @computed
   isTreatmentEnabled(id: ExperimentType, treatment: number) {
-    return this.experiments.get(id)?.id === treatment;
+    return this.experiments.get(id) === treatment;
   }
 
   @computed
   getTreatment(id: ExperimentType) {
-    return this.experiments.get(id);
+    const treatment = this.experiments.get(id);
+    const experiment = EXPERIMENT_LIST.find(x => x.id === id);
+    return experiment?.treatments.find(x => x.id === treatment);
   }
 
   @action
   setTreatment(id: ExperimentType, treatment: number): void {
-    const experiment = EXPERIMENT_LIST.find(e => e.id === id);
-    if (experiment) {
-      this.experiments.set(id, experiment.treatments[treatment]);
-    }
+    this.experiments.set(id, treatment);
+  }
+
+  @computed
+  isExperimentEnabled(id: ExperimentType) {
+    return this.experiments.has(id) && this.experiments.get(id) !== 0;
   }
 
   @action

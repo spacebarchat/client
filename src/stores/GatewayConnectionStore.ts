@@ -223,13 +223,13 @@ export default class GatewayConnectionStore extends BaseStore {
     DeviceInfo.getUserAgent().then(ua => {
       let browser;
       if (Platform.OS === 'ios') {
-        browser = 'Fosscord iOS';
+        browser = 'Spacebar iOS';
       } else if (Platform.OS === 'android') {
-        browser = 'Fosscord Android';
+        browser = 'Spacebar Android';
       } else if (Platform.isDesktop) {
-        browser = 'Fosscord Desktop';
+        browser = 'Spacebar Desktop';
       } else {
-        browser = 'Fosscord Web';
+        browser = 'Spacebar Web';
       }
 
       const payload: GatewayIdentify = {

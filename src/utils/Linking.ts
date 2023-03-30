@@ -67,7 +67,7 @@ export function createURL(
   }
 
   //   const resolvedScheme = resolveScheme({scheme});
-  const resolvedScheme = 'fosscord';
+  const resolvedScheme = 'spacebar';
 
   let hostUri = '';
 
