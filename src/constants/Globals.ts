@@ -4,21 +4,13 @@ import useLogger from '../hooks/useLogger';
 interface RouteSettings {
   api: string;
   cdn: string;
-  invite: string;
-  template: string;
-  gift: string;
-  scheduledEvent: string;
   gateway: string;
 }
 
 export const DefaultRouteSettings: RouteSettings = {
-  api: 'https://staging.spacebar.com/api',
-  cdn: 'https://cdn.staging.spacebar.com',
-  invite: 'https://staging.spacebar.com/invite',
-  template: 'https://staging.spacebar.com/template',
-  gift: 'https://staging.spacebar.com/gift',
-  scheduledEvent: 'https://staging.spacebar.com/events',
-  gateway: 'wss://gateway.staging.spacebar.com',
+  api: 'https://api.spacebar.chat',
+  cdn: 'https://cdn.spacebar.chat',
+  gateway: 'wss://gateway.spacebar.chat',
 };
 
 export const Globals: {
