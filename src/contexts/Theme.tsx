@@ -11,6 +11,7 @@ export type ThemeVariables =
   | "tertiary"
   | "text"
   | "textMuted"
+  | "textLink"
   | "inputBackground"
   | "error"
   | "buttonPrimary"
@@ -47,6 +48,7 @@ export const ThemePresets: Record<string, Theme> = {
     tertiary: "#e9e2e1",
     text: "#000000",
     textMuted: "#232120",
+    textLink: "#00a8fc",
     inputBackground: "#757575",
     error: "#e83f36",
     buttonPrimary: "",
@@ -74,6 +76,7 @@ export const ThemePresets: Record<string, Theme> = {
     tertiary: "#141212",
     text: "#e9e2e1",
     textMuted: "#85898f",
+    textLink: "#00a8fc",
     inputBackground: "#121212",
     error: "#e83f36",
     // buttons

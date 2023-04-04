@@ -1,5 +1,6 @@
 import { APIError, CaptchaError, MFAError } from "@puyodead1/fosscord-ts";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/Button";
 import Container from "../components/Container";
@@ -98,13 +99,20 @@ const Input = styled.input<{ error?: boolean }>`
   aria-invalid: ${(props) => (props.error ? "true" : "false")};
 `;
 
-const PasswordResetLink = styled.a`
+const PasswordResetLink = styled.button`
   margin-bottom: 20px;
   margin-top: 4px;
   padding: 2px 0;
   font-size: 14px;
   display: flex;
-  text-decoration: none;
+  color: var(--text-link);
+  background: none;
+  border: none;
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 `;
 
 const LoginButton = styled(Button)`
@@ -123,12 +131,19 @@ const RegisterLabel = styled.label`
   font-size: 14px;
 `;
 
-const RegisterLink = styled.a`
+const RegisterLink = styled.button`
   font-size: 14px;
-  text-decoration: none;
+  background: none;
+  border: none;
+  color: var(--text-link);
 
   @media (max-width: 480px) {
     display: inline-block;
+  }
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
   }
 `;
 
@@ -143,6 +158,7 @@ type LoginFormValues = {
 
 function LoginPage() {
   const app = useAppStore();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -224,14 +240,23 @@ function LoginPage() {
             </InputWrapper>
           </InputContainer>
 
-          <PasswordResetLink href="#">Forgot your password?</PasswordResetLink>
+          <PasswordResetLink onClick={() => {}} type="button">
+            Forgot your password?
+          </PasswordResetLink>
           <LoginButton variant="primary" type="submit">
             Log In
           </LoginButton>
 
           <RegisterContainer>
             <RegisterLabel>Don't have an account?&nbsp;</RegisterLabel>
-            <RegisterLink href="#">Sign Up</RegisterLink>
+            <RegisterLink
+              onClick={() => {
+                navigate("/register");
+              }}
+              type="button"
+            >
+              Sign Up
+            </RegisterLink>
           </RegisterContainer>
         </FormContainer>
       </LoginBox>

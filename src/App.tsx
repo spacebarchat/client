@@ -31,13 +31,14 @@ function App() {
 
   // handles token changes
   React.useEffect(() => {
-    if (!app.api.token && !isLoading) {
-      console.log("TOKEN REMOVED");
-      // remove token
-      secureLocalStorage.removeItem("token");
-      // navigate to login page if token is removed
-      navigate("/login", { replace: true });
-    }
+    // FIXME: this triggers on load and causes a redirect to login no matter what page we actually want to go to
+    // if (!app.api.token && !isLoading) {
+    //   console.log("TOKEN REMOVED");
+    //   // remove token
+    //   secureLocalStorage.removeItem("token");
+    //   // navigate to login page if token is removed
+    //   navigate("/login", { replace: true });
+    // }
 
     if (app.api.token) {
       console.log("TOKEN ADDED");
