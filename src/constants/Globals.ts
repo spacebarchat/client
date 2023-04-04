@@ -8,9 +8,9 @@ interface RouteSettings {
 }
 
 export const DefaultRouteSettings: RouteSettings = {
-  api: 'https://api.spacebar.chat',
-  cdn: 'https://cdn.spacebar.chat',
-  gateway: 'wss://gateway.spacebar.chat',
+  api: 'https://api.old.server.spacebar.chat/api',
+  cdn: 'https://cdn.old.server.spacebar.chat',
+  gateway: 'wss://gateway.old.server.spacebar.chat',
 };
 
 export const Globals: {
