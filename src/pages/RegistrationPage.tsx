@@ -1,8 +1,10 @@
+import { APIError, CaptchaError } from "@puyodead1/fosscord-ts";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/Button";
 import Container from "../components/Container";
+import DOBInput from "../components/DOBInput";
 import { useAppStore } from "../stores/AppStore";
 
 const Wrapper = styled(Container)`
@@ -90,15 +92,16 @@ const Input = styled.input<{ error?: boolean }>`
   background: var(--secondary);
   padding: 10px;
   font-size: 16px;
-  flex: 1;
   border-radius: 12px;
   color: var(--text);
   margin: 0;
   border: none;
   aria-invalid: ${(props) => (props.error ? "true" : "false")};
+  box-sizing: border-box;
+  width: 100%;
 `;
+
 const LoginButton = styled(Button)`
-  margin-top: 20px;
   margin-bottom: 8px;
   width: 100%;
   min-width: 130px;
@@ -147,24 +150,26 @@ function RegistrationPage() {
   } = useForm<RegisterFormValues>();
 
   const onSubmit = handleSubmit((data) => {
-    // TODO:
-    // app.api.login(data).catch((e) => {
-    //   if (e instanceof MFAError) {
-    //     console.log("MFA Required", e);
-    //   } else if (e instanceof CaptchaError) {
-    //     console.log("Captcha Required", e);
-    //   } else if (e instanceof APIError) {
-    //     console.log("APIError", e.message, e.code, e.fieldErrors);
-    //     e.fieldErrors.forEach((fieldError) => {
-    //       setError(fieldError.field as any, {
-    //         type: "manual",
-    //         message: fieldError.error,
-    //       });
-    //     });
-    //   } else {
-    //     console.log("General Error", e);
-    //   }
-    // });
+    app.api
+      .register({
+        ...data,
+        consent: true,
+      })
+      .catch((e) => {
+        if (e instanceof CaptchaError) {
+          console.log("Captcha Required", e);
+        } else if (e instanceof APIError) {
+          console.log("APIError", e.message, e.code, e.fieldErrors);
+          e.fieldErrors.forEach((fieldError) => {
+            setError(fieldError.field as any, {
+              type: "manual",
+              message: fieldError.error,
+            });
+          });
+        } else {
+          console.log("General Error", e);
+        }
+      });
   });
 
   return (
@@ -239,8 +244,26 @@ function RegistrationPage() {
             </InputWrapper>
           </InputContainer>
 
+          <InputContainer marginBottom={true}>
+            <LabelWrapper error={!!errors.date_of_birth}>
+              <InputLabel>Date of Birth</InputLabel>
+              {errors.date_of_birth && (
+                <InputErrorText>
+                  <>
+                    <Divider>-</Divider>
+                    {errors.date_of_birth.message}
+                  </>
+                </InputErrorText>
+              )}
+            </LabelWrapper>
+
+            <InputWrapper>
+              <DOBInput />
+            </InputWrapper>
+          </InputContainer>
+
           <LoginButton variant="primary" type="submit">
-            Log In
+            Create Account
           </LoginButton>
 
           <LoginLink

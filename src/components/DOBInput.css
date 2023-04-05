@@ -1,0 +1,106 @@
+.select-search-container {
+  position: relative;
+  color: var(--text-muted);
+  z-index: 1;
+}
+
+.select-search-input {
+  position: relative;
+  display: block;
+  padding: 10px;
+  background: var(--secondary);
+  border: none;
+  color: var(--text-muted);
+  outline: none;
+  font-size: 16px;
+  text-align: left;
+  border-radius: 12px;
+}
+
+.select-search-is-multiple .select-search-input {
+  margin-bottom: -2px;
+}
+
+.select-search-is-multiple .select-search-input {
+  border-radius: 3px 3px 0 0;
+}
+
+.select-search-input[readonly] {
+  cursor: pointer;
+}
+
+.select-search-is-disabled .select-search-input {
+  cursor: not-allowed;
+}
+
+.select-search-select {
+  border: none;
+  overflow: auto;
+  max-height: 230px;
+  position: relative;
+  bottom: 4vh;
+}
+
+.select-search-container:not(.select-search-is-multiple) .select-search-select {
+  position: absolute;
+  right: 0;
+  left: 0;
+  border-radius: 3px;
+  display: none;
+}
+
+.select-search-container:not(.select-search-is-multiple).select-search-has-focus
+  .select-search-select {
+  display: block;
+}
+
+/* .select-search-has-focus .select-search-select {
+  border-color: var(--text);
+} */
+
+.select-search-options {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.select-search-option,
+.select-search-not-found {
+  display: block;
+  height: 42px;
+  width: 100%;
+  padding: 0 16px;
+  background: var(--primary);
+  border: none;
+  outline: none;
+  color: var(--text-muted);
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+  margin: 0;
+}
+
+.select-search-option:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: transparent !important;
+}
+
+.select-search-is-highlighted,
+.select-search-option:not(.select-search-is-selected):hover {
+  background: hsl(20, 4%, 20%);
+}
+
+.select-search-is-selected {
+  font-weight: bold;
+  color: var(--text);
+  background-color: hsl(20, 4%, 25%);
+}
+
+.select-search-row:not(:first-child) .select-search-group-header {
+  margin-top: 10px;
+}
+
+.select-search-row:not(:last-child) .select-search-group-header {
+  margin-bottom: 10px;
+}

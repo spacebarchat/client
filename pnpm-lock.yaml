@@ -18,7 +18,7 @@ dependencies:
     version: 5.11.13(@emotion/react@11.10.6)(@emotion/styled@11.10.6)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
   '@puyodead1/fosscord-ts':
     specifier: github:Puyodead1/fosscord.ts
-    version: github.com/Puyodead1/fosscord.ts/92ee52d40614f5322b456004388640cd52f656f5
+    version: github.com/Puyodead1/fosscord.ts/9bcd1a22fa6fe63b3abc922b4365e0c85e4fba8d
   '@testing-library/jest-dom':
     specifier: ^5.16.5
     version: 5.16.5
@@ -79,6 +79,9 @@ dependencies:
   react-secure-storage:
     specifier: ^1.2.0
     version: 1.2.0
+  react-select-search:
+    specifier: ^4.1.6
+    version: 4.1.6(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
   react-spinners:
     specifier: ^0.13.8
     version: 0.13.8(react-dom@18.2.0)(react@18.2.0)
@@ -9609,6 +9612,18 @@ packages:
       murmurhash-js: 1.0.0
     dev: false
 
+  /react-select-search@4.1.6(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-BJMf11Ux0hqn6Z3BqRwceXdwjdF+dnpDsYGGehDPB/nZv+Dse7wdPUMqLSCVDyrH5y3xFu7r6IlZ6dj78291vA==}
+    peerDependencies:
+      prop-types: ^15.8.1
+      react: ^18.0.1 || ^17.0.1
+      react-dom: ^18.0.1 || ^17.0.1
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /react-spinners@0.13.8(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-3e+k56lUkPj0vb5NDXPVFAOkPC//XyhKPJjvcGjyMNPWsBKpplfeyialP74G7H7+It7KzhtET+MvGqbKgAqpZA==}
     peerDependencies:
@@ -11653,8 +11668,8 @@ packages:
       - debug
     dev: false
 
-  github.com/Puyodead1/fosscord.ts/92ee52d40614f5322b456004388640cd52f656f5:
-    resolution: {tarball: https://codeload.github.com/Puyodead1/fosscord.ts/tar.gz/92ee52d40614f5322b456004388640cd52f656f5}
+  github.com/Puyodead1/fosscord.ts/9bcd1a22fa6fe63b3abc922b4365e0c85e4fba8d:
+    resolution: {tarball: https://codeload.github.com/Puyodead1/fosscord.ts/tar.gz/9bcd1a22fa6fe63b3abc922b4365e0c85e4fba8d}
     name: '@puyodead1/fosscord-ts'
     version: 0.0.1
     prepare: true
