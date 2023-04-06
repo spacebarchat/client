@@ -1,6 +1,5 @@
 .select-search-container {
   position: relative;
-  color: var(--text-muted);
   z-index: 1;
 }
 
@@ -10,7 +9,7 @@
   padding: 10px;
   background: var(--secondary);
   border: none;
-  color: var(--text-muted);
+  color: var(--text);
   outline: none;
   font-size: 16px;
   text-align: left;
@@ -73,7 +72,7 @@
   background: var(--primary);
   border: none;
   outline: none;
-  color: var(--text-muted);
+  color: var(--text);
   font-size: 16px;
   text-align: left;
   cursor: pointer;
