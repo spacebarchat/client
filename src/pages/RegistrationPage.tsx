@@ -144,10 +144,16 @@ function RegistrationPage() {
   const {
     register,
     handleSubmit,
-    watch,
+    setValue,
     formState: { errors },
     setError,
+    clearErrors,
   } = useForm<RegisterFormValues>();
+
+  const dobRegister = register("date_of_birth", {
+    required: true,
+    pattern: /^\d{4}-\d{2}-\d{2}$/,
+  });
 
   const onSubmit = handleSubmit((data) => {
     app.api
@@ -171,6 +177,10 @@ function RegistrationPage() {
         }
       });
   });
+
+  const hasErrors = () => {
+    return Object.values(errors).some((error) => error);
+  };
 
   return (
     <Wrapper>
@@ -258,11 +268,24 @@ function RegistrationPage() {
             </LabelWrapper>
 
             <InputWrapper>
-              <DOBInput />
+              <DOBInput
+                onChange={(value) => setValue("date_of_birth", value)}
+                onErrorChange={(errors) => {
+                  const hasError = Object.values(errors).some((error) => error);
+                  if (hasError) {
+                    // set to first error
+                    setError("date_of_birth", {
+                      type: "manual",
+                      message: Object.values(errors).filter((x) => x)[0],
+                    });
+                  } else clearErrors("date_of_birth");
+                }}
+                error={!!errors.date_of_birth}
+              />
             </InputWrapper>
           </InputContainer>
 
-          <LoginButton variant="primary" type="submit">
+          <LoginButton variant="primary" type="submit" disabled={hasErrors()}>
             Create Account
           </LoginButton>
 
