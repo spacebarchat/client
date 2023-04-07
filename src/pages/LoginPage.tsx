@@ -1,4 +1,5 @@
 import { APIError, CaptchaError, MFAError } from "@puyodead1/fosscord-ts";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -152,116 +153,192 @@ const Divider = styled.span`
 `;
 
 type LoginFormValues = {
-  login: string;
-  password: string;
+	login: string;
+	password: string;
 };
 
+type Endpoints = {
+	api: string;
+	cdn: string;
+	gateway: string;
+}
+type InstanceValidationData = {
+	domain: string;
+
+	errorEncountered: boolean;
+
+	domainExists: boolean;
+	supportsHttps: boolean;
+	hasCompleteWellKnown: boolean;
+	resolvedEndpoints: Endpoints;
+}
+
 function LoginPage() {
-  const app = useAppStore();
-  const navigate = useNavigate();
+	const app = useAppStore();
+	const navigate = useNavigate();
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    setError,
-  } = useForm<LoginFormValues>();
+	// Emma - Instance Validation
+	let instanceValidationDefaults: InstanceValidationData = {
+		domain: "old.server.spacebar.chat",
+		errorEncountered: false,
+		domainExists: true,
+		supportsHttps: true,
+		hasCompleteWellKnown: true,
+		resolvedEndpoints: {
+			api: "https://api.fosscord.com",
+			cdn: "https://cdn.fosscord.com",
+			gateway: "wss://gateway.fosscord.com",
+		},
+	};
+	const [instanceData, setInstanceData] = React.useState<InstanceValidationData>(instanceValidationDefaults);
 
-  const onSubmit = handleSubmit((data) => {
-    app.api.login(data).catch((e) => {
-      if (e instanceof MFAError) {
-        console.log("MFA Required", e);
-      } else if (e instanceof CaptchaError) {
-        console.log("Captcha Required", e);
-      } else if (e instanceof APIError) {
-        console.log("APIError", e.message, e.code, e.fieldErrors);
-        e.fieldErrors.forEach((fieldError) => {
-          setError(fieldError.field as any, {
-            type: "manual",
-            message: fieldError.error,
-          });
-        });
-      } else {
-        console.log("General Error", e);
-      }
-    });
-  });
+	const {
+		register,
+		handleSubmit,
+		watch,
+		formState: { errors },
+		setError,
+	} = useForm<LoginFormValues>();
 
-  return (
-    <Wrapper>
-      <LoginBox>
-        <HeaderContainer>
-          <Header>Welcome Back!</Header>
-          <SubHeader>We're so excited to see you again!</SubHeader>
-        </HeaderContainer>
+	const onSubmit = handleSubmit((data) => {
+		app.api.login(data).catch((e) => {
+			if (e instanceof MFAError) {
+				console.log("MFA Required", e);
+			} else if (e instanceof CaptchaError) {
+				console.log("Captcha Required", e);
+			} else if (e instanceof APIError) {
+				console.log("APIError", e.message, e.code, e.fieldErrors);
+				e.fieldErrors.forEach((fieldError) => {
+					setError(fieldError.field as any, {
+						type: "manual",
+						message: fieldError.error,
+					});
+				});
+			} else {
+				console.log("General Error", e);
+			}
+		});
+	});
 
-        <FormContainer onSubmit={onSubmit}>
-          <InputContainer marginBottom={true} style={{ marginTop: 0 }}>
-            <LabelWrapper error={!!errors.login}>
-              <InputLabel>Email</InputLabel>
-              {errors.login && (
-                <InputErrorText>
-                  <>
-                    <Divider>-</Divider>
-                    {errors.login.message}
-                  </>
-                </InputErrorText>
-              )}
-            </LabelWrapper>
-            <InputWrapper>
-              <Input
-                type="email"
-                autoFocus
-                {...register("login", { required: true })}
-                error={!!errors.login}
-              />
-            </InputWrapper>
-          </InputContainer>
+	async function urlChanged(url: string) {
+		console.log(`URL: ${instanceData.domain} changed to ${url}`);
+		setInstanceData({ ...instanceData, domain: url });
+		console.log("Checking instance URL: ", url);
+		var response = await fetch(`https://dns.google/resolve?name=${instanceData.domain}`);
+		if ((await response.json()).Status === 0) {
+			console.log("Domain exists");
+			setInstanceData({ ...instanceData, domainExists: true });
+		} else {
+			console.log("Domain does not exist");
+			setInstanceData({ ...instanceData, domainExists: false, errorEncountered: true });
+			return;
+		}
+	}
 
-          <InputContainer marginBottom={false}>
-            <LabelWrapper error={!!errors.password}>
-              <InputLabel>Password</InputLabel>
-              {errors.password && (
-                <InputErrorText>
-                  <>
-                    <Divider>-</Divider>
-                    {errors.password.message}
-                  </>
-                </InputErrorText>
-              )}
-            </LabelWrapper>
-            <InputWrapper>
-              <Input
-                type="password"
-                {...register("password", { required: true })}
-                error={!!errors.password}
-              />
-            </InputWrapper>
-          </InputContainer>
+	return (
+		<Wrapper>
+			<LoginBox>
+				<HeaderContainer>
+					<Header>Welcome Back!</Header>
+					<SubHeader>We're so excited to see you again!</SubHeader>
+				</HeaderContainer>
 
-          <PasswordResetLink onClick={() => {}} type="button">
-            Forgot your password?
-          </PasswordResetLink>
-          <LoginButton variant="primary" type="submit">
-            Log In
-          </LoginButton>
+				<FormContainer onSubmit={onSubmit}>
+					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
+						<LabelWrapper error={!!errors.login}>
+							<InputLabel>Instance</InputLabel>
+							{instanceData.errorEncountered && (
+								<InputErrorText>
+									<>
+										<Divider>-</Divider>
+										{instanceData.errorEncountered}
+									</>
+								</InputErrorText>
+							)}
+						</LabelWrapper>
+						<InputWrapper>
+							<Input
+								type="url"
+								error={instanceData.domainExists}
+								value={instanceData.domain}
+								onChange={async (e) => {
+									await urlChanged(e.target.value);
 
-          <RegisterContainer>
-            <RegisterLabel>Don't have an account?&nbsp;</RegisterLabel>
-            <RegisterLink
-              onClick={() => {
-                navigate("/register");
-              }}
-              type="button"
-            >
-              Sign Up
-            </RegisterLink>
-          </RegisterContainer>
-        </FormContainer>
-      </LoginBox>
-    </Wrapper>
-  );
+								}}
+							/>
+						</InputWrapper>
+					</InputContainer>
+					<div id="instanceEndpointManualConfiguration"
+						 style={{ display: instanceData.errorEncountered ? "block" : "none" }}>
+						{/*	add extra components later */}
+					</div>
+
+					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
+						<LabelWrapper error={!!errors.login}>
+							<InputLabel>Email</InputLabel>
+							{errors.login && (
+								<InputErrorText>
+									<>
+										<Divider>-</Divider>
+										{errors.login.message}
+									</>
+								</InputErrorText>
+							)}
+						</LabelWrapper>
+						<InputWrapper>
+							<Input
+								type="email"
+								autoFocus
+								{...register("login", { required: true })}
+								error={!!errors.login}
+							/>
+						</InputWrapper>
+					</InputContainer>
+
+					<InputContainer marginBottom={false}>
+						<LabelWrapper error={!!errors.password}>
+							<InputLabel>Password</InputLabel>
+							{errors.password && (
+								<InputErrorText>
+									<>
+										<Divider>-</Divider>
+										{errors.password.message}
+									</>
+								</InputErrorText>
+							)}
+						</LabelWrapper>
+						<InputWrapper>
+							<Input
+								type="password"
+								{...register("password", { required: true })}
+								error={!!errors.password}
+							/>
+						</InputWrapper>
+					</InputContainer>
+
+					<PasswordResetLink onClick={() => {
+					}} type="button">
+						Forgot your password?
+					</PasswordResetLink>
+					<LoginButton variant="primary" type="submit">
+						Log In
+					</LoginButton>
+
+					<RegisterContainer>
+						<RegisterLabel>Don't have an account?&nbsp;</RegisterLabel>
+						<RegisterLink
+							onClick={() => {
+								navigate("/register");
+							}}
+							type="button"
+						>
+							Sign Up
+						</RegisterLink>
+					</RegisterContainer>
+				</FormContainer>
+			</LoginBox>
+		</Wrapper>
+	);
 }
 
 export default LoginPage;
