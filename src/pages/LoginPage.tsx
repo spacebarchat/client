@@ -26,13 +26,13 @@ const LoginBox = styled(Container)`
   text-align: center;
 
   @media (max-width: 480px) {
-    width: 100%;
-    height: 100%;
+	width: 100%;
+	height: 100%;
   }
 
   @media (min-width: 480px) {
-    width: 480px;
-    border-radius: 18px;
+	width: 480px;
+	border-radius: 18px;
   }
 `;
 
@@ -111,8 +111,8 @@ const PasswordResetLink = styled.button`
   border: none;
 
   &:hover {
-    text-decoration: underline;
-    cursor: pointer;
+	text-decoration: underline;
+	cursor: pointer;
   }
 `;
 
@@ -139,12 +139,12 @@ const RegisterLink = styled.button`
   color: var(--text-link);
 
   @media (max-width: 480px) {
-    display: inline-block;
+	display: inline-block;
   }
 
   &:hover {
-    text-decoration: underline;
-    cursor: pointer;
+	text-decoration: underline;
+	cursor: pointer;
   }
 `;
 
@@ -153,200 +153,201 @@ const Divider = styled.span`
 `;
 
 type LoginFormValues = {
-  login: string;
-  password: string;
+	login: string;
+	password: string;
 };
 
 type Endpoints = {
-  api: string;
-  cdn: string;
-  gateway: string;
+	api: string;
+	cdn: string;
+	gateway: string;
 };
 type InstanceValidationData = {
-  errorEncountered: boolean;
-  domainExists: boolean;
-  supportsHttps: boolean;
-  hasCompleteWellKnown: boolean;
-  resolvedEndpoints: Endpoints;
+	errorEncountered: boolean;
+	domainExists: boolean;
+	supportsHttps: boolean;
+	hasCompleteWellKnown: boolean;
+	resolvedEndpoints: Endpoints;
 };
 
 // Emma - Instance Validation
 const instanceValidationDefaults: InstanceValidationData = {
-  errorEncountered: false,
-  domainExists: true,
-  supportsHttps: true,
-  hasCompleteWellKnown: true,
-  resolvedEndpoints: {
-    api: "https://api.fosscord.com",
-    cdn: "https://cdn.fosscord.com",
-    gateway: "wss://gateway.fosscord.com",
-  },
+	errorEncountered: false,
+	domainExists: true,
+	supportsHttps: true,
+	hasCompleteWellKnown: true,
+	resolvedEndpoints: {
+		api: "https://api.fosscord.com",
+		cdn: "https://cdn.fosscord.com",
+		gateway: "wss://gateway.fosscord.com",
+	},
 };
 
 function LoginPage() {
-  const app = useAppStore();
-  const navigate = useNavigate();
+	const app = useAppStore();
+	const navigate = useNavigate();
 
-  const [instanceUrl, setInstanceUrl] = React.useState<string>(
-    "old.server.spacebar.chat"
-  );
-  const [instanceData, setInstanceData] =
-    React.useState<InstanceValidationData>(instanceValidationDefaults);
+	const [instanceUrl, setInstanceUrl] = React.useState<string>(
+		"old.server.spacebar.chat",
+	);
+	const [instanceData, setInstanceData] =
+		React.useState<InstanceValidationData>(instanceValidationDefaults);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setError,
-  } = useForm<LoginFormValues>();
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		setError,
+	} = useForm<LoginFormValues>();
 
-  const onSubmit = handleSubmit((data) => {
-    app.api.login(data).catch((e) => {
-      if (e instanceof MFAError) {
-        console.log("MFA Required", e);
-      } else if (e instanceof CaptchaError) {
-        console.log("Captcha Required", e);
-      } else if (e instanceof APIError) {
-        console.log("APIError", e.message, e.code, e.fieldErrors);
-        e.fieldErrors.forEach((fieldError) => {
-          setError(fieldError.field as any, {
-            type: "manual",
-            message: fieldError.error,
-          });
-        });
-      } else {
-        console.log("General Error", e);
-      }
-    });
-  });
+	const onSubmit = handleSubmit((data) => {
+		app.api.login(data).catch((e) => {
+			if (e instanceof MFAError) {
+				console.log("MFA Required", e);
+			} else if (e instanceof CaptchaError) {
+				console.log("Captcha Required", e);
+			} else if (e instanceof APIError) {
+				console.log("APIError", e.message, e.code, e.fieldErrors);
+				e.fieldErrors.forEach((fieldError) => {
+					setError(fieldError.field as any, {
+						type: "manual",
+						message: fieldError.error,
+					});
+				});
+			} else {
+				console.log("General Error", e);
+			}
+		});
+	});
 
-  const onUrlChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const url = e.target.value;
-    setInstanceUrl(url);
+	const onUrlChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		const url = e.target.value;
+		setInstanceUrl(url);
 
-    console.log(`URL: ${url}`);
-    console.log("Checking instance URL: ", url);
-    var response = await fetch(
-      `https://dns.google/resolve?name=${instanceUrl}`
-    );
-    if ((await response.json()).Status === 0) {
-      console.log("Domain exists");
-      setInstanceData({ ...instanceData, domainExists: true });
-    } else {
-      console.log("Domain does not exist");
-      setInstanceData({
-        ...instanceData,
-        domainExists: false,
-        errorEncountered: true,
-      });
-      return;
-    }
-  };
+		console.log(`URL: ${url}`);
+		console.log("Checking instance URL: ", url);
+		var response = await fetch(
+			`https://dns.google/resolve?name=${instanceUrl}`,
+		);
+		if ((await response.json()).Status === 0) {
+			console.log("Domain exists");
+			setInstanceData({ ...instanceData, domainExists: true });
+		} else {
+			console.log("Domain does not exist");
+			setInstanceData({
+				...instanceData,
+				domainExists: false,
+				errorEncountered: true,
+			});
+			return;
+		}
+	};
 
-  return (
-    <Wrapper>
-      <LoginBox>
-        <HeaderContainer>
-          <Header>Welcome Back!</Header>
-          <SubHeader>We're so excited to see you again!</SubHeader>
-        </HeaderContainer>
+	return (
+		<Wrapper>
+			<LoginBox>
+				<HeaderContainer>
+					<Header>Welcome Back!</Header>
+					<SubHeader>We're so excited to see you again!</SubHeader>
+				</HeaderContainer>
 
-        <FormContainer onSubmit={onSubmit}>
-          <InputContainer marginBottom={true} style={{ marginTop: 0 }}>
-            <LabelWrapper error={instanceData.domainExists}>
-              <InputLabel>Instance</InputLabel>
-              {instanceData.domainExists && (
-                <InputErrorText>
-                  <>
-                    <Divider>-</Divider>
-                    Invalid instance URL
-                  </>
-                </InputErrorText>
-              )}
-            </LabelWrapper>
-            <InputWrapper>
-              <Input
-                type="url"
-                error={!instanceData.domainExists}
-                value={instanceUrl}
-                onChange={onUrlChange}
-              />
-            </InputWrapper>
-          </InputContainer>
-          <div
-            id="instanceEndpointManualConfiguration"
-            style={{
-              display: instanceData.errorEncountered ? "block" : "none",
-            }}
-          >
-            {/*	add extra components later */}
-          </div>
+				<FormContainer onSubmit={onSubmit}>
+					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
+						<LabelWrapper error={instanceData.domainExists}>
+							<InputLabel>Instance</InputLabel>
+							{instanceData.domainExists && (
+								<InputErrorText>
+									<>
+										<Divider>-</Divider>
+										Invalid instance URL
+									</>
+								</InputErrorText>
+							)}
+						</LabelWrapper>
+						<InputWrapper>
+							<Input
+								type="url"
+								error={!instanceData.domainExists}
+								value={instanceUrl}
+								onChange={onUrlChange}
+							/>
+						</InputWrapper>
+					</InputContainer>
+					<div
+						id="instanceEndpointManualConfiguration"
+						style={{
+							display: instanceData.errorEncountered ? "block" : "none",
+						}}
+					>
+						{/*	add extra components later */}
+					</div>
 
-          <InputContainer marginBottom={true} style={{ marginTop: 0 }}>
-            <LabelWrapper error={!!errors.login}>
-              <InputLabel>Email</InputLabel>
-              {errors.login && (
-                <InputErrorText>
-                  <>
-                    <Divider>-</Divider>
-                    {errors.login.message}
-                  </>
-                </InputErrorText>
-              )}
-            </LabelWrapper>
-            <InputWrapper>
-              <Input
-                type="email"
-                autoFocus
-                {...register("login", { required: true })}
-                error={!!errors.login}
-              />
-            </InputWrapper>
-          </InputContainer>
+					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
+						<LabelWrapper error={!!errors.login}>
+							<InputLabel>Email</InputLabel>
+							{errors.login && (
+								<InputErrorText>
+									<>
+										<Divider>-</Divider>
+										{errors.login.message}
+									</>
+								</InputErrorText>
+							)}
+						</LabelWrapper>
+						<InputWrapper>
+							<Input
+								type="email"
+								autoFocus
+								{...register("login", { required: true })}
+								error={!!errors.login}
+							/>
+						</InputWrapper>
+					</InputContainer>
 
-          <InputContainer marginBottom={false}>
-            <LabelWrapper error={!!errors.password}>
-              <InputLabel>Password</InputLabel>
-              {errors.password && (
-                <InputErrorText>
-                  <>
-                    <Divider>-</Divider>
-                    {errors.password.message}
-                  </>
-                </InputErrorText>
-              )}
-            </LabelWrapper>
-            <InputWrapper>
-              <Input
-                type="password"
-                {...register("password", { required: true })}
-                error={!!errors.password}
-              />
-            </InputWrapper>
-          </InputContainer>
+					<InputContainer marginBottom={false}>
+						<LabelWrapper error={!!errors.password}>
+							<InputLabel>Password</InputLabel>
+							{errors.password && (
+								<InputErrorText>
+									<>
+										<Divider>-</Divider>
+										{errors.password.message}
+									</>
+								</InputErrorText>
+							)}
+						</LabelWrapper>
+						<InputWrapper>
+							<Input
+								type="password"
+								{...register("password", { required: true })}
+								error={!!errors.password}
+							/>
+						</InputWrapper>
+					</InputContainer>
 
-          <PasswordResetLink onClick={() => {}} type="button">
-            Forgot your password?
-          </PasswordResetLink>
-          <LoginButton variant="primary" type="submit">
-            Log In
-          </LoginButton>
+					<PasswordResetLink onClick={() => {
+					}} type="button">
+						Forgot your password?
+					</PasswordResetLink>
+					<LoginButton variant="primary" type="submit">
+						Log In
+					</LoginButton>
 
-          <RegisterContainer>
-            <RegisterLabel>Don't have an account?&nbsp;</RegisterLabel>
-            <RegisterLink
-              onClick={() => {
-                navigate("/register");
-              }}
-              type="button"
-            >
-              Sign Up
-            </RegisterLink>
-          </RegisterContainer>
-        </FormContainer>
-      </LoginBox>
-    </Wrapper>
-  );
+					<RegisterContainer>
+						<RegisterLabel>Don't have an account?&nbsp;</RegisterLabel>
+						<RegisterLink
+							onClick={() => {
+								navigate("/register");
+							}}
+							type="button"
+						>
+							Sign Up
+						</RegisterLink>
+					</RegisterContainer>
+				</FormContainer>
+			</LoginBox>
+		</Wrapper>
+	);
 }
 
 export default LoginPage;

@@ -1,0 +1,44 @@
+root = true
+
+[*]
+charset = utf-8
+# end_of_line = lf
+# indent_size = 4
+indent_style = tab
+insert_final_newline = true
+# max_line_length = 120
+# tab_width = 4
+
+[*.less]
+# indent_size = 2
+
+[*.sass]
+# indent_size = 2
+
+[*.scss]
+# indent_size = 2
+
+[*.vue]
+# indent_style = tabq
+
+[{*.ats,*.cts,*.mts,*.ts}]
+# indent_style = tab
+
+[{*.bash,*.sh,*.zsh}]
+# indent_size = 2
+# tab_width = 2
+
+[{*.cjs,*.js}]
+# indent_style = tab
+
+[{*.har,*.jsb2,*.jsb3,*.json,.babelrc,.eslintrc,.prettierrc,.stylelintrc,bowerrc,jest.config}]
+# indent_size = 2
+
+[{*.htm,*.html,*.sht,*.shtm,*.shtml}]
+# indent_style = tab
+
+[{*.http,*.rest}]
+# indent_size = 0
+
+[{*.yaml,*.yml}]
+# indent_size = 2
