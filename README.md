@@ -13,7 +13,7 @@
   </a>
 </p>
 
-## [About](https://docs.spacebar.com/client/)
+## [About](https://docs.spacebar.chat/setup/clients/)
 
 This is the open source, discord-compatible, native client.
 
