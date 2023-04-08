@@ -4,7 +4,7 @@
     <option name="devServerConfigs">
       <DevServerState>
         <option name="packageJsonPath" value="$PROJECT_DIR$/package.json" />
-        <option name="port" value="19006" />
+        <option name="port" value="3000" />
         <option name="scriptName" value="web" />
       </DevServerState>
     </option>

@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Button from "../components/Button";
 import Container from "../components/Container";
 import { useAppStore } from "../stores/AppStore";
+import { Alert, AlertTitle } from "@mui/material";
 
 const Wrapper = styled(Container)`
   display: flex;
@@ -163,7 +164,8 @@ type Endpoints = {
 	gateway: string;
 };
 type InstanceValidationData = {
-	errorEncountered: boolean;
+	dataForDomain: string;
+	errorMessage: string;
 	domainExists: boolean;
 	supportsHttps: boolean;
 	hasCompleteWellKnown: boolean;
@@ -172,14 +174,15 @@ type InstanceValidationData = {
 
 // Emma - Instance Validation
 const instanceValidationDefaults: InstanceValidationData = {
-	errorEncountered: false,
+	dataForDomain: "",
+	errorMessage: "",
 	domainExists: true,
 	supportsHttps: true,
 	hasCompleteWellKnown: true,
 	resolvedEndpoints: {
-		api: "https://api.fosscord.com",
-		cdn: "https://cdn.fosscord.com",
-		gateway: "wss://gateway.fosscord.com",
+		api: "",
+		cdn: "",
+		gateway: "",
 	},
 };
 
@@ -221,30 +224,98 @@ function LoginPage() {
 	});
 
 	const onUrlChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-		const url = e.target.value;
+		let url = e.target.value;
+		// Emma - remove useless things, domain/port is all we care about
+		if (url.trim() !== url) url = url.trim();
+		if (url.startsWith("https://")) url = url.replace("https://", "");
+		if (url.startsWith("http://")) url = url.replace("http://", "");
+		if (url.endsWith("/")) url = url.slice(0, -1);
 		setInstanceUrl(url);
-
+		instanceData.dataForDomain = url;
 		console.log(`URL: ${url}`);
-		console.log("Checking instance URL: ", url);
-		var response = await fetch(
-			`https://dns.google/resolve?name=${instanceUrl}`,
+
+		// if (await _checkDomainExists(instanceData, url))
+		if (await _checkDomainSupportsHttps(instanceData, url))
+			if (await _checkDomainHasCompleteWellKnown(instanceData, url))
+				console.log("All checks successful");
+		setInstanceData(instanceData);
+	};
+
+	// Emma - check if domain exists
+	async function _checkDomainExists(_instanceData: InstanceValidationData, _instanceUrl: string) {
+		let domain = _instanceUrl;
+		// Emma - Extract domain from URL
+		if (domain.includes("/")) {
+			domain = domain.split("/")[0];
+		}
+		if (domain.includes(":")) {
+			domain = domain.split(":")[0];
+		}
+		console.log(`Checking if domain ${domain} exists...`);
+		const response = await fetch(
+			`https://dns.google/resolve?name=${domain}`,
 		);
 		if ((await response.json()).Status === 0) {
 			console.log("Domain exists");
-			setInstanceData({ ...instanceData, domainExists: true });
+			_instanceData.domainExists = true;
+			return true;
 		} else {
 			console.log("Domain does not exist");
-			setInstanceData({
-				...instanceData,
-				domainExists: false,
-				errorEncountered: true,
-			});
-			return;
+			_instanceData.domainExists = false;
+			_instanceData.errorMessage = "Domain does not exist";
+			return false;
 		}
-	};
+		return false; //error?
+	}
+
+	// Emma - check HTTPS support
+	async function _checkDomainSupportsHttps(_instanceData: InstanceValidationData, _instanceUrl: string) {
+		console.log(`Checking if domain ${_instanceUrl} supports HTTPS...`);
+		let response = await fetch(`https://${_instanceUrl}/`);
+		if (response.status === 200) {
+			console.log("HTTPS supported");
+			_instanceData.supportsHttps = true;
+			return true;
+		} else {
+			console.log("HTTPS not supported! Checking HTTP...");
+			response = await fetch(`http://${_instanceUrl}/`);
+			if (response.status === 200) {
+				console.log("HTTP supported");
+				_instanceData.supportsHttps = false;
+			} else {
+				console.log("HTTP not supported!");
+				_instanceData.supportsHttps = false;
+				_instanceData.errorMessage = "Could not reach server, does it exist?";
+			}
+			return true;
+		}
+		return false; //error?
+	}
+
+	// Emma - check if well-known is complete
+	async function _checkDomainHasCompleteWellKnown(_instanceData: InstanceValidationData, _instanceUrl: string) {
+		console.log(`Checking if domain ${_instanceUrl} has complete well-known...`);
+		let response = await fetch(`https://${_instanceUrl}/.well-known/spacebar/endpoints`);
+		if (response.status === 200) {
+			console.log("Well-known complete");
+			_instanceData.hasCompleteWellKnown = true;
+			return true;
+		} else {
+			console.log("Well-known incomplete!");
+			_instanceData.hasCompleteWellKnown = false;
+			_instanceData.errorMessage = "Well-known incomplete";
+			return true;
+		}
+		return false; //error?
+	}
 
 	return (
 		<Wrapper>
+
+			<div id="instanceDataView" style={{ position: "absolute", top: 0, left: 0 }}>
+				<p>Instance data:</p>
+				<pre>{JSON.stringify(instanceData, null, 2)}</pre>
+			</div>
 			<LoginBox>
 				<HeaderContainer>
 					<Header>Welcome Back!</Header>
@@ -253,13 +324,13 @@ function LoginPage() {
 
 				<FormContainer onSubmit={onSubmit}>
 					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
-						<LabelWrapper error={instanceData.domainExists}>
+						<LabelWrapper error={!!instanceData.errorMessage}>
 							<InputLabel>Instance</InputLabel>
-							{instanceData.domainExists && (
+							{!!instanceData.errorMessage && (
 								<InputErrorText>
 									<>
 										<Divider>-</Divider>
-										Invalid instance URL
+										{instanceData.errorMessage}
 									</>
 								</InputErrorText>
 							)}
@@ -276,10 +347,15 @@ function LoginPage() {
 					<div
 						id="instanceEndpointManualConfiguration"
 						style={{
-							display: instanceData.errorEncountered ? "block" : "none",
+							display: !!instanceData.hasCompleteWellKnown ? "none" : "block",
 						}}
 					>
 						{/*	add extra components later */}
+						<Alert severity={"warning"}>
+							<AlertTitle>
+								Manual instance endpoint configuration required, could not find well-known.
+							</AlertTitle>
+						</Alert>
 					</div>
 
 					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
