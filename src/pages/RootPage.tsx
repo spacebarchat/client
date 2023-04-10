@@ -4,13 +4,13 @@ import { useAppStore } from "../stores/AppStore";
 import LoadingPage from "./LoadingPage";
 
 function RootPage() {
-  const app = useAppStore();
+	const app = useAppStore();
 
-  if (!app.ready) {
-    return <LoadingPage />;
-  }
+	if (!app.ready) {
+		return <LoadingPage />;
+	}
 
-  return <Container>RootPage</Container>;
+	return <Container>RootPage</Container>;
 }
 
 export default observer(RootPage);

@@ -5,27 +5,27 @@ import { ReactComponent as SpacebarLogoBlue } from "../assets/images/logo/Logo-B
 import Container from "../components/Container";
 
 const Wrapper = styled.div`
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  height: 100vh;
-  flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	height: 100vh;
+	flex-direction: column;
 `;
 
 const SpacebarLogo = styled(SpacebarLogoBlue)`
-  height: 120px;
-  margin-bottom: 32px;
+	height: 120px;
+	margin-bottom: 32px;
 `;
 
 function LoadingPage() {
-  return (
-    <Container>
-      <Wrapper>
-        <SpacebarLogo />
-        <PulseLoader color="var(--brand-secondary)" />
-      </Wrapper>
-    </Container>
-  );
+	return (
+		<Container>
+			<Wrapper>
+				<SpacebarLogo />
+				<PulseLoader color="var(--brand-secondary)" />
+			</Wrapper>
+		</Container>
+	);
 }
 
 export default observer(LoadingPage);
