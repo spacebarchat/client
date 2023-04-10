@@ -6,6 +6,7 @@
 		"@emotion/react": "^11.10.6",
 		"@emotion/styled": "^11.10.6",
 		"@fontsource/roboto": "^4.5.8",
+		"@hcaptcha/react-hcaptcha": "^1.8.0",
 		"@mattjennings/react-modal-stack": "^1.0.4",
 		"@mui/material": "^5.11.13",
 		"@puyodead1/fosscord-ts": "github:Puyodead1/fosscord.ts",
