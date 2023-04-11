@@ -64,6 +64,7 @@
   "devDependencies": {
     "@craco/craco": "^7.1.0",
     "@types/styled-components": "^5.1.26",
-    "craco-esbuild": "^0.5.2"
+    "craco-esbuild": "^0.5.2",
+    "craco-plugin-react-hot-reload": "^0.1.0"
   }
 }

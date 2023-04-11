@@ -204,27 +204,33 @@ function LoginPage() {
 	} = useForm<LoginFormValues>();
 
 	const onSubmit = handleSubmit((data) => {
-		app.api.login(data).catch((e) => {
-			if (e instanceof MFAError) {
-				console.log("MFA Required", e);
-			} else if (e instanceof CaptchaError) {
-				console.log("Captcha Required", e);
-			} else if (e instanceof APIError) {
-				console.log("APIError", e.message, e.code, e.fieldErrors);
-				e.fieldErrors.forEach((fieldError) => {
-					setError(fieldError.field as any, {
-						type: "manual",
-						message: fieldError.error,
+		_onUrlChange(instanceUrl).then(() => {
+			app.api.login(data).catch((e) => {
+				if (e instanceof MFAError) {
+					console.log("MFA Required", e);
+				} else if (e instanceof CaptchaError) {
+					console.log("Captcha Required", e);
+				} else if (e instanceof APIError) {
+					console.log("APIError", e.message, e.code, e.fieldErrors);
+					e.fieldErrors.forEach((fieldError) => {
+						setError(fieldError.field as any, {
+							type: "manual",
+							message: fieldError.error,
+						});
 					});
-				});
-			} else {
-				console.log("General Error", e);
-			}
+				} else {
+					console.log("General Error", e);
+				}
+			});
 		});
 	});
 
 	const onUrlChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		let url = e.target.value;
+		await _onUrlChange(url);
+	};
+
+	async function _onUrlChange(url: string) {
 		// Emma - remove useless things, domain/port is all we care about
 		if (url.trim() !== url) url = url.trim();
 		if (url.startsWith("https://")) url = url.replace("https://", "");
@@ -236,10 +242,11 @@ function LoginPage() {
 
 		// if (await _checkDomainExists(instanceData, url))
 		if (await _checkDomainSupportsHttps(instanceData, url))
-			if (await _checkDomainHasCompleteWellKnown(instanceData, url))
+			if (await _checkDomainHasCompleteWellKnown(instanceData, url)) {
 				console.log("All checks successful");
+			}
 		setInstanceData(instanceData);
-	};
+	}
 
 	// Emma - check if domain exists
 	async function _checkDomainExists(_instanceData: InstanceValidationData, _instanceUrl: string) {
@@ -304,7 +311,7 @@ function LoginPage() {
 			console.log("Well-known incomplete!");
 			_instanceData.hasCompleteWellKnown = false;
 			_instanceData.errorMessage = "Well-known incomplete";
-			return true;
+			return false;
 		}
 		return false; //error?
 	}
@@ -337,10 +344,10 @@ function LoginPage() {
 						</LabelWrapper>
 						<InputWrapper>
 							<Input
-								type="url"
 								error={!instanceData.domainExists}
 								value={instanceUrl}
 								onChange={onUrlChange}
+								onLoad={onUrlChange}
 							/>
 						</InputWrapper>
 					</InputContainer>
