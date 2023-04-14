@@ -1,6 +1,6 @@
-import { APIError, CaptchaError } from "@puyodead1/fosscord-ts";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { APIError, CaptchaError } from "spacebar-ts";
 import styled from "styled-components";
 import Button from "../components/Button";
 import Container from "../components/Container";

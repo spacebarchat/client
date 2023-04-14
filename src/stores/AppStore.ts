@@ -1,5 +1,5 @@
-import { Client } from "@puyodead1/fosscord-ts";
 import { makeAutoObservable, observable, runInAction } from "mobx";
+import { Client } from "spacebar-ts";
 import ThemeStore from "./ThemeStore";
 
 export default class AppStore {

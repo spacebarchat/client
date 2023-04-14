@@ -1,8 +1,8 @@
 import HCaptchaLib from "@hcaptcha/react-hcaptcha";
-import { APIError, CaptchaError, MFAError } from "@puyodead1/fosscord-ts";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { APIError, CaptchaError, MFAError } from "spacebar-ts";
 import { useAppStore } from "../stores/AppStore";
 import {
 	Divider,
@@ -86,7 +86,10 @@ function LoginPage() {
 				</HeaderContainer>
 
 				<FormContainer onSubmit={onSubmit}>
-					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
+					<InputContainer
+						marginBottom={true}
+						style={{ marginTop: 0 }}
+					>
 						<LabelWrapper error={!!errors.login}>
 							<InputLabel>Email</InputLabel>
 							{errors.login && (
@@ -131,7 +134,15 @@ function LoginPage() {
 						</InputWrapper>
 					</InputContainer>
 
-					<PasswordResetLink onClick={() => {}} type="button">
+					<PasswordResetLink
+						onClick={() => {
+							window.open(
+								"https://youtu.be/dQw4w9WgXcQ",
+								"_blank",
+							);
+						}}
+						type="button"
+					>
 						Forgot your password?
 					</PasswordResetLink>
 					{captchaSiteKey && (
@@ -153,12 +164,18 @@ function LoginPage() {
 							}}
 						/>
 					)}
-					<LoginButton variant="primary" type="submit" disabled={loading}>
+					<LoginButton
+						variant="primary"
+						type="submit"
+						disabled={loading}
+					>
 						Log In
 					</LoginButton>
 
 					<RegisterContainer>
-						<RegisterLabel>Don't have an account?&nbsp;</RegisterLabel>
+						<RegisterLabel>
+							Don't have an account?&nbsp;
+						</RegisterLabel>
 						<RegisterLink
 							onClick={() => {
 								navigate("/register");
