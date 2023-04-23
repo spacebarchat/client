@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { AuthenticationGuard } from "./components/AuthenticationGuard";
 import LoadingPage from "./pages/LoadingPage";
 import LoginPage from "./pages/LoginPage";
@@ -14,7 +14,6 @@ import { Globals } from "./utils/Globals";
 
 function App() {
 	const app = useAppStore();
-	const navigate = useNavigate();
 
 	React.useEffect(() => {
 		Globals.load();
