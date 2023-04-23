@@ -1,55 +1,56 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import secureLocalStorage from "react-secure-storage";
 import { AuthenticationGuard } from "./components/AuthenticationGuard";
 import LoadingPage from "./pages/LoadingPage";
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFound";
 import RegistrationPage from "./pages/RegistrationPage";
+
+import { reaction } from "mobx";
 import RootPage from "./pages/RootPage";
 import { useAppStore } from "./stores/AppStore";
+import { Globals } from "./utils/Globals";
 
 function App() {
 	const app = useAppStore();
 	const navigate = useNavigate();
-	const [isLoading, setLoading] = React.useState(true);
 
 	React.useEffect(() => {
-		const token = secureLocalStorage.getItem("token");
-		if (token) {
-			app.api.loginWithToken(token as string).then(() => {
-				setLoading(false);
-			});
-		} else {
-			// set timeout to prevent flashing
-			setTimeout(() => {
-				setLoading(false);
-			}, 1000);
-		}
+		Globals.load();
+		app.loadToken();
+
+		console.debug("Loading complete");
+		app.setAppLoading(false);
 	}, []);
 
-	// handles token changes
-	React.useEffect(() => {
-		// FIXME: this triggers on load and causes a redirect to login no matter what page we actually want to go to
-		// if (!app.api.token && !isLoading) {
-		//   console.log("TOKEN REMOVED");
-		//   // remove token
-		//   secureLocalStorage.removeItem("token");
-		//   // navigate to login page if token is removed
-		//   navigate("/login", { replace: true });
-		// }
+	// Handles gateway connection/disconnection on token change
+	reaction(
+		() => app.token,
+		(value) => {
+			console.log(value);
+			if (value) {
+				app.rest.setToken(value);
+				if (app.gateway.readyState === WebSocket.CLOSED) {
+					app.setGatewayReady(false);
+					app.gateway.connect(Globals.routeSettings.gateway);
+				} else {
+					console.debug(
+						"Gateway connect called but socket is not closed",
+					);
+				}
+			} else {
+				if (app.gateway.readyState === WebSocket.OPEN) {
+					app.gateway.disconnect(
+						1000,
+						"user is no longer authenticated",
+					);
+				}
+			}
+		},
+	);
 
-		if (app.api.token) {
-			console.log("TOKEN ADDED");
-			// save token
-			secureLocalStorage.setItem("token", app.api.token);
-			// navigate to root page if token is added
-			navigate("/", { replace: true });
-		}
-	}, [app.api.token, isLoading]);
-
-	if (isLoading) {
+	if (app.isAppLoading) {
 		return <LoadingPage />;
 	}
 

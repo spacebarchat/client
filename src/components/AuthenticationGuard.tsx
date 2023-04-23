@@ -8,7 +8,7 @@ interface Props {
 export const AuthenticationGuard = ({ component }: Props) => {
 	const app = useAppStore();
 
-	if (!app.api.token) {
+	if (!app.token) {
 		return <Navigate to="/login" replace />;
 	}
 

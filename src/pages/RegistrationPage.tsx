@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { APIError, CaptchaError } from "spacebar-ts";
 import styled from "styled-components";
 import Button from "../components/Button";
 import Container from "../components/Container";
@@ -156,26 +155,26 @@ function RegistrationPage() {
 	});
 
 	const onSubmit = handleSubmit((data) => {
-		app.api
-			.register({
-				...data,
-				consent: true,
-			})
-			.catch((e) => {
-				if (e instanceof CaptchaError) {
-					console.log("Captcha Required", e);
-				} else if (e instanceof APIError) {
-					console.log("APIError", e.message, e.code, e.fieldErrors);
-					e.fieldErrors.forEach((fieldError) => {
-						setError(fieldError.field as any, {
-							type: "manual",
-							message: fieldError.error,
-						});
-					});
-				} else {
-					console.log("General Error", e);
-				}
-			});
+		// app.api
+		// 	.register({
+		// 		...data,
+		// 		consent: true,
+		// 	})
+		// 	.catch((e) => {
+		// 		if (e instanceof CaptchaError) {
+		// 			console.log("Captcha Required", e);
+		// 		} else if (e instanceof APIError) {
+		// 			console.log("APIError", e.message, e.code, e.fieldErrors);
+		// 			e.fieldErrors.forEach((fieldError) => {
+		// 				setError(fieldError.field as any, {
+		// 					type: "manual",
+		// 					message: fieldError.error,
+		// 				});
+		// 			});
+		// 		} else {
+		// 			console.log("General Error", e);
+		// 		}
+		// 	});
 	});
 
 	const hasErrors = () => {
@@ -191,7 +190,10 @@ function RegistrationPage() {
 				</HeaderContainer>
 
 				<FormContainer onSubmit={onSubmit}>
-					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
+					<InputContainer
+						marginBottom={true}
+						style={{ marginTop: 0 }}
+					>
 						<LabelWrapper error={!!errors.email}>
 							<InputLabel>Email</InputLabel>
 							{errors.email && (
@@ -213,7 +215,10 @@ function RegistrationPage() {
 						</InputWrapper>
 					</InputContainer>
 
-					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
+					<InputContainer
+						marginBottom={true}
+						style={{ marginTop: 0 }}
+					>
 						<LabelWrapper error={!!errors.username}>
 							<InputLabel>Username</InputLabel>
 							{errors.username && (
@@ -269,14 +274,20 @@ function RegistrationPage() {
 
 						<InputWrapper>
 							<DOBInput
-								onChange={(value) => setValue("date_of_birth", value)}
+								onChange={(value) =>
+									setValue("date_of_birth", value)
+								}
 								onErrorChange={(errors) => {
-									const hasError = Object.values(errors).some((error) => error);
+									const hasError = Object.values(errors).some(
+										(error) => error,
+									);
 									if (hasError) {
 										// set to first error
 										setError("date_of_birth", {
 											type: "manual",
-											message: Object.values(errors).filter((x) => x)[0],
+											message: Object.values(
+												errors,
+											).filter((x) => x)[0],
 										});
 									} else clearErrors("date_of_birth");
 								}}
@@ -285,7 +296,11 @@ function RegistrationPage() {
 						</InputWrapper>
 					</InputContainer>
 
-					<LoginButton variant="primary" type="submit" disabled={hasErrors()}>
+					<LoginButton
+						variant="primary"
+						type="submit"
+						disabled={hasErrors()}
+					>
 						Create Account
 					</LoginButton>
 

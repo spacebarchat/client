@@ -18,6 +18,7 @@
 		"@hcaptcha/react-hcaptcha": "^1.8.0",
 		"@mattjennings/react-modal-stack": "^1.0.4",
 		"@mui/material": "^5.11.13",
+		"@spacebarchat/spacebar-api-types": "^0.37.44",
 		"@testing-library/jest-dom": "^5.16.5",
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^13.5.0",
@@ -43,7 +44,6 @@
 		"reoverlay": "^1.0.3",
 		"slate": "^0.91.4",
 		"slate-react": "^0.92.0",
-		"spacebar-ts": "github:spacebarchat/spacebar-ts",
 		"styled-components": "^5.3.9",
 		"typescript": "^4.9.5"
 	},

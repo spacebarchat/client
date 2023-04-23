@@ -6,7 +6,7 @@ import LoadingPage from "./LoadingPage";
 function RootPage() {
 	const app = useAppStore();
 
-	if (!app.ready) {
+	if (!app.isReady) {
 		return <LoadingPage />;
 	}
 
