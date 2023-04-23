@@ -17,7 +17,7 @@ import {
   MessageFlags,
   MessageType,
   Snowflake,
-} from '@puyodead1/fosscord-api-types/v9';
+} from '@spacebarchat/spacebar-api-types/v9';
 import {action, observable} from 'mobx';
 import {APICustomMessage} from '../../interfaces/api';
 import BaseStore from '../BaseStore';

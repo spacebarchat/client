@@ -12,7 +12,7 @@ import {
   RESTPostAPIChannelMessageJSONBody,
   RESTPostAPIChannelMessageResult,
   Snowflake as SnowflakeType,
-} from '@puyodead1/fosscord-api-types/v9';
+} from '@spacebarchat/spacebar-api-types/v9';
 import {action, makeObservable, observable} from 'mobx';
 import {Routes} from '../../utils/Endpoints';
 import BaseStore from '../BaseStore';

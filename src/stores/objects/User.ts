@@ -1,5 +1,5 @@
-import {Snowflake} from '@puyodead1/fosscord-api-types/globals';
-import {APIUser} from '@puyodead1/fosscord-api-types/v9';
+import {Snowflake} from '@spacebarchat/spacebar-api-types/globals';
+import {APIUser} from '@spacebarchat/spacebar-api-types/v9';
 import {makeObservable, observable} from 'mobx';
 import {CDNRoutes} from '../../utils/Endpoints';
 import REST from '../../utils/REST';

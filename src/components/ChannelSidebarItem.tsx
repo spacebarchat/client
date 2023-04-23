@@ -1,4 +1,4 @@
-import {ChannelType} from '@puyodead1/fosscord-api-types/v9';
+import {ChannelType} from '@spacebarchat/spacebar-api-types/v9';
 import {useNavigation} from '@react-navigation/native';
 import {t} from 'i18next';
 import {observer} from 'mobx-react-lite';

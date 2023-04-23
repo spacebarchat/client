@@ -1,4 +1,4 @@
-import {APIUser} from '@puyodead1/fosscord-api-types/v9';
+import {APIUser} from '@spacebarchat/spacebar-api-types/v9';
 import {action, computed, observable, ObservableMap} from 'mobx';
 import BaseStore from './BaseStore';
 import User from './objects/User';

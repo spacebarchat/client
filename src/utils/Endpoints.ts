@@ -1,4 +1,4 @@
-import {Snowflake} from '@puyodead1/fosscord-api-types/globals';
+import {Snowflake} from '@spacebarchat/spacebar-api-types/globals';
 
 export const APIVersion = '9';
 

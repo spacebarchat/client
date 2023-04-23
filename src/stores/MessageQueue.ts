@@ -1,4 +1,4 @@
-import {APIMessage} from '@puyodead1/fosscord-api-types/v9';
+import {APIMessage} from '@spacebarchat/spacebar-api-types/v9';
 import {
   action,
   computed,

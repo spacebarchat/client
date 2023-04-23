@@ -2,7 +2,7 @@ import {
   APIUser,
   UserFlags,
   UserPremiumType,
-} from '@puyodead1/fosscord-api-types/v9';
+} from '@spacebarchat/spacebar-api-types/v9';
 import {observable} from 'mobx';
 import BaseStore from './BaseStore';
 

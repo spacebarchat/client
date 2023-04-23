@@ -5,7 +5,7 @@ import {
   GatewayPresenceUpdate,
   PresenceUpdateStatus,
   Snowflake,
-} from '@puyodead1/fosscord-api-types/v9';
+} from '@spacebarchat/spacebar-api-types/v9';
 import {action, makeObservable, observable} from 'mobx';
 import {useTheme} from 'react-native-paper';
 import {OneKeyFrom} from '../interfaces/common';

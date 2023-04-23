@@ -1,5 +1,5 @@
-import {Snowflake} from '@puyodead1/fosscord-api-types/globals';
-import {ChannelType} from '@puyodead1/fosscord-api-types/v9';
+import {Snowflake} from '@spacebarchat/spacebar-api-types/globals';
+import {ChannelType} from '@spacebarchat/spacebar-api-types/v9';
 import {DomainStore} from '../stores/DomainStore';
 
 function useChannel(

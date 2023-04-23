@@ -1,4 +1,4 @@
-import {Snowflake} from '@puyodead1/fosscord-api-types/v9';
+import {Snowflake} from '@spacebarchat/spacebar-api-types/v9';
 import {NavigatorScreenParams} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {

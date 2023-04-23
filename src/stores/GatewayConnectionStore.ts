@@ -25,7 +25,7 @@ import {
   GatewaySendPayload,
   PresenceUpdateStatus,
   Snowflake,
-} from '@puyodead1/fosscord-api-types/v9';
+} from '@spacebarchat/spacebar-api-types/v9';
 import {action, makeObservable, observable, runInAction} from 'mobx';
 import {Platform} from 'react-native';
 import DeviceInfo from 'react-native-device-info';

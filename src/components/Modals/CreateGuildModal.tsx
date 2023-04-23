@@ -1,7 +1,7 @@
 import {
   RESTPostAPIGuildsJSONBody,
   RESTPostAPIGuildsResult,
-} from '@puyodead1/fosscord-api-types/v9';
+} from '@spacebarchat/spacebar-api-types/v9';
 import {useNavigation} from '@react-navigation/native';
 import {useFormik} from 'formik';
 import React from 'react';
