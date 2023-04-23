@@ -1,9 +1,9 @@
-import {Snowflake} from '@puyodead1/fosscord-api-types/globals';
+import {Snowflake} from '@spacebarchat/spacebar-api-types/globals';
 import {
   APIGuild,
   GatewayGuild,
   GatewayGuildMemberListUpdateDispatchData,
-} from '@puyodead1/fosscord-api-types/v9';
+} from '@spacebarchat/spacebar-api-types/v9';
 import {action, computed, makeObservable, observable} from 'mobx';
 import BaseStore from '../BaseStore';
 import ChannelStore from '../ChannelStore';

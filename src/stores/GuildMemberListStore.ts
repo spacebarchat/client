@@ -2,7 +2,7 @@ import {
   GatewayGuildMemberListUpdateDispatchData,
   GatewayGuildMemberListUpdateGroup,
   GatewayGuildMemberListUpdateOperation,
-} from '@puyodead1/fosscord-api-types/v9';
+} from '@spacebarchat/spacebar-api-types/v9';
 import {action, observable} from 'mobx';
 import BaseStore from './BaseStore';
 import {DomainStore} from './DomainStore';

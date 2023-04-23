@@ -1,7 +1,7 @@
 import {
   DefaultUserAvatarAssets,
   PresenceUpdateStatus,
-} from '@puyodead1/fosscord-api-types/v9';
+} from '@spacebarchat/spacebar-api-types/v9';
 import {observer} from 'mobx-react';
 import React from 'react';
 import {StyleSheet} from 'react-native';

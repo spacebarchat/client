@@ -1,4 +1,4 @@
-import {GatewayGuild} from '@puyodead1/fosscord-api-types/v9';
+import {GatewayGuild} from '@spacebarchat/spacebar-api-types/v9';
 import {action, computed, observable, ObservableMap} from 'mobx';
 import BaseStore from './BaseStore';
 import {DomainStore} from './DomainStore';

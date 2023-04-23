@@ -1871,11 +1871,6 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/semantic-conventions/-/semantic-conventions-1.9.1.tgz#ad3367684a57879392513479e0a436cb2ac46dad"
   integrity sha512-oPQdbFDmZvjXk5ZDoBGXG8B4tSB/qW5vQunJWQMFUBp7Xe8O1ByPANueJ+Jzg58esEBegyyxZ7LRmfJr7kFcFg==
 
-"@puyodead1/fosscord-api-types@^0.37.43":
-  version "0.37.43"
-  resolved "https://registry.yarnpkg.com/@puyodead1/fosscord-api-types/-/spacebar-api-types-0.37.43.tgz#30c341cbfeb4fb8f26eecfbd661c0847f6441b2e"
-  integrity sha512-ek9extXBkpgWF4wys7js+Aqz9OScNYVW2OiEGeHHRM5pSMIw1sNSBIkDdlGqO7ocZeYESP6ULUiHdvnpLRX3Zg==
-
 "@react-native-async-storage/async-storage@^1.17.11":
   version "1.17.11"
   resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.17.11.tgz#7ec329c1b9f610e344602e806b04d7c928a2341d"
@@ -2373,6 +2368,11 @@
   integrity sha512-SwUDyjWnah1AaNl7kxsa7cfLhlTYoiyhDAIgyh+El30YvXs/o7OLXpYH88Zdhyx9JExKrmHDJ+10bwIcY80Jmw==
   dependencies:
     "@sinonjs/commons" "^2.0.0"
+
+"@spacebarchat/spacebar-api-types@^0.37.43":
+  version "0.37.43"
+  resolved "https://registry.yarnpkg.com/@spacebarchat/spacebar-api-types/-/spacebar-api-types-0.37.43.tgz#a928d033e8a5a6897378bcde6e16a4728f727002"
+  integrity sha512-1+c0uiCJyn432dLoKP36ixELGYu7AnMvFNBl+jTEFCPnXO5F3EbLSBNwvL9BbzrVsJO1cTNpN0YU/zPHsVHieQ==
 
 "@svgr/babel-plugin-add-jsx-attribute@^6.5.1":
   version "6.5.1"

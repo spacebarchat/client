@@ -1,5 +1,5 @@
-import {Snowflake} from '@puyodead1/fosscord-api-types/globals';
-import {APIGuildMember} from '@puyodead1/fosscord-api-types/v9';
+import {Snowflake} from '@spacebarchat/spacebar-api-types/globals';
+import {APIGuildMember} from '@spacebarchat/spacebar-api-types/v9';
 import {action, makeObservable, observable, ObservableMap} from 'mobx';
 import BaseStore from './BaseStore';
 import {DomainStore} from './DomainStore';
