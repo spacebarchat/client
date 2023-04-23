@@ -20,41 +20,24 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1681932375,
-        "narHash": "sha256-tSXbYmpnKSSWpzOrs27ie8X3I0yqKA6AuCzCYNtwbCU=",
-        "owner": "nixos",
+        "lastModified": 1682258674,
+        "narHash": "sha256-nSqXN+dBgw8+DeE3vBhdHB7C2p+2QBDsA27ZptjJz/Y=",
+        "owner": "lilyinstarlight",
         "repo": "nixpkgs",
-        "rev": "3d302c67ab8647327dba84fbdb443cdbf0e82744",
+        "rev": "47c77aa566f5114b4d759280702b9b910d3c7f0f",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
-        "ref": "nixos-22.11",
+        "owner": "lilyinstarlight",
+        "ref": "unheck/nodejs",
         "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "pnpm2nix": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1676829786,
-        "narHash": "sha256-ywnp/Y20Bv62Vs4v39NezJ4irSg6IJUR+J25hBMu+yA=",
-        "owner": "TheArcaneBrony",
-        "repo": "pnpm2nix",
-        "rev": "65e000773abd988f1f0cb99ff592d7945e7dd349",
-        "type": "github"
-      },
-      "original": {
-        "owner": "TheArcaneBrony",
-        "repo": "pnpm2nix",
         "type": "github"
       }
     },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs",
-        "pnpm2nix": "pnpm2nix"
+        "nixpkgs": "nixpkgs"
       }
     },
     "systems": {

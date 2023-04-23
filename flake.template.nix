@@ -21,8 +21,8 @@
 			pname = "spacebar-client-react";
 			src = ./.;
 			name = "spacebar-client-react";
-			#buildInputs = with pkgs; [ prefetch-npm-deps ];
-			npmDepsHash = "sha256-b/L2pEhqRYVDNg5jYBIahAdbSW4GLgVQEnwziDBprW8=";
+			#buildInputs = with pkgs; [ ];
+			npmDepsHash = "$NPM_HASH";
 			makeCacheWritable = true;
 		};
 		devShell = pkgs.mkShell {
