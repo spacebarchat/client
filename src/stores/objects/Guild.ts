@@ -53,7 +53,6 @@ export default class Guild {
 	@observable maxMembers: number;
 	@observable nsfwLevel: number;
 	@observable hubType: number | null = null;
-	@observable acronym: string;
 	@observable members: GuildMemberStore;
 	@observable private memberListStore: GuildMemberListStore | null = null;
 
@@ -108,11 +107,6 @@ export default class Guild {
 			this.channels.addAll(data.channels);
 		}
 
-		this.acronym = this.name
-			.split(" ")
-			.map((word) => word.substring(0, 1))
-			.join("");
-
 		makeObservable(this);
 	}
 
@@ -142,5 +136,13 @@ export default class Guild {
 	@computed
 	get memberList() {
 		return this.memberListStore?.list ?? [];
+	}
+
+	@computed
+	get acronym() {
+		return this.name
+			.split(" ")
+			.map((word) => word.substring(0, 1))
+			.join("");
 	}
 }

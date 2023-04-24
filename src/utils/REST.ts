@@ -44,7 +44,7 @@ export default class REST {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		queryParams: Record<string, any> = {},
 	) {
-		const url = new URL(`${Globals.routeSettings.cdn}${path}`);
+		const url = new URL(`${Globals.routeSettings.cdn}/${path}`);
 		Object.entries(queryParams).forEach(([key, value]) => {
 			url.searchParams.append(key, value);
 		});
