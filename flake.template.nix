@@ -24,6 +24,11 @@
 			#buildInputs = with pkgs; [ ];
 			npmDepsHash = "$NPM_HASH";
 			makeCacheWritable = true;
+			installPhase = ''
+				runHook preInstall
+				cp -r build $out/
+				runHook postInstall
+			'';
 		};
 		devShell = pkgs.mkShell {
 			buildInputs = with pkgs; [
