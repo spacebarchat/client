@@ -20,8 +20,8 @@ dependencies:
     specifier: ^5.11.13
     version: 5.11.13(@emotion/react@11.10.6)(@emotion/styled@11.10.6)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
   '@spacebarchat/spacebar-api-types':
-    specifier: ^0.37.44
-    version: 0.37.44
+    specifier: ^0.37.46
+    version: 0.37.46
   '@testing-library/jest-dom':
     specifier: ^5.16.5
     version: 5.16.5
@@ -2899,8 +2899,8 @@ packages:
     dependencies:
       '@sinonjs/commons': 1.8.6
 
-  /@spacebarchat/spacebar-api-types@0.37.44:
-    resolution: {integrity: sha512-Kudf7A/vRCvpgi+JW3xkh+jAHHDYYHUdhN4gFBlJtNT+BNOVxuFIVpVWMuUdgNvQLaK41MmPMbLrDvTLUory2g==}
+  /@spacebarchat/spacebar-api-types@0.37.46:
+    resolution: {integrity: sha512-fuNZIMBWKezpkyvZHvAfQ1boCfEoncP+odg+bqr824WiGldiiAqhBuye1v/TMYkAm6A4R2p9/ifkCqmFQgemKA==}
     dev: false
 
   /@surma/rollup-plugin-off-main-thread@2.2.3:

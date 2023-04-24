@@ -14,7 +14,7 @@ const Wrapper = styled(Container)`
 	background-color: var(--secondary);
 `;
 
-const LoginBox = styled(Container)`
+const AuthBox = styled(Container)`
 	background-color: var(--primary-alt);
 	padding: 32px;
 	font-size: 18px;
@@ -129,7 +129,7 @@ const Divider = styled.span`
 	padding: 0 4px;
 `;
 
-type RegisterFormValues = {
+type FormValues = {
 	email: string;
 	username: string;
 	password: string;
@@ -147,7 +147,7 @@ function RegistrationPage() {
 		formState: { errors },
 		setError,
 		clearErrors,
-	} = useForm<RegisterFormValues>();
+	} = useForm<FormValues>();
 
 	const dobRegister = register("date_of_birth", {
 		required: true,
@@ -183,7 +183,7 @@ function RegistrationPage() {
 
 	return (
 		<Wrapper>
-			<LoginBox>
+			<AuthBox>
 				<HeaderContainer>
 					<Header>Create an account</Header>
 					{/* <SubHeader>We're so excited to see you again!</SubHeader> */}
@@ -313,7 +313,7 @@ function RegistrationPage() {
 						Already have an account?
 					</LoginLink>
 				</FormContainer>
-			</LoginBox>
+			</AuthBox>
 		</Wrapper>
 	);
 }

@@ -27,7 +27,6 @@ function App() {
 	reaction(
 		() => app.token,
 		(value) => {
-			console.log(value);
 			if (value) {
 				app.rest.setToken(value);
 				if (app.gateway.readyState === WebSocket.CLOSED) {
@@ -58,6 +57,11 @@ function App() {
 			<Route
 				index
 				path="/"
+				element={<AuthenticationGuard component={RootPage} />}
+			/>
+			<Route
+				index
+				path="/app"
 				element={<AuthenticationGuard component={RootPage} />}
 			/>
 			<Route path="/login" element={<LoginPage />} />

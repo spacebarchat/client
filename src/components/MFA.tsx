@@ -1,21 +1,18 @@
-import HCaptchaLib from "@hcaptcha/react-hcaptcha";
 import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../components/Button";
-import Container from "../components/Container";
-import HCaptcha from "../components/HCaptcha";
-import MFA from "../components/MFA";
 import { useAppStore } from "../stores/AppStore";
 import {
-	IAPILoginRequest,
-	IAPILoginResponse,
-	IAPILoginResponseError,
+	IAPIError,
 	IAPILoginResponseMFARequired,
+	IAPILoginResponseSuccess,
+	IAPITOTPRequest,
 } from "../utils/interfaces/api";
 import { messageFromFieldError } from "../utils/messageFromFieldError";
+import Button from "./Button";
+import Container from "./Container";
 
 export const Wrapper = styled(Container)`
 	display: flex;
@@ -61,6 +58,7 @@ export const SubHeader = styled.h2`
 	color: var(--text-muted);
 	font-weight: 400;
 	font-size: 16px;
+	margin-bottom: 40px;
 `;
 
 export const FormContainer = styled.form`
@@ -110,7 +108,7 @@ export const Input = styled.input<{ error?: boolean }>`
 	aria-invalid: ${(props) => (props.error ? "true" : "false")};
 `;
 
-export const PasswordResetLink = styled.button`
+export const Link = styled.button`
 	margin-bottom: 20px;
 	margin-top: 4px;
 	padding: 2px 0;
@@ -163,81 +161,35 @@ export const Divider = styled.span`
 `;
 
 type FormValues = {
-	login: string;
-	password: string;
-	captcha_key?: string;
+	code: string;
 };
 
-function LoginPage() {
+function MFA(props: IAPILoginResponseMFARequired) {
 	const app = useAppStore();
 	const navigate = useNavigate();
 	const [loading, setLoading] = React.useState(false);
-	const [captchaSiteKey, setCaptchaSiteKey] = React.useState<string>();
-	const [mfaData, setMfaData] =
-		React.useState<IAPILoginResponseMFARequired>();
-	const captchaRef = React.useRef<HCaptchaLib>(null);
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 		setError,
-		setValue,
 	} = useForm<FormValues>();
 
 	const onSubmit = handleSubmit((data) => {
 		setLoading(true);
-		setCaptchaSiteKey(undefined);
-		setMfaData(undefined);
 
 		app.rest
-			.post<IAPILoginRequest, IAPILoginResponse>(Routes.login(), {
+			.post<IAPITOTPRequest, IAPILoginResponseSuccess>(Routes.mfaTotp(), {
 				...data,
-				undelete: false,
+				ticket: props.ticket,
 			})
 			.then((r) => {
-				if ("token" in r && "settings" in r) {
-					// success
-					app.setToken(r.token);
-					return;
-				} else if ("ticket" in r) {
-					// mfa
-					console.log("MFA Required", r);
-					setMfaData(r);
-					return;
-				} else {
-					// unknown error
-					console.error(r);
-					setError("login", {
-						type: "manual",
-						message: "Unknown Error",
-					});
-				}
+				app.setToken(r.token);
+				navigate("/app", { replace: true });
 			})
-			.catch((r: IAPILoginResponseError) => {
-				if ("captcha_key" in r) {
-					// catcha required
-					if (r.captcha_key[0] !== "captcha-required") {
-						// some kind of captcha error
-						setError("login", {
-							type: "manual",
-							message: `Captcha Error: ${r.captcha_key[0]}`,
-						});
-					} else if (r.captcha_service !== "hcaptcha") {
-						// recaptcha or something else
-						setError("login", {
-							type: "manual",
-							message: `Unsupported captcha service: ${r.captcha_service}`,
-						});
-					} else {
-						// hcaptcha
-						setCaptchaSiteKey(r.captcha_sitekey);
-						captchaRef.current?.execute();
-						return;
-					}
-
-					captchaRef.current?.resetCaptcha();
-				} else if ("message" in r) {
+			.catch((r: IAPIError) => {
+				if ("message" in r) {
 					// error
 					if (r.errors) {
 						const t = messageFromFieldError(r.errors);
@@ -247,109 +199,78 @@ function LoginPage() {
 								message: t.error,
 							});
 						} else {
-							setError("login", {
+							setError("code", {
 								type: "manual",
 								message: r.message,
 							});
 						}
 					} else {
-						setError("login", {
+						setError("code", {
 							type: "manual",
 							message: r.message,
 						});
 					}
-
-					captchaRef.current?.resetCaptcha();
 				} else {
 					// unknown error
 					console.error(r);
-					setError("login", {
+					setError("code", {
 						type: "manual",
 						message: "Unknown Error",
 					});
-					captchaRef.current?.resetCaptcha();
 				}
 			})
 			.finally(() => setLoading(false));
 	});
 
-	const onCaptchaVerify = (token: string) => {
-		setValue("captcha_key", token);
-		onSubmit();
-	};
-
-	if (captchaSiteKey) {
-		return (
-			<HCaptcha
-				captchaRef={captchaRef}
-				sitekey={captchaSiteKey}
-				onVerify={onCaptchaVerify}
-			/>
-		);
-	}
-
-	if (mfaData) {
-		return <MFA {...mfaData} />;
-	}
-
 	return (
 		<Wrapper>
 			<AuthBox>
 				<HeaderContainer>
-					<Header>Welcome Back!</Header>
-					<SubHeader>We're so excited to see you again!</SubHeader>
-				</HeaderContainer>
+					<Header>Two-factor authentication</Header>
+					<SubHeader>
+						You can use a backup code or your two-factor
+						authentication mobile app.
+					</SubHeader>
 
-				<FormContainer onSubmit={onSubmit}>
-					<InputContainer
-						marginBottom={true}
-						style={{ marginTop: 0 }}
-					>
-						<LabelWrapper error={!!errors.login}>
-							<InputLabel>Email</InputLabel>
-							{errors.login && (
-								<InputErrorText>
-									<>
-										<Divider>-</Divider>
-										{errors.login.message}
-									</>
-								</InputErrorText>
-							)}
-						</LabelWrapper>
-						<InputWrapper>
-							<Input
-								type="email"
-								autoFocus
-								{...register("login", { required: true })}
-								error={!!errors.login}
-								disabled={loading}
-							/>
-						</InputWrapper>
-					</InputContainer>
+					<FormContainer onSubmit={onSubmit}>
+						<InputContainer
+							marginBottom={true}
+							style={{ marginTop: 0 }}
+						>
+							<LabelWrapper error={!!errors.code}>
+								<InputLabel>
+									Enter Spacebar Auth/Backup Code
+								</InputLabel>
+								{errors.code && (
+									<InputErrorText>
+										<>
+											<Divider>-</Divider>
+											{errors.code.message}
+										</>
+									</InputErrorText>
+								)}
+							</LabelWrapper>
+							<InputWrapper>
+								<Input
+									type="text"
+									autoFocus
+									{...register("code", { required: true })}
+									error={!!errors.code}
+									disabled={loading}
+									placeholder="6-digit authentication code/8-digit backup code"
+								/>
+							</InputWrapper>
+						</InputContainer>
 
-					<InputContainer marginBottom={false}>
-						<LabelWrapper error={!!errors.password}>
-							<InputLabel>Password</InputLabel>
-							{errors.password && (
-								<InputErrorText>
-									<>
-										<Divider>-</Divider>
-										{errors.password.message}
-									</>
-								</InputErrorText>
-							)}
-						</LabelWrapper>
-						<InputWrapper>
-							<Input
-								type="password"
-								{...register("password", { required: true })}
-								error={!!errors.password}
-								disabled={loading}
-							/>
-						</InputWrapper>
-					</InputContainer>
+						<LoginButton
+							variant="primary"
+							type="submit"
+							disabled={loading}
+						>
+							Log In
+						</LoginButton>
 
-					<PasswordResetLink
+						{/* <Link
 						onClick={() => {
 							window.open(
 								"https://youtu.be/dQw4w9WgXcQ",
@@ -358,34 +279,25 @@ function LoginPage() {
 						}}
 						type="button"
 					>
-						Forgot your password?
-					</PasswordResetLink>
+						Recieve auth code from SMS
+					</Link> */}
 
-					<LoginButton
-						variant="primary"
-						type="submit"
-						disabled={loading}
-					>
-						Log In
-					</LoginButton>
-
-					<RegisterContainer>
-						<RegisterLabel>
-							Don't have an account?&nbsp;
-						</RegisterLabel>
-						<RegisterLink
+						<Link
 							onClick={() => {
-								navigate("/register");
+								window.open(
+									"https://youtu.be/dQw4w9WgXcQ",
+									"_blank",
+								);
 							}}
 							type="button"
 						>
-							Sign Up
-						</RegisterLink>
-					</RegisterContainer>
-				</FormContainer>
+							Go Back to Login
+						</Link>
+					</FormContainer>
+				</HeaderContainer>
 			</AuthBox>
 		</Wrapper>
 	);
 }
 
-export default LoginPage;
+export default MFA;
