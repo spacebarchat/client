@@ -185,6 +185,11 @@ function LoginPage() {
 		setValue,
 	} = useForm<FormValues>();
 
+	const resetCaptcha = () => {
+		captchaRef.current?.resetCaptcha();
+		setValue("captcha_key", undefined);
+	};
+
 	const onSubmit = handleSubmit((data) => {
 		setLoading(true);
 		setCaptchaSiteKey(undefined);
@@ -236,7 +241,7 @@ function LoginPage() {
 						return;
 					}
 
-					captchaRef.current?.resetCaptcha();
+					resetCaptcha();
 				} else if ("message" in r) {
 					// error
 					if (r.errors) {
@@ -259,7 +264,7 @@ function LoginPage() {
 						});
 					}
 
-					captchaRef.current?.resetCaptcha();
+					resetCaptcha();
 				} else {
 					// unknown error
 					console.error(r);
@@ -267,7 +272,7 @@ function LoginPage() {
 						type: "manual",
 						message: "Unknown Error",
 					});
-					captchaRef.current?.resetCaptcha();
+					resetCaptcha();
 				}
 			})
 			.finally(() => setLoading(false));

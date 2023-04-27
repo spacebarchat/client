@@ -169,6 +169,11 @@ function RegistrationPage() {
 		pattern: /^\d{4}-\d{2}-\d{2}$/,
 	});
 
+	const resetCaptcha = () => {
+		captchaRef.current?.resetCaptcha();
+		setValue("captcha_key", undefined);
+	};
+
 	const onSubmit = handleSubmit((data) => {
 		if (errors.date_of_birth) return;
 
@@ -220,7 +225,7 @@ function RegistrationPage() {
 						return;
 					}
 
-					captchaRef.current?.resetCaptcha();
+					resetCaptcha();
 				} else if ("message" in r) {
 					// error
 					if (r.errors) {
@@ -243,7 +248,7 @@ function RegistrationPage() {
 						});
 					}
 
-					captchaRef.current?.resetCaptcha();
+					resetCaptcha();
 				} else {
 					// unknown error
 					console.error(r);
@@ -251,7 +256,7 @@ function RegistrationPage() {
 						type: "manual",
 						message: "Unknown Error",
 					});
-					captchaRef.current?.resetCaptcha();
+					resetCaptcha();
 				}
 			})
 			.finally(() => setLoading(false));
