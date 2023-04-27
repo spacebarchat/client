@@ -1,10 +1,20 @@
+import HCaptchaLib from "@hcaptcha/react-hcaptcha";
+import { Routes } from "@spacebarchat/spacebar-api-types/v9";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/Button";
 import Container from "../components/Container";
 import DOBInput from "../components/DOBInput";
+import HCaptcha from "../components/HCaptcha";
 import { useAppStore } from "../stores/AppStore";
+import {
+	IAPILoginResponseSuccess,
+	IAPIRegisterRequest,
+	IAPIRegisterResponseError,
+} from "../utils/interfaces/api";
+import { messageFromFieldError } from "../utils/messageFromFieldError";
 
 const Wrapper = styled(Container)`
 	display: flex;
@@ -134,11 +144,16 @@ type FormValues = {
 	username: string;
 	password: string;
 	date_of_birth: string;
+	captcha_key?: string;
 };
 
 function RegistrationPage() {
 	const app = useAppStore();
 	const navigate = useNavigate();
+	const [loading, setLoading] = React.useState(false);
+	const [captchaSiteKey, setCaptchaSiteKey] = React.useState<string>();
+
+	const captchaRef = React.useRef<HCaptchaLib>(null);
 
 	const {
 		register,
@@ -155,31 +170,107 @@ function RegistrationPage() {
 	});
 
 	const onSubmit = handleSubmit((data) => {
-		// app.api
-		// 	.register({
-		// 		...data,
-		// 		consent: true,
-		// 	})
-		// 	.catch((e) => {
-		// 		if (e instanceof CaptchaError) {
-		// 			console.log("Captcha Required", e);
-		// 		} else if (e instanceof APIError) {
-		// 			console.log("APIError", e.message, e.code, e.fieldErrors);
-		// 			e.fieldErrors.forEach((fieldError) => {
-		// 				setError(fieldError.field as any, {
-		// 					type: "manual",
-		// 					message: fieldError.error,
-		// 				});
-		// 			});
-		// 		} else {
-		// 			console.log("General Error", e);
-		// 		}
-		// 	});
+		if (errors.date_of_birth) return;
+
+		setLoading(true);
+		setCaptchaSiteKey(undefined);
+		setValue("captcha_key", undefined);
+
+		app.rest
+			.post<IAPIRegisterRequest, IAPILoginResponseSuccess>(
+				Routes.register(),
+				{
+					...data,
+					consent: true,
+				},
+			)
+			.then((r) => {
+				if ("token" in r) {
+					// success
+					app.setToken(r.token);
+					return;
+				} else {
+					// unknown error
+					console.error(r);
+					setError("email", {
+						type: "manual",
+						message: "Unknown Error",
+					});
+				}
+			})
+			.catch((r: IAPIRegisterResponseError) => {
+				if ("captcha_key" in r) {
+					// catcha required
+					if (r.captcha_key[0] !== "captcha-required") {
+						// some kind of captcha error
+						setError("email", {
+							type: "manual",
+							message: `Captcha Error: ${r.captcha_key[0]}`,
+						});
+					} else if (r.captcha_service !== "hcaptcha") {
+						// recaptcha or something else
+						setError("email", {
+							type: "manual",
+							message: `Unsupported captcha service: ${r.captcha_service}`,
+						});
+					} else {
+						// hcaptcha
+						setCaptchaSiteKey(r.captcha_sitekey);
+						captchaRef.current?.execute();
+						return;
+					}
+
+					captchaRef.current?.resetCaptcha();
+				} else if ("message" in r) {
+					// error
+					if (r.errors) {
+						const t = messageFromFieldError(r.errors);
+						if (t) {
+							setError(t.field as keyof FormValues, {
+								type: "manual",
+								message: t.error,
+							});
+						} else {
+							setError("email", {
+								type: "manual",
+								message: r.message,
+							});
+						}
+					} else {
+						setError("email", {
+							type: "manual",
+							message: r.message,
+						});
+					}
+
+					captchaRef.current?.resetCaptcha();
+				} else {
+					// unknown error
+					console.error(r);
+					setError("email", {
+						type: "manual",
+						message: "Unknown Error",
+					});
+					captchaRef.current?.resetCaptcha();
+				}
+			})
+			.finally(() => setLoading(false));
 	});
 
-	const hasErrors = () => {
-		return Object.values(errors).some((error) => error);
+	const onCaptchaVerify = (token: string) => {
+		setValue("captcha_key", token);
+		onSubmit();
 	};
+
+	if (captchaSiteKey) {
+		return (
+			<HCaptcha
+				captchaRef={captchaRef}
+				sitekey={captchaSiteKey}
+				onVerify={onCaptchaVerify}
+			/>
+		);
+	}
 
 	return (
 		<Wrapper>
@@ -211,6 +302,7 @@ function RegistrationPage() {
 								autoFocus
 								{...register("email", { required: true })}
 								error={!!errors.email}
+								disabled={loading}
 							/>
 						</InputWrapper>
 					</InputContainer>
@@ -234,6 +326,7 @@ function RegistrationPage() {
 							<Input
 								{...register("username", { required: true })}
 								error={!!errors.username}
+								disabled={loading}
 							/>
 						</InputWrapper>
 					</InputContainer>
@@ -255,6 +348,7 @@ function RegistrationPage() {
 								type="password"
 								{...register("password", { required: true })}
 								error={!!errors.password}
+								disabled={loading}
 							/>
 						</InputWrapper>
 					</InputContainer>
@@ -292,6 +386,7 @@ function RegistrationPage() {
 									} else clearErrors("date_of_birth");
 								}}
 								error={!!errors.date_of_birth}
+								disabled={loading}
 							/>
 						</InputWrapper>
 					</InputContainer>
@@ -299,7 +394,7 @@ function RegistrationPage() {
 					<LoginButton
 						variant="primary"
 						type="submit"
-						disabled={hasErrors()}
+						disabled={loading}
 					>
 						Create Account
 					</LoginButton>

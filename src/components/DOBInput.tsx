@@ -77,23 +77,25 @@ const MONTHS = [
 	},
 ];
 
-export class DOBInput extends Component<
-	{
-		onChange: (value: string) => void;
-		onErrorChange: (errors: {
-			month?: string;
-			day?: string;
-			year?: string;
-		}) => void;
-		error: boolean;
-	},
-	{
+interface Props {
+	onChange: (value: string) => void;
+	onErrorChange: (errors: {
 		month?: string;
 		day?: string;
 		year?: string;
-		errors: { month?: string; day?: string; year?: string };
-	}
-> {
+	}) => void;
+	error: boolean;
+	disabled?: boolean;
+}
+
+interface State {
+	month?: string;
+	day?: string;
+	year?: string;
+	errors: { month?: string; day?: string; year?: string };
+}
+
+export class DOBInput extends Component<Props, State> {
 	state = {
 		month: "",
 		day: "",
@@ -114,7 +116,7 @@ export class DOBInput extends Component<
 					month: this.state.month,
 					day: this.state.day,
 					year: this.state.year,
-				})
+				}),
 			);
 		}
 	}
@@ -134,7 +136,10 @@ export class DOBInput extends Component<
 					if (isNaN(Number(value))) {
 						this.setState({
 							...this.state,
-							errors: { ...this.state.errors, [type]: "Invalid Date" },
+							errors: {
+								...this.state.errors,
+								[type]: "Invalid Date",
+							},
 						});
 						return;
 					}
@@ -143,12 +148,17 @@ export class DOBInput extends Component<
 						// day should be a number between 1-31 and not more than 2 digits
 						if (
 							value !== "" &&
-							(value.length > 2 || Number(value) > 31 || Number(value) < 1)
+							(value.length > 2 ||
+								Number(value) > 31 ||
+								Number(value) < 1)
 						) {
 							this.setState({
 								...this.state,
 								day: value,
-								errors: { ...this.state.errors, [type]: "Invalid Date" },
+								errors: {
+									...this.state.errors,
+									[type]: "Invalid Date",
+								},
 							});
 							return;
 						}
@@ -160,20 +170,25 @@ export class DOBInput extends Component<
 						// year must be between now-min and now-max
 						if (
 							value.length === 4 &&
-							(Number(value) > new Date().getFullYear() - MIN_AGE ||
-								Number(value) < new Date().getFullYear() - MAX_AGE)
+							(Number(value) >
+								new Date().getFullYear() - MIN_AGE ||
+								Number(value) <
+									new Date().getFullYear() - MAX_AGE)
 						) {
 							this.setState({
 								...this.state,
 								year: value,
-								errors: { ...this.state.errors, [type]: "Invalid Date" },
+								errors: {
+									...this.state.errors,
+									[type]: "Invalid Date",
+								},
 							});
 							return;
 						}
 
 						this.setState({ ...this.state, year: value });
 					}
-				}
+				},
 			);
 		};
 
@@ -191,8 +206,11 @@ export class DOBInput extends Component<
 					placeholder="Month"
 					search
 					options={MONTHS}
-					onChange={(e) => this.setState({ ...this.state, month: e as string })}
+					onChange={(e) =>
+						this.setState({ ...this.state, month: e as string })
+					}
 					value={this.state.month}
+					disabled={this.props.disabled}
 				/>
 				<Input
 					placeholder="Day"
@@ -200,6 +218,7 @@ export class DOBInput extends Component<
 					value={this.state.day}
 					error={this.state.errors.day || this.props.error}
 					maxLength={2}
+					disabled={this.props.disabled}
 				/>
 				<Input
 					placeholder="Year"
@@ -207,6 +226,7 @@ export class DOBInput extends Component<
 					value={this.state.year}
 					error={this.state.errors.year || this.props.error}
 					maxLength={4}
+					disabled={this.props.disabled}
 				/>
 			</Container>
 		);
