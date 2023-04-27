@@ -1,13 +1,14 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { AuthenticationGuard } from "./components/AuthenticationGuard";
+import { AuthenticationGuard } from "./components/guards/AuthenticationGuard";
 import LoadingPage from "./pages/LoadingPage";
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFound";
 import RegistrationPage from "./pages/RegistrationPage";
 
 import { reaction } from "mobx";
+import { UnauthenticatedGuard } from "./components/guards/UnauthenticatedGuard";
 import RootPage from "./pages/RootPage";
 import { useAppStore } from "./stores/AppStore";
 import { Globals } from "./utils/Globals";
@@ -64,8 +65,14 @@ function App() {
 				path="/app"
 				element={<AuthenticationGuard component={RootPage} />}
 			/>
-			<Route path="/login" element={<LoginPage />} />
-			<Route path="/register" element={<RegistrationPage />} />
+			<Route
+				path="/login"
+				element={<UnauthenticatedGuard component={LoginPage} />}
+			/>
+			<Route
+				path="/register"
+				element={<UnauthenticatedGuard component={RegistrationPage} />}
+			/>
 			<Route path="*" element={<NotFoundPage />} />
 		</Routes>
 	);
