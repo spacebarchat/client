@@ -185,7 +185,7 @@ function MFA(props: IAPILoginResponseMFARequired) {
 				ticket: props.ticket,
 			})
 			.then((r) => {
-				app.setToken(r.token);
+				app.setToken(r.token, true);
 				navigate("/app", { replace: true });
 			})
 			.catch((r: IAPIError) => {

@@ -49,11 +49,13 @@ export default class AppStore {
 	}
 
 	@action
-	setToken(token: string) {
+	setToken(token: string, save = false) {
 		this.token = token;
-		secureLocalStorage.setItem("token", token);
 		this.tokenLoaded = true;
-		console.log("Token saved to storage");
+		if (save) {
+			secureLocalStorage.setItem("token", token);
+			console.log("Token saved to storage");
+		}
 	}
 
 	@action

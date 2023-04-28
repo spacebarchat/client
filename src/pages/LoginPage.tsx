@@ -203,7 +203,7 @@ function LoginPage() {
 			.then((r) => {
 				if ("token" in r && "settings" in r) {
 					// success
-					app.setToken(r.token);
+					app.setToken(r.token, true);
 					return;
 				} else if ("ticket" in r) {
 					// mfa

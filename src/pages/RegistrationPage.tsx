@@ -192,7 +192,7 @@ function RegistrationPage() {
 			.then((r) => {
 				if ("token" in r) {
 					// success
-					app.setToken(r.token);
+					app.setToken(r.token, true);
 					return;
 				} else {
 					// unknown error
