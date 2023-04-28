@@ -20,40 +20,42 @@ function App() {
 	const navigate = useNavigate();
 
 	React.useEffect(() => {
+		// Handles gateway connection/disconnection on token change
+		const dispose = reaction(
+			() => app.token,
+			(value) => {
+				if (value) {
+					app.rest.setToken(value);
+					if (app.gateway.readyState === WebSocket.CLOSED) {
+						app.setGatewayReady(false);
+						app.gateway.connect(Globals.routeSettings.gateway);
+					} else {
+						console.debug(
+							"Gateway connect called but socket is not closed",
+						);
+					}
+				} else {
+					console.debug("user no longer authenticated");
+					if (app.gateway.readyState === WebSocket.OPEN) {
+						app.gateway.disconnect(
+							1000,
+							"user is no longer authenticated",
+						);
+					}
+
+					navigate("/");
+				}
+			},
+		);
+
 		Globals.load();
 		app.loadToken();
 
 		console.debug("Loading complete");
 		app.setAppLoading(false);
+
+		return dispose;
 	}, []);
-
-	// Handles gateway connection/disconnection on token change
-	reaction(
-		() => app.token,
-		(value) => {
-			if (value) {
-				app.rest.setToken(value);
-				if (app.gateway.readyState === WebSocket.CLOSED) {
-					app.setGatewayReady(false);
-					app.gateway.connect(Globals.routeSettings.gateway);
-				} else {
-					console.debug(
-						"Gateway connect called but socket is not closed",
-					);
-				}
-			} else {
-				console.debug("user no longer authenticated");
-				if (app.gateway.readyState === WebSocket.OPEN) {
-					app.gateway.disconnect(
-						1000,
-						"user is no longer authenticated",
-					);
-				}
-
-				navigate("/");
-			}
-		},
-	);
 
 	return (
 		<Loader>
