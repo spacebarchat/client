@@ -1,4 +1,5 @@
 import { CDNRoutes, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 import REST from "../utils/REST";
@@ -32,13 +33,18 @@ interface Props {
  */
 function GuildItem(props: Props) {
 	const app = useAppStore();
+	const navigate = useNavigate();
 	const guild = app.guilds.get(props.guildId);
 
 	if (!guild) return null;
 
+	const doNavigate = () => {
+		navigate(`/channels/${props.guildId}`);
+	};
+
 	return (
 		<Tooltip title={guild.name} placement="right">
-			<Wrapper>
+			<Wrapper onClick={doNavigate}>
 				{guild.icon ? (
 					<img
 						src={REST.makeCDNUrl(
