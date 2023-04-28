@@ -2,15 +2,16 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { AuthenticationGuard } from "./components/guards/AuthenticationGuard";
-import LoadingPage from "./pages/LoadingPage";
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFound";
 import RegistrationPage from "./pages/RegistrationPage";
 
 import { reaction } from "mobx";
+import Loader from "./components/Loader";
 import { UnauthenticatedGuard } from "./components/guards/UnauthenticatedGuard";
+import AppPage from "./pages/AppPage";
 import LogoutPage from "./pages/LogoutPage";
-import RootPage from "./pages/RootPage";
+import ChannelPage from "./pages/subpages/ChannelPage";
 import { useAppStore } from "./stores/AppStore";
 import { Globals } from "./utils/Globals";
 
@@ -54,36 +55,39 @@ function App() {
 		},
 	);
 
-	if (app.isAppLoading) {
-		return <LoadingPage />;
-	}
-
 	return (
-		<Routes>
-			<Route
-				index
-				path="/"
-				element={<AuthenticationGuard component={RootPage} />}
-			/>
-			<Route
-				index
-				path="/app"
-				element={<AuthenticationGuard component={RootPage} />}
-			/>
-			<Route
-				path="/login"
-				element={<UnauthenticatedGuard component={LoginPage} />}
-			/>
-			<Route
-				path="/register"
-				element={<UnauthenticatedGuard component={RegistrationPage} />}
-			/>
-			<Route
-				path="/logout"
-				element={<AuthenticationGuard component={LogoutPage} />}
-			/>
-			<Route path="*" element={<NotFoundPage />} />
-		</Routes>
+		<Loader>
+			<Routes>
+				<Route
+					index
+					path="/"
+					element={<AuthenticationGuard component={AppPage} />}
+				/>
+				<Route
+					path="/app"
+					element={<AuthenticationGuard component={AppPage} />}
+				/>
+				<Route
+					path="/channels/:channelId"
+					element={<AuthenticationGuard component={ChannelPage} />}
+				/>
+				<Route
+					path="/login"
+					element={<UnauthenticatedGuard component={LoginPage} />}
+				/>
+				<Route
+					path="/register"
+					element={
+						<UnauthenticatedGuard component={RegistrationPage} />
+					}
+				/>
+				<Route
+					path="/logout"
+					element={<AuthenticationGuard component={LogoutPage} />}
+				/>
+				<Route path="*" element={<NotFoundPage />} />
+			</Routes>
+		</Loader>
 	);
 }
 
