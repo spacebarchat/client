@@ -80,9 +80,9 @@ export const ThemePresets: Record<string, Theme> = {
 		warningContrastText: "",
 	},
 	dark: {
-		backgroundPrimary: "#232120",
-		backgroundPrimaryAlt: "#312e2d",
-		backgroundSecondary: "#1b1918",
+		backgroundPrimary: "#242424",
+		backgroundPrimaryAlt: "#2b2b2b",
+		backgroundSecondary: "#1b1b1b",
 		backgroundTertiary: "#141414",
 		text: "#e9e2e1",
 		textSecondary: "#bdbdbd",
