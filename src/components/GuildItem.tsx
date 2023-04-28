@@ -15,15 +15,25 @@ const Wrapper = styled(Container)`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	transition: border-radius 0.2s ease, background-color 0.2s ease;
+
+	&:hover {
+		border-radius: 30%;
+		background-color: var(--primary);
+	}
 `;
 
 interface Props {
 	guildId: string;
 }
 
+/**
+ * List item for use in the guild sidebar
+ */
 function GuildItem(props: Props) {
 	const app = useAppStore();
 	const guild = app.guilds.get(props.guildId);
+
 	if (!guild) return null;
 
 	return (
@@ -42,7 +52,9 @@ function GuildItem(props: Props) {
 						height={48}
 					/>
 				) : (
-					<span>{guild?.acronym}</span>
+					<span style={{ fontSize: "18px", fontWeight: "bold" }}>
+						{guild?.acronym}
+					</span>
 				)}
 			</Wrapper>
 		</Tooltip>
