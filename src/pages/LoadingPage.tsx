@@ -1,4 +1,3 @@
-import { observer } from "mobx-react-lite";
 import PulseLoader from "react-spinners/PulseLoader";
 import styled from "styled-components";
 import { ReactComponent as SpacebarLogoBlue } from "../assets/images/logo/Logo-Blue.svg";
@@ -28,4 +27,4 @@ function LoadingPage() {
 	);
 }
 
-export default observer(LoadingPage);
+export default LoadingPage;
