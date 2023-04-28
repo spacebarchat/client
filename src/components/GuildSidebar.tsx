@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 import GuildItem from "./GuildItem";
@@ -10,6 +11,10 @@ const List = styled.ul`
 	flex-direction: column;
 	flex: 0 0 48px;
 	align-items: center;
+
+	@media (max-width: 1080px) {
+		display: none;
+	}
 `;
 
 const ListItem = styled.li`
@@ -31,4 +36,4 @@ function GuildSidebar() {
 	);
 }
 
-export default GuildSidebar;
+export default observer(GuildSidebar);
