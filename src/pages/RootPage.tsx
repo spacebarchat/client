@@ -1,5 +1,7 @@
 import { observer } from "mobx-react-lite";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Button from "../components/Button";
 import Container from "../components/Container";
 import GuildSidebar from "../components/GuildSidebar";
 import { useAppStore } from "../stores/AppStore";
@@ -30,6 +32,7 @@ const Filler3 = styled.div`
 
 function RootPage() {
 	const app = useAppStore();
+	const navigate = useNavigate();
 
 	if (!app.isReady) {
 		return <LoadingPage />;
@@ -39,7 +42,9 @@ function RootPage() {
 		<Wrapper>
 			<GuildSidebar />
 			<Filler1 />
-			<Filler2 />
+			<Filler2>
+				<Button onClick={() => navigate("/logout")}>Logout</Button>
+			</Filler2>
 			<Filler3 />
 		</Wrapper>
 	);
