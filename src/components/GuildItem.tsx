@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 import REST from "../utils/REST";
 import Container from "./Container";
+import Tooltip from "./Tooltip";
 
 const Wrapper = styled(Container)`
 	margin-top: 9px;
@@ -26,23 +27,25 @@ function GuildItem(props: Props) {
 	if (!guild) return null;
 
 	return (
-		<Wrapper>
-			{guild.icon ? (
-				<img
-					src={REST.makeCDNUrl(
-						CDNRoutes.guildIcon(
-							props.guildId,
-							guild?.icon,
-							ImageFormat.PNG,
-						),
-					)}
-					width={48}
-					height={48}
-				/>
-			) : (
-				<span>{guild?.acronym}</span>
-			)}
-		</Wrapper>
+		<Tooltip title={guild.name} placement="right">
+			<Wrapper>
+				{guild.icon ? (
+					<img
+						src={REST.makeCDNUrl(
+							CDNRoutes.guildIcon(
+								props.guildId,
+								guild?.icon,
+								ImageFormat.PNG,
+							),
+						)}
+						width={48}
+						height={48}
+					/>
+				) : (
+					<span>{guild?.acronym}</span>
+				)}
+			</Wrapper>
+		</Tooltip>
 	);
 }
 
