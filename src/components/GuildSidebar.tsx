@@ -8,8 +8,7 @@ const List = styled.ul`
 	margin: 0;
 	display: flex;
 	flex-direction: column;
-	flex-basis: 72px;
-	flex: 1;
+	flex: 0 1 72px;
 `;
 
 const ListItem = styled.li`
