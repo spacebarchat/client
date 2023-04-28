@@ -6,6 +6,11 @@ import REST from "../utils/REST";
 import Container from "./Container";
 import Tooltip from "./Tooltip";
 
+const ListItem = styled.li`
+	padding: 0;
+	margin: 0;
+`;
+
 const Wrapper = styled(Container)`
 	margin-top: 9px;
 	padding: 0;
@@ -31,7 +36,7 @@ interface Props {
 /**
  * List item for use in the guild sidebar
  */
-function GuildItem(props: Props) {
+function Guild(props: Props) {
 	const app = useAppStore();
 	const navigate = useNavigate();
 	const guild = app.guilds.get(props.guildId);
@@ -43,28 +48,30 @@ function GuildItem(props: Props) {
 	};
 
 	return (
-		<Tooltip title={guild.name} placement="right">
-			<Wrapper onClick={doNavigate}>
-				{guild.icon ? (
-					<img
-						src={REST.makeCDNUrl(
-							CDNRoutes.guildIcon(
-								props.guildId,
-								guild?.icon,
-								ImageFormat.PNG,
-							),
-						)}
-						width={48}
-						height={48}
-					/>
-				) : (
-					<span style={{ fontSize: "18px", fontWeight: "bold" }}>
-						{guild?.acronym}
-					</span>
-				)}
-			</Wrapper>
-		</Tooltip>
+		<ListItem>
+			<Tooltip title={guild.name} placement="right">
+				<Wrapper onClick={doNavigate}>
+					{guild.icon ? (
+						<img
+							src={REST.makeCDNUrl(
+								CDNRoutes.guildIcon(
+									props.guildId,
+									guild?.icon,
+									ImageFormat.PNG,
+								),
+							)}
+							width={48}
+							height={48}
+						/>
+					) : (
+						<span style={{ fontSize: "18px", fontWeight: "bold" }}>
+							{guild?.acronym}
+						</span>
+					)}
+				</Wrapper>
+			</Tooltip>
+		</ListItem>
 	);
 }
 
-export default GuildItem;
+export default Guild;

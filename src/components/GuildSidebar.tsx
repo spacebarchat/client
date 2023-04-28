@@ -1,7 +1,9 @@
 import { observer } from "mobx-react-lite";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
-import GuildItem from "./GuildItem";
+import Guild from "./Guild";
+import SidebarAction from "./SidebarAction";
 
 const List = styled.ul`
 	list-style: none;
@@ -17,20 +19,29 @@ const List = styled.ul`
 	}
 `;
 
-const ListItem = styled.li`
-	padding: 0;
-	margin: 0;
+const Hr = styled.hr`
+	width: 100%;
+	margin-top: 12px;
 `;
 
 function GuildSidebar() {
 	const app = useAppStore();
+	const navigate = useNavigate();
 
 	return (
 		<List>
+			<SidebarAction
+				key="home"
+				tooltip="Home"
+				icon={{
+					iconName: "MdHome",
+				}}
+				action={() => navigate("/channels/@me")}
+				margin={false}
+			/>
+			<Hr key="hr" />
 			{app.guilds.getAll().map((guild) => (
-				<ListItem key={guild.id}>
-					<GuildItem guildId={guild.id} />
-				</ListItem>
+				<Guild key={guild.id} guildId={guild.id} />
 			))}
 		</List>
 	);

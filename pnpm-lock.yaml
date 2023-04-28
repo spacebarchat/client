@@ -16,6 +16,9 @@ dependencies:
   '@hcaptcha/react-hcaptcha':
     specifier: ^1.8.0
     version: 1.8.0(react-dom@18.2.0)(react@18.2.0)
+  '@loadable/component':
+    specifier: ^5.15.3
+    version: 5.15.3(react@18.2.0)
   '@mattjennings/react-modal-stack':
     specifier: ^1.0.4
     version: 1.0.4(react@18.2.0)
@@ -111,6 +114,9 @@ devDependencies:
   '@craco/craco':
     specifier: ^7.1.0
     version: 7.1.0(@types/node@16.18.16)(postcss@8.4.23)(react-scripts@5.0.1)(typescript@4.9.5)
+  '@types/loadable__component':
+    specifier: ^5.13.4
+    version: 5.13.4
   '@types/styled-components':
     specifier: ^5.1.26
     version: 5.1.26
@@ -2602,6 +2608,18 @@ packages:
   /@leichtgewicht/ip-codec@2.0.4:
     resolution: {integrity: sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==}
 
+  /@loadable/component@5.15.3(react@18.2.0):
+    resolution: {integrity: sha512-VOgYgCABn6+/7aGIpg7m0Ruj34tGetaJzt4bQ345FwEovDQZ+dua+NWLmuJKv8rWZyxOUSfoJkmGnzyDXH2BAQ==}
+    engines: {node: '>=8'}
+    peerDependencies:
+      react: ^16.3.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.21.0
+      hoist-non-react-statics: 3.3.2
+      react: 18.2.0
+      react-is: 16.13.1
+    dev: false
+
   /@mattjennings/react-modal-stack@1.0.4(react@18.2.0):
     resolution: {integrity: sha512-9QAanK1kHBxQMgW0wEozBC95CV65NIeNEX/G2fCeNWvOD1V4g9F0XsySFd325snvte+NIb5M0+QRwKjY9BxB0g==}
     engines: {node: '>=10'}
@@ -3244,6 +3262,12 @@ packages:
 
   /@types/json5@0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+
+  /@types/loadable__component@5.13.4:
+    resolution: {integrity: sha512-YhoCCxyuvP2XeZNbHbi8Wb9EMaUJuA2VGHxJffcQYrJKIKSkymJrhbzsf9y4zpTmr5pExAAEh5hbF628PAZ8Dg==}
+    dependencies:
+      '@types/react': 18.0.28
+    dev: true
 
   /@types/lodash@4.14.191:
     resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
