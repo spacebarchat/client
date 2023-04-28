@@ -22,7 +22,7 @@ function LoadingPage() {
 		<Container>
 			<Wrapper>
 				<SpacebarLogo />
-				<PulseLoader color="var(--brand-secondary)" />
+				<PulseLoader color="var(--text)" />
 			</Wrapper>
 		</Container>
 	);

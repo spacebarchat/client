@@ -3,32 +3,38 @@ import { createGlobalStyle } from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 
 export type ThemeVariables =
-	| "brandPrimary"
-	| "brandSecondary"
-	| "primary"
-	| "primaryAlt"
-	| "secondary"
-	| "tertiary"
+	| "backgroundPrimary"
+	| "backgroundPrimaryAlt"
+	| "backgroundSecondary"
+	| "backgroundTertiary"
 	| "text"
-	| "textMuted"
+	| "textSecondary"
+	| "textDisabled"
+	| "textHint"
 	| "textLink"
 	| "inputBackground"
 	| "error"
-	| "buttonPrimary"
-	| "buttonPrimaryHover"
-	| "buttonPrimaryActive"
-	| "buttonSecondary"
-	| "buttonSecondaryHover"
-	| "buttonSecondaryActive"
-	| "buttonDanger"
-	| "buttonDangerHover"
-	| "buttonDangerActive"
-	| "buttonSuccess"
-	| "buttonSuccessHover"
-	| "buttonSuccessActive"
-	| "buttonWarning"
-	| "buttonWarningHover"
-	| "buttonWarningActive";
+	| "divider"
+	| "primary"
+	| "primaryLight"
+	| "primaryDark"
+	| "primaryContrastText"
+	| "secondary"
+	| "secondaryLight"
+	| "secondaryDark"
+	| "secondaryContrastText"
+	| "danger"
+	| "dangerLight"
+	| "dangerDark"
+	| "dangerContrastText"
+	| "success"
+	| "successLight"
+	| "successDark"
+	| "successContrastText"
+	| "warning"
+	| "warningLight"
+	| "warningDark"
+	| "warningContrastText";
 
 export type Overrides = {
 	[variable in ThemeVariables]: string;
@@ -40,61 +46,72 @@ export type Theme = Overrides & {
 
 export const ThemePresets: Record<string, Theme> = {
 	light: {
-		brandPrimary: "#0185ff",
-		brandSecondary: "#ffffff",
-		primary: "#ede8e7",
-		primaryAlt: "",
-		secondary: "#ebe5e4",
-		tertiary: "#e9e2e1",
+		backgroundPrimary: "#ffffff",
+		backgroundPrimaryAlt: "",
+		backgroundSecondary: "#ebe5e4",
+		backgroundTertiary: "#e9e2e1",
 		text: "#000000",
-		textMuted: "#232120",
+		textSecondary: "#bdbdbd",
+		textDisabled: "#909090",
+		textHint: "#22194D",
 		textLink: "#00a8fc",
 		inputBackground: "#757575",
 		error: "#e83f36",
-		buttonPrimary: "",
-		buttonPrimaryHover: "",
-		buttonPrimaryActive: "",
-		buttonSecondary: "",
-		buttonSecondaryHover: "",
-		buttonSecondaryActive: "",
-		buttonDanger: "",
-		buttonDangerHover: "",
-		buttonDangerActive: "",
-		buttonSuccess: "",
-		buttonSuccessHover: "",
-		buttonSuccessActive: "",
-		buttonWarning: "",
-		buttonWarningHover: "",
-		buttonWarningActive: "",
+		divider: "#3c3c3c",
+		primary: "",
+		primaryLight: "",
+		primaryDark: "",
+		primaryContrastText: "",
+		secondary: "",
+		secondaryLight: "",
+		secondaryDark: "",
+		secondaryContrastText: "",
+		danger: "",
+		dangerLight: "",
+		dangerDark: "",
+		dangerContrastText: "",
+		success: "",
+		successLight: "",
+		successDark: "",
+		successContrastText: "",
+		warning: "",
+		warningLight: "",
+		warningDark: "",
+		warningContrastText: "",
 	},
 	dark: {
-		brandPrimary: "#0185ff",
-		brandSecondary: "#ffffff",
-		primary: "#232120",
-		primaryAlt: "#312e2d",
-		secondary: "#1b1918",
-		tertiary: "#141212",
+		backgroundPrimary: "#232120",
+		backgroundPrimaryAlt: "#312e2d",
+		backgroundSecondary: "#1b1918",
+		backgroundTertiary: "#141414",
 		text: "#e9e2e1",
-		textMuted: "#85898f",
+		textSecondary: "#bdbdbd",
+		textDisabled: "#909090",
+		textHint: "#22194D",
 		textLink: "#00a8fc",
 		inputBackground: "#121212",
 		error: "#e83f36",
-		// buttons
-		buttonPrimary: "#0185ff",
-		buttonPrimaryHover: "#0078e6",
-		buttonPrimaryActive: "#006acd",
-		buttonSecondary: "#4a4544",
-		buttonSecondaryHover: "#746d69",
-		buttonSecondaryActive: "#5f5a59",
-		buttonDanger: "#ff3a3b",
-		buttonDangerHover: "#ff2d2f",
-		buttonDangerActive: "#ff2425",
-		buttonSuccess: "#34af65",
-		buttonSuccessHover: "#31a660",
-		buttonSuccessActive: "#2d9657",
-		buttonWarning: "#faa61a",
-		buttonWarningHover: "#e69105",
-		buttonWarningActive: "#c27b04",
+		divider: "#3c3c3c",
+		primary: "#0185ff",
+		primaryLight: "#339dff",
+		primaryDark: "#005db2",
+		primaryContrastText: "#ffffff",
+		secondary: "#ff7c01",
+		secondaryLight: "#ff9633",
+		secondaryDark: "#b25600",
+		secondaryContrastText: "#040404",
+		danger: "#ff3a3b",
+		dangerLight: "#ff6162",
+		dangerDark: "#b22829",
+		dangerContrastText: "#ffffff",
+		success: "#34af65",
+		successLight: "#5cbf83",
+		successDark: "#247a46",
+		successContrastText: "#040404",
+		warning: "#faa61a",
+		warningLight: "#fbb747",
+		warningDark: "#af7412",
+		warningContrastText: "#040404",
 	},
 };
 
@@ -115,7 +132,7 @@ export const generateVariables = (theme: Theme) => {
 			const g = parseInt(colour.substring(3, 5), 16);
 			const b = parseInt(colour.substring(5, 7), 16);
 			return `--${toDashed(key)}: ${theme[key]}; --${toDashed(
-				key
+				key,
 			)}-rgb: rgb(${r}, ${g}, ${b});`;
 		} catch {
 			return `--${toDashed(key)}: ${theme[key]};`;

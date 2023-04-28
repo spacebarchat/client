@@ -8,11 +8,11 @@ export const Wrapper = styled(Container)`
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
-	background-color: var(--secondary);
+	background-color: var(--background-secondary);
 `;
 
 export const AuthBox = styled(Container)`
-	background-color: var(--primary-alt);
+	background-color: var(--background-primary-alt);
 	padding: 32px;
 	font-size: 18px;
 	color: var(--text-muted);

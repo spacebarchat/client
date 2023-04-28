@@ -13,7 +13,7 @@ const Container = styled.div`
 
 const Input = styled.input<{ error?: boolean }>`
 	outline: none;
-	background: var(--secondary);
+	background: var(--background-secondary);
 	padding: 10px;
 	font-size: 16px;
 	border-radius: 12px;

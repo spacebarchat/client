@@ -10,17 +10,17 @@ background: ${(props) => {
 	if (props.outlined) return "transparent";
 	switch (props.variant) {
 		case "primary":
-			return "var(--button-primary)";
+			return "var(--primary)";
 		case "secondary":
-			return "var(--button-secondary)";
+			return "var(--secondary)";
 		case "danger":
-			return "var(--button-danger)";
+			return "var(--danger)";
 		case "success":
-			return "var(--button-success)";
+			return "var(--success)";
 		case "warning":
-			return "var(--button-warning)";
+			return "var(--warning)";
 		default:
-			return "var(--button-primary)";
+			return "var(--primary)";
 	}
 }};
 
@@ -28,17 +28,17 @@ border: ${(props) => {
 	if (!props.outlined) return "none";
 	switch (props.variant) {
 		case "primary":
-			return "1px solid var(--button-primary)";
+			return "1px solid var(--primary)";
 		case "secondary":
-			return "1px solid var(--button-secondary)";
+			return "1px solid var(--secondary)";
 		case "danger":
-			return "1px solid var(--button-danger)";
+			return "1px solid var(--danger)";
 		case "success":
-			return "1px solid var(--button-success)";
+			return "1px solid var(--success)";
 		case "warning":
-			return "1px solid var(--button-warning)";
+			return "1px solid var(--warning)";
 		default:
-			return "1px solid var(--button-primary)";
+			return "1px solid var(--primary)";
 	}
 }};
 
@@ -55,37 +55,37 @@ opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 
 &:hover {
     background: ${(props) => {
-			switch (props.variant) {
-				case "primary":
-					return "var(--button-primary-hover)";
-				case "secondary":
-					return "var(--button-secondary-hover)";
-				case "danger":
-					return "var(--button-danger-hover)";
-				case "success":
-					return "var(--button-success-hover)";
-				case "warning":
-					return "var(--button-warning-hover)";
-				default:
-					return "var(--button-primary-hover)";
-			}
-		}};
+		switch (props.variant) {
+			case "primary":
+				return "var(--primary-light)";
+			case "secondary":
+				return "var(--secondary-light)";
+			case "danger":
+				return "var(--danger-light)";
+			case "success":
+				return "var(--success-light)";
+			case "warning":
+				return "var(--warning-light)";
+			default:
+				return "var(--primary-light)";
+		}
+	}};
 
 &:active {
     background: ${(props) => {
-			switch (props.variant) {
-				case "primary":
-					return "var(--button-primary-active)";
-				case "secondary":
-					return "var(--button-secondary-active)";
-				case "danger":
-					return "var(--button-danger-active)";
-				case "success":
-					return "var(--button-success-active)";
-				case "warning":
-					return "var(--button-warning-active)";
-				default:
-					return "var(--button-primary-active)";
-			}
-		}};
+		switch (props.variant) {
+			case "primary":
+				return "var(--primary-dark)";
+			case "secondary":
+				return "var(--secondary-dark)";
+			case "danger":
+				return "var(--danger-dark)";
+			case "success":
+				return "var(--success-dark)";
+			case "warning":
+				return "var(--warning-dark)";
+			default:
+				return "var(--primary-dark)";
+		}
+	}};
 `;

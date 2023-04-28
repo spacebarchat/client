@@ -10,7 +10,7 @@ const Wrapper = styled(Container)`
 	width: 48px;
 	height: 48px;
 	border-radius: 50%;
-	background-color: var(--secondary);
+	background-color: var(--background-secondary);
 	display: flex;
 	align-items: center;
 	justify-content: center;
