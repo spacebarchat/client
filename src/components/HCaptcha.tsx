@@ -55,7 +55,7 @@ interface Props {
 	captchaRef: React.RefObject<HCaptchaLib>;
 	onLoad?: () => void;
 	onChalExpired?: () => void;
-	onError?: (e: any) => void;
+	onError?: (e: unknown) => void;
 	onExpire?: () => void;
 	onVerify?: (token: string) => void;
 }

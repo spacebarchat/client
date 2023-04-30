@@ -13,11 +13,11 @@ export default class User {
 	@observable username: string;
 	@observable discriminator: string;
 	@observable avatar: string | null;
-	@observable bot: boolean = false;
-	@observable public_flags: number = 0;
-	@observable bio: string = "";
+	@observable bot = false;
+	@observable public_flags = 0;
+	@observable bio = "";
 	@observable premium_since: string | null = null;
-	@observable premium_type: number = 0;
+	@observable premium_type = 0;
 	@observable accent_color: unknown | null;
 	@observable pronouns?: string;
 	@observable theme_colors?: unknown;

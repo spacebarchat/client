@@ -2,6 +2,7 @@ export type OneKeyFrom<
 	T,
 	M = object,
 	K extends keyof T = keyof T,
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 > = K extends any
 	? M &
 			Pick<Required<T>, K> &

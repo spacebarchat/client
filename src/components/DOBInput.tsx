@@ -107,7 +107,7 @@ export class DOBInput extends Component<Props, State> {
 		},
 	};
 
-	componentDidUpdate(prevProps: any, prevState: any) {
+	componentDidUpdate(prevProps: Props, prevState: State) {
 		if (prevState !== this.state) {
 			this.props.onErrorChange(this.state.errors);
 

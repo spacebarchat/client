@@ -56,11 +56,11 @@ const Header = styled.h1`
 	color: var(--text);
 `;
 
-const SubHeader = styled.h2`
-	color: var(--text-muted);
-	font-weight: 400;
-	font-size: 16px;
-`;
+// const SubHeader = styled.h2`
+// 	color: var(--text-muted);
+// 	font-weight: 400;
+// 	font-size: 16px;
+// `;
 
 const FormContainer = styled.form`
 	width: 100%;
@@ -164,7 +164,7 @@ function RegistrationPage() {
 		clearErrors,
 	} = useForm<FormValues>();
 
-	const dobRegister = register("date_of_birth", {
+	const _ = register("date_of_birth", {
 		required: true,
 		pattern: /^\d{4}-\d{2}-\d{2}$/,
 	});

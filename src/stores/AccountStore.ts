@@ -12,10 +12,10 @@ export default class AccountStore {
 	@observable avatar: string | null;
 	@observable avatarDecoration?: unknown;
 	@observable email: string | null = null;
-	@observable verified: boolean = false;
-	@observable bot: boolean = false;
-	@observable system: boolean = false;
-	@observable mfaEnabled: boolean = false;
+	@observable verified = false;
+	@observable bot = false;
+	@observable system = false;
+	@observable mfaEnabled = false;
 	@observable premiumType?:
 		| UserPremiumType.NitroClassic
 		| UserPremiumType.Nitro

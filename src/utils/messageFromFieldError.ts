@@ -24,6 +24,7 @@ export function messageFromFieldError(
 				return r ? { field: prevKey, error: r.message } : null;
 			}
 			if (typeof obj === "object") {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				return messageFromFieldError(obj as any, key);
 			}
 		}

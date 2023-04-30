@@ -47,8 +47,8 @@ export default class GatewayConnectionStore {
 	private dispatchHandlers: Map<GatewayDispatchEvents, Function> = new Map();
 	private connectionStartTime?: number;
 	private identifyStartTime?: number;
-	private sequence: number = 0;
-	private heartbeatAck: boolean = true;
+	private sequence = 0;
+	private heartbeatAck = true;
 	private lazyRequestChannels = new Map<string, Snowflake[]>(); // guild, channels
 
 	constructor(app: AppStore) {
@@ -154,6 +154,7 @@ export default class GatewayConnectionStore {
 		this.handleIdentify();
 	};
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	private onmessage = (e: MessageEvent<any>) => {
 		const payload: GatewayReceivePayload = JSON.parse(e.data);
 		if (payload.op !== GatewayOpcodes.Dispatch) {

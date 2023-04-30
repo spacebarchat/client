@@ -21,7 +21,6 @@ function Icon(props: IconProps) {
 		},
 	});
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { iconName, ...propSpread } = props;
 	return <ElementIcon {...propSpread} />;
 }
