@@ -10,7 +10,7 @@
 	"bugs": {
 		"url": "https://github.com/spacebarchat/client/issues"
 	},
-	"homepage": "https://spacebar.chat",
+	"homepage": "https://app.spacebar.chat",
 	"dependencies": {
 		"@emotion/react": "^11.10.6",
 		"@emotion/styled": "^11.10.6",
