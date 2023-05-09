@@ -1,26 +1,23 @@
+import { Tooltip } from "@mui/material";
 import { CDNRoutes, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 import REST from "../utils/REST";
 import Container from "./Container";
-import Tooltip from "./Tooltip";
+import SidebarListItem from "./SidebarListItem";
+import SidebarPill, { PillType } from "./SidebarPill";
 
-const ListItem = styled.li`
-	padding: 0;
-	margin: 0;
-`;
-
-const Wrapper = styled(Container)`
-	margin-top: 9px;
-	padding: 0;
-	width: 48px;
-	height: 48px;
-	border-radius: 50%;
-	background-color: var(--background-secondary);
+const Wrapper = styled(Container)<{ active?: boolean }>`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	width: 48px;
+	height: 48px;
+	border-radius: ${(props) => (props.active ? "30%" : "50%")};
+	background-color: ${(props) =>
+		props.active ? "var(--primary)" : "var(--background-secondary)"};
 	transition: border-radius 0.2s ease, background-color 0.2s ease;
 
 	&:hover {
@@ -31,15 +28,18 @@ const Wrapper = styled(Container)`
 
 interface Props {
 	guildId: string;
+	active?: boolean;
 }
 
 /**
  * List item for use in the guild sidebar
  */
-function Guild(props: Props) {
+function GuildItem(props: Props) {
 	const app = useAppStore();
 	const navigate = useNavigate();
 	const guild = app.guilds.get(props.guildId);
+	const [pillType, setPillType] = React.useState<PillType>("none");
+	const [isHovered, setHovered] = React.useState(false);
 
 	if (!guild) return null;
 
@@ -47,10 +47,23 @@ function Guild(props: Props) {
 		navigate(`/channels/${props.guildId}`);
 	};
 
+	React.useEffect(() => {
+		if (props.active) return setPillType("active");
+		else if (isHovered) return setPillType("hover");
+		// TODO: unread
+		else return setPillType("none");
+	}, [props.active, isHovered]);
+
 	return (
-		<ListItem>
+		<SidebarListItem>
+			<SidebarPill type={pillType} />
 			<Tooltip title={guild.name} placement="right">
-				<Wrapper onClick={doNavigate}>
+				<Wrapper
+					onClick={doNavigate}
+					active={props.active}
+					onMouseEnter={() => setHovered(true)}
+					onMouseLeave={() => setHovered(false)}
+				>
 					{guild.icon ? (
 						<img
 							src={REST.makeCDNUrl(
@@ -70,8 +83,8 @@ function Guild(props: Props) {
 					)}
 				</Wrapper>
 			</Tooltip>
-		</ListItem>
+		</SidebarListItem>
 	);
 }
 
-export default Guild;
+export default GuildItem;

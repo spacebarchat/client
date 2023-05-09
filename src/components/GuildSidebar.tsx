@@ -1,13 +1,14 @@
 import { observer } from "mobx-react-lite";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
-import Guild from "./Guild";
+import GuildItem from "./GuildItem";
 import SidebarAction from "./SidebarAction";
+import SidebarListItem from "./SidebarListItem";
 
 const List = styled.ul`
 	list-style: none;
-	padding: 12px;
+	padding: 12px 12px 12px 0;
 	margin: 0;
 	display: flex;
 	flex-direction: column;
@@ -19,14 +20,17 @@ const List = styled.ul`
 	}
 `;
 
-const Hr = styled.hr`
-	width: 100%;
-	margin-top: 12px;
+const Divider = styled.div`
+	height: 2px;
+	width: 32px;
+	border-radius: 1px;
+	background-color: white;
 `;
 
 function GuildSidebar() {
 	const app = useAppStore();
 	const navigate = useNavigate();
+	const { guildId } = useParams();
 
 	return (
 		<List>
@@ -38,11 +42,20 @@ function GuildSidebar() {
 				}}
 				action={() => navigate("/channels/@me")}
 				margin={false}
+				active={guildId === "@me"}
 			/>
-			<Hr key="hr" />
-			{app.guilds.getAll().map((guild) => (
-				<Guild key={guild.id} guildId={guild.id} />
-			))}
+			<SidebarListItem>
+				<Divider key="divider" />
+			</SidebarListItem>
+			<div aria-label="Servers">
+				{app.guilds.getAll().map((guild) => (
+					<GuildItem
+						key={guild.id}
+						guildId={guild.id}
+						active={guild.id === guildId}
+					/>
+				))}
+			</div>
 		</List>
 	);
 }

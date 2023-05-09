@@ -70,7 +70,7 @@ function App() {
 					element={<AuthenticationGuard component={AppPage} />}
 				/>
 				<Route
-					path="/channels/:channelId"
+					path="/channels/:guildId/:channelId?"
 					element={<AuthenticationGuard component={ChannelPage} />}
 				/>
 				<Route
