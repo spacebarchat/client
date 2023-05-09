@@ -8,8 +8,7 @@ import SidebarListItem from "./SidebarListItem";
 
 const List = styled.ul`
 	list-style: none;
-	padding: 12px 12px 12px 0;
-	margin: 0;
+	padding: 0;
 	display: flex;
 	flex-direction: column;
 	flex: 0 0 48px;
