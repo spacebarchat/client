@@ -43,6 +43,8 @@ jobs:
       
     - name: Build
       run: pnpm build
+    
+    - run: echo dev.app.spacebar.chat >> build/CNAME
       
     - name: Deploy
       run: |
