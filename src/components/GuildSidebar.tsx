@@ -29,7 +29,7 @@ const Divider = styled.div`
 function GuildSidebar() {
 	const app = useAppStore();
 	const navigate = useNavigate();
-	const { guildId } = useParams();
+	const { guildId } = useParams<{ guildId: string; channelId: string }>();
 
 	return (
 		<List>

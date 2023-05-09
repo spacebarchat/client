@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
-import ChannelList from "../../components/ChannelList";
+import ChannelSidebar from "../../components/ChannelSidebar";
 import Chat from "../../components/Chat";
 import Container from "../../components/Container";
 import GuildSidebar from "../../components/GuildSidebar";
@@ -14,7 +14,7 @@ const Wrapper = styled(Container)`
 function Test() {
 	return (
 		<>
-			<ChannelList />
+			<ChannelSidebar />
 			<Chat />
 			<MemberList />
 		</>
