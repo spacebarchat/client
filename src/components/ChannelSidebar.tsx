@@ -1,4 +1,6 @@
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useAppStore } from "../stores/AppStore";
 import ChannelHeader from "./ChannelHeader";
 import ChannelList from "./ChannelList";
 import Container from "./Container";
@@ -15,18 +17,18 @@ const Wrapper = styled(Container)`
 `;
 
 function ChannelSidebar() {
-	// const app = useAppStore();
-	// const { guildId, channelId } = useParams<{
-	// 	guildId: string;
-	// 	channelId: string;
-	// }>();
-	// if (!guildId) return <EmptyChannelList />;
-	// const guild = app.guilds.get(guildId);
-	// if (!guild) return <EmptyChannelList />;
+	const app = useAppStore();
+	const { guildId, channelId } = useParams<{
+		guildId: string;
+		channelId: string;
+	}>();
+	if (!guildId) return null;
+	const guild = app.guilds.get(guildId);
+	if (!guild) return null;
 
 	return (
 		<Wrapper>
-			<ChannelHeader />
+			<ChannelHeader guild={guild} />
 			<ChannelList />
 		</Wrapper>
 	);
