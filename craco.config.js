@@ -6,11 +6,11 @@ module.exports = {
 			plugin: CracoEsbuildPlugin,
 			options: {
 				esbuildMinimizerOptions: {
-					target: "ES2020",
+					target: "ESNext",
 				},
 				esbuildLoaderOptions: {
 					loader: "tsx",
-					target: "ES2020",
+					target: "ESNext",
 				},
 			},
 		},
