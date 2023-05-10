@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Guild from "../stores/objects/Guild";
 import Container from "./Container";
 
 const Wrapper = styled(Container)`
@@ -13,13 +12,13 @@ const Wrapper = styled(Container)`
 `;
 
 interface Props {
-	guild: Guild;
+	text: string;
 }
 
-function ChannelHeader({ guild }: Props) {
+function ChannelHeader({ text }: Props) {
 	return (
 		<Wrapper>
-			<span>{guild.name}</span>
+			<span>{text}</span>
 		</Wrapper>
 	);
 }

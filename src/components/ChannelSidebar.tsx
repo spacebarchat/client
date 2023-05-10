@@ -22,13 +22,12 @@ function ChannelSidebar() {
 		guildId: string;
 		channelId: string;
 	}>();
-	if (!guildId) return null;
-	const guild = app.guilds.get(guildId);
-	if (!guild) return null;
+	const guild = guildId ? app.guilds.get(guildId) : undefined;
 
 	return (
 		<Wrapper>
-			<ChannelHeader guild={guild} />
+			{/* // TODO: replace with dm search if no guild */}
+			<ChannelHeader text={guild?.name ?? "Channel Header"} />
 			<ChannelList />
 		</Wrapper>
 	);
