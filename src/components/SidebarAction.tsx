@@ -65,9 +65,9 @@ function SidebarAction(props: Props) {
 					margin={props.margin}
 					active={props.active}
 				>
-					{/* {props.image && <img {...props.image} />} */}
+					{props.image && <img {...props.image} />}
 					{props.icon && <Icon {...props.icon} />}
-					{/* {props.label && <span>{props.label}</span>} */}
+					{props.label && <span>{props.label}</span>}
 				</Wrapper>
 			</Tooltip>
 		</SidebarListItem>
