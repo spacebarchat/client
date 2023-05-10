@@ -1,4 +1,5 @@
-import "@fontsource/urbanist";
+import "@fontsource/source-code-pro";
+import "@fontsource/source-sans-pro";
 import { ModalStack } from "@mattjennings/react-modal-stack";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
