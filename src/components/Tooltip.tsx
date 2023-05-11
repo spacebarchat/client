@@ -12,11 +12,11 @@ export default styled(({ className, ...props }: MuiTooltipProps) => (
 		borderRadius: 5,
 	},
 	[`& .${tooltipClasses.arrow}`]: {
-		color: "var(--background-tertiary)",
+		color: "black",
 	},
 	[`& .${tooltipClasses.tooltip}`]: {
-		backgroundColor: "var(--background-tertiary)",
-		fontSize: "16px",
+		backgroundColor: "black",
+		fontSize: "14px",
 		fontWeight: "600",
 		padding: "8px 12px",
 	},
