@@ -1,4 +1,3 @@
-import { Tooltip } from "@mui/material";
 import { CDNRoutes, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +7,7 @@ import REST from "../utils/REST";
 import Container from "./Container";
 import SidebarListItem from "./SidebarListItem";
 import SidebarPill, { PillType } from "./SidebarPill";
+import Tooltip from "./Tooltip";
 
 const Wrapper = styled(Container)<{ active?: boolean }>`
 	display: flex;
