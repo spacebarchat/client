@@ -6,6 +6,7 @@ export type ThemeVariables =
 	| "backgroundPrimary"
 	| "backgroundPrimaryAlt"
 	| "backgroundSecondary"
+	| "backgroundSecondaryAlt"
 	| "backgroundTertiary"
 	| "text"
 	| "textSecondary"
@@ -49,6 +50,7 @@ export const ThemePresets: Record<string, Theme> = {
 		backgroundPrimary: "#ffffff",
 		backgroundPrimaryAlt: "",
 		backgroundSecondary: "#ebe5e4",
+		backgroundSecondaryAlt: "#ebe5e4",
 		backgroundTertiary: "#e9e2e1",
 		text: "#000000",
 		textSecondary: "#bdbdbd",
@@ -83,6 +85,7 @@ export const ThemePresets: Record<string, Theme> = {
 		backgroundPrimary: "#242424",
 		backgroundPrimaryAlt: "#2b2b2b",
 		backgroundSecondary: "#1b1b1b",
+		backgroundSecondaryAlt: "#181818",
 		backgroundTertiary: "#141414",
 		text: "#e9e2e1",
 		textSecondary: "#bdbdbd",

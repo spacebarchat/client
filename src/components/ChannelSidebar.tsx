@@ -4,6 +4,7 @@ import { useAppStore } from "../stores/AppStore";
 import ChannelHeader from "./ChannelHeader";
 import ChannelList from "./ChannelList";
 import Container from "./Container";
+import UserPanel from "./UserPanel";
 
 const Wrapper = styled(Container)`
 	display: flex;
@@ -29,6 +30,7 @@ function ChannelSidebar() {
 			{/* // TODO: replace with dm search if no guild */}
 			<ChannelHeader text={guild?.name ?? "Channel Header"} />
 			<ChannelList />
+			<UserPanel />
 		</Wrapper>
 	);
 }

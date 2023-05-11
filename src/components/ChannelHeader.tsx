@@ -18,7 +18,7 @@ interface Props {
 function ChannelHeader({ text }: Props) {
 	return (
 		<Wrapper>
-			<span>{text}</span>
+			<header>{text}</header>
 		</Wrapper>
 	);
 }

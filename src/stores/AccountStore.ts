@@ -1,9 +1,13 @@
 import {
 	APIUser,
+	CDNRoutes,
+	DefaultUserAvatarAssets,
+	ImageFormat,
 	UserFlags,
 	UserPremiumType,
 } from "@spacebarchat/spacebar-api-types/v9";
 import { observable } from "mobx";
+import REST from "../utils/REST";
 
 export default class AccountStore {
 	id: string;
@@ -57,5 +61,22 @@ export default class AccountStore {
 		}
 		// this.phone = user.phone;
 		// this.nsfwAllowed = user.nsfw_allowed;
+	}
+
+	/**
+	 * Gets the users display avatar url
+	 * @returns The URL to the user's avatar or the default avatar if they don't have one.
+	 */
+	getAvatarURL(): string {
+		if (this.avatar)
+			return REST.makeCDNUrl(
+				CDNRoutes.userAvatar(this.id, this.avatar, ImageFormat.PNG),
+			);
+		else
+			return REST.makeCDNUrl(
+				CDNRoutes.defaultUserAvatar(
+					(Number(this.discriminator) % 5) as DefaultUserAvatarAssets,
+				),
+			);
 	}
 }
