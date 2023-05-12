@@ -1,7 +1,7 @@
-import { MdSettings } from "react-icons/md";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 import Avatar from "./Avatar";
+import Icon from "./Icon";
 import IconButton from "./IconButton";
 import Tooltip from "./Tooltip";
 
@@ -81,7 +81,7 @@ function UserPanel() {
 								disabled
 								color="#fff"
 							>
-								<MdSettings size={20} />
+								<Icon icon="mdiCog" size="20px" />
 							</IconButton>
 						</span>
 					</Tooltip>

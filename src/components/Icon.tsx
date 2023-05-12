@@ -1,28 +1,17 @@
-import loadable from "@loadable/component";
-import { IconBaseProps } from "react-icons";
+import * as Icons from "@mdi/js";
+import { Icon as MdiIcon } from "@mdi/react";
+import { IconProps as IconBaseProps } from "@mdi/react/dist/IconProps";
 
-export interface IconProps extends IconBaseProps {
-	iconName: string;
+export interface IconProps extends Omit<IconBaseProps, "path"> {
+	icon: keyof typeof Icons;
 }
 
 function Icon(props: IconProps) {
-	const lib = props.iconName
-		.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-		.split(" ")[0]
-		.toLocaleLowerCase();
+	const path = Icons[props.icon];
+	if (!path) throw new Error(`Invalid icon name ${props.icon}`);
 
-	const ElementIcon = loadable(() => import(`react-icons/${lib}/index.js`), {
-		resolveComponent: (el: JSX.Element) => {
-			if (!el[props.iconName as keyof JSX.Element])
-				throw new Error(
-					`Invalid icon name ${props.iconName} for font lib ${lib}`,
-				);
-			return el[props.iconName as keyof JSX.Element];
-		},
-	});
-
-	const { iconName, ...propSpread } = props;
-	return <ElementIcon {...propSpread} />;
+	const { icon, ...propSpread } = props;
+	return <MdiIcon {...propSpread} path={path} />;
 }
 
 export default Icon;

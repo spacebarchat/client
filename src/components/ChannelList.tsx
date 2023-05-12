@@ -72,8 +72,8 @@ function ChannelList() {
 						<FirstWrapper isCategory={isCategory} active={active}>
 							{channel.channelIcon && (
 								<Icon
-									iconName={channel.channelIcon}
-									size={16}
+									icon={channel.channelIcon}
+									size="16px"
 									style={{
 										marginRight: "8px",
 									}}

@@ -37,8 +37,8 @@ function GuildSidebar() {
 				key="home"
 				tooltip="Home"
 				icon={{
-					iconName: "MdHome",
-					size: 24,
+					icon: "mdiHome",
+					size: "24px",
 				}}
 				action={() => navigate("/channels/@me")}
 				margin={false}

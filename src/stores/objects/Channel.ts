@@ -1,3 +1,4 @@
+import * as Icons from "@mdi/js";
 import type {
 	APIChannel,
 	APIInvite,
@@ -48,7 +49,7 @@ export default class Channel {
 	@observable webhooks?: APIWebhook[];
 	@observable flags: number;
 	@observable defaultThreadRateLimitPerUser: number;
-	@observable channelIcon?: string;
+	@observable channelIcon?: keyof typeof Icons;
 	private hasFetchedMessages = false;
 
 	constructor(app: AppStore, channel: APIChannel) {
@@ -91,44 +92,44 @@ export default class Channel {
 
 		switch (this.type) {
 			case ChannelType.GuildText:
-				this.channelIcon = "FaHashtag";
+				this.channelIcon = "mdiPound";
 				break;
 			case ChannelType.GuildVoice:
-				this.channelIcon = "FaVolumeUp";
+				this.channelIcon = "mdiVolumeHigh";
 				break;
 			case ChannelType.GuildAnnouncement:
 			case ChannelType.AnnouncementThread:
-				this.channelIcon = "FaBullhorn";
+				this.channelIcon = "mdiBullhornVariant";
 				break;
 			case ChannelType.GuildStore:
 			case ChannelType.Transactional:
-				this.channelIcon = "FaTag";
+				this.channelIcon = "mdiStore";
 				break;
 			case ChannelType.Encrypted:
 			case ChannelType.EncryptedThread:
-				this.channelIcon = "FaLock";
+				this.channelIcon = "mdiLock";
 				break;
 			case ChannelType.PublicThread:
 			case ChannelType.PrivateThread:
-				this.channelIcon = "FaComments";
+				this.channelIcon = "mdiCommentMultipleOutline";
 				break;
 			case ChannelType.GuildStageVoice:
-				this.channelIcon = "FaBroadcastTower";
+				this.channelIcon = "mdiBroadcast";
 				break;
 			case ChannelType.GuildForum:
-				this.channelIcon = "FaRegComments";
+				this.channelIcon = "mdiForumOutline";
 				break;
 			case ChannelType.TicketTracker:
-				this.channelIcon = "FaQuestion";
+				this.channelIcon = "mdiTicketOutline";
 				break;
 			case ChannelType.KanBan:
-				this.channelIcon = "FaDev";
+				this.channelIcon = "mdiDeveloperBoard";
 				break;
 			case ChannelType.VoicelessWhiteboard:
-				this.channelIcon = "FaPen";
+				this.channelIcon = "mdiDraw";
 				break;
 			case ChannelType.GuildDirectory:
-				this.channelIcon = "FaFolder";
+				this.channelIcon = "mdiFolder";
 				break;
 		}
 
