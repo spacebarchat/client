@@ -46,7 +46,7 @@ export default class ChannelStore {
 	}
 
 	@computed
-	get mapped() {
+	get mapped(): Channel[] {
 		const channels = this.getAll();
 
 		const result: {
@@ -88,6 +88,10 @@ export default class ChannelStore {
 			category: null,
 		});
 
-		return result;
+		// flatten down to a single array where the category is the first element followed by its children
+		return result
+			.map((x) => [x.category, ...x.children])
+			.flat()
+			.filter((x) => x !== null) as Channel[];
 	}
 }

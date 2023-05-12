@@ -1,31 +1,28 @@
+import { ChannelType } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
+import Icon from "./Icon";
 
-const Wrapper = styled.div`
+const List = styled.div`
 	display: flex;
 	flex: 1 1 auto;
-	background-color: var(--background-secondary);
-`;
-
-const List = styled.ul`
+	flex-direction: column;
 	list-style: none;
-	padding: 0;
 	margin: 0;
-	border: 0;
-	flex: 0 0 240px;
 `;
 
-const CategoryListItem = styled.li`
-	padding-right: 8px;
+const ListItem = styled.li<{ isCategory?: boolean }>`
+	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};
 `;
-
-const ChannelListItem = styled.li<{ active?: boolean }>`
-	cursor: pointer;
-	padding: 4px 8px;
-	list-style: none;
+const FirstWrapper = styled.div<{ isCategory?: boolean; active?: boolean }>`
+	margin-left: ${(props) => (props.isCategory ? "0" : "8px")};
+	height: ${(props) => (props.isCategory ? "28px" : "33px")};
 	border-radius: 4px;
+	align-items: center;
+	display: flex;
+	padding: 0 8px;
 	background-color: ${(props) =>
 		props.active ? "var(--background-primary-alt)" : "transparent"};
 
@@ -34,11 +31,18 @@ const ChannelListItem = styled.li<{ active?: boolean }>`
 	}
 `;
 
+const Text = styled.span<{ isCategory?: boolean }>`
+	font-size: 16px;
+	line-height: 16px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+`;
+
 function EmptyChannelList() {
 	return (
-		<Wrapper>
+		<List>
 			<span>skeleton</span>
-		</Wrapper>
+		</List>
 	);
 }
 
@@ -53,37 +57,34 @@ function ChannelList() {
 	if (!guild) return <EmptyChannelList />;
 
 	return (
-		<Wrapper>
-			<List>
-				{guild.channels.mapped.map((cat) => {
-					return (
-						<CategoryListItem key={cat.id}>
-							{cat.category?.name}
-							<ul>
-								{cat.children.map((channel) => {
-									return (
-										<ChannelListItem
-											key={channel.id}
-											active={channelId === channel.id}
-										>
-											<div
-												onClick={() => {
-													navigate(
-														`/channels/${guildId}/${channel.id}`,
-													);
-												}}
-											>
-												{channel.name}
-											</div>
-										</ChannelListItem>
-									);
-								})}
-							</ul>
-						</CategoryListItem>
-					);
-				})}
-			</List>
-		</Wrapper>
+		<List>
+			{guild.channels.mapped.map((channel) => {
+				const active = channelId === channel.id;
+				const isCategory = channel.type === ChannelType.GuildCategory;
+				return (
+					<ListItem
+						key={channel.id}
+						isCategory={isCategory}
+						onClick={() =>
+							navigate(`/channels/${guild.id}/${channel.id}`)
+						}
+					>
+						<FirstWrapper isCategory={isCategory} active={active}>
+							{channel.channelIcon && (
+								<Icon
+									iconName={channel.channelIcon}
+									size={16}
+									style={{
+										marginRight: "8px",
+									}}
+								/>
+							)}
+							<Text isCategory={isCategory}>{channel.name}</Text>
+						</FirstWrapper>
+					</ListItem>
+				);
+			})}
+		</List>
 	);
 }
 

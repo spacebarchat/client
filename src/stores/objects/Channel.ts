@@ -91,44 +91,44 @@ export default class Channel {
 
 		switch (this.type) {
 			case ChannelType.GuildText:
-				this.channelIcon = "pound";
+				this.channelIcon = "FaHashtag";
 				break;
 			case ChannelType.GuildVoice:
-				this.channelIcon = "volume-high";
+				this.channelIcon = "FaVolumeUp";
 				break;
 			case ChannelType.GuildAnnouncement:
 			case ChannelType.AnnouncementThread:
-				this.channelIcon = "bullhorn-variant";
+				this.channelIcon = "FaBullhorn";
 				break;
 			case ChannelType.GuildStore:
 			case ChannelType.Transactional:
-				this.channelIcon = "tag";
+				this.channelIcon = "FaTag";
 				break;
 			case ChannelType.Encrypted:
 			case ChannelType.EncryptedThread:
-				this.channelIcon = "message-lock";
+				this.channelIcon = "FaLock";
 				break;
 			case ChannelType.PublicThread:
 			case ChannelType.PrivateThread:
-				this.channelIcon = "comment-text-multiple";
+				this.channelIcon = "FaComments";
 				break;
 			case ChannelType.GuildStageVoice:
-				this.channelIcon = "broadcast";
+				this.channelIcon = "FaBroadcastTower";
 				break;
 			case ChannelType.GuildForum:
-				this.channelIcon = "forum";
+				this.channelIcon = "FaRegComments";
 				break;
 			case ChannelType.TicketTracker:
-				this.channelIcon = "ticket-outline";
+				this.channelIcon = "FaQuestion";
 				break;
 			case ChannelType.KanBan:
-				this.channelIcon = "developer-board";
+				this.channelIcon = "FaDev";
 				break;
 			case ChannelType.VoicelessWhiteboard:
-				this.channelIcon = "draw";
+				this.channelIcon = "FaPen";
 				break;
 			case ChannelType.GuildDirectory:
-				this.channelIcon = "folder";
+				this.channelIcon = "FaFolder";
 				break;
 		}
 
