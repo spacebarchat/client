@@ -23,7 +23,7 @@ function ChannelSidebar() {
 		guildId: string;
 		channelId: string;
 	}>();
-	const guild = guildId ? app.guilds.get(guildId) : undefined;
+	const guild = app.guilds.get(guildId!) ?? undefined;
 
 	return (
 		<Wrapper>

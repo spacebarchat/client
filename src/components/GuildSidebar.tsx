@@ -3,8 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 import GuildItem from "./GuildItem";
+import GuildSidebarListItem from "./GuildSidebarListItem";
 import SidebarAction from "./SidebarAction";
-import SidebarListItem from "./SidebarListItem";
 
 const List = styled.ul`
 	list-style: none;
@@ -44,9 +44,9 @@ function GuildSidebar() {
 				margin={false}
 				active={guildId === "@me"}
 			/>
-			<SidebarListItem>
+			<GuildSidebarListItem>
 				<Divider key="divider" />
-			</SidebarListItem>
+			</GuildSidebarListItem>
 			<div aria-label="Servers">
 				{app.guilds.getAll().map((guild) => (
 					<GuildItem

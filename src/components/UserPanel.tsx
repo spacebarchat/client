@@ -33,7 +33,7 @@ const AvatarWrapper = styled.div`
 `;
 
 const Name = styled.div`
-	padding: 4px 0px 4px 8px;
+	padding: 4px 0 4px 8px;
 	margin-right: 4px;
 `;
 
@@ -75,9 +75,15 @@ function UserPanel() {
 
 				<ActionsWrapper>
 					<Tooltip title="Settings">
-						<IconButton aria-label="settings" disabled color="#fff">
-							<MdSettings size={20} />
-						</IconButton>
+						<span>
+							<IconButton
+								aria-label="settings"
+								disabled
+								color="#fff"
+							>
+								<MdSettings size={20} />
+							</IconButton>
+						</span>
 					</Tooltip>
 				</ActionsWrapper>
 			</Container>

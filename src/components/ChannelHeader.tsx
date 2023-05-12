@@ -6,7 +6,7 @@ const Wrapper = styled(Container)`
 	padding: 12px 16px;
 	margin-bottom: 1px;
 	background-color: var(--background-secondary);
-	box-shadow: 0px 1px 0px hsl(0deg 0% 0% / 0.3);
+	box-shadow: 0 1px 0 hsl(0deg 0% 0% / 0.3);
 	align-items: center;
 	justify-content: center;
 `;

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 import REST from "../utils/REST";
 import Container from "./Container";
-import SidebarListItem from "./SidebarListItem";
+import GuildSidebarListItem from "./GuildSidebarListItem";
 import SidebarPill, { PillType } from "./SidebarPill";
 import Tooltip from "./Tooltip";
 
@@ -55,7 +55,7 @@ function GuildItem(props: Props) {
 	}, [props.active, isHovered]);
 
 	return (
-		<SidebarListItem>
+		<GuildSidebarListItem>
 			<SidebarPill type={pillType} />
 			<Tooltip title={guild.name} placement="right">
 				<Wrapper
@@ -83,7 +83,7 @@ function GuildItem(props: Props) {
 					)}
 				</Wrapper>
 			</Tooltip>
-		</SidebarListItem>
+		</GuildSidebarListItem>
 	);
 }
 

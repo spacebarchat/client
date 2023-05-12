@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Container from "./Container";
+import GuildSidebarListItem from "./GuildSidebarListItem";
 import Icon, { IconProps } from "./Icon";
-import SidebarListItem from "./SidebarListItem";
 import SidebarPill, { PillType } from "./SidebarPill";
 import Tooltip from "./Tooltip";
 
@@ -55,7 +55,7 @@ function SidebarAction(props: Props) {
 	}, [props.active, isHovered]);
 
 	return (
-		<SidebarListItem>
+		<GuildSidebarListItem>
 			<SidebarPill type={pillType} />
 			<Tooltip title={props.tooltip} placement="right">
 				<Wrapper
@@ -70,7 +70,7 @@ function SidebarAction(props: Props) {
 					{props.label && <span>{props.label}</span>}
 				</Wrapper>
 			</Tooltip>
-		</SidebarListItem>
+		</GuildSidebarListItem>
 	);
 }
 

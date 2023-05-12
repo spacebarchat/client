@@ -12,6 +12,7 @@ const Wrapper = styled(Container)`
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
+	background-color: inherit;
 `;
 
 const Pill = styled.span<{ type: PillType }>`

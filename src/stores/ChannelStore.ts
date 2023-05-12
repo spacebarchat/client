@@ -1,4 +1,5 @@
 import type { APIChannel } from "@spacebarchat/spacebar-api-types/v9";
+import { ChannelType } from "@spacebarchat/spacebar-api-types/v9";
 import { action, computed, observable, ObservableMap } from "mobx";
 import AppStore from "./AppStore";
 import Channel from "./objects/Channel";
@@ -38,5 +39,55 @@ export default class ChannelStore {
 	@computed
 	get count() {
 		return this.channels.size;
+	}
+
+	private sortPosition(channels: Channel[]) {
+		return channels.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
+	}
+
+	@computed
+	get mapped() {
+		const channels = this.getAll();
+
+		const result: {
+			id: string;
+			children: Channel[];
+			category: Channel | null;
+		}[] = [];
+
+		const categories = this.sortPosition(
+			channels.filter((x) => x.type === ChannelType.GuildCategory),
+		);
+		const categorizedChannels = channels.filter(
+			(x) => x.type !== ChannelType.GuildCategory && x.parentId !== null,
+		);
+		const uncategorizedChannels = this.sortPosition(
+			channels.filter(
+				(x) =>
+					x.type !== ChannelType.GuildCategory && x.parentId === null,
+			),
+		);
+
+		// for each category, add an object containing the category and its children
+		categories.forEach((category) => {
+			result.push({
+				id: category.id,
+				children: this.sortPosition(
+					categorizedChannels.filter(
+						(x) => x.parentId === category.id,
+					),
+				),
+				category: category,
+			});
+		});
+
+		// add an object containing the remaining uncategorized channels
+		result.push({
+			id: "root",
+			children: uncategorizedChannels,
+			category: null,
+		});
+
+		return result;
 	}
 }

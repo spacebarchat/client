@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const SidebarListItem = styled.li`
+const GuildSidebarListItem = styled.li`
 	position: relative;
 	margin: 0 0 8px;
 	display: flex;
@@ -8,4 +8,4 @@ const SidebarListItem = styled.li`
 	width: 72px;
 `;
 
-export default SidebarListItem;
+export default GuildSidebarListItem;

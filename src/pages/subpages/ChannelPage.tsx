@@ -1,4 +1,3 @@
-import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 import ChannelSidebar from "../../components/ChannelSidebar";
 import Chat from "../../components/Chat";
@@ -30,4 +29,4 @@ function ChannelPage() {
 	);
 }
 
-export default observer(ChannelPage);
+export default ChannelPage;
