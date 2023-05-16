@@ -2369,10 +2369,10 @@
   dependencies:
     "@sinonjs/commons" "^2.0.0"
 
-"@spacebarchat/spacebar-api-types@^0.37.43":
-  version "0.37.43"
-  resolved "https://registry.yarnpkg.com/@spacebarchat/spacebar-api-types/-/spacebar-api-types-0.37.43.tgz#a928d033e8a5a6897378bcde6e16a4728f727002"
-  integrity sha512-1+c0uiCJyn432dLoKP36ixELGYu7AnMvFNBl+jTEFCPnXO5F3EbLSBNwvL9BbzrVsJO1cTNpN0YU/zPHsVHieQ==
+"@spacebarchat/spacebar-api-types@^0.37.44":
+  version "0.37.49"
+  resolved "https://registry.yarnpkg.com/@spacebarchat/spacebar-api-types/-/spacebar-api-types-0.37.49.tgz#a5294a47e1f7e22ee9cc68196c6e4572748a91a2"
+  integrity sha512-tj7eq7UfJe8IgOjJbmpD7tNxvoRBHh5jLIL4l76QVvSkXBn3IJltDnOr3scVGI9COhoayS6quT9n1LPjtH1oNg==
 
 "@svgr/babel-plugin-add-jsx-attribute@^6.5.1":
   version "6.5.1"

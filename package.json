@@ -13,7 +13,7 @@
         "build:web": "webpack --mode production"
     },
     "dependencies": {
-        "@spacebarchat/spacebar-api-types": "^0.37.44",
+        "@spacebarchat/spacebar-api-types": "^0.37.49",
         "@react-native-async-storage/async-storage": "^1.17.11",
         "@react-native-community/netinfo": "^9.3.7",
         "@react-navigation/bottom-tabs": "^6.0.5",
