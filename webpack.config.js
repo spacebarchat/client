@@ -63,6 +63,12 @@ const tsLoaderConfiguration = {
   include: [
     path.resolve(appDirectory, 'node_modules', 'react-native-error-boundary'),
     path.resolve(appDirectory, 'node_modules', 'react-native-vector-icons'),
+    path.resolve(
+      appDirectory,
+      'node_modules',
+      '@spacebarchat',
+      'spacebar-api-types',
+    ),
     path.resolve(appDirectory, 'src'),
   ],
   loader: 'ts-loader',
