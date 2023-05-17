@@ -49,7 +49,7 @@ function Chat() {
 
 		// fetch channel messages
 		channel?.getMessages(app, true);
-	}, [guild]);
+	}, [guild, channel]);
 
 	if (!guild)
 		return (
