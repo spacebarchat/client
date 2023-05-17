@@ -15,6 +15,7 @@ const List = styled.div`
 
 const ListItem = styled.li<{ isCategory?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};
+	cursor: pointer;
 `;
 const FirstWrapper = styled.div<{ isCategory?: boolean; active?: boolean }>`
 	margin-left: ${(props) => (props.isCategory ? "0" : "8px")};
