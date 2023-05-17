@@ -1,4 +1,8 @@
-import { CDNRoutes, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
+import {
+	CDNRoutes,
+	ChannelType,
+	ImageFormat,
+} from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -44,7 +48,12 @@ function GuildItem(props: Props) {
 	if (!guild) return null;
 
 	const doNavigate = () => {
-		navigate(`/channels/${props.guildId}`);
+		const channel = guild.channels.mapped.find(
+			(x) => x.type !== ChannelType.GuildCategory,
+		);
+		navigate(
+			`/channels/${props.guildId}${channel ? `/${channel.id}` : ""}`,
+		);
 	};
 
 	React.useEffect(() => {
