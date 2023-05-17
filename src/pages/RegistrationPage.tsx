@@ -21,7 +21,7 @@ const Wrapper = styled(Container)`
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
-	background-color: var(--background-secondary);
+	background-color: var(--background-tertiary);
 `;
 
 const AuthBox = styled(Container)`
