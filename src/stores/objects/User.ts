@@ -21,7 +21,6 @@ export default class User {
 	@observable accent_color: unknown | null;
 	@observable pronouns?: string;
 	@observable theme_colors?: unknown;
-	@observable avatarURL: string;
 
 	constructor(user: APIUser) {
 		this.id = user.id;
@@ -47,18 +46,30 @@ export default class User {
 		this.theme_colors = user.theme_colors;
 		this.accent_color = user.accent_color;
 
-		if (user.avatar) {
-			this.avatarURL = REST.makeCDNUrl(
-				CDNRoutes.userAvatar(user.id, user.avatar, ImageFormat.PNG),
-			);
-		} else {
-			this.avatarURL = REST.makeCDNUrl(
-				CDNRoutes.defaultUserAvatar(
-					(Number(user.discriminator) % 5) as DefaultUserAvatarAssets,
-				),
-			);
-		}
-
 		makeObservable(this);
+	}
+
+	/**
+	 * Gets the users default avatar url
+	 * @returns The URL to the user's default avatar.
+	 */
+	get defaultAvatarUrl(): string {
+		return REST.makeCDNUrl(
+			CDNRoutes.defaultUserAvatar(
+				(Number(this.discriminator) % 5) as DefaultUserAvatarAssets,
+			),
+		);
+	}
+
+	/**
+	 * Gets the users display avatar url
+	 * @returns The URL to the user's avatar or the default avatar if they don't have one.
+	 */
+	get avatarUrl(): string {
+		if (this.avatar)
+			return REST.makeCDNUrl(
+				CDNRoutes.userAvatar(this.id, this.avatar, ImageFormat.PNG),
+			);
+		else return this.defaultAvatarUrl;
 	}
 }

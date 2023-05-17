@@ -35,7 +35,8 @@ export default class MessageStore {
 	get messages() {
 		return this.messagesArr
 			.slice()
-			.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+			.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+			.filter((x) => x);
 	}
 
 	has(id: string) {

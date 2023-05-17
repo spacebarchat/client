@@ -64,19 +64,26 @@ export default class AccountStore {
 	}
 
 	/**
+	 * Gets the users default avatar url
+	 * @returns The URL to the user's default avatar.
+	 */
+	get defaultAvatarUrl(): string {
+		return REST.makeCDNUrl(
+			CDNRoutes.defaultUserAvatar(
+				(Number(this.discriminator) % 5) as DefaultUserAvatarAssets,
+			),
+		);
+	}
+
+	/**
 	 * Gets the users display avatar url
 	 * @returns The URL to the user's avatar or the default avatar if they don't have one.
 	 */
-	getAvatarURL(): string {
+	get avatarUrl(): string {
 		if (this.avatar)
 			return REST.makeCDNUrl(
 				CDNRoutes.userAvatar(this.id, this.avatar, ImageFormat.PNG),
 			);
-		else
-			return REST.makeCDNUrl(
-				CDNRoutes.defaultUserAvatar(
-					(Number(this.discriminator) % 5) as DefaultUserAvatarAssets,
-				),
-			);
+		else return this.defaultAvatarUrl;
 	}
 }

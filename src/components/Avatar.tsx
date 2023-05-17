@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
+import User from "../stores/objects/User";
 import Container from "./Container";
 
 const Wrapper = styled(Container)<{ size: number }>`
@@ -11,16 +12,18 @@ const Wrapper = styled(Container)<{ size: number }>`
 `;
 
 interface Props {
+	user?: User;
 	size?: number;
+	style?: React.CSSProperties;
 }
 
 function Avatar(props: Props) {
 	const app = useAppStore();
 
 	return (
-		<Wrapper size={props.size ?? 32}>
+		<Wrapper size={props.size ?? 32} style={props.style}>
 			<img
-				src={app.account?.getAvatarURL()}
+				src={props.user?.avatarUrl ?? app.account?.avatarUrl}
 				width={props.size ?? 32}
 				height={props.size ?? 32}
 			/>
