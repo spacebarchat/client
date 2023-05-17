@@ -35,14 +35,13 @@ interface Props {
 	channel?: Channel;
 }
 
-// TODO: handle the chat header on home page
 function ChatHeader({ channel }: Props) {
-	if (!channel) return null;
 	return (
 		<Wrapper>
 			<InnerWrapper>
-				<NameWrapper>#{channel.name}</NameWrapper>
-				{channel.topic && (
+				{/* // TODO: render a custom bar for the home page */}
+				<NameWrapper>#{channel?.name ?? "ChannelName"}</NameWrapper>
+				{channel?.topic && (
 					<>
 						<Divider />
 						<TopicWrapper>{channel.topic}</TopicWrapper>
