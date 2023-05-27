@@ -5,7 +5,7 @@ const Wrapper = styled.section`
 	display: flex;
 	padding: 12px 16px;
 	margin-bottom: 1px;
-	background-color: var(--background-primary);
+	background-color: var(--background-primary-alt);
 	box-shadow: 0 1px 0 hsl(0deg 0% 0% / 0.3);
 	align-items: center;
 `;

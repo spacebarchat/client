@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	flex: 1 1 100%;
-	background-color: var(--background-primary);
+	background-color: var(--background-primary-alt);
 `;
 
 const MessageListWrapper = styled.div`
@@ -31,8 +31,14 @@ const List = styled.ul`
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
-	flex: 1;
+	flex: 1 1 auto;
 	overflow: hidden;
+	position: relative;
+`;
+
+const Spacer = styled.div`
+	height: 30px;
+	width: 1px;
 `;
 
 function Chat() {
@@ -97,10 +103,11 @@ function Chat() {
 								/>
 							);
 						})}
+						<Spacer />
 					</List>
 				</MessageListWrapper>
 
-				<MessageInput />
+				<MessageInput channel={channel} />
 			</Container>
 		</Wrapper>
 	);
