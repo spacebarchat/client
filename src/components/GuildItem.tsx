@@ -23,6 +23,7 @@ const Wrapper = styled(Container)<{ active?: boolean }>`
 	background-color: ${(props) =>
 		props.active ? "var(--primary)" : "var(--background-secondary)"};
 	transition: border-radius 0.2s ease, background-color 0.2s ease;
+	cursor: pointer;
 
 	&:hover {
 		border-radius: 30%;
@@ -86,7 +87,7 @@ function GuildItem(props: Props) {
 							height={48}
 						/>
 					) : (
-						<span style={{ fontSize: "18px", fontWeight: "bold" }}>
+						<span style={{ fontSize: "18px", fontWeight: "bold", cursor: "pointer" }}>
 							{guild?.acronym}
 						</span>
 					)}
