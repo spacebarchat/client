@@ -5,6 +5,8 @@ import { useAppStore } from "../stores/AppStore";
 import GuildItem from "./GuildItem";
 import GuildSidebarListItem from "./GuildSidebarListItem";
 import SidebarAction from "./SidebarAction";
+import AddServerModal from "./modals/AddServerModal";
+import { useModals } from "@mattjennings/react-modal-stack";
 
 const List = styled.ul`
 	list-style: none;
@@ -28,6 +30,7 @@ const Divider = styled.div`
 
 function GuildSidebar() {
 	const app = useAppStore();
+	const { openModal } = useModals();
 	const navigate = useNavigate();
 	const { guildId } = useParams<{ guildId: string; channelId: string }>();
 
@@ -56,6 +59,20 @@ function GuildSidebar() {
 					/>
 				))}
 			</div>
+
+			{/* // TODO: green coloring */}
+			<SidebarAction
+				key="add-server"
+				tooltip="Add Server"
+				icon={{
+					icon: "mdiPlus",
+					size: "24px",
+				}}
+				action={() => {
+					openModal(AddServerModal);
+				}}
+				margin={false}
+			/>
 		</List>
 	);
 }
