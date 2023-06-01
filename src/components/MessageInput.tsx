@@ -101,10 +101,16 @@ function MessageInput(props: Props) {
 
 		if (e.key === "Enter") {
 			e.preventDefault();
-			// TODO: experiments
-			// TODO: check if we can actually message this channel
+			const shouldFail = app.experiments.isTreatmentEnabled(
+                'message_queue',
+                2,
+              );
+              const shouldSend = !app.experiments.isTreatmentEnabled(
+                'message_queue',
+                1,
+              );
 
-			if (!props.channel.canSendMessage(content)) return;
+			if (!props.channel.canSendMessage(content) && !shouldFail) return;
 
 			const nonce = Snowflake.generate();
 			app.queue.add({
@@ -114,9 +120,11 @@ function MessageInput(props: Props) {
 				channel: props.channel.id,
 			});
 
-			props.channel.sendMessage({ content, nonce }).catch((error) => {
-				app.queue.error(nonce, error as string);
-			});
+			if(shouldSend) {
+				props.channel.sendMessage({ content, nonce }).catch((error) => {
+					app.queue.error(nonce, error as string);
+				});
+			}
 
 			resetInput();
 		}
