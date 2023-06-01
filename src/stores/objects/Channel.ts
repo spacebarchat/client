@@ -171,25 +171,28 @@ export default class Channel {
 
 		this.hasFetchedMessages = true;
 		console.log(`Fetching messags for ${this.id}`);
-		app.rest.get<RESTGetAPIChannelMessagesResult | APIError>(
-			Routes.channelMessages(this.id),
-			opts,
-		).then((res) => {
-			if("code" in res) {
-				console.error(res);
-				return;
-			}
-			this.messages.addAll(
-				res.filter((x) => !this.messages.has(x.id)).reverse(),
-				// .sort((a, b) => {
-				//   const aTimestamp = new Date(a.timestamp as unknown as string);
-				//   const bTimestamp = new Date(b.timestamp as unknown as string);
-				//   return aTimestamp.getTime() - bTimestamp.getTime();
-				// })
-			);
-		}).catch((err) => {
-			console.error(err);
-		});
+		app.rest
+			.get<RESTGetAPIChannelMessagesResult | APIError>(
+				Routes.channelMessages(this.id),
+				opts,
+			)
+			.then((res) => {
+				if ("code" in res) {
+					console.error(res);
+					return;
+				}
+				this.messages.addAll(
+					res.filter((x) => !this.messages.has(x.id)).reverse(),
+					// .sort((a, b) => {
+					//   const aTimestamp = new Date(a.timestamp as unknown as string);
+					//   const bTimestamp = new Date(b.timestamp as unknown as string);
+					//   return aTimestamp.getTime() - bTimestamp.getTime();
+					// })
+				);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
 	}
 
 	@action
@@ -213,7 +216,8 @@ export default class Channel {
 	get isTextChannel() {
 		return (
 			this.type === ChannelType.GuildText ||
-			this.type === ChannelType.GuildStore ||
+			this.type === ChannelType.GuildVoice ||
+			this.type === ChannelType.GuildStageVoice ||
 			this.type === ChannelType.GuildForum ||
 			this.type === ChannelType.AnnouncementThread ||
 			this.type === ChannelType.Encrypted ||
