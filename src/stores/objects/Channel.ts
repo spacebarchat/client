@@ -14,7 +14,7 @@ import type {
 	Snowflake as SnowflakeType,
 } from "@spacebarchat/spacebar-api-types/v9";
 import { ChannelType, Routes } from "@spacebarchat/spacebar-api-types/v9";
-import { action, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 import AppStore from "../AppStore";
 import MessageStore from "../MessageStore";
 import { APIError } from "../../utils/interfaces/api";
@@ -207,5 +207,21 @@ export default class Channel {
 		}
 
 		return true;
+	}
+
+	@computed
+	get isTextChannel() {
+		return (
+			this.type === ChannelType.GuildText ||
+			this.type === ChannelType.GuildStore ||
+			this.type === ChannelType.GuildForum ||
+			this.type === ChannelType.AnnouncementThread ||
+			this.type === ChannelType.Encrypted ||
+			this.type === ChannelType.EncryptedThread ||
+			this.type === ChannelType.PrivateThread ||
+			this.type === ChannelType.PublicThread ||
+			this.type === ChannelType.GroupDM ||
+			this.type === ChannelType.DM
+		);
 	}
 }

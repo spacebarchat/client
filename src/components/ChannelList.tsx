@@ -67,7 +67,12 @@ function ChannelList() {
 						key={channel.id}
 						isCategory={isCategory}
 						onClick={() =>
-							navigate(`/channels/${guild.id}/${channel.id}`)
+							{
+								// prevent navigating to non-text channels
+								if (!channel.isTextChannel) return;
+
+								navigate(`/channels/${guild.id}/${channel.id}`)
+							}
 						}
 					>
 						<FirstWrapper isCategory={isCategory} active={active}>
