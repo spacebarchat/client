@@ -17,6 +17,7 @@ import { ChannelType, Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { action, makeObservable, observable } from "mobx";
 import AppStore from "../AppStore";
 import MessageStore from "../MessageStore";
+import { APIError } from "../../utils/interfaces/api";
 
 export default class Channel {
 	private readonly app: AppStore;
@@ -170,19 +171,25 @@ export default class Channel {
 
 		this.hasFetchedMessages = true;
 		console.log(`Fetching messags for ${this.id}`);
-		// TODO: catch errors
-		const messages = await app.rest.get<RESTGetAPIChannelMessagesResult>(
+		app.rest.get<RESTGetAPIChannelMessagesResult | APIError>(
 			Routes.channelMessages(this.id),
 			opts,
-		);
-		this.messages.addAll(
-			messages.filter((x) => !this.messages.has(x.id)).reverse(),
-			// .sort((a, b) => {
-			//   const aTimestamp = new Date(a.timestamp as unknown as string);
-			//   const bTimestamp = new Date(b.timestamp as unknown as string);
-			//   return aTimestamp.getTime() - bTimestamp.getTime();
-			// })
-		);
+		).then((res) => {
+			if("code" in res) {
+				console.error(res);
+				return;
+			}
+			this.messages.addAll(
+				res.filter((x) => !this.messages.has(x.id)).reverse(),
+				// .sort((a, b) => {
+				//   const aTimestamp = new Date(a.timestamp as unknown as string);
+				//   const bTimestamp = new Date(b.timestamp as unknown as string);
+				//   return aTimestamp.getTime() - bTimestamp.getTime();
+				// })
+			);
+		}).catch((err) => {
+			console.error(err);
+		});
 	}
 
 	@action

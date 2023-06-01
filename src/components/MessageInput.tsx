@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import Channel from "../stores/objects/Channel";
+import Snowflake from "../utils/Snowflake";
+import { useAppStore } from "../stores/AppStore";
+import User from "../stores/objects/User";
 
 const Container = styled.div`
 	margin-top: -8px;
@@ -33,8 +36,10 @@ interface Props {
 }
 
 function MessageInput(props: Props) {
+	const app = useAppStore();
 	const wrapperRef = React.useRef<HTMLDivElement>(null);
 	const placeholderRef = React.useRef<HTMLDivElement>(null);
+	const inputRef = React.useRef<HTMLDivElement>(null);
 	const [content, setContent] = React.useState("");
 
 	React.useEffect(() => {
@@ -48,6 +53,22 @@ function MessageInput(props: Props) {
 		if (!content.length)
 			placeholderRef.current!.style.setProperty("display", "block");
 		else placeholderRef.current!.style.setProperty("display", "none");
+
+		// update the input content
+		if (inputRef.current) {
+			// handle empty input
+			if (!content.length) {
+				inputRef.current.innerHTML = "";
+				return;
+			} else {
+				const selection = window.getSelection();
+				const range = document.createRange();
+				range.selectNodeContents(inputRef.current);
+				range.collapse(false);
+				selection?.removeAllRanges();
+				selection?.addRange(range);
+			}
+		}
 	}, [content]);
 
 	// this function makes the input element grow as the user types
@@ -59,12 +80,46 @@ function MessageInput(props: Props) {
 			wrapperRef.current.scrollHeight + "px";
 	}
 
+	function resetInput() {
+		setContent("");
+		adjustInputHeight();
+	}
+
 	function onChange(e: React.FormEvent<HTMLDivElement>) {
 		const target = e.target as HTMLDivElement;
 		const text = target.innerText;
 
 		setContent(text);
 		adjustInputHeight();
+	}
+
+	function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+		if (!props.channel) {
+			console.warn("No channel selected, cannot send message");
+			return;
+		}
+
+		if (e.key === "Enter") {
+			e.preventDefault();
+			// TODO: experiments
+			// TODO: check if we can actually message this channel
+
+			if (!props.channel.canSendMessage(content)) return;
+
+			const nonce = Snowflake.generate();
+			app.queue.add({
+				id: nonce,
+				author: app.account! as unknown as User,
+				content,
+				channel: props.channel.id,
+			});
+
+			props.channel.sendMessage({ content, nonce }).catch((error) => {
+				app.queue.error(nonce, error as string);
+			});
+
+			resetInput();
+		}
 	}
 
 	return (
@@ -118,6 +173,8 @@ function MessageInput(props: Props) {
 									autoCorrect="off"
 									contentEditable="true"
 									onInput={onChange}
+									onKeyDown={onKeyDown}
+									ref={inputRef}
 								/>
 							</div>
 						</div>

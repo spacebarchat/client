@@ -110,4 +110,17 @@ export enum APIErrorCodes {
 	ACCOUNT_DISABLED = 20013,
 }
 
+export interface APIError {
+	code: APIErrorCodes;
+	message: string;
+	errors?: {
+		[key: string]: {
+			_errors: {
+				code: string;
+				message: string;
+			}
+		}
+	}
+}
+
 // export type RESTAPIPostInviteResponse = {} | IAPIError;
