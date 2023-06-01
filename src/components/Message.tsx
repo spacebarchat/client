@@ -38,7 +38,7 @@ const MessageTimestamp = styled.div`
 const MessageContent = styled.div<{ sending?: boolean; failed?: boolean }>`
 	font-size: 16px;
 	white-space: pre-wrap;
-	word-wrap: break-word;
+	word-wrap: anywhere;
 	opacity: ${(props) => (props.sending ? 0.5 : undefined)};
 	color: ${(props) => (props.failed ? "var(--error)" : undefined)};
 `;

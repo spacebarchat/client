@@ -27,7 +27,7 @@ const TextInput = styled.div`
 	left: 0;
 	width: 100%;
 	outline: none;
-	word-wrap: break-word;
+	word-wrap: anywhere;
 	padding: 12px 16px;
 `;
 
