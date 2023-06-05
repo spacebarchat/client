@@ -60,18 +60,20 @@ function GuildSidebar() {
 				))}
 			</div>
 
-			{/* // TODO: green coloring */}
 			<SidebarAction
 				key="add-server"
 				tooltip="Add Server"
 				icon={{
 					icon: "mdiPlus",
 					size: "24px",
+					color: "var(--success)"
 				}}
 				action={() => {
 					openModal(AddServerModal);
 				}}
 				margin={false}
+				disablePill
+				useGreenColorScheme
 			/>
 		</List>
 	);

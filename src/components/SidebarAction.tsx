@@ -6,7 +6,11 @@ import Icon, { IconProps } from "./Icon";
 import SidebarPill, { PillType } from "./SidebarPill";
 import Tooltip from "./Tooltip";
 
-const Wrapper = styled(Container)<{ margin?: boolean; active?: boolean }>`
+const Wrapper = styled(Container)<{
+	margin?: boolean;
+	active?: boolean;
+	useGreenColorScheme?: boolean;
+}>`
 	${(props) => (props.margin !== false ? "margin-top: 9px;" : "")}};
 	padding: 0;
 	width: 48px;
@@ -21,7 +25,11 @@ const Wrapper = styled(Container)<{ margin?: boolean; active?: boolean }>`
 
 	&:hover {
 		border-radius: 30%;
-		background-color: var(--primary);
+		background-color: ${(props) =>
+			props.useGreenColorScheme
+				? "var(--success)"
+				: "var(--primary)"};
+
 	}
 `;
 
@@ -36,6 +44,8 @@ interface Props {
 	label?: string;
 	margin?: boolean;
 	active?: boolean;
+	useGreenColorScheme?: boolean;
+	disablePill?: boolean;
 }
 
 function SidebarAction(props: Props) {
@@ -48,6 +58,8 @@ function SidebarAction(props: Props) {
 	const [isHovered, setHovered] = React.useState(false);
 
 	React.useEffect(() => {
+		if (props.disablePill) return;
+
 		if (props.active) return setPillType("active");
 		else if (isHovered) return setPillType("hover");
 		// TODO: unread
@@ -64,9 +76,12 @@ function SidebarAction(props: Props) {
 					onMouseLeave={() => setHovered(false)}
 					margin={props.margin}
 					active={props.active}
+					useGreenColorScheme={props.useGreenColorScheme}
 				>
 					{props.image && <img {...props.image} />}
-					{props.icon && <Icon {...props.icon} />}
+					{props.icon && <Icon {...props.icon} color={
+						isHovered && props.useGreenColorScheme ? "#fff" : props.icon.color
+					} />}
 					{props.label && <span>{props.label}</span>}
 				</Wrapper>
 			</Tooltip>
