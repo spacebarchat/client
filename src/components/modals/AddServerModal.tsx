@@ -119,7 +119,7 @@ function AddServerModal() {
 				</CloseWrapper>
 
 				<HeaderContainer>
-					<HeaderText>Add a Server</HeaderText>
+					<HeaderText>Add a Guild</HeaderText>
 					<SubHeaderText>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 					</SubHeaderText>
@@ -127,11 +127,11 @@ function AddServerModal() {
 
 				<ActionItemContainer>
 					<ActionItem>
-						<div>Create a Server</div>
+						<div>Create a Guild</div>
 					</ActionItem>
 
 					<ActionItem>
-						<div>Join a Server</div>
+						<div>Join a Guild</div>
 					</ActionItem>
 				</ActionItemContainer>
 			</Wrapper>
