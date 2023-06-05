@@ -2,8 +2,6 @@ import React from "react";
 import { useModals } from "@mattjennings/react-modal-stack";
 import styled from "styled-components";
 import Icon from "../Icon";
-import CreateServerModal from "./CreateServerModal";
-import JoinServerModal from "./JoinServerModal";
 
 const Container = styled.div`
 	z-index: 100;
@@ -66,7 +64,7 @@ const SubHeaderText = styled.div`
 const ActionItemContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-`;
+`
 
 // main button component
 const ActionItem = styled.button`
@@ -100,8 +98,8 @@ const JoinButton = styled(ActionItem)`
 	}
 `;
 
-function AddServerModal() {
-	const { openModal, closeModal } = useModals();
+function JoinServerModal() {
+	const { closeModal } = useModals();
 
 	if (!open) {
 		return null;
@@ -131,26 +129,18 @@ function AddServerModal() {
 				</CloseWrapper>
 
 				<HeaderContainer>
-					<HeaderText>Add a Guild</HeaderText>
+					<HeaderText>Join a Guild</HeaderText>
 					<SubHeaderText>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+						Enter an invite below to join an existing guild.
 					</SubHeaderText>
 				</HeaderContainer>
 
 				<ActionItemContainer>
-					<CreateButton onClick={
-						() => openModal(CreateServerModal)
-					}>
-						<div>Create a Guild</div>
-					</CreateButton>
-
-					<JoinButton onClick={() => openModal(JoinServerModal)}>
-						<div>Join a Guild</div>
-					</JoinButton>
+					
 				</ActionItemContainer>
 			</Wrapper>
 		</Container>
 	);
 }
 
-export default AddServerModal;
+export default JoinServerModal;
