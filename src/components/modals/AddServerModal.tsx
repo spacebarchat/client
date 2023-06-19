@@ -1,102 +1,39 @@
-import React from "react";
 import { useModals } from "@mattjennings/react-modal-stack";
 import styled from "styled-components";
 import Icon from "../Icon";
 import CreateServerModal from "./CreateServerModal";
 import JoinServerModal from "./JoinServerModal";
+import {
+	ModalActionItem,
+	ModalCloseWrapper,
+	ModalContainer,
+	ModalHeaderText,
+	ModalSubHeaderText,
+	ModalWrapper,
+	ModelContentContainer,
+} from "./ModalComponents";
 
-const Container = styled.div`
-	z-index: 100;
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	&::before {
-		content: "";
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background-color: rgba(0, 0, 0, 0.8);
-	}
+export const ModalHeader = styled.div`
+	padding: 16px;
 `;
 
-const Wrapper = styled.div`
-	width: calc(100% / 2.932);
-	border-radius: 10px;
-	padding: 10px;
-	background-color: var(--background-secondary);
-	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05),
-		0 1px 3px 1px rgba(0, 0, 0, 0.05);
-	position: relative;
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-`;
-
-const CloseWrapper = styled.div`
-	position: absolute;
-	top: 10px;
-	right: 10px;
-`;
-
-const HeaderContainer = styled.div`
-	margin-bottom: 30px;
-`;
-
-const HeaderText = styled.h1`
-	font-size: 24px;
-	font-weight: 700;
-	color: var(--text);
-	text-align: center;
-`;
-
-const SubHeaderText = styled.div`
+const CreateButton = styled(ModalActionItem)`
+	transition: background-color 0.2s ease-in-out;
+	margin-bottom: 8px;
 	font-size: 16px;
-	font-weight: 400;
-	color: var(--text);
-	text-align: center;
-`;
-
-const ActionItemContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-`;
-
-// main button component
-const ActionItem = styled.button`
-	border-radius: 8px;
-	padding: 10px;
-	margin-bottom: 10px;
-	border: none;
-	outline: none;
-	cursor: pointer;
-
-	& > div {
-		font-size: 16px;
-		font-weight: 500;
-		color: var(--text);
-	}
-`;
-
-const CreateButton = styled(ActionItem)`
-	background-color: var(--primary);
 
 	&:hover {
 		background-color: var(--primary-light);
 	}
 `;
 
-const JoinButton = styled(ActionItem)`
-	background-color: var(--background-primary);
+const JoinButton = styled(ModalActionItem)`
+	transition: background-color 0.2s ease-in-out;
+	margin-bottom: 8px;
+	font-size: 16px;
 
 	&:hover {
-		background-color: var(--background-secondary-alt);
+		background-color: var(--background-secondary-highlight);
 	}
 `;
 
@@ -108,9 +45,9 @@ function AddServerModal() {
 	}
 
 	return (
-		<Container>
-			<Wrapper>
-				<CloseWrapper>
+		<ModalContainer>
+			<ModalWrapper>
+				<ModalCloseWrapper>
 					<button
 						onClick={closeModal}
 						style={{
@@ -128,28 +65,40 @@ function AddServerModal() {
 							}}
 						/>
 					</button>
-				</CloseWrapper>
+				</ModalCloseWrapper>
 
-				<HeaderContainer>
-					<HeaderText>Add a Guild</HeaderText>
-					<SubHeaderText>
+				<ModalHeader>
+					<ModalHeaderText>Add a Guild</ModalHeaderText>
+					<ModalSubHeaderText>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-					</SubHeaderText>
-				</HeaderContainer>
+					</ModalSubHeaderText>
+				</ModalHeader>
 
-				<ActionItemContainer>
-					<CreateButton onClick={
-						() => openModal(CreateServerModal)
-					}>
-						<div>Create a Guild</div>
+				<ModelContentContainer>
+					<CreateButton
+						variant="filled"
+						size="med"
+						onClick={() => {
+							closeModal();
+							openModal(CreateServerModal);
+						}}
+					>
+						Create a Guild
 					</CreateButton>
 
-					<JoinButton onClick={() => openModal(JoinServerModal)}>
-						<div>Join a Guild</div>
+					<JoinButton
+						variant="outlined"
+						size="med"
+						onClick={() => {
+							closeModal();
+							openModal(JoinServerModal);
+						}}
+					>
+						Join a Guild
 					</JoinButton>
-				</ActionItemContainer>
-			</Wrapper>
-		</Container>
+				</ModelContentContainer>
+			</ModalWrapper>
+		</ModalContainer>
 	);
 }
 

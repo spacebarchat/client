@@ -7,7 +7,10 @@ export type ThemeVariables =
 	| "backgroundPrimaryAlt"
 	| "backgroundSecondary"
 	| "backgroundSecondaryAlt"
+	| "backgroundSecondaryHighlight"
 	| "backgroundTertiary"
+	| "textHeader"
+	| "textHeaderSecondary"
 	| "text"
 	| "textSecondary"
 	| "textDisabled"
@@ -51,10 +54,13 @@ export const ThemePresets: Record<string, Theme> = {
 		backgroundPrimaryAlt: "",
 		backgroundSecondary: "#ebe5e4",
 		backgroundSecondaryAlt: "#ebe5e4",
+		backgroundSecondaryHighlight: "#ebe5e4",
 		backgroundTertiary: "#e9e2e1",
 		text: "#000000",
 		textSecondary: "#bdbdbd",
 		textDisabled: "#909090",
+		textHeader: "#000000",
+		textHeaderSecondary: "#000000",
 		textHint: "#22194D",
 		textLink: "#00a8fc",
 		inputBackground: "#757575",
@@ -86,10 +92,13 @@ export const ThemePresets: Record<string, Theme> = {
 		backgroundPrimaryAlt: "#2a2a2a",
 		backgroundSecondary: "#232323",
 		backgroundSecondaryAlt: "#1e1e1e",
+		backgroundSecondaryHighlight: "#383838",
 		backgroundTertiary: "#171717",
 		text: "#e9e2e1",
 		textSecondary: "#bdbdbd",
 		textDisabled: "#909090",
+		textHeader: "#ffffff",
+		textHeaderSecondary: "#b3b3b3",
 		textHint: "#22194D",
 		textLink: "#00a8fc",
 		inputBackground: "#121212",
