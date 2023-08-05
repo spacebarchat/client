@@ -225,6 +225,7 @@ export default class GatewayConnectionStore {
 			op: GatewayOpcodes.Identify,
 			d: {
 				token: this.app.token!,
+				capabilities: 16381,
 				properties: {
 					browser: "Spacebar Web",
 					client_build_number: 0,
