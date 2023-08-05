@@ -236,6 +236,7 @@ export default class GatewayConnectionStore extends BaseStore {
         op: GatewayOpcodes.Identify,
         d: {
           token: this.domain.token!,
+		  capabilities: 16381,
           properties: {
             browser,
             client_build_number: 0,
