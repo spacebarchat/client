@@ -12,6 +12,9 @@ import PrivateChannelStore from "./PrivateChannelStore";
 import ThemeStore from "./ThemeStore";
 import UserStore from "./UserStore";
 
+// dev thing to force toggle branding on auth pages for testing.
+export const AUTH_NO_BRANDING = false;
+
 export default class AppStore {
 	// whether the gateway is ready
 	@observable isGatewayReady = false;

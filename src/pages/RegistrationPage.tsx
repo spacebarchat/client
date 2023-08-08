@@ -3,141 +3,33 @@ import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import Button from "../components/Button";
-import Container from "../components/Container";
+import {
+	AuthContainer,
+	AuthSwitchPageContainer,
+	AuthSwitchPageLabel,
+	AuthSwitchPageLink,
+	Divider,
+	FormContainer,
+	Header,
+	Input,
+	InputContainer,
+	InputErrorText,
+	InputLabel,
+	InputWrapper,
+	LabelWrapper,
+	SubHeader,
+	SubmitButton,
+	Wrapper,
+} from "../components/AuthComponents";
 import DOBInput from "../components/DOBInput";
 import HCaptcha from "../components/HCaptcha";
-import { useAppStore } from "../stores/AppStore";
+import { AUTH_NO_BRANDING, useAppStore } from "../stores/AppStore";
 import {
 	IAPILoginResponseSuccess,
 	IAPIRegisterRequest,
 	IAPIRegisterResponseError,
 } from "../utils/interfaces/api";
 import { messageFromFieldError } from "../utils/messageFromFieldError";
-
-const Wrapper = styled(Container)`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
-	background-color: var(--background-tertiary);
-`;
-
-const AuthBox = styled(Container)`
-	background-color: var(--background-primary-alt);
-	padding: 32px;
-	font-size: 18px;
-	color: var(--text-muted);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
-
-	@media (max-width: 480px) {
-		width: 100%;
-		height: 100%;
-	}
-
-	@media (min-width: 480px) {
-		width: 480px;
-		border-radius: 18px;
-	}
-`;
-
-const HeaderContainer = styled.div`
-	width: 100%;
-`;
-
-const Header = styled.h1`
-	font-weight: 600;
-	margin-bottom: 8px;
-	font-size: 24px;
-	color: var(--text);
-`;
-
-// const SubHeader = styled.h2`
-// 	color: var(--text-muted);
-// 	font-weight: 400;
-// 	font-size: 16px;
-// `;
-
-const FormContainer = styled.form`
-	width: 100%;
-`;
-
-const InputContainer = styled.h1<{ marginBottom: boolean }>`
-	margin-bottom: ${(props) => (props.marginBottom ? "20px" : "0")};
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-`;
-
-const LabelWrapper = styled.div<{ error?: boolean }>`
-	display: flex;
-	flex-direction: row;
-	margin-bottom: 8px;
-	color: ${(props) => (props.error ? "var(--error)" : "#b1b5bc")};
-`;
-
-const InputErrorText = styled.label`
-	font-size: 14px;
-	font-weight: 400;
-	font-style: italic;
-`;
-
-const InputLabel = styled.label`
-	font-size: 14px;
-	font-weight: 700;
-`;
-
-const InputWrapper = styled.div`
-	width: 100%;
-	display: flex;
-`;
-
-const Input = styled.input<{ error?: boolean }>`
-	outline: none;
-	background: var(--background-secondary);
-	padding: 10px;
-	font-size: 16px;
-	border-radius: 12px;
-	color: var(--text);
-	margin: 0;
-	border: none;
-	aria-invalid: ${(props) => (props.error ? "true" : "false")};
-	box-sizing: border-box;
-	width: 100%;
-`;
-
-const LoginButton = styled(Button)`
-	margin-bottom: 8px;
-	width: 100%;
-	min-width: 130px;
-	min-height: 44px;
-`;
-
-const LoginLink = styled.button`
-	margin-top: 4px;
-	float: left;
-	font-size: 14px;
-	background: none;
-	border: none;
-	color: var(--text-link);
-
-	@media (max-width: 480px) {
-		display: inline-block;
-	}
-
-	&:hover {
-		text-decoration: underline;
-		cursor: pointer;
-	}
-`;
-
-const Divider = styled.span`
-	padding: 0 4px;
-`;
 
 type FormValues = {
 	email: string;
@@ -279,11 +171,21 @@ function RegistrationPage() {
 
 	return (
 		<Wrapper>
-			<AuthBox>
-				<HeaderContainer>
-					<Header>Create an account</Header>
-					{/* <SubHeader>We're so excited to see you again!</SubHeader> */}
-				</HeaderContainer>
+			<AuthContainer>
+				{AUTH_NO_BRANDING ? (
+					<>
+						<Header>Create an account</Header>
+					</>
+				) : (
+					<>
+						{/* Note: This would need to change depending on the theme */}
+						<img
+							src="https://github.com/spacebarchat/spacebarchat/blob/master/branding/png/Spacebar__Logo-White.png?raw=true"
+							height={48}
+						/>
+						<SubHeader noBranding>Create an account</SubHeader>
+					</>
+				)}
 
 				<FormContainer onSubmit={onSubmit}>
 					<InputContainer
@@ -304,6 +206,7 @@ function RegistrationPage() {
 						<InputWrapper>
 							<Input
 								type="email"
+								placeholder="Email"
 								autoFocus
 								{...register("email", { required: true })}
 								error={!!errors.email}
@@ -330,6 +233,7 @@ function RegistrationPage() {
 						<InputWrapper>
 							<Input
 								{...register("username", { required: true })}
+								placeholder="Username"
 								error={!!errors.username}
 								disabled={loading}
 							/>
@@ -351,6 +255,7 @@ function RegistrationPage() {
 						<InputWrapper>
 							<Input
 								type="password"
+								placeholder="Password"
 								{...register("password", { required: true })}
 								error={!!errors.password}
 								disabled={loading}
@@ -396,24 +301,29 @@ function RegistrationPage() {
 						</InputWrapper>
 					</InputContainer>
 
-					<LoginButton
+					<SubmitButton
 						variant="primary"
 						type="submit"
 						disabled={loading}
 					>
 						Create Account
-					</LoginButton>
+					</SubmitButton>
 
-					<LoginLink
-						onClick={() => {
-							navigate("/login", { replace: true });
-						}}
-						type="button"
-					>
-						Already have an account?
-					</LoginLink>
+					<AuthSwitchPageContainer>
+						<AuthSwitchPageLabel>
+							Already have an account?&nbsp;
+						</AuthSwitchPageLabel>
+						<AuthSwitchPageLink
+							onClick={() => {
+								navigate("/login");
+							}}
+							type="button"
+						>
+							Login
+						</AuthSwitchPageLink>
+					</AuthSwitchPageContainer>
 				</FormContainer>
-			</AuthBox>
+			</AuthContainer>
 		</Wrapper>
 	);
 }
