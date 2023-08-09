@@ -27,6 +27,8 @@ import HCaptcha, { HeaderContainer } from "../components/HCaptcha";
 import MFA from "../components/MFA";
 import ForgotPasswordModal from "../components/modals/ForgotPasswordModal";
 import { AUTH_NO_BRANDING, useAppStore } from "../stores/AppStore";
+import { Globals } from "../utils/Globals";
+import REST from "../utils/REST";
 import {
 	IAPILoginRequest,
 	IAPILoginResponse,
@@ -38,6 +40,7 @@ import { messageFromFieldError } from "../utils/messageFromFieldError";
 type FormValues = {
 	login: string;
 	password: string;
+	instance: string;
 	captcha_key?: string;
 };
 
@@ -49,6 +52,7 @@ function LoginPage() {
 	const [mfaData, setMfaData] =
 		React.useState<IAPILoginResponseMFARequired>();
 	const captchaRef = React.useRef<HCaptchaLib>(null);
+	const [debounce, setDebounce] = React.useState<NodeJS.Timeout | null>(null);
 	const { openModal } = useModals();
 
 	const {
@@ -57,11 +61,20 @@ function LoginPage() {
 		formState: { errors },
 		setError,
 		setValue,
+		clearErrors,
 	} = useForm<FormValues>();
 
 	const resetCaptcha = () => {
 		captchaRef.current?.resetCaptcha();
 		setValue("captcha_key", undefined);
+	};
+
+	const getValidURL = (url: string) => {
+		try {
+			return new URL(url);
+		} catch (e) {
+			return undefined;
+		}
 	};
 
 	const onSubmit = handleSubmit((data) => {
@@ -71,7 +84,8 @@ function LoginPage() {
 
 		app.rest
 			.post<IAPILoginRequest, IAPILoginResponse>(Routes.login(), {
-				...data,
+				login: data.login,
+				password: data.password,
 				undelete: false,
 			})
 			.then((r) => {
@@ -157,6 +171,30 @@ function LoginPage() {
 		onSubmit();
 	};
 
+	const handleInstanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		// set as validating
+		if (debounce) clearTimeout(debounce);
+
+		const doRequest = async () => {
+			const url = getValidURL(e.target.value);
+			if (!url) return;
+
+			const endpoints = await REST.getEndpointsFromDomain(url);
+			if (!endpoints)
+				return setError("instance", {
+					type: "manual",
+					message: "Instance could not be resolved",
+				});
+
+			console.debug(`Instance lookup has set routes to`, endpoints);
+			Globals.routeSettings = endpoints; // hmm
+			Globals.save();
+			clearErrors("instance");
+		};
+
+		setDebounce(setTimeout(doRequest, 500));
+	};
+
 	const forgotPassword = () => {
 		openModal(ForgotPasswordModal);
 	};
@@ -196,6 +234,33 @@ function LoginPage() {
 						marginBottom={true}
 						style={{ marginTop: 0 }}
 					>
+						<LabelWrapper error={!!errors.instance}>
+							<InputLabel>Instance</InputLabel>
+							{errors.instance && (
+								<InputErrorText>
+									<>
+										<Divider>-</Divider>
+										{errors.instance.message}
+									</>
+								</InputErrorText>
+							)}
+						</LabelWrapper>
+						<InputWrapper>
+							<Input
+								type="url"
+								{...register("instance", {
+									required: true,
+									value: Globals.routeSettings.wellknown,
+								})}
+								placeholder="Instance Root URL"
+								onChange={handleInstanceChange}
+								error={!!errors.instance}
+								disabled={loading}
+							/>
+						</InputWrapper>
+					</InputContainer>
+
+					<InputContainer marginBottom={false}>
 						<LabelWrapper error={!!errors.login}>
 							<InputLabel>Email</InputLabel>
 							{errors.login && (

@@ -3,7 +3,7 @@
 // import {DomainStore} from '../stores/DomainStore';
 
 import AppStore from "../stores/AppStore";
-import { Globals } from "./Globals";
+import { Globals, RouteSettings } from "./Globals";
 
 export default class REST {
 	private app: AppStore;
@@ -24,6 +24,47 @@ export default class REST {
 			this.headers.Authorization = token;
 		} else {
 			delete this.headers.Authorization;
+		}
+	}
+
+	public static async getEndpointsFromDomain(
+		url: URL,
+	): Promise<RouteSettings | null> {
+		let endpoints = await this.getInstanceDomains(url);
+		if (endpoints) return { ...endpoints, wellknown: url.toString() };
+
+		// get endpoints from .well-known
+		let wellKnown;
+		try {
+			wellKnown = await fetch(`${url.origin}/.well-known/spacebar`)
+				.then((x) => x.json())
+				.then((x) => new URL(x.api));
+		} catch (e) {
+			return null;
+		}
+
+		// well-known was found
+		endpoints = await this.getInstanceDomains(wellKnown);
+		if (!endpoints) return null;
+		return { ...endpoints, wellknown: url.toString() };
+	}
+
+	static async getInstanceDomains(
+		url: URL,
+	): Promise<Omit<RouteSettings, "wellknown"> | null> {
+		try {
+			const endpoints = await fetch(
+				`${url.toString()}${
+					url.pathname.includes("api") ? "" : "api"
+				}/policies/instance/domains`,
+			).then((x) => x.json());
+			return {
+				api: endpoints.apiEndpoint,
+				gateway: endpoints.gateway,
+				cdn: endpoints.cdn,
+			};
+		} catch (e) {
+			return null;
 		}
 	}
 

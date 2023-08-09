@@ -1,13 +1,15 @@
-interface RouteSettings {
+export interface RouteSettings {
 	api: string;
 	cdn: string;
 	gateway: string;
+	wellknown: string;
 }
 
 export const DefaultRouteSettings: RouteSettings = {
 	api: "https://api.old.server.spacebar.chat/api",
 	cdn: "https://cdn.old.server.spacebar.chat",
 	gateway: "wss://gateway.old.server.spacebar.chat",
+	wellknown: "https://spacebar.chat",
 };
 
 export const Globals: {
