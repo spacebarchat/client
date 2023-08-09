@@ -87,6 +87,7 @@ function LoginPage() {
 			.post<IAPILoginRequest, IAPILoginResponse>(Routes.login(), {
 				login: data.login,
 				password: data.password,
+				captcha_key: data.captcha_key,
 				undelete: false,
 			})
 			.then((r) => {
