@@ -1,14 +1,34 @@
 import HCaptchaLib from "@hcaptcha/react-hcaptcha";
+import { useModals } from "@mattjennings/react-modal-stack";
 import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import Button from "../components/Button";
-import Container from "../components/Container";
-import HCaptcha from "../components/HCaptcha";
+import { ReactComponent as SpacebarLogoBlue } from "../assets/images/logo/Logo-Blue.svg";
+import {
+	AuthContainer,
+	AuthSwitchPageContainer,
+	AuthSwitchPageLabel,
+	AuthSwitchPageLink,
+	Divider,
+	FormContainer,
+	Header,
+	Input,
+	InputContainer,
+	InputErrorText,
+	InputLabel,
+	InputWrapper,
+	LabelWrapper,
+	SubHeader,
+	SubmitButton,
+	Wrapper,
+} from "../components/AuthComponents";
+import HCaptcha, { HeaderContainer } from "../components/HCaptcha";
 import MFA from "../components/MFA";
-import { useAppStore } from "../stores/AppStore";
+import ForgotPasswordModal from "../components/modals/ForgotPasswordModal";
+import { AUTH_NO_BRANDING, useAppStore } from "../stores/AppStore";
+import { Globals } from "../utils/Globals";
+import REST from "../utils/REST";
 import {
 	IAPILoginRequest,
 	IAPILoginResponse,
@@ -16,153 +36,6 @@ import {
 	IAPILoginResponseMFARequired,
 } from "../utils/interfaces/api";
 import { messageFromFieldError } from "../utils/messageFromFieldError";
-import REST from "../utils/REST";
-import { Globals } from "../utils/Globals";
-
-export const Wrapper = styled(Container)`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
-	background-color: var(--background-tertiary);
-`;
-
-export const AuthBox = styled(Container)`
-	background-color: var(--background-primary-alt);
-	padding: 32px;
-	font-size: 18px;
-	color: var(--text-muted);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
-
-	@media (max-width: 480px) {
-		width: 100%;
-		height: 100%;
-	}
-
-	@media (min-width: 480px) {
-		width: 480px;
-		border-radius: 18px;
-	}
-`;
-
-export const HeaderContainer = styled.div`
-	width: 100%;
-`;
-
-export const Header = styled.h1`
-	font-weight: 600;
-	margin-bottom: 8px;
-	font-size: 24px;
-	color: var(--text);
-`;
-
-export const SubHeader = styled.h2`
-	color: var(--text-muted);
-	font-weight: 400;
-	font-size: 16px;
-`;
-
-export const FormContainer = styled.form`
-	width: 100%;
-`;
-
-export const InputContainer = styled.h1<{ marginBottom: boolean }>`
-	margin-bottom: ${(props) => (props.marginBottom ? "20px" : "0")};
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-`;
-
-export const LabelWrapper = styled.div<{ error?: boolean }>`
-	display: flex;
-	flex-direction: row;
-	margin-bottom: 8px;
-	color: ${(props) => (props.error ? "var(--error)" : "#b1b5bc")};
-`;
-
-export const InputErrorText = styled.label`
-	font-size: 14px;
-	font-weight: 400;
-	font-style: italic;
-`;
-
-export const InputLabel = styled.label`
-	font-size: 14px;
-	font-weight: 700;
-`;
-
-export const InputWrapper = styled.div`
-	width: 100%;
-	display: flex;
-`;
-
-export const Input = styled.input<{ error?: boolean }>`
-	outline: none;
-	background: var(--background-secondary);
-	padding: 10px;
-	font-size: 16px;
-	flex: 1;
-	border-radius: 12px;
-	color: var(--text);
-	margin: 0;
-	border: none;
-	aria-invalid: ${(props) => (props.error ? "true" : "false")};
-`;
-
-export const PasswordResetLink = styled.button`
-	margin-bottom: 20px;
-	margin-top: 4px;
-	padding: 2px 0;
-	font-size: 14px;
-	display: flex;
-	color: var(--text-link);
-	background: none;
-	border: none;
-
-	&:hover {
-		text-decoration: underline;
-		cursor: pointer;
-	}
-`;
-
-export const LoginButton = styled(Button)`
-	margin-bottom: 8px;
-	width: 100%;
-	min-width: 130px;
-	min-height: 44px;
-`;
-
-export const RegisterContainer = styled.div`
-	margin-top: 4px;
-	text-align: initial;
-`;
-
-export const RegisterLabel = styled.label`
-	font-size: 14px;
-`;
-
-export const RegisterLink = styled.button`
-	font-size: 14px;
-	background: none;
-	border: none;
-	color: var(--text-link);
-
-	@media (max-width: 480px) {
-		display: inline-block;
-	}
-
-	&:hover {
-		text-decoration: underline;
-		cursor: pointer;
-	}
-`;
-
-export const Divider = styled.span`
-	padding: 0 4px;
-`;
 
 type FormValues = {
 	login: string;
@@ -180,6 +53,7 @@ function LoginPage() {
 		React.useState<IAPILoginResponseMFARequired>();
 	const captchaRef = React.useRef<HCaptchaLib>(null);
 	const [debounce, setDebounce] = React.useState<NodeJS.Timeout | null>(null);
+	const { openModal } = useModals();
 
 	const {
 		register,
@@ -297,6 +171,10 @@ function LoginPage() {
 		onSubmit();
 	};
 
+	const forgotPassword = () => {
+		openModal(ForgotPasswordModal);
+	};
+
 	if (captchaSiteKey) {
 		return (
 			<HCaptcha
@@ -313,10 +191,18 @@ function LoginPage() {
 
 	return (
 		<Wrapper>
-			<AuthBox>
+			<AuthContainer>
 				<HeaderContainer>
-					<Header>Welcome Back!</Header>
-					<SubHeader>We're so excited to see you again!</SubHeader>
+					{AUTH_NO_BRANDING ? (
+						<>
+							<Header>Login to Spacebar</Header>
+						</>
+					) : (
+						<>
+							<SpacebarLogoBlue height={48} width="auto" />
+							<SubHeader noBranding>Log into Spacebar</SubHeader>
+						</>
+					)}
 				</HeaderContainer>
 
 				<FormContainer onSubmit={onSubmit}>
@@ -394,6 +280,7 @@ function LoginPage() {
 						<InputWrapper>
 							<Input
 								type="email"
+								placeholder="Email"
 								autoFocus
 								{...register("login", { required: true })}
 								error={!!errors.login}
@@ -402,7 +289,7 @@ function LoginPage() {
 						</InputWrapper>
 					</InputContainer>
 
-					<InputContainer marginBottom={false}>
+					<InputContainer marginBottom>
 						<LabelWrapper error={!!errors.password}>
 							<InputLabel>Password</InputLabel>
 							{errors.password && (
@@ -417,6 +304,7 @@ function LoginPage() {
 						<InputWrapper>
 							<Input
 								type="password"
+								placeholder="Password"
 								{...register("password", { required: true })}
 								error={!!errors.password}
 								disabled={loading}
@@ -424,41 +312,34 @@ function LoginPage() {
 						</InputWrapper>
 					</InputContainer>
 
-					<PasswordResetLink
-						onClick={() => {
-							window.open(
-								"https://youtu.be/dQw4w9WgXcQ",
-								"_blank",
-							);
-						}}
-						type="button"
-					>
+					{/* TODO:  I need to figure this out, clicking this should submit the form or even a different function with only email being required */}
+					{/* <PasswordResetLink onClick={forgotPassword} type="button">
 						Forgot your password?
-					</PasswordResetLink>
+					</PasswordResetLink> */}
 
-					<LoginButton
+					<SubmitButton
 						variant="primary"
 						type="submit"
 						disabled={loading}
 					>
-						Log In
-					</LoginButton>
+						Login
+					</SubmitButton>
 
-					<RegisterContainer>
-						<RegisterLabel>
-							Don't have an account?&nbsp;
-						</RegisterLabel>
-						<RegisterLink
+					<AuthSwitchPageContainer>
+						<AuthSwitchPageLabel>
+							New to Spacebar?&nbsp;
+						</AuthSwitchPageLabel>
+						<AuthSwitchPageLink
 							onClick={() => {
 								navigate("/register");
 							}}
 							type="button"
 						>
-							Sign Up
-						</RegisterLink>
-					</RegisterContainer>
+							Register
+						</AuthSwitchPageLink>
+					</AuthSwitchPageContainer>
 				</FormContainer>
-			</AuthBox>
+			</AuthContainer>
 		</Wrapper>
 	);
 }
