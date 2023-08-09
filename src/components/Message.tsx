@@ -1,6 +1,8 @@
+import Moment from "react-moment";
 import styled from "styled-components";
 import { QueuedMessage } from "../stores/MessageQueue";
 import { default as MessageObject } from "../stores/objects/Message";
+import { calendarStrings } from "../utils/i18n";
 import Avatar from "./Avatar";
 
 type MessageLike = MessageObject | QueuedMessage;
@@ -74,7 +76,10 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 							</MessageAuthor>
 
 							<MessageTimestamp>
-								{message.timestamp.toLocaleTimeString()}
+								<Moment
+									calendar={calendarStrings}
+									date={new Date(message.timestamp)}
+								/>
 							</MessageTimestamp>
 						</MessageHeader>
 					)}
