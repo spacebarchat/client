@@ -102,7 +102,7 @@ export const Input = styled.input<{ error?: boolean }>`
 	}
 `;
 
-export const PasswordResetLink = styled.button`
+export const Link = styled.button`
 	margin-bottom: 20px;
 	margin-top: 4px;
 	padding: 2px 0;

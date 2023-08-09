@@ -3,6 +3,7 @@ import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { ReactComponent as SpacebarLogoBlue } from "../assets/images/logo/Logo-Blue.svg";
 import {
 	AuthContainer,
 	AuthSwitchPageContainer,
@@ -178,11 +179,7 @@ function RegistrationPage() {
 					</>
 				) : (
 					<>
-						{/* Note: This would need to change depending on the theme */}
-						<img
-							src="https://github.com/spacebarchat/spacebarchat/blob/master/branding/png/Spacebar__Logo-White.png?raw=true"
-							height={48}
-						/>
+						<SpacebarLogoBlue height={48} width="auto" />
 						<SubHeader noBranding>Create an account</SubHeader>
 					</>
 				)}

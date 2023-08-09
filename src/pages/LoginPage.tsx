@@ -1,8 +1,10 @@
 import HCaptchaLib from "@hcaptcha/react-hcaptcha";
+import { useModals } from "@mattjennings/react-modal-stack";
 import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { ReactComponent as SpacebarLogoBlue } from "../assets/images/logo/Logo-Blue.svg";
 import {
 	AuthContainer,
 	AuthSwitchPageContainer,
@@ -17,13 +19,13 @@ import {
 	InputLabel,
 	InputWrapper,
 	LabelWrapper,
-	PasswordResetLink,
 	SubHeader,
 	SubmitButton,
 	Wrapper,
 } from "../components/AuthComponents";
 import HCaptcha, { HeaderContainer } from "../components/HCaptcha";
 import MFA from "../components/MFA";
+import ForgotPasswordModal from "../components/modals/ForgotPasswordModal";
 import { AUTH_NO_BRANDING, useAppStore } from "../stores/AppStore";
 import {
 	IAPILoginRequest,
@@ -47,6 +49,7 @@ function LoginPage() {
 	const [mfaData, setMfaData] =
 		React.useState<IAPILoginResponseMFARequired>();
 	const captchaRef = React.useRef<HCaptchaLib>(null);
+	const { openModal } = useModals();
 
 	const {
 		register,
@@ -154,6 +157,10 @@ function LoginPage() {
 		onSubmit();
 	};
 
+	const forgotPassword = () => {
+		openModal(ForgotPasswordModal);
+	};
+
 	if (captchaSiteKey) {
 		return (
 			<HCaptcha
@@ -178,11 +185,7 @@ function LoginPage() {
 						</>
 					) : (
 						<>
-							{/* Note: This would need to change depending on the theme */}
-							<img
-								src="https://github.com/spacebarchat/spacebarchat/blob/master/branding/png/Spacebar__Logo-White.png?raw=true"
-								height={48}
-							/>
+							<SpacebarLogoBlue height={48} width="auto" />
 							<SubHeader noBranding>Log into Spacebar</SubHeader>
 						</>
 					)}
@@ -216,7 +219,7 @@ function LoginPage() {
 						</InputWrapper>
 					</InputContainer>
 
-					<InputContainer marginBottom={false}>
+					<InputContainer marginBottom>
 						<LabelWrapper error={!!errors.password}>
 							<InputLabel>Password</InputLabel>
 							{errors.password && (
@@ -239,17 +242,10 @@ function LoginPage() {
 						</InputWrapper>
 					</InputContainer>
 
-					<PasswordResetLink
-						onClick={() => {
-							window.open(
-								"https://youtu.be/dQw4w9WgXcQ",
-								"_blank",
-							);
-						}}
-						type="button"
-					>
+					{/* TODO:  I need to figure this out, clicking this should submit the form or even a different function with only email being required */}
+					{/* <PasswordResetLink onClick={forgotPassword} type="button">
 						Forgot your password?
-					</PasswordResetLink>
+					</PasswordResetLink> */}
 
 					<SubmitButton
 						variant="primary"
