@@ -171,6 +171,30 @@ function LoginPage() {
 		onSubmit();
 	};
 
+	const handleInstanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		// set as validating
+		if (debounce) clearTimeout(debounce);
+
+		const doRequest = async () => {
+			const url = getValidURL(e.target.value);
+			if (!url) return;
+
+			const endpoints = await REST.getEndpointsFromDomain(url);
+			if (!endpoints)
+				return setError("instance", {
+					type: "manual",
+					message: "Instance could not be resolved",
+				});
+
+			console.debug(`Instance lookup has set routes to`, endpoints);
+			Globals.routeSettings = endpoints; // hmm
+			Globals.save();
+			clearErrors("instance");
+		};
+
+		setDebounce(setTimeout(doRequest, 500));
+	};
+
 	const forgotPassword = () => {
 		openModal(ForgotPasswordModal);
 	};
@@ -228,37 +252,8 @@ function LoginPage() {
 									required: true,
 									value: Globals.routeSettings.wellknown,
 								})}
-								onChange={(elem) => {
-									if (debounce) clearTimeout(debounce);
-
-									const doRequest = async () => {
-										const url = getValidURL(
-											elem.target.value,
-										);
-										if (!url) return;
-
-										const endpoints =
-											await REST.getEndpointsFromDomain(
-												url,
-											);
-										if (!endpoints)
-											return setError("instance", {
-												type: "manual",
-												message:
-													"Instance could not be resolved",
-											});
-
-										console.debug(
-											`Instance lookup has set routes to`,
-											endpoints,
-										);
-										Globals.routeSettings = endpoints; // hmm
-										Globals.save();
-										clearErrors("instance");
-									};
-
-									setDebounce(setTimeout(doRequest, 500));
-								}}
+								placeholder="Instance Root URL"
+								onChange={handleInstanceChange}
 								error={!!errors.instance}
 								disabled={loading}
 							/>
