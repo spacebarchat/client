@@ -13,7 +13,7 @@ import GuildSidebarListItem from "./GuildSidebarListItem";
 import SidebarPill, { PillType } from "./SidebarPill";
 import Tooltip from "./Tooltip";
 
-const Wrapper = styled(Container)<{ active?: boolean }>`
+const Wrapper = styled(Container)<{ active?: boolean; hasImage?: boolean }>`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -21,13 +21,18 @@ const Wrapper = styled(Container)<{ active?: boolean }>`
 	height: 48px;
 	border-radius: ${(props) => (props.active ? "30%" : "50%")};
 	background-color: ${(props) =>
-		props.active ? "var(--primary)" : "var(--background-secondary)"};
+		props.hasImage
+			? "transparent"
+			: props.active
+			? "var(--primary)"
+			: "var(--background-secondary)"};
 	transition: border-radius 0.2s ease, background-color 0.2s ease;
 	cursor: pointer;
 
 	&:hover {
 		border-radius: 30%;
-		background-color: var(--primary);
+		background-color: ${(props) =>
+			props.hasImage ? "transparent" : "var(--primary)"};
 	}
 `;
 
@@ -71,6 +76,7 @@ function GuildItem(props: Props) {
 				<Wrapper
 					onClick={doNavigate}
 					active={props.active}
+					hasImage={!!guild?.icon}
 					onMouseEnter={() => setHovered(true)}
 					onMouseLeave={() => setHovered(false)}
 				>
@@ -87,7 +93,13 @@ function GuildItem(props: Props) {
 							height={48}
 						/>
 					) : (
-						<span style={{ fontSize: "18px", fontWeight: "bold", cursor: "pointer" }}>
+						<span
+							style={{
+								fontSize: "18px",
+								fontWeight: "bold",
+								cursor: "pointer",
+							}}
+						>
 							{guild?.acronym}
 						</span>
 					)}
