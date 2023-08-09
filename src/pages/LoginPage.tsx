@@ -27,7 +27,7 @@ import HCaptcha, { HeaderContainer } from "../components/HCaptcha";
 import MFA from "../components/MFA";
 import ForgotPasswordModal from "../components/modals/ForgotPasswordModal";
 import { AUTH_NO_BRANDING, useAppStore } from "../stores/AppStore";
-import { Globals } from "../utils/Globals";
+import { Globals, RouteSettings } from "../utils/Globals";
 import REST from "../utils/REST";
 import {
 	IAPILoginRequest,
@@ -53,6 +53,7 @@ function LoginPage() {
 		React.useState<IAPILoginResponseMFARequired>();
 	const captchaRef = React.useRef<HCaptchaLib>(null);
 	const [debounce, setDebounce] = React.useState<NodeJS.Timeout | null>(null);
+	const [isCheckingInstance, setCheckingInstance] = React.useState(false);
 	const { openModal } = useModals();
 
 	const {
@@ -172,24 +173,37 @@ function LoginPage() {
 	};
 
 	const handleInstanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		clearErrors("instance");
+		setCheckingInstance(false);
+
 		// set as validating
 		if (debounce) clearTimeout(debounce);
 
 		const doRequest = async () => {
 			const url = getValidURL(e.target.value);
 			if (!url) return;
+			setCheckingInstance(true);
 
-			const endpoints = await REST.getEndpointsFromDomain(url);
-			if (!endpoints)
+			let endpoints: RouteSettings;
+			try {
+				endpoints = await REST.getEndpointsFromDomain(url);
+			} catch (e) {
+				setCheckingInstance(false);
 				return setError("instance", {
 					type: "manual",
-					message: "Instance could not be resolved",
+					message:
+						(e instanceof Error &&
+							(e?.message?.length > 60
+								? e.message.slice(0, 60) + "..."
+								: e.message)) ||
+						"Instance could not be resolved",
 				});
+			}
 
 			console.debug(`Instance lookup has set routes to`, endpoints);
 			Globals.routeSettings = endpoints; // hmm
 			Globals.save();
-			clearErrors("instance");
+			setCheckingInstance(false);
 		};
 
 		setDebounce(setTimeout(doRequest, 500));
@@ -236,6 +250,14 @@ function LoginPage() {
 					>
 						<LabelWrapper error={!!errors.instance}>
 							<InputLabel>Instance</InputLabel>
+							{isCheckingInstance != false && (
+								<InputErrorText>
+									<>
+										<Divider>-</Divider>
+										Checking
+									</>
+								</InputErrorText>
+							)}
 							{errors.instance && (
 								<InputErrorText>
 									<>
