@@ -1,8 +1,12 @@
 import { useModals } from "@mattjennings/react-modal-stack";
+import { APIGuild, Routes } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAppStore } from "../../stores/AppStore";
+import { messageFromFieldError } from "../../utils/messageFromFieldError";
+import { Divider, InputErrorText } from "../AuthComponents";
 import Icon from "../Icon";
 import AddServerModal from "./AddServerModal";
 import {
@@ -85,6 +89,7 @@ function CreateServerModal() {
 	const { openModal, closeModal } = useModals();
 	const [selectedFile, setSelectedFile] = React.useState<File>();
 	const fileInputRef = React.useRef<HTMLInputElement>(null);
+	const navigate = useNavigate();
 
 	if (!open) {
 		return null;
@@ -106,6 +111,47 @@ function CreateServerModal() {
 		if (!event.target.files) return;
 		setSelectedFile(event.target.files[0]);
 	};
+
+	const onSubmit = handleSubmit((data) => {
+		app.rest
+			.post<Partial<APIGuild>, APIGuild>(Routes.guilds(), {
+				name: data.serverName,
+			})
+			.then((r) => {
+				closeModal();
+				navigate(`/channels/${r.id}/${r.channels[0].id}`);
+			})
+			.catch((r) => {
+				if ("message" in r) {
+					if (r.errors) {
+						const t = messageFromFieldError(r.errors);
+						if (t) {
+							setError(t.field as keyof FormValues, {
+								type: "manual",
+								message: t.error,
+							});
+						} else {
+							setError("serverName", {
+								type: "manual",
+								message: r.message,
+							});
+						}
+					} else {
+						setError("serverName", {
+							type: "manual",
+							message: r.message,
+						});
+					}
+				} else {
+					// unknown error
+					console.error(r);
+					setError("serverName", {
+						type: "manual",
+						message: "Unknown Error",
+					});
+				}
+			});
+	});
 
 	return (
 		<ModalContainer>
@@ -148,8 +194,8 @@ function CreateServerModal() {
 								fill="none"
 							>
 								<path
-									fill-rule="evenodd"
-									clip-rule="evenodd"
+									fillRule="evenodd"
+									clipRule="evenodd"
 									d="m 39.88 78.32 c 4.0666 0 8.0467 -0.648 11.8282 -1.9066 l -0.9101 -2.7331 c -3.4906 1.1606 -7.1626 1.7597 -10.921 1.7597 v 2.88 m 17.4528 -4.3056 c 3.5539 -1.8749 6.7824 -4.3142 9.5645 -7.2115 l -2.0765 -1.993 c -2.569 2.6755 -5.5526 4.9277 -8.833 6.6586 l 1.345 2.5459 m 13.4208 -11.9434 c 2.2752 -3.3091 4.0061 -6.9638 5.1178 -10.8346 l -2.7677 -0.7949 c -1.0253 3.5712 -2.6237 6.9437 -4.7232 9.9965 l 2.3731 1.633 m 6.2899 -16.5917 c 0.1814 -1.4918 0.2765 -2.9981 0.2794 -4.5158 c 0 -2.5805 -0.2448 -5.063 -0.7344 -7.4966 l -2.8224 0.5674 c 0.4522 2.2464 0.6797 4.5389 0.6797 6.9264 c -0.0029 1.3997 -0.0893 2.7936 -0.2592 4.1702 l 2.8598 0.3514 m -2.1254 -17.8243 c -1.4198 -3.7642 -3.4416 -7.2662 -5.976 -10.3824 l -2.2349 1.8173 c 2.3386 2.8771 4.2048 6.1114 5.5181 9.5818 l 2.6928 -1.0166 m -10.1923 -14.783 c -3.0038 -2.6669 -6.4195 -4.8384 -10.1146 -6.4195 l -1.1347 2.6467 c 3.4099 1.4602 6.5635 3.4646 9.337 5.927 l 1.9123 -2.1542 m -15.7334 -8.3117 c -2.9146 -0.7286 -5.927 -1.1059 -8.9827 -1.1174 c -1.0886 0 -2.065 0.0374 -3.0499 0.1123 l 0.2218 2.8714 c 0.9101 -0.0691 1.8115 -0.1037 2.8224 -0.1037 c 2.8195 0.0086 5.5987 0.3571 8.2915 1.031 l 0.6998 -2.7936 m -17.9654 -0.0634 c -3.9197 0.9504 -7.6406 2.5286 -11.0362 4.6627 l 1.5322 2.4394 c 3.1363 -1.9699 6.5693 -3.4243 10.1837 -4.3027 l -0.6797 -2.7994 m -15.889 8.2886 c -3.0154 2.6554 -5.5872 5.7888 -7.6118 9.2506 l 2.4883 1.4515 c 1.8691 -3.2026 4.2451 -6.0883 7.0301 -8.5421 l -1.9037 -2.16 m -10.1952 14.6189 c -1.4371 3.7238 -2.2723 7.6723 -2.4595 11.7274 l 2.8771 0.1325 c 0.1728 -3.744 0.9446 -7.3843 2.2694 -10.823 l -2.687 -1.0368 m -2.2464 17.8618 c 0.4694 4.0205 1.5811 7.9027 3.2832 11.52 l 2.6064 -1.224 c -1.5696 -3.3408 -2.5978 -6.9235 -3.0298 -10.633 l -2.8598 0.3341 m 6.2698 16.7443 c 2.2694 3.3149 5.0573 6.2467 8.2541 8.6688 l 1.7453 -2.2925 c -2.952 -2.2464 -5.5267 -4.9565 -7.6205 -8.015 l -2.376 1.6272 m 13.4352 11.9923 c 3.5424 1.872 7.3699 3.168 11.3558 3.8246 l 0.4666 -2.8426 c -3.6806 -0.6048 -7.2086 -1.8 -10.4774 -3.528 l -1.3478 2.5459 m 17.3376 4.3229 c 0.0691 0 0.0691 0 0.1382 0 v -2.88 c -0.0634 0 -0.0634 0 -0.1267 0 l -0.0115 2.88"
 									fill="currentColor"
 								></path>
@@ -176,7 +222,7 @@ function CreateServerModal() {
 							<FileInput
 								role="button"
 								// disabled until I get the motiviation to not make it shit, I don't really want to use an invisible input
-								// onClick={() => fileInputRef.current?.click()}
+								onClick={() => fileInputRef.current?.click()}
 							></FileInput>
 						</IconContainer>
 					</UploadIcon>
@@ -184,13 +230,25 @@ function CreateServerModal() {
 					<form>
 						<NameInputContainer>
 							<FormLabel>Guild Name</FormLabel>
+							{errors.serverName && (
+								<InputErrorText>
+									<>
+										<Divider>-</Divider>
+										{errors.serverName.message}
+									</>
+								</InputErrorText>
+							)}
 							<Input {...register("serverName")} />
 						</NameInputContainer>
 					</form>
 				</ModelContentContainer>
 
 				<ModalFooter>
-					<ModalActionItem variant="filled" size="med">
+					<ModalActionItem
+						variant="filled"
+						size="med"
+						onClick={onSubmit}
+					>
 						Create
 					</ModalActionItem>
 
