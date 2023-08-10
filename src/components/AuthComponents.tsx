@@ -100,6 +100,13 @@ export const Input = styled.input<{ error?: boolean }>`
 	&:focus {
 		border: 1px solid var(--primary);
 	}
+
+	// disabled styling
+	&:disabled {
+		background: var(--background-secondary-alt);
+		color: var(--text-disabled);
+		border: 1px solid var(--background-secondary-alt);
+	}
 `;
 
 export const Link = styled.button`
@@ -149,8 +156,4 @@ export const AuthSwitchPageLink = styled.button`
 		text-decoration: underline;
 		cursor: pointer;
 	}
-`;
-
-export const Divider = styled.span`
-	padding: 0 4px;
 `;

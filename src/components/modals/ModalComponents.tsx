@@ -120,6 +120,16 @@ export const ModalActionItem = styled.button<{
 			`;
 		}
 	}}
+
+	// disabled styling
+	${(props) => {
+		if (props.disabled) {
+			return `
+			opacity: 0.5;
+			cursor: not-allowed;
+			`;
+		}
+	}}
 `;
 
 export const ModalFooter = styled.div`

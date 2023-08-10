@@ -6,7 +6,14 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAppStore } from "../../stores/AppStore";
 import { messageFromFieldError } from "../../utils/messageFromFieldError";
-import { Divider, InputErrorText } from "../AuthComponents";
+import {
+	Input,
+	InputErrorText,
+	InputLabel,
+	InputWrapper,
+	LabelWrapper,
+} from "../AuthComponents";
+import { Divider } from "../Divider";
 import Icon from "../Icon";
 import AddServerModal from "./AddServerModal";
 import {
@@ -23,19 +30,6 @@ import {
 export const ModalHeader = styled.div`
 	margin-bottom: 30px;
 	padding: 24px 24px 0;
-`;
-
-const Input = styled.input`
-	border-radius: 8px;
-	padding: 10px;
-	margin-bottom: 10px;
-	border: none;
-	outline: none;
-	cursor: text;
-	font-size: 16px;
-	font-weight: 500;
-	color: var(--text);
-	background-color: var(--background-primary);
 `;
 
 const UploadIcon = styled.div`
@@ -68,20 +62,14 @@ const FileInput = styled.div`
 	font-size: 0px;
 `;
 
-const NameInputContainer = styled.div`
+const InputContainer = styled.div`
 	margin-top: 24px;
 	display: flex;
 	flex-direction: column;
 `;
 
-const FormLabel = styled.label`
-	margin-bottom: 8px;
-	font-size: 16px;
-	color: var(--text-header-secondary);
-`;
-
 type FormValues = {
-	serverName: string;
+	name: string;
 };
 
 function CreateServerModal() {
@@ -98,13 +86,13 @@ function CreateServerModal() {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
+		formState: { errors, isLoading },
 		setError,
 		setValue,
 	} = useForm<FormValues>();
 
 	React.useEffect(() => {
-		setValue("serverName", `${app.account?.username}'s guild`);
+		setValue("name", `${app.account?.username}'s guild`);
 	}, []);
 
 	const onIconChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,11 +103,11 @@ function CreateServerModal() {
 	const onSubmit = handleSubmit((data) => {
 		app.rest
 			.post<Partial<APIGuild>, APIGuild>(Routes.guilds(), {
-				name: data.serverName,
+				name: data.name,
 			})
 			.then((r) => {
+				navigate(`/channels/${r.id}`);
 				closeModal();
-				navigate(`/channels/${r.id}/${r.channels[0].id}`);
 			})
 			.catch((r) => {
 				if ("message" in r) {
@@ -131,13 +119,13 @@ function CreateServerModal() {
 								message: t.error,
 							});
 						} else {
-							setError("serverName", {
+							setError("name", {
 								type: "manual",
 								message: r.message,
 							});
 						}
 					} else {
-						setError("serverName", {
+						setError("name", {
 							type: "manual",
 							message: r.message,
 						});
@@ -145,7 +133,7 @@ function CreateServerModal() {
 				} else {
 					// unknown error
 					console.error(r);
-					setError("serverName", {
+					setError("name", {
 						type: "manual",
 						message: "Unknown Error",
 					});
@@ -228,18 +216,28 @@ function CreateServerModal() {
 					</UploadIcon>
 
 					<form>
-						<NameInputContainer>
-							<FormLabel>Guild Name</FormLabel>
-							{errors.serverName && (
-								<InputErrorText>
-									<>
-										<Divider>-</Divider>
-										{errors.serverName.message}
-									</>
-								</InputErrorText>
-							)}
-							<Input {...register("serverName")} />
-						</NameInputContainer>
+						<InputContainer>
+							<LabelWrapper error={!!errors.name}>
+								<InputLabel>Guild Name</InputLabel>
+								{errors.name && (
+									<InputErrorText>
+										<>
+											<Divider>-</Divider>
+											{errors.name.message}
+										</>
+									</InputErrorText>
+								)}
+							</LabelWrapper>
+							<InputWrapper>
+								<Input
+									autoFocus
+									{...register("name", { required: true })}
+									placeholder="Guild Name"
+									error={!!errors.name}
+									disabled={isLoading}
+								/>
+							</InputWrapper>
+						</InputContainer>
 					</form>
 				</ModelContentContainer>
 
@@ -248,6 +246,7 @@ function CreateServerModal() {
 						variant="filled"
 						size="med"
 						onClick={onSubmit}
+						disabled={isLoading}
 					>
 						Create
 					</ModalActionItem>

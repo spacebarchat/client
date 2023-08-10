@@ -9,7 +9,6 @@ import {
 	AuthSwitchPageContainer,
 	AuthSwitchPageLabel,
 	AuthSwitchPageLink,
-	Divider,
 	FormContainer,
 	Header,
 	Input,
@@ -23,6 +22,7 @@ import {
 	Wrapper,
 } from "../components/AuthComponents";
 import DOBInput from "../components/DOBInput";
+import { Divider } from "../components/Divider";
 import HCaptcha from "../components/HCaptcha";
 import { AUTH_NO_BRANDING, useAppStore } from "../stores/AppStore";
 import {
