@@ -15,11 +15,13 @@ import type {
 } from "@spacebarchat/spacebar-api-types/v9";
 import { ChannelType, Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { action, computed, makeObservable, observable } from "mobx";
+import Logger from "../../utils/Logger";
+import { APIError } from "../../utils/interfaces/api";
 import AppStore from "../AppStore";
 import MessageStore from "../MessageStore";
-import { APIError } from "../../utils/interfaces/api";
 
 export default class Channel {
+	private readonly logger: Logger = new Logger("Channel");
 	private readonly app: AppStore;
 
 	id: SnowflakeType;
@@ -170,7 +172,7 @@ export default class Channel {
 		}
 
 		this.hasFetchedMessages = true;
-		console.log(`Fetching messags for ${this.id}`);
+		this.logger.info(`Fetching messags for ${this.id}`);
 		app.rest
 			.get<RESTGetAPIChannelMessagesResult | APIError>(
 				Routes.channelMessages(this.id),
@@ -178,7 +180,7 @@ export default class Channel {
 			)
 			.then((res) => {
 				if ("code" in res) {
-					console.error(res);
+					this.logger.error(res);
 					return;
 				}
 				this.messages.addAll(
@@ -191,7 +193,7 @@ export default class Channel {
 				);
 			})
 			.catch((err) => {
-				console.error(err);
+				this.logger.error(err);
 			});
 	}
 

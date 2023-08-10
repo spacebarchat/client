@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import Channel from "../stores/objects/Channel";
-import Snowflake from "../utils/Snowflake";
+import useLogger from "../hooks/useLogger";
 import { useAppStore } from "../stores/AppStore";
+import Channel from "../stores/objects/Channel";
 import User from "../stores/objects/User";
+import Snowflake from "../utils/Snowflake";
 
 const Container = styled.div`
 	margin-top: -8px;
@@ -37,6 +38,7 @@ interface Props {
 
 function MessageInput(props: Props) {
 	const app = useAppStore();
+	const logger = useLogger("MessageInput");
 	const wrapperRef = React.useRef<HTMLDivElement>(null);
 	const placeholderRef = React.useRef<HTMLDivElement>(null);
 	const inputRef = React.useRef<HTMLDivElement>(null);
@@ -95,20 +97,20 @@ function MessageInput(props: Props) {
 
 	function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
 		if (!props.channel) {
-			console.warn("No channel selected, cannot send message");
+			logger.warn("No channel selected, cannot send message");
 			return;
 		}
 
 		if (e.key === "Enter") {
 			e.preventDefault();
 			const shouldFail = app.experiments.isTreatmentEnabled(
-                'message_queue',
-                2,
-              );
-              const shouldSend = !app.experiments.isTreatmentEnabled(
-                'message_queue',
-                1,
-              );
+				"message_queue",
+				2,
+			);
+			const shouldSend = !app.experiments.isTreatmentEnabled(
+				"message_queue",
+				1,
+			);
 
 			if (!props.channel.canSendMessage(content) && !shouldFail) return;
 
@@ -120,7 +122,7 @@ function MessageInput(props: Props) {
 				channel: props.channel.id,
 			});
 
-			if(shouldSend) {
+			if (shouldSend) {
 				props.channel.sendMessage({ content, nonce }).catch((error) => {
 					app.queue.error(nonce, error as string);
 				});

@@ -24,6 +24,7 @@ import {
 import DOBInput from "../components/DOBInput";
 import { Divider } from "../components/Divider";
 import HCaptcha from "../components/HCaptcha";
+import useLogger from "../hooks/useLogger";
 import { AUTH_NO_BRANDING, useAppStore } from "../stores/AppStore";
 import {
 	IAPILoginResponseSuccess,
@@ -42,6 +43,7 @@ type FormValues = {
 
 function RegistrationPage() {
 	const app = useAppStore();
+	const logger = useLogger("RegistrationPage");
 	const navigate = useNavigate();
 	const [loading, setLoading] = React.useState(false);
 	const [captchaSiteKey, setCaptchaSiteKey] = React.useState<string>();
@@ -89,7 +91,7 @@ function RegistrationPage() {
 					return;
 				} else {
 					// unknown error
-					console.error(r);
+					logger.error(r);
 					setError("email", {
 						type: "manual",
 						message: "Unknown Error",
@@ -144,7 +146,7 @@ function RegistrationPage() {
 					resetCaptcha();
 				} else {
 					// unknown error
-					console.error(r);
+					logger.error(r);
 					setError("email", {
 						type: "manual",
 						message: "Unknown Error",

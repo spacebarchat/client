@@ -28,12 +28,14 @@ import {
 	Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
 import { action, makeObservable, observable, runInAction } from "mobx";
+import Logger from "../utils/Logger";
 import AppStore from "./AppStore";
 
 const GATEWAY_VERSION = "9";
 const GATEWAY_ENCODING = "json";
 
 export default class GatewayConnectionStore {
+	private readonly logger: Logger = new Logger("GatewayConnectionStore");
 	@observable private socket: WebSocket | null = null;
 	@observable private sessionId: string | null = null;
 	@observable public readyState: number = WebSocket.CLOSED;
@@ -65,7 +67,7 @@ export default class GatewayConnectionStore {
 		newUrl.searchParams.append("v", GATEWAY_VERSION);
 		newUrl.searchParams.append("encoding", GATEWAY_ENCODING);
 		this.url = newUrl.href;
-		console.debug(`[Connect] ${this.url}`);
+		this.logger.debug(`[Connect] ${this.url}`);
 		this.connectionStartTime = Date.now();
 		this.socket = new WebSocket(this.url);
 		this.readyState = WebSocket.CONNECTING;
@@ -81,7 +83,7 @@ export default class GatewayConnectionStore {
 		}
 
 		this.readyState = WebSocket.CLOSING;
-		console.debug(`[Disconnect] ${this.url}`);
+		this.logger.debug(`[Disconnect] ${this.url}`);
 		this.socket?.close(code, reason);
 	}
 
@@ -144,7 +146,7 @@ export default class GatewayConnectionStore {
 	}
 
 	private onopen = () => {
-		console.debug(
+		this.logger.debug(
 			`[Connected] ${this.url} (took ${
 				Date.now() - this.connectionStartTime!
 			}ms)`,
@@ -158,7 +160,7 @@ export default class GatewayConnectionStore {
 	private onmessage = (e: MessageEvent<any>) => {
 		const payload: GatewayReceivePayload = JSON.parse(e.data);
 		if (payload.op !== GatewayOpcodes.Dispatch) {
-			console.debug(`[Gateway] -> ${payload.op}`, payload);
+			this.logger.debug(`[Gateway] -> ${payload.op}`, payload);
 		}
 
 		switch (payload.op) {
@@ -181,13 +183,13 @@ export default class GatewayConnectionStore {
 				this.handleHeartbeatAck();
 				break;
 			default:
-				console.debug("Received unknown opcode");
+				this.logger.debug("Received unknown opcode");
 				break;
 		}
 	};
 
 	private onerror = (e: Event) => {
-		console.error("[Gateway] Socket Error", e);
+		this.logger.error("[Gateway] Socket Error", e);
 	};
 
 	private onclose = (e: CloseEvent) => {
@@ -197,17 +199,17 @@ export default class GatewayConnectionStore {
 
 	private sendJson = (payload: GatewaySendPayload) => {
 		if (!this.socket) {
-			console.error("Socket is not open");
+			this.logger.error("Socket is not open");
 			return;
 		}
 
 		if (this.socket.readyState !== WebSocket.OPEN) {
-			console.error(
+			this.logger.error(
 				`Socket is not open; readyState: ${this.socket.readyState}`,
 			);
 			return;
 		}
-		console.debug(`[Gateway] <- ${payload.op}`, payload);
+		this.logger.debug(`[Gateway] <- ${payload.op}`, payload);
 		this.socket.send(JSON.stringify(payload));
 	};
 
@@ -215,9 +217,9 @@ export default class GatewayConnectionStore {
 	 * Sends Identify payload to gateway
 	 */
 	private handleIdentify = () => {
-		console.debug("handleIdentify called");
+		this.logger.debug("handleIdentify called");
 		if (!this.app.token) {
-			return console.error("Token shouldn't be null here");
+			return this.logger.error("Token shouldn't be null here");
 		}
 		this.identifyStartTime = Date.now();
 
@@ -250,7 +252,7 @@ export default class GatewayConnectionStore {
 	private handleInvalidSession = (resumable: boolean) => {
 		this.cleanup();
 
-		console.debug(`Received invalid session; Can Resume: ${resumable}`);
+		this.logger.debug(`Received invalid session; Can Resume: ${resumable}`);
 		if (!resumable) {
 			return;
 		}
@@ -263,13 +265,13 @@ export default class GatewayConnectionStore {
 	 */
 	private handleReconnect() {
 		this.cleanup();
-		console.debug("Received reconnect");
+		this.logger.debug("Received reconnect");
 	}
 
 	private handleResume() {
-		console.debug("handleResume called");
+		this.logger.debug("handleResume called");
 		if (!this.app.token) {
-			return console.error("Token shouldn't be null here");
+			return this.logger.error("Token shouldn't be null here");
 		}
 
 		this.sendJson({
@@ -284,7 +286,7 @@ export default class GatewayConnectionStore {
 
 	private handleHello = (data: GatewayHelloData) => {
 		this.heartbeatInterval = data.heartbeat_interval;
-		console.info(
+		this.logger.info(
 			`[Hello] heartbeat interval: ${data.heartbeat_interval} (took ${
 				Date.now() - this.connectionStartTime!
 			}ms)`,
@@ -314,7 +316,7 @@ export default class GatewayConnectionStore {
 		this.cleanup();
 
 		if (code === 4004) {
-			console.warn("closed because of authentication failure.");
+			this.logger.warn("closed because of authentication failure.");
 			// remove token, this will send us back to the login screen
 			// TODO: maybe we could show a toast here so the user knows why they got logged out
 			this.app.logout();
@@ -382,7 +384,7 @@ export default class GatewayConnectionStore {
 	 * Handles a heartbeat timeout
 	 */
 	private handleHeartbeatTimeout = () => {
-		console.warn(
+		this.logger.warn(
 			`[Heartbeat ACK Timeout] should reconnect in ${(
 				this.heartbeatInterval! / 1000
 			).toFixed(2)} seconds`,
@@ -403,7 +405,7 @@ export default class GatewayConnectionStore {
 			op: GatewayOpcodes.Heartbeat,
 			d: this.sequence,
 		};
-		console.debug("Sending heartbeat");
+		this.logger.debug("Sending heartbeat");
 		this.sendJson(payload);
 	};
 
@@ -411,7 +413,7 @@ export default class GatewayConnectionStore {
 	 * Stops heartbeat interval and removes socket
 	 */
 	private cleanup = () => {
-		console.debug("Cleaning up");
+		this.logger.debug("Cleaning up");
 		this.stopHeartbeater();
 		this.socket = null;
 	};
@@ -420,7 +422,7 @@ export default class GatewayConnectionStore {
 	 * Processes a heartbeat ack opcode
 	 */
 	private handleHeartbeatAck = () => {
-		console.debug("Received heartbeat ack");
+		this.logger.debug("Received heartbeat ack");
 		this.heartbeatAck = true;
 	};
 
@@ -429,11 +431,11 @@ export default class GatewayConnectionStore {
 	 */
 	private handleDispatch = (data: GatewayDispatchPayload) => {
 		const { d, t, s } = data;
-		console.debug(`[Gateway] -> ${t}`, d);
+		this.logger.debug(`[Gateway] -> ${t}`, d);
 		this.sequence = s;
 		const handler = this.dispatchHandlers.get(t);
 		if (!handler) {
-			console.debug(`No handler for dispatch event ${t}`);
+			this.logger.debug(`No handler for dispatch event ${t}`);
 			return;
 		}
 
@@ -444,14 +446,14 @@ export default class GatewayConnectionStore {
 	 * Processes a resumed dispatch event
 	 */
 	private onResumed = () => {
-		console.debug("Resumed");
+		this.logger.debug("Resumed");
 	};
 
 	/**
 	 * Processes a ready dispatch event
 	 */
 	private onReady = (data: GatewayReadyDispatchData) => {
-		console.info(
+		this.logger.info(
 			`[Ready] took ${Date.now() - this.connectionStartTime!}ms`,
 		);
 		const { session_id, guilds, users, user, private_channels } = data;
@@ -517,7 +519,7 @@ export default class GatewayConnectionStore {
 	// Start dispatch handlers
 
 	private onGuildCreate = (data: GatewayGuildCreateDispatchData) => {
-		console.debug("Received guild create event");
+		this.logger.debug("Received guild create event");
 		runInAction(() => {
 			this.app.guilds.add({
 				...data,
@@ -527,12 +529,12 @@ export default class GatewayConnectionStore {
 	};
 
 	private onGuildUpdate = (data: GatewayGuildModifyDispatchData) => {
-		console.debug("Received guild update event");
+		this.logger.debug("Received guild update event");
 		this.app.guilds.get(data.id)?.update(data);
 	};
 
 	private onGuildDelete = (data: GatewayGuildDeleteDispatchData) => {
-		console.debug("Received guild delete event");
+		this.logger.debug("Received guild delete event");
 		runInAction(() => {
 			this.app.guilds.remove(data.id);
 		});
@@ -541,12 +543,14 @@ export default class GatewayConnectionStore {
 	private onGuildMemberListUpdate = (
 		data: GatewayGuildMemberListUpdateDispatchData,
 	) => {
-		console.debug("Received GuildMemberListUpdate event");
+		this.logger.debug("Received GuildMemberListUpdate event");
 		const { guild_id } = data;
 		const guild = this.app.guilds.get(guild_id);
 
 		if (!guild) {
-			console.warn(`[GuildMemberListUpdate] Guild ${guild_id} not found`);
+			this.logger.warn(
+				`[GuildMemberListUpdate] Guild ${guild_id} not found`,
+			);
 			return;
 		}
 
@@ -561,7 +565,7 @@ export default class GatewayConnectionStore {
 
 		const guild = this.app.guilds.get(data.guild_id!);
 		if (!guild) {
-			console.warn(
+			this.logger.warn(
 				`[ChannelCreate] Guild ${data.guild_id} not found for channel ${data.id}`,
 			);
 			return;
@@ -577,7 +581,7 @@ export default class GatewayConnectionStore {
 
 		const guild = this.app.guilds.get(data.guild_id!);
 		if (!guild) {
-			console.warn(
+			this.logger.warn(
 				`[ChannelDelete] Guild ${data.guild_id} not found for channel ${data.id}`,
 			);
 			return;
@@ -588,14 +592,14 @@ export default class GatewayConnectionStore {
 	private onMessageCreate = (data: GatewayMessageCreateDispatchData) => {
 		const guild = this.app.guilds.get(data.guild_id!);
 		if (!guild) {
-			console.warn(
+			this.logger.warn(
 				`[MessageCreate] Guild ${data.guild_id} not found for channel ${data.id}`,
 			);
 			return;
 		}
 		const channel = guild.channels.get(data.channel_id);
 		if (!channel) {
-			console.warn(
+			this.logger.warn(
 				`[MessageCreate] Channel ${data.channel_id} not found for message ${data.id}`,
 			);
 			return;
@@ -608,14 +612,14 @@ export default class GatewayConnectionStore {
 	private onMessageUpdate = (data: GatewayMessageUpdateDispatchData) => {
 		const guild = this.app.guilds.get(data.guild_id!);
 		if (!guild) {
-			console.warn(
+			this.logger.warn(
 				`[MessageUpdate] Guild ${data.guild_id} not found for channel ${data.id}`,
 			);
 			return;
 		}
 		const channel = guild.channels.get(data.channel_id);
 		if (!channel) {
-			console.warn(
+			this.logger.warn(
 				`[MessageUpdate] Channel ${data.channel_id} not found for message ${data.id}`,
 			);
 			return;
@@ -627,14 +631,14 @@ export default class GatewayConnectionStore {
 	private onMessageDelete = (data: GatewayMessageDeleteDispatchData) => {
 		const guild = this.app.guilds.get(data.guild_id!);
 		if (!guild) {
-			console.warn(
+			this.logger.warn(
 				`[MessageDelete] Guild ${data.guild_id} not found for channel ${data.id}`,
 			);
 			return;
 		}
 		const channel = guild.channels.get(data.channel_id);
 		if (!channel) {
-			console.warn(
+			this.logger.warn(
 				`[MessageDelete] Channel ${data.channel_id} not found for message ${data.id}`,
 			);
 			return;

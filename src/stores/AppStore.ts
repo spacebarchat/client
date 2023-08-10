@@ -1,6 +1,7 @@
 import type { APIUser } from "@spacebarchat/spacebar-api-types/v9";
 import { action, computed, makeAutoObservable, observable } from "mobx";
 import secureLocalStorage from "react-secure-storage";
+import Logger from "../utils/Logger";
 import REST from "../utils/REST";
 import AccountStore from "./AccountStore";
 import ExperimentsStore from "./ExperimentsStore";
@@ -16,6 +17,8 @@ import UserStore from "./UserStore";
 export const AUTH_NO_BRANDING = false;
 
 export default class AppStore {
+	private readonly logger: Logger = new Logger("AppStore");
+
 	// whether the gateway is ready
 	@observable isGatewayReady = false;
 	// whether the app is still loading
@@ -57,7 +60,7 @@ export default class AppStore {
 		this.tokenLoaded = true;
 		if (save) {
 			secureLocalStorage.setItem("token", token);
-			console.log("Token saved to storage");
+			this.logger.info("Token saved to storage");
 		}
 	}
 
@@ -73,10 +76,10 @@ export default class AppStore {
 		this.tokenLoaded = true;
 
 		if (token) {
-			console.debug("Loaded token from storage.");
+			this.logger.debug("Loaded token from storage.");
 			this.setToken(token);
 		} else {
-			console.debug("No token found in storage.");
+			this.logger.debug("No token found in storage.");
 			this.setGatewayReady(true);
 		}
 	}

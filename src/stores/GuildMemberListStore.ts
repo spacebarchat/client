@@ -4,11 +4,13 @@ import {
 	GatewayGuildMemberListUpdateOperation,
 } from "@spacebarchat/spacebar-api-types/v9";
 import { action, observable } from "mobx";
+import Logger from "../utils/Logger";
 import AppStore from "./AppStore";
 import Guild from "./objects/Guild";
 import GuildMember from "./objects/GuildMember";
 
 export default class GuildMemberListStore {
+	private readonly logger: Logger = new Logger("GuildMemberListStore");
 	private readonly app: AppStore;
 
 	id: string;
@@ -151,11 +153,11 @@ export default class GuildMemberListStore {
 					//       );
 					//     }
 					//   }
-					console.debug("DELETE", item);
+					this.logger.debug("DELETE", item);
 					break;
 				}
 				case GatewayGuildMemberListUpdateOperation.UPDATE: {
-					console.debug("UPDATE", item);
+					this.logger.debug("UPDATE", item);
 					//   for (const item of items) {
 					//     if ("group" in item) {
 					//       //   this.listData[range[0]].title = item.group.id;
@@ -195,7 +197,7 @@ export default class GuildMemberListStore {
 					break;
 				}
 				default: {
-					console.warn(`Uknown OP: ${op}`);
+					this.logger.warn(`Uknown OP: ${op}`);
 					break;
 				}
 			}

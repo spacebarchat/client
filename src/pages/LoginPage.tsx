@@ -25,6 +25,7 @@ import {
 import { Divider } from "../components/Divider";
 import HCaptcha, { HeaderContainer } from "../components/HCaptcha";
 import ForgotPasswordModal from "../components/modals/ForgotPasswordModal";
+import useLogger from "../hooks/useLogger";
 import { AUTH_NO_BRANDING, useAppStore } from "../stores/AppStore";
 import { Globals, RouteSettings } from "../utils/Globals";
 import REST from "../utils/REST";
@@ -46,6 +47,7 @@ type FormValues = {
 
 function LoginPage() {
 	const app = useAppStore();
+	const logger = useLogger("LoginPage");
 	const navigate = useNavigate();
 	const [loading, setLoading] = React.useState(false);
 	const [captchaSiteKey, setCaptchaSiteKey] = React.useState<string>();
@@ -97,12 +99,12 @@ function LoginPage() {
 					return;
 				} else if ("ticket" in r) {
 					// mfa
-					console.log("MFA Required", r);
+					logger.info("MFA Required", r);
 					setMfaData(r);
 					return;
 				} else {
 					// unknown error
-					console.error(r);
+					logger.error(r);
 					setError("login", {
 						type: "manual",
 						message: "Unknown Error",
@@ -157,7 +159,7 @@ function LoginPage() {
 					resetCaptcha();
 				} else {
 					// unknown error
-					console.error(r);
+					logger.error(r);
 					setError("login", {
 						type: "manual",
 						message: "Unknown Error",
@@ -201,7 +203,7 @@ function LoginPage() {
 				});
 			}
 
-			console.debug(`Instance lookup has set routes to`, endpoints);
+			logger.debug(`Instance lookup has set routes to`, endpoints);
 			Globals.routeSettings = endpoints; // hmm
 			Globals.save();
 			setCheckingInstance(false);

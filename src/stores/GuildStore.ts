@@ -1,9 +1,11 @@
 import type { GatewayGuild } from "@spacebarchat/spacebar-api-types/v9";
 import { action, computed, observable, ObservableMap } from "mobx";
+import Logger from "../utils/Logger";
 import AppStore from "./AppStore";
 import Guild from "./objects/Guild";
 
 export default class GuildStore {
+	private readonly logger: Logger = new Logger("GuildStore");
 	private readonly app: AppStore;
 	@observable initialGuildsLoaded = false;
 	@observable readonly guilds = new ObservableMap<string, Guild>();
@@ -15,7 +17,7 @@ export default class GuildStore {
 	@action
 	setInitialGuildsLoaded() {
 		this.initialGuildsLoaded = true;
-		console.debug("Initial guilds loaded");
+		this.logger.debug("Initial guilds loaded");
 	}
 
 	@action

@@ -4,8 +4,10 @@
 
 import AppStore from "../stores/AppStore";
 import { Globals, RouteSettings } from "./Globals";
+import Logger from "./Logger";
 
 export default class REST {
+	private readonly logger = new Logger("REST");
 	private app: AppStore;
 	private headers: Record<string, string>;
 
@@ -52,7 +54,7 @@ export default class REST {
 		const endpoints = await fetch(
 			`${url.toString()}${
 				url.pathname.includes("api") ? "" : "api"
-			}/policies/instance/domains`
+			}/policies/instance/domains`,
 		).then((x) => x.json());
 		return {
 			api: endpoints.apiEndpoint,
@@ -112,7 +114,7 @@ export default class REST {
 	): Promise<U> {
 		return new Promise((resolve, reject) => {
 			const url = REST.makeAPIUrl(path, queryParams);
-			console.debug(`POST ${url}; payload:`, body);
+			this.logger.debug(`POST ${url}; payload:`, body);
 			return fetch(url, {
 				method: "POST",
 				headers: this.headers,

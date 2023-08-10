@@ -4,6 +4,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import { messageFromFieldError } from "../../utils/messageFromFieldError";
 import {
@@ -74,6 +75,7 @@ type FormValues = {
 
 function CreateServerModal() {
 	const app = useAppStore();
+	const logger = useLogger("CreateServerModal");
 	const { openModal, closeModal } = useModals();
 	const [selectedFile, setSelectedFile] = React.useState<File>();
 	const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -132,7 +134,7 @@ function CreateServerModal() {
 					}
 				} else {
 					// unknown error
-					console.error(r);
+					logger.error(r);
 					setError("name", {
 						type: "manual",
 						message: "Unknown Error",

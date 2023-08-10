@@ -20,6 +20,7 @@ import {
 	Wrapper,
 } from "../../components/AuthComponents";
 import { Divider } from "../../components/Divider";
+import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import {
 	IAPIError,
@@ -35,6 +36,7 @@ type FormValues = {
 
 function MFA(props: IAPILoginResponseMFARequired) {
 	const app = useAppStore();
+	const logger = useLogger("MFA");
 	const navigate = useNavigate();
 	const [loading, setLoading] = React.useState(false);
 
@@ -81,7 +83,7 @@ function MFA(props: IAPILoginResponseMFARequired) {
 					}
 				} else {
 					// unknown error
-					console.error(r);
+					logger.error(r);
 					setError("code", {
 						type: "manual",
 						message: "Unknown Error",

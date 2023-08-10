@@ -9,6 +9,7 @@ import RegistrationPage from "./pages/RegistrationPage";
 import { reaction } from "mobx";
 import Loader from "./components/Loader";
 import { UnauthenticatedGuard } from "./components/guards/UnauthenticatedGuard";
+import useLogger from "./hooks/useLogger";
 import AppPage from "./pages/AppPage";
 import LogoutPage from "./pages/LogoutPage";
 import ChannelPage from "./pages/subpages/ChannelPage";
@@ -17,6 +18,7 @@ import { Globals } from "./utils/Globals";
 
 function App() {
 	const app = useAppStore();
+	const logger = useLogger("App");
 	const navigate = useNavigate();
 
 	React.useEffect(() => {
@@ -30,12 +32,12 @@ function App() {
 						app.setGatewayReady(false);
 						app.gateway.connect(Globals.routeSettings.gateway);
 					} else {
-						console.debug(
+						logger.debug(
 							"Gateway connect called but socket is not closed",
 						);
 					}
 				} else {
-					console.debug("user no longer authenticated");
+					logger.debug("user no longer authenticated");
 					if (app.gateway.readyState === WebSocket.OPEN) {
 						app.gateway.disconnect(
 							1000,
@@ -51,7 +53,7 @@ function App() {
 		Globals.load();
 		app.loadToken();
 
-		console.debug("Loading complete");
+		logger.debug("Loading complete");
 		app.setAppLoading(false);
 
 		return dispose;
