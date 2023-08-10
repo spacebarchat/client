@@ -10,7 +10,6 @@ import {
 	AuthSwitchPageContainer,
 	AuthSwitchPageLabel,
 	AuthSwitchPageLink,
-	Divider,
 	FormContainer,
 	Header,
 	Input,
@@ -23,8 +22,8 @@ import {
 	SubmitButton,
 	Wrapper,
 } from "../components/AuthComponents";
+import { Divider } from "../components/Divider";
 import HCaptcha, { HeaderContainer } from "../components/HCaptcha";
-import MFA from "../components/MFA";
 import ForgotPasswordModal from "../components/modals/ForgotPasswordModal";
 import { AUTH_NO_BRANDING, useAppStore } from "../stores/AppStore";
 import { Globals, RouteSettings } from "../utils/Globals";
@@ -36,6 +35,7 @@ import {
 	IAPILoginResponseMFARequired,
 } from "../utils/interfaces/api";
 import { messageFromFieldError } from "../utils/messageFromFieldError";
+import MFA from "./subpages/MFA";
 
 type FormValues = {
 	login: string;
