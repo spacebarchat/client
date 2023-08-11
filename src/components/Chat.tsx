@@ -114,4 +114,4 @@ function Chat() {
 	);
 }
 
-export default observer(memo(Chat));
+export default observer(Chat);
