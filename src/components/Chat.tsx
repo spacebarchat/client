@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { memo } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
@@ -51,19 +51,24 @@ function Chat() {
 	const channel = guild?.channels.get(channelId!);
 
 	React.useEffect(() => {
-		if (!guild || !channel) return;
-
-		// fetch channel messages
-		channel?.getMessages(app, true);
+		if (guild && channel) {
+			channel.getMessages(app, true);
+		}
 	}, [guild, channel]);
 
-	if (!guild)
+	if (!guild || !channel) {
 		return (
 			<Wrapper>
 				<ChatHeader channel={channel} />
-				<span>Unknown Guild</span>
+				<span>{!guild ? "Unknown Guild" : "Unknown Channel"}</span>
 			</Wrapper>
 		);
+	}
+
+	const messages = [
+		...(channel.messages.messages ?? []),
+		...(channel ? app.queue.get(channel.id) ?? [] : []),
+	];
 
 	return (
 		<Wrapper>
@@ -71,34 +76,31 @@ function Chat() {
 			<Container>
 				<MessageListWrapper>
 					<List>
-						{[
-							...(channel?.messages.messages ?? []),
-							...(channel
-								? app.queue.get(channel?.id) ?? []
-								: []),
-						].map((x, i, arr) => {
-							// group by author, and only if the previous message is not older than a day
+						{messages.map((message, index, arr) => {
 							const t = 1 * 24 * 60 * 60 * 1000;
 
 							const isHeader =
-								i === 0 ||
-								x.author.id !== arr[i - 1].author.id ||
-								x.timestamp.getTime() -
-									arr[i - 1].timestamp.getTime() >
+								index === 0 ||
+								message.author.id !==
+									arr[index - 1].author.id ||
+								message.timestamp.getTime() -
+									arr[index - 1].timestamp.getTime() >
 									t;
 
 							return (
 								<Message
-									key={x.id}
-									message={x}
+									key={message.id}
+									message={message}
 									isHeader={isHeader}
 									isSending={
-										"status" in x &&
-										x.status === QueuedMessageStatus.SENDING
+										"status" in message &&
+										message.status ===
+											QueuedMessageStatus.SENDING
 									}
 									isFailed={
-										"status" in x &&
-										x.status === QueuedMessageStatus.FAILED
+										"status" in message &&
+										message.status ===
+											QueuedMessageStatus.FAILED
 									}
 								/>
 							);
@@ -106,11 +108,10 @@ function Chat() {
 						<Spacer />
 					</List>
 				</MessageListWrapper>
-
 				<MessageInput channel={channel} />
 			</Container>
 		</Wrapper>
 	);
 }
 
-export default observer(Chat);
+export default observer(memo(Chat));
