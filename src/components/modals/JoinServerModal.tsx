@@ -1,6 +1,13 @@
 import { useModals } from "@mattjennings/react-modal-stack";
+import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import useLogger from "../../hooks/useLogger";
+import { useAppStore } from "../../stores/AppStore";
+import { messageFromFieldError } from "../../utils/messageFromFieldError";
+import { InputErrorText, LabelWrapper } from "../AuthComponents";
+import { Divider } from "../Divider";
 import Icon from "../Icon";
 import AddServerModal from "./AddServerModal";
 import {
@@ -43,11 +50,14 @@ const FormLabel = styled.label`
 `;
 
 type FormValues = {
-	invite: string;
+	code: string;
 };
 
 function JoinServerModal() {
+	const logger = useLogger("JoinServerModal");
 	const { openModal, closeModal } = useModals();
+	const app = useAppStore();
+	const navigate = useNavigate();
 
 	if (!open) {
 		return null;
@@ -60,6 +70,49 @@ function JoinServerModal() {
 		setError,
 		setValue,
 	} = useForm<FormValues>();
+
+	const onSubmit = handleSubmit((data) => {
+		const code = data.code.split("/").reverse()[0];
+
+		app.rest
+			.post<never, { guild_id: string; channel_id: string }>(
+				Routes.invite(code),
+			)
+			.then((r) => {
+				navigate(`/channels/${r.guild_id}/${r.channel_id}`);
+				closeModal();
+			})
+			.catch((r) => {
+				if ("message" in r) {
+					if (r.errors) {
+						const t = messageFromFieldError(r.errors);
+						if (t) {
+							setError(t.field as keyof FormValues, {
+								type: "manual",
+								message: t.error,
+							});
+						} else {
+							setError("code", {
+								type: "manual",
+								message: r.message,
+							});
+						}
+					} else {
+						setError("code", {
+							type: "manual",
+							message: r.message,
+						});
+					}
+				} else {
+					// unknown error
+					logger.error(r);
+					setError("code", {
+						type: "manual",
+						message: "Unknown Error",
+					});
+				}
+			});
+	});
 
 	return (
 		<ModalContainer>
@@ -94,14 +147,35 @@ function JoinServerModal() {
 				<ModelContentContainer>
 					<form>
 						<InviteInputContainer>
-							<FormLabel>Invite Link</FormLabel>
-							<Input {...register("invite")} placeholder="https://app.spacebar.chat/invite/cool-guild" type="text" maxLength={9999} required />
+							<LabelWrapper error={!!errors.code}>
+								<FormLabel>Invite Link</FormLabel>
+
+								{errors.code && (
+									<InputErrorText>
+										<>
+											<Divider>-</Divider>
+											{errors.code.message}
+										</>
+									</InputErrorText>
+								)}
+							</LabelWrapper>
+							<Input
+								{...register("code")}
+								placeholder="https://app.spacebar.chat/invite/cool-guild"
+								type="text"
+								maxLength={9999}
+								required
+							/>
 						</InviteInputContainer>
 					</form>
 				</ModelContentContainer>
 
 				<ModalFooter>
-					<ModalActionItem variant="filled" size="med">
+					<ModalActionItem
+						variant="filled"
+						size="med"
+						onClick={onSubmit}
+					>
 						Join Guild
 					</ModalActionItem>
 
