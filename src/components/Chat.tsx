@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { memo } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
@@ -114,4 +114,4 @@ function Chat() {
 	);
 }
 
-export default observer(memo(Chat));
+export default observer(Chat);
