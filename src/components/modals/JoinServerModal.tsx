@@ -66,7 +66,7 @@ function JoinServerModal() {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
+		formState: { errors, isLoading },
 		setError,
 		setValue,
 	} = useForm<FormValues>();
@@ -161,6 +161,8 @@ function JoinServerModal() {
 								type="text"
 								maxLength={9999}
 								required
+								error={!!errors.code}
+								disabled={isLoading}
 							/>
 						</InviteInputContainer>
 					</form>
