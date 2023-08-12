@@ -6,7 +6,7 @@ import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import { messageFromFieldError } from "../../utils/messageFromFieldError";
-import { InputErrorText, LabelWrapper } from "../AuthComponents";
+import { Input, InputErrorText, InputLabel, InputWrapper, LabelWrapper } from "../AuthComponents";
 import { Divider } from "../Divider";
 import Icon from "../Icon";
 import AddServerModal from "./AddServerModal";
@@ -25,28 +25,9 @@ export const ModalHeader = styled.div`
 	padding: 16px;
 `;
 
-const Input = styled.input`
-	border-radius: 8px;
-	padding: 10px;
-	margin-bottom: 10px;
-	border: none;
-	outline: none;
-	cursor: text;
-	font-size: 16px;
-	font-weight: 500;
-	color: var(--text);
-	background-color: var(--background-primary);
-`;
-
 const InviteInputContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-`;
-
-const FormLabel = styled.label`
-	margin-bottom: 8px;
-	font-size: 16px;
-	color: var(--text-header-secondary);
 `;
 
 type FormValues = {
@@ -144,7 +125,7 @@ function JoinServerModal() {
 					<form>
 						<InviteInputContainer>
 							<LabelWrapper error={!!errors.code}>
-								<FormLabel>Invite Link</FormLabel>
+								<InputLabel>Invite Link</InputLabel>
 
 								{errors.code && (
 									<InputErrorText>
