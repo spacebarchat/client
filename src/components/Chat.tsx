@@ -95,15 +95,16 @@ function Chat() {
 							scrollableTarget="scrollable-div"
 						>
 							{messages.map((message, index, arr) => {
-								const t = 1 * 24 * 60 * 60 * 1000;
+								// calculate max ms between messages to determine if they should be grouped (if from same author). 7 minutes
+								const maxTimeDifference = 1000 * 60 * 7;
 
 								const isHeader =
+									// always show header for first message
 									index === 0 ||
-									message.author.id !==
-										arr[index - 1].author.id ||
-									message.timestamp.getTime() -
-										arr[index - 1].timestamp.getTime() >
-										t;
+									// show header if author is different from previous message
+									message.author.id !== arr[index - 1].author.id ||
+									// show header if time difference is greater than maxTimeDifference
+									message.timestamp.getTime() - arr[index - 1].timestamp.getTime() > maxTimeDifference;
 
 								return (
 									<Message
