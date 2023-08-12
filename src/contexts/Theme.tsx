@@ -5,6 +5,7 @@ import { useAppStore } from "../stores/AppStore";
 export type ThemeVariables =
 	| "backgroundPrimary"
 	| "backgroundPrimaryAlt"
+	| "backgroundPrimaryHighlight"
 	| "backgroundSecondary"
 	| "backgroundSecondaryAlt"
 	| "backgroundSecondaryHighlight"
@@ -52,6 +53,7 @@ export const ThemePresets: Record<string, Theme> = {
 	light: {
 		backgroundPrimary: "#ffffff",
 		backgroundPrimaryAlt: "",
+		backgroundPrimaryHighlight: "",
 		backgroundSecondary: "#ebe5e4",
 		backgroundSecondaryAlt: "#ebe5e4",
 		backgroundSecondaryHighlight: "#ebe5e4",
@@ -90,6 +92,7 @@ export const ThemePresets: Record<string, Theme> = {
 	dark: {
 		backgroundPrimary: "#2e2e2e",
 		backgroundPrimaryAlt: "#2a2a2a",
+		backgroundPrimaryHighlight: "#262626",
 		backgroundSecondary: "#232323",
 		backgroundSecondaryAlt: "#1e1e1e",
 		backgroundSecondaryHighlight: "#383838",
@@ -133,8 +136,7 @@ const GlobalTheme = createGlobalStyle<{ theme: Theme }>`
 }
 `;
 
-const toDashed = (str: string) =>
-	str.replace(/[A-Z]/g, (m) => "-" + m.toLowerCase());
+const toDashed = (str: string) => str.replace(/[A-Z]/g, (m) => "-" + m.toLowerCase());
 
 export const generateVariables = (theme: Theme) => {
 	return (Object.keys(theme) as ThemeVariables[]).map((key) => {
@@ -143,9 +145,7 @@ export const generateVariables = (theme: Theme) => {
 			const r = parseInt(colour.substring(1, 3), 16);
 			const g = parseInt(colour.substring(3, 5), 16);
 			const b = parseInt(colour.substring(5, 7), 16);
-			return `--${toDashed(key)}: ${theme[key]}; --${toDashed(
-				key,
-			)}-rgb: rgb(${r}, ${g}, ${b});`;
+			return `--${toDashed(key)}: ${theme[key]}; --${toDashed(key)}-rgb: rgb(${r}, ${g}, ${b});`;
 		} catch {
 			return `--${toDashed(key)}: ${theme[key]};`;
 		}

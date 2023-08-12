@@ -20,11 +20,7 @@ export default class GuildMemberListStore {
 	@observable online_count: number;
 	@observable list: (string | GuildMember)[] = [];
 
-	constructor(
-		app: AppStore,
-		guild: Guild,
-		data: GatewayGuildMemberListUpdateDispatchData,
-	) {
+	constructor(app: AppStore, guild: Guild, data: GatewayGuildMemberListUpdateDispatchData) {
 		this.app = app;
 		this.guild = guild;
 
@@ -48,9 +44,7 @@ export default class GuildMemberListStore {
 		this.computeListData(data.ops);
 	}
 
-	private computeListData(
-		ops: GatewayGuildMemberListUpdateDispatchData["ops"],
-	) {
+	private computeListData(ops: GatewayGuildMemberListUpdateDispatchData["ops"]) {
 		for (const i of ops) {
 			const { op, items, range, item, index } = i;
 			switch (op) {
@@ -65,17 +59,13 @@ export default class GuildMemberListStore {
 							const role = this.guild.roles.get(item.group.id);
 
 							listData.push({
-								title: `${(
-									role?.name ?? item.group.id
-								).toUpperCase()}`,
+								title: `${(role?.name ?? item.group.id).toUpperCase()}`,
 								data: [],
 							});
 						} else {
 							// try to get the existing member
 							if (item.member.user?.id) {
-								const member = this.guild.members.get(
-									item.member.user.id,
-								);
+								const member = this.guild.members.get(item.member.user.id);
 								if (member) {
 									listData[listData.length - 1].data.push({
 										member,
@@ -85,11 +75,7 @@ export default class GuildMemberListStore {
 								}
 							}
 							listData[listData.length - 1].data.push({
-								member: new GuildMember(
-									this.app,
-									this.guild,
-									item.member,
-								),
+								member: new GuildMember(this.app, this.guild, item.member),
 								index: item.member.index,
 							});
 						}
@@ -105,11 +91,7 @@ export default class GuildMemberListStore {
 
 					// hide offline group if it has more than 100 members
 					listData = listData.filter(
-						(i) =>
-							!(
-								i.title.toLowerCase().startsWith("offline") &&
-								i.data.length >= 100
-							),
+						(i) => !(i.title.toLowerCase().startsWith("offline") && i.data.length >= 100),
 					);
 
 					// sort the list by the index
@@ -125,9 +107,7 @@ export default class GuildMemberListStore {
 								const ua = a.member.user?.username;
 								const ub = b.member.user?.username;
 								if (ua && ub) {
-									return ua.toLowerCase() > ub.toLowerCase()
-										? 1
-										: -1;
+									return ua.toLowerCase() > ub.toLowerCase() ? 1 : -1;
 								}
 
 								return 0;

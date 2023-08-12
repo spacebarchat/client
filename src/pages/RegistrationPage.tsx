@@ -26,11 +26,7 @@ import { Divider } from "../components/Divider";
 import HCaptcha from "../components/HCaptcha";
 import useLogger from "../hooks/useLogger";
 import { AUTH_NO_BRANDING, useAppStore } from "../stores/AppStore";
-import {
-	IAPILoginResponseSuccess,
-	IAPIRegisterRequest,
-	IAPIRegisterResponseError,
-} from "../utils/interfaces/api";
+import { IAPILoginResponseSuccess, IAPIRegisterRequest, IAPIRegisterResponseError } from "../utils/interfaces/api";
 import { messageFromFieldError } from "../utils/messageFromFieldError";
 
 type FormValues = {
@@ -77,13 +73,10 @@ function RegistrationPage() {
 		setValue("captcha_key", undefined);
 
 		app.rest
-			.post<IAPIRegisterRequest, IAPILoginResponseSuccess>(
-				Routes.register(),
-				{
-					...data,
-					consent: true,
-				},
-			)
+			.post<IAPIRegisterRequest, IAPILoginResponseSuccess>(Routes.register(), {
+				...data,
+				consent: true,
+			})
 			.then((r) => {
 				if ("token" in r) {
 					// success
@@ -163,13 +156,7 @@ function RegistrationPage() {
 	};
 
 	if (captchaSiteKey) {
-		return (
-			<HCaptcha
-				captchaRef={captchaRef}
-				sitekey={captchaSiteKey}
-				onVerify={onCaptchaVerify}
-			/>
-		);
+		return <HCaptcha captchaRef={captchaRef} sitekey={captchaSiteKey} onVerify={onCaptchaVerify} />;
 	}
 
 	return (
@@ -187,10 +174,7 @@ function RegistrationPage() {
 				)}
 
 				<FormContainer onSubmit={onSubmit}>
-					<InputContainer
-						marginBottom={true}
-						style={{ marginTop: 0 }}
-					>
+					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
 						<LabelWrapper error={!!errors.email}>
 							<InputLabel>Email</InputLabel>
 							{errors.email && (
@@ -214,10 +198,7 @@ function RegistrationPage() {
 						</InputWrapper>
 					</InputContainer>
 
-					<InputContainer
-						marginBottom={true}
-						style={{ marginTop: 0 }}
-					>
+					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
 						<LabelWrapper error={!!errors.username}>
 							<InputLabel>Username</InputLabel>
 							{errors.username && (
@@ -277,20 +258,14 @@ function RegistrationPage() {
 
 						<InputWrapper>
 							<DOBInput
-								onChange={(value) =>
-									setValue("date_of_birth", value)
-								}
+								onChange={(value) => setValue("date_of_birth", value)}
 								onErrorChange={(errors) => {
-									const hasError = Object.values(errors).some(
-										(error) => error,
-									);
+									const hasError = Object.values(errors).some((error) => error);
 									if (hasError) {
 										// set to first error
 										setError("date_of_birth", {
 											type: "manual",
-											message: Object.values(
-												errors,
-											).filter((x) => x)[0],
+											message: Object.values(errors).filter((x) => x)[0],
 										});
 									} else clearErrors("date_of_birth");
 								}}
@@ -300,18 +275,12 @@ function RegistrationPage() {
 						</InputWrapper>
 					</InputContainer>
 
-					<SubmitButton
-						variant="primary"
-						type="submit"
-						disabled={loading}
-					>
+					<SubmitButton variant="primary" type="submit" disabled={loading}>
 						Create Account
 					</SubmitButton>
 
 					<AuthSwitchPageContainer>
-						<AuthSwitchPageLabel>
-							Already have an account?&nbsp;
-						</AuthSwitchPageLabel>
+						<AuthSwitchPageLabel>Already have an account?&nbsp;</AuthSwitchPageLabel>
 						<AuthSwitchPageLink
 							onClick={() => {
 								navigate("/login");

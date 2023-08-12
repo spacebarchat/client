@@ -139,9 +139,7 @@ function JoinServerModal() {
 
 				<ModalHeader>
 					<ModalHeaderText>Join a Guild</ModalHeaderText>
-					<ModalSubHeaderText>
-						Enter an invite below to join an existing guild.
-					</ModalSubHeaderText>
+					<ModalSubHeaderText>Enter an invite below to join an existing guild.</ModalSubHeaderText>
 				</ModalHeader>
 
 				<ModelContentContainer>

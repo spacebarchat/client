@@ -25,20 +25,14 @@ export default class GuildMember {
 	@observable pending?: boolean | undefined;
 	@observable communication_disabled_until?: string | null | undefined;
 
-	constructor(
-		app: AppStore,
-		guild: Guild,
-		data: APIGuildMember | GatewayGuildMemberListUpdateMember,
-	) {
+	constructor(app: AppStore, guild: Guild, data: APIGuildMember | GatewayGuildMemberListUpdateMember) {
 		this.app = app;
 		this.guild = guild;
 
 		this.user = data.user;
 		this.nick = data.nick;
 		this.avatar = data.avatar;
-		this.roles = data.roles
-			.map((role) => guild.roles.get(role))
-			.filter(Boolean) as Role[];
+		this.roles = data.roles.map((role) => guild.roles.get(role)).filter(Boolean) as Role[];
 		this.joined_at = data.joined_at;
 		this.premium_since = data.premium_since;
 		this.deaf = data.deaf;

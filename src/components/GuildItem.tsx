@@ -1,8 +1,4 @@
-import {
-	CDNRoutes,
-	ChannelType,
-	ImageFormat,
-} from "@spacebarchat/spacebar-api-types/v9";
+import { CDNRoutes, ChannelType, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -21,18 +17,15 @@ const Wrapper = styled(Container)<{ active?: boolean; hasImage?: boolean }>`
 	height: 48px;
 	border-radius: ${(props) => (props.active ? "30%" : "50%")};
 	background-color: ${(props) =>
-		props.hasImage
-			? "transparent"
-			: props.active
-			? "var(--primary)"
-			: "var(--background-secondary)"};
-	transition: border-radius 0.2s ease, background-color 0.2s ease;
+		props.hasImage ? "transparent" : props.active ? "var(--primary)" : "var(--background-secondary)"};
+	transition:
+		border-radius 0.2s ease,
+		background-color 0.2s ease;
 	cursor: pointer;
 
 	&:hover {
 		border-radius: 30%;
-		background-color: ${(props) =>
-			props.hasImage ? "transparent" : "var(--primary)"};
+		background-color: ${(props) => (props.hasImage ? "transparent" : "var(--primary)")};
 	}
 `;
 
@@ -54,12 +47,8 @@ function GuildItem(props: Props) {
 	if (!guild) return null;
 
 	const doNavigate = () => {
-		const channel = guild.channels.mapped.find(
-			(x) => x.type !== ChannelType.GuildCategory,
-		);
-		navigate(
-			`/channels/${props.guildId}${channel ? `/${channel.id}` : ""}`,
-		);
+		const channel = guild.channels.mapped.find((x) => x.type !== ChannelType.GuildCategory);
+		navigate(`/channels/${props.guildId}${channel ? `/${channel.id}` : ""}`);
 	};
 
 	React.useEffect(() => {
@@ -82,13 +71,7 @@ function GuildItem(props: Props) {
 				>
 					{guild.icon ? (
 						<img
-							src={REST.makeCDNUrl(
-								CDNRoutes.guildIcon(
-									props.guildId,
-									guild?.icon,
-									ImageFormat.PNG,
-								),
-							)}
+							src={REST.makeCDNUrl(CDNRoutes.guildIcon(props.guildId, guild?.icon, ImageFormat.PNG))}
 							width={48}
 							height={48}
 						/>

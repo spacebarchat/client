@@ -16,8 +16,7 @@ const Wrapper = styled(Container)<{
 	width: 48px;
 	height: 48px;
 	border-radius: ${(props) => (props.active ? "30%" : "50%")};
-	background-color: ${(props) =>
-		props.active ? "var(--primary)" : "var(--background-secondary)"};
+	background-color: ${(props) => (props.active ? "var(--primary)" : "var(--background-secondary)")};
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -25,10 +24,7 @@ const Wrapper = styled(Container)<{
 
 	&:hover {
 		border-radius: 30%;
-		background-color: ${(props) =>
-			props.useGreenColorScheme
-				? "var(--success)"
-				: "var(--primary)"};
+		background-color: ${(props) => (props.useGreenColorScheme ? "var(--success)" : "var(--primary)")};
 
 	}
 `;
@@ -36,10 +32,7 @@ const Wrapper = styled(Container)<{
 interface Props {
 	tooltip?: string;
 	action?: () => void;
-	image?: React.DetailedHTMLProps<
-		React.ImgHTMLAttributes<HTMLImageElement>,
-		HTMLImageElement
-	>;
+	image?: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>;
 	icon?: IconProps;
 	label?: string;
 	margin?: boolean;
@@ -50,9 +43,7 @@ interface Props {
 
 function SidebarAction(props: Props) {
 	if (props.image && props.icon && props.label)
-		throw new Error(
-			"SidebarAction can only have one of image, icon, or label",
-		);
+		throw new Error("SidebarAction can only have one of image, icon, or label");
 
 	const [pillType, setPillType] = React.useState<PillType>("none");
 	const [isHovered, setHovered] = React.useState(false);
@@ -79,9 +70,12 @@ function SidebarAction(props: Props) {
 					useGreenColorScheme={props.useGreenColorScheme}
 				>
 					{props.image && <img {...props.image} />}
-					{props.icon && <Icon {...props.icon} color={
-						isHovered && props.useGreenColorScheme ? "#fff" : props.icon.color
-					} />}
+					{props.icon && (
+						<Icon
+							{...props.icon}
+							color={isHovered && props.useGreenColorScheme ? "#fff" : props.icon.color}
+						/>
+					)}
 					{props.label && <span>{props.label}</span>}
 				</Wrapper>
 			</Tooltip>

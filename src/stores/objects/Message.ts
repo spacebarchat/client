@@ -238,9 +238,7 @@ export default class Message {
 		// this.member = message.member ? new GuildMember(message.member) : undefined;
 		this.content = message.content;
 		this.timestamp = new Date(message.timestamp);
-		this.edited_timestamp = message.edited_timestamp
-			? new Date(message.edited_timestamp)
-			: null;
+		this.edited_timestamp = message.edited_timestamp ? new Date(message.edited_timestamp) : null;
 		this.tts = message.tts;
 		this.mention_everyone = message.mention_everyone;
 		this.mentions = message.mentions; // TODO: user object?
@@ -280,8 +278,6 @@ export default class Message {
 		Object.assign(this, message);
 
 		this.timestamp = new Date(message.timestamp);
-		this.edited_timestamp = message.edited_timestamp
-			? new Date(message.edited_timestamp)
-			: null;
+		this.edited_timestamp = message.edited_timestamp ? new Date(message.edited_timestamp) : null;
 	}
 }

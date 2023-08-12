@@ -33,10 +33,7 @@ export const Globals: {
 		logger.info("Loaded route settings from storage");
 	},
 	save: () => {
-		localStorage.setItem(
-			"routeSettings",
-			JSON.stringify(Globals.routeSettings),
-		);
+		localStorage.setItem("routeSettings", JSON.stringify(Globals.routeSettings));
 	},
 	routeSettings: DefaultRouteSettings,
 };

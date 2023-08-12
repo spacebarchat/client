@@ -24,8 +24,7 @@ const FirstWrapper = styled.div<{ isCategory?: boolean; active?: boolean }>`
 	align-items: center;
 	display: flex;
 	padding: 0 8px;
-	background-color: ${(props) =>
-		props.active ? "var(--background-primary-alt)" : "transparent"};
+	background-color: ${(props) => (props.active ? "var(--background-primary-alt)" : "transparent")};
 
 	&:hover {
 		background-color: var(--background-primary-alt);
@@ -66,14 +65,12 @@ function ChannelList() {
 					<ListItem
 						key={channel.id}
 						isCategory={isCategory}
-						onClick={() =>
-							{
-								// prevent navigating to non-text channels
-								if (!channel.isTextChannel) return;
+						onClick={() => {
+							// prevent navigating to non-text channels
+							if (!channel.isTextChannel) return;
 
-								navigate(`/channels/${guild.id}/${channel.id}`)
-							}
-						}
+							navigate(`/channels/${guild.id}/${channel.id}`);
+						}}
 					>
 						<FirstWrapper isCategory={isCategory} active={active}>
 							{channel.channelIcon && (

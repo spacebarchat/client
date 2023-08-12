@@ -99,16 +99,10 @@ function MFA(props: IAPILoginResponseMFARequired) {
 				<HeaderContainer>
 					<SpacebarLogoBlue height={48} width="auto" />
 					<Header>Two-factor authentication</Header>
-					<SubHeader>
-						You can use a backup code or your two-factor
-						authentication mobile app.
-					</SubHeader>
+					<SubHeader>You can use a backup code or your two-factor authentication mobile app.</SubHeader>
 
 					<FormContainer onSubmit={onSubmit}>
-						<InputContainer
-							marginBottom={true}
-							style={{ marginTop: 0 }}
-						>
+						<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
 							<LabelWrapper error={!!errors.code}>
 								<InputLabel>Enter 2FA/Backup Code</InputLabel>
 								{errors.code && (
@@ -132,11 +126,7 @@ function MFA(props: IAPILoginResponseMFARequired) {
 							</InputWrapper>
 						</InputContainer>
 
-						<SubmitButton
-							variant="primary"
-							type="submit"
-							disabled={loading}
-						>
+						<SubmitButton variant="primary" type="submit" disabled={loading}>
 							Log In
 						</SubmitButton>
 
@@ -154,10 +144,7 @@ function MFA(props: IAPILoginResponseMFARequired) {
 
 						<Link
 							onClick={() => {
-								window.open(
-									"https://youtu.be/dQw4w9WgXcQ",
-									"_blank",
-								);
+								window.open("https://youtu.be/dQw4w9WgXcQ", "_blank");
 							}}
 							type="button"
 						>

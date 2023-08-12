@@ -86,8 +86,7 @@ export default class Channel {
 		this.readStates = channel.read_states;
 		this.webhooks = channel.webhooks;
 		this.flags = channel.flags;
-		this.defaultThreadRateLimitPerUser =
-			channel.default_thread_rate_limit_per_user;
+		this.defaultThreadRateLimitPerUser = channel.default_thread_rate_limit_per_user;
 
 		if (channel.messages) {
 			this.messages.addAll(channel.messages);
@@ -174,10 +173,7 @@ export default class Channel {
 		this.hasFetchedMessages = true;
 		this.logger.info(`Fetching messags for ${this.id}`);
 		app.rest
-			.get<RESTGetAPIChannelMessagesResult | APIError>(
-				Routes.channelMessages(this.id),
-				opts,
-			)
+			.get<RESTGetAPIChannelMessagesResult | APIError>(Routes.channelMessages(this.id), opts)
 			.then((res) => {
 				if ("code" in res) {
 					this.logger.error(res);
@@ -200,10 +196,10 @@ export default class Channel {
 	@action
 	async sendMessage(data: RESTPostAPIChannelMessageJSONBody) {
 		// TODO: handle errors, highlight message as failed
-		return this.app.rest.post<
-			RESTPostAPIChannelMessageJSONBody,
-			RESTPostAPIChannelMessageResult
-		>(Routes.channelMessages(this.id), data);
+		return this.app.rest.post<RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult>(
+			Routes.channelMessages(this.id),
+			data,
+		);
 	}
 
 	canSendMessage(content: string) {

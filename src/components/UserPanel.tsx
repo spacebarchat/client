@@ -67,20 +67,14 @@ function UserPanel() {
 						<div>
 							<Username>{app.account?.username}</Username>
 						</div>
-						<Discriminator>
-							#{app.account?.discriminator}
-						</Discriminator>
+						<Discriminator>#{app.account?.discriminator}</Discriminator>
 					</Name>
 				</AvatarWrapper>
 
 				<ActionsWrapper>
 					<Tooltip title="Settings">
 						<span>
-							<IconButton
-								aria-label="settings"
-								disabled
-								color="#fff"
-							>
+							<IconButton aria-label="settings" disabled color="#fff">
 								<Icon icon="mdiCog" size="20px" />
 							</IconButton>
 						</span>

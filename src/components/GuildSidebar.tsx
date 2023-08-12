@@ -52,11 +52,7 @@ function GuildSidebar() {
 			</GuildSidebarListItem>
 			<div aria-label="Servers">
 				{app.guilds.getAll().map((guild) => (
-					<GuildItem
-						key={guild.id}
-						guildId={guild.id}
-						active={guild.id === guildId}
-					/>
+					<GuildItem key={guild.id} guildId={guild.id} active={guild.id === guildId} />
 				))}
 			</div>
 
@@ -66,7 +62,7 @@ function GuildSidebar() {
 				icon={{
 					icon: "mdiPlus",
 					size: "24px",
-					color: "var(--success)"
+					color: "var(--success)",
 				}}
 				action={() => {
 					openModal(AddServerModal);
