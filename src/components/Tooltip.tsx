@@ -1,7 +1,4 @@
-import MuiTooltip, {
-	TooltipProps as MuiTooltipProps,
-	tooltipClasses,
-} from "@mui/material/Tooltip";
+import MuiTooltip, { TooltipProps as MuiTooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import styled from "styled-components";
 
 export default styled(({ className, ...props }: MuiTooltipProps) => (

@@ -20,10 +20,7 @@ export default class AccountStore {
 	@observable bot = false;
 	@observable system = false;
 	@observable mfaEnabled = false;
-	@observable premiumType?:
-		| UserPremiumType.NitroClassic
-		| UserPremiumType.Nitro
-		| UserPremiumType.NitroBasic;
+	@observable premiumType?: UserPremiumType.NitroClassic | UserPremiumType.Nitro | UserPremiumType.NitroBasic;
 	@observable flags?: UserFlags;
 	@observable publicFlags?: UserFlags;
 	//   phone: string | null;
@@ -69,9 +66,7 @@ export default class AccountStore {
 	 */
 	get defaultAvatarUrl(): string {
 		return REST.makeCDNUrl(
-			CDNRoutes.defaultUserAvatar(
-				(Number(this.discriminator) % 5) as DefaultUserAvatarAssets,
-			),
+			CDNRoutes.defaultUserAvatar((Number(this.discriminator) % 5) as DefaultUserAvatarAssets),
 		);
 	}
 
@@ -80,10 +75,7 @@ export default class AccountStore {
 	 * @returns The URL to the user's avatar or the default avatar if they don't have one.
 	 */
 	get avatarUrl(): string {
-		if (this.avatar)
-			return REST.makeCDNUrl(
-				CDNRoutes.userAvatar(this.id, this.avatar, ImageFormat.PNG),
-			);
+		if (this.avatar) return REST.makeCDNUrl(CDNRoutes.userAvatar(this.id, this.avatar, ImageFormat.PNG));
 		else return this.defaultAvatarUrl;
 	}
 }

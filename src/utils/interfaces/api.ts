@@ -60,14 +60,9 @@ export interface IAPIError {
 	};
 }
 
-export type IAPILoginResponse =
-	| IAPILoginResponseSuccess
-	| IAPILoginResponseMFARequired;
+export type IAPILoginResponse = IAPILoginResponseSuccess | IAPILoginResponseMFARequired;
 
-export type IAPILoginResponseError =
-	| IAPILoginResponseMFARequired
-	| IAPIResponseCaptchaRequired
-	| IAPIError;
+export type IAPILoginResponseError = IAPILoginResponseMFARequired | IAPIResponseCaptchaRequired | IAPIError;
 
 export interface IAPILoginRequest {
 	login: string;
@@ -118,9 +113,9 @@ export interface APIError {
 			_errors: {
 				code: string;
 				message: string;
-			}
-		}
-	}
+			};
+		};
+	};
 }
 
 // export type RESTAPIPostInviteResponse = {} | IAPIError;

@@ -52,8 +52,7 @@ function MessageInput(props: Props) {
 		}
 
 		// controls the placeholder visibility
-		if (!content.length)
-			placeholderRef.current!.style.setProperty("display", "block");
+		if (!content.length) placeholderRef.current!.style.setProperty("display", "block");
 		else placeholderRef.current!.style.setProperty("display", "none");
 
 		// update the input content
@@ -78,8 +77,7 @@ function MessageInput(props: Props) {
 		if (!wrapperRef.current) return;
 
 		wrapperRef.current.style.height = "44px";
-		wrapperRef.current.style.height =
-			wrapperRef.current.scrollHeight + "px";
+		wrapperRef.current.style.height = wrapperRef.current.scrollHeight + "px";
 	}
 
 	function resetInput() {
@@ -103,14 +101,8 @@ function MessageInput(props: Props) {
 
 		if (e.key === "Enter") {
 			e.preventDefault();
-			const shouldFail = app.experiments.isTreatmentEnabled(
-				"message_queue",
-				2,
-			);
-			const shouldSend = !app.experiments.isTreatmentEnabled(
-				"message_queue",
-				1,
-			);
+			const shouldFail = app.experiments.isTreatmentEnabled("message_queue", 2);
+			const shouldSend = !app.experiments.isTreatmentEnabled("message_queue", 1);
 
 			if (!props.channel.canSendMessage(content) && !shouldFail) return;
 

@@ -79,11 +79,7 @@ const MONTHS = [
 
 interface Props {
 	onChange: (value: string) => void;
-	onErrorChange: (errors: {
-		month?: string;
-		day?: string;
-		year?: string;
-	}) => void;
+	onErrorChange: (errors: { month?: string; day?: string; year?: string }) => void;
 	error: boolean;
 	disabled?: boolean;
 }
@@ -121,21 +117,34 @@ export class DOBInput extends Component<Props, State> {
 		}
 	}
 
-	onInputChange =
-		(type: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-			const value = e.target.value;
+	onInputChange = (type: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value;
 
-			// clear error for field
-			this.setState(
-				{
-					...this.state,
-					errors: { ...this.state.errors, [type]: undefined },
-				},
-				() => {
-					// ensure only numbers
-					if (isNaN(Number(value))) {
+		// clear error for field
+		this.setState(
+			{
+				...this.state,
+				errors: { ...this.state.errors, [type]: undefined },
+			},
+			() => {
+				// ensure only numbers
+				if (isNaN(Number(value))) {
+					this.setState({
+						...this.state,
+						errors: {
+							...this.state.errors,
+							[type]: "Invalid Date",
+						},
+					});
+					return;
+				}
+
+				if (type === "day") {
+					// day should be a number between 1-31 and not more than 2 digits
+					if (value !== "" && (value.length > 2 || Number(value) > 31 || Number(value) < 1)) {
 						this.setState({
 							...this.state,
+							day: value,
 							errors: {
 								...this.state.errors,
 								[type]: "Invalid Date",
@@ -144,53 +153,32 @@ export class DOBInput extends Component<Props, State> {
 						return;
 					}
 
-					if (type === "day") {
-						// day should be a number between 1-31 and not more than 2 digits
-						if (
-							value !== "" &&
-							(value.length > 2 ||
-								Number(value) > 31 ||
-								Number(value) < 1)
-						) {
-							this.setState({
-								...this.state,
-								day: value,
-								errors: {
-									...this.state.errors,
-									[type]: "Invalid Date",
-								},
-							});
-							return;
-						}
+					this.setState({ ...this.state, day: value });
+				}
 
-						this.setState({ ...this.state, day: value });
+				if (type === "year") {
+					// year must be between now-min and now-max
+					if (
+						value.length === 4 &&
+						(Number(value) > new Date().getFullYear() - MIN_AGE ||
+							Number(value) < new Date().getFullYear() - MAX_AGE)
+					) {
+						this.setState({
+							...this.state,
+							year: value,
+							errors: {
+								...this.state.errors,
+								[type]: "Invalid Date",
+							},
+						});
+						return;
 					}
 
-					if (type === "year") {
-						// year must be between now-min and now-max
-						if (
-							value.length === 4 &&
-							(Number(value) >
-								new Date().getFullYear() - MIN_AGE ||
-								Number(value) <
-									new Date().getFullYear() - MAX_AGE)
-						) {
-							this.setState({
-								...this.state,
-								year: value,
-								errors: {
-									...this.state.errors,
-									[type]: "Invalid Date",
-								},
-							});
-							return;
-						}
-
-						this.setState({ ...this.state, year: value });
-					}
-				},
-			);
-		};
+					this.setState({ ...this.state, year: value });
+				}
+			},
+		);
+	};
 
 	constructDate = (values: { month: string; day: string; year: string }) => {
 		const { month, day, year } = values;
@@ -206,9 +194,7 @@ export class DOBInput extends Component<Props, State> {
 					placeholder="Month"
 					search
 					options={MONTHS}
-					onChange={(e) =>
-						this.setState({ ...this.state, month: e as string })
-					}
+					onChange={(e) => this.setState({ ...this.state, month: e as string })}
 					value={this.state.month}
 					disabled={this.props.disabled}
 				/>

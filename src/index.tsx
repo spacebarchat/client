@@ -7,9 +7,7 @@ import App from "./App";
 import Theme from "./contexts/Theme";
 import "./index.css";
 
-const root = ReactDOM.createRoot(
-	document.getElementById("root") as HTMLElement,
-);
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
 	<BrowserRouter>
 		<ModalStack>

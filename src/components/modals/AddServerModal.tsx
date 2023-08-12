@@ -69,9 +69,7 @@ function AddServerModal() {
 
 				<ModalHeader>
 					<ModalHeaderText>Add a Guild</ModalHeaderText>
-					<ModalSubHeaderText>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-					</ModalSubHeaderText>
+					<ModalSubHeaderText>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</ModalSubHeaderText>
 				</ModalHeader>
 
 				<ModelContentContainer>

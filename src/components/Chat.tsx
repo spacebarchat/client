@@ -62,10 +62,7 @@ function Chat() {
 		);
 	}
 
-	const messages = [
-		...(channel.messages.messages ?? []),
-		...(channel ? app.queue.get(channel.id) ?? [] : []),
-	];
+	const messages = [...(channel.messages.messages ?? []), ...(channel ? app.queue.get(channel.id) ?? [] : [])];
 
 	const fetchMore = async () => {
 		if (!channel.messages.count) {
@@ -73,9 +70,7 @@ function Chat() {
 		}
 		// get first message in the list to use as before
 		const before = channel.messages.messages[0].id;
-		logger.debug(
-			`Fetching 50 messages before ${before} for channel ${channel.id}`,
-		);
+		logger.debug(`Fetching 50 messages before ${before} for channel ${channel.id}`);
 		await channel.getMessages(app, false, 50, before);
 	};
 
@@ -104,7 +99,8 @@ function Chat() {
 									// show header if author is different from previous message
 									message.author.id !== arr[index - 1].author.id ||
 									// show header if time difference is greater than maxTimeDifference
-									message.timestamp.getTime() - arr[index - 1].timestamp.getTime() > maxTimeDifference;
+									message.timestamp.getTime() - arr[index - 1].timestamp.getTime() >
+										maxTimeDifference;
 
 								return (
 									<Message
@@ -112,15 +108,9 @@ function Chat() {
 										message={message}
 										isHeader={isHeader}
 										isSending={
-											"status" in message &&
-											message.status ===
-												QueuedMessageStatus.SENDING
+											"status" in message && message.status === QueuedMessageStatus.SENDING
 										}
-										isFailed={
-											"status" in message &&
-											message.status ===
-												QueuedMessageStatus.FAILED
-										}
+										isFailed={"status" in message && message.status === QueuedMessageStatus.FAILED}
 									/>
 								);
 							})}

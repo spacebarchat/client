@@ -1,10 +1,5 @@
 import { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
-import {
-	APIUser,
-	CDNRoutes,
-	DefaultUserAvatarAssets,
-	ImageFormat,
-} from "@spacebarchat/spacebar-api-types/v9";
+import { APIUser, CDNRoutes, DefaultUserAvatarAssets, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import { makeObservable, observable } from "mobx";
 import REST from "../../utils/REST";
 
@@ -55,9 +50,7 @@ export default class User {
 	 */
 	get defaultAvatarUrl(): string {
 		return REST.makeCDNUrl(
-			CDNRoutes.defaultUserAvatar(
-				(Number(this.discriminator) % 5) as DefaultUserAvatarAssets,
-			),
+			CDNRoutes.defaultUserAvatar((Number(this.discriminator) % 5) as DefaultUserAvatarAssets),
 		);
 	}
 
@@ -66,10 +59,7 @@ export default class User {
 	 * @returns The URL to the user's avatar or the default avatar if they don't have one.
 	 */
 	get avatarUrl(): string {
-		if (this.avatar)
-			return REST.makeCDNUrl(
-				CDNRoutes.userAvatar(this.id, this.avatar, ImageFormat.PNG),
-			);
+		if (this.avatar) return REST.makeCDNUrl(CDNRoutes.userAvatar(this.id, this.avatar, ImageFormat.PNG));
 		else return this.defaultAvatarUrl;
 	}
 }

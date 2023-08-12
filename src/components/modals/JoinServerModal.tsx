@@ -86,16 +86,20 @@ function JoinServerModal() {
 
 				<ModalHeader>
 					<ModalHeaderText>Join a Guild</ModalHeaderText>
-					<ModalSubHeaderText>
-						Enter an invite below to join an existing guild.
-					</ModalSubHeaderText>
+					<ModalSubHeaderText>Enter an invite below to join an existing guild.</ModalSubHeaderText>
 				</ModalHeader>
 
 				<ModelContentContainer>
 					<form>
 						<InviteInputContainer>
 							<FormLabel>Invite Link</FormLabel>
-							<Input {...register("invite")} placeholder="https://app.spacebar.chat/invite/cool-guild" type="text" maxLength={9999} required />
+							<Input
+								{...register("invite")}
+								placeholder="https://app.spacebar.chat/invite/cool-guild"
+								type="text"
+								maxLength={9999}
+								required
+							/>
 						</InviteInputContainer>
 					</form>
 				</ModelContentContainer>

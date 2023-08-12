@@ -71,15 +71,10 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 				<MessageContentContainer isHeader={isHeader}>
 					{isHeader && (
 						<MessageHeader>
-							<MessageAuthor>
-								{message.author.username}
-							</MessageAuthor>
+							<MessageAuthor>{message.author.username}</MessageAuthor>
 
 							<MessageTimestamp>
-								<Moment
-									calendar={calendarStrings}
-									date={new Date(message.timestamp)}
-								/>
+								<Moment calendar={calendarStrings} date={new Date(message.timestamp)} />
 							</MessageTimestamp>
 						</MessageHeader>
 					)}

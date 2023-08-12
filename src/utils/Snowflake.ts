@@ -17,9 +17,7 @@ export default class Snowflake {
 	static workerId = BigInt(0 % 31); // max 31
 
 	constructor() {
-		throw new Error(
-			`The ${this.constructor.name} class may not be instantiated.`,
-		);
+		throw new Error(`The ${this.constructor.name} class may not be instantiated.`);
 	}
 
 	/**
@@ -114,9 +112,7 @@ export default class Snowflake {
 	 * @returns {DeconstructedSnowflake} Deconstructed snowflake
 	 */
 	static deconstruct(snowflake) {
-		const BINARY = Snowflake.idToBinary(snowflake)
-			.toString(2)
-			.padStart(64, "0");
+		const BINARY = Snowflake.idToBinary(snowflake).toString(2).padStart(64, "0");
 		const res = {
 			timestamp: parseInt(BINARY.substring(0, 42), 2) + Snowflake.EPOCH,
 			workerID: parseInt(BINARY.substring(42, 47), 2),

@@ -6,34 +6,18 @@ export default class Logger {
 	}
 
 	debug(...args: any[]) {
-		console.debug(
-			`%c${new Date().toLocaleTimeString()} | ${this.name} | DEBUG |`,
-			`color: LimeGreen`,
-			...args,
-		);
+		console.debug(`%c${new Date().toLocaleTimeString()} | ${this.name} | DEBUG |`, `color: LimeGreen`, ...args);
 	}
 
 	info(...args: any[]) {
-		console.debug(
-			`%c${new Date().toLocaleTimeString()} | ${this.name} | DEBUG |`,
-			`color: DodgerBlue`,
-			...args,
-		);
+		console.debug(`%c${new Date().toLocaleTimeString()} | ${this.name} | DEBUG |`, `color: DodgerBlue`, ...args);
 	}
 
 	warn(...args: any[]) {
-		console.debug(
-			`%c${new Date().toLocaleTimeString()} | ${this.name} | DEBUG |`,
-			`color: Tomato`,
-			...args,
-		);
+		console.debug(`%c${new Date().toLocaleTimeString()} | ${this.name} | DEBUG |`, `color: Tomato`, ...args);
 	}
 
 	error(...args: any[]) {
-		console.debug(
-			`%c${new Date().toLocaleTimeString()} | ${this.name} | DEBUG |`,
-			`color: Red`,
-			...args,
-		);
+		console.debug(`%c${new Date().toLocaleTimeString()} | ${this.name} | DEBUG |`, `color: Red`, ...args);
 	}
 }

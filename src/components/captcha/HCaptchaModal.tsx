@@ -22,12 +22,7 @@ function HCaptchaModal({ open, siteKey, onVerify }: Props) {
 
 	return open ? (
 		<Wrapper>
-			<HCaptchaLib
-				sitekey={siteKey}
-				onLoad={onLoad}
-				onVerify={onVerify}
-				ref={ref}
-			/>
+			<HCaptchaLib sitekey={siteKey} onLoad={onLoad} onVerify={onVerify} ref={ref} />
 		</Wrapper>
 	) : null;
 }

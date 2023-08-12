@@ -59,17 +59,12 @@ function ForgotPasswordModal() {
 				</ModalHeader>
 
 				<ModelContentContainer>
-					We sent instructions to change your password to
-					user@example.com, please check both your inbox and spam
-					folder.
+					We sent instructions to change your password to user@example.com, please check both your inbox and
+					spam folder.
 				</ModelContentContainer>
 
 				<ModalFooter>
-					<SubmitButton
-						variant="filled"
-						size="med"
-						onClick={closeModal}
-					>
+					<SubmitButton variant="filled" size="med" onClick={closeModal}>
 						Okay
 					</SubmitButton>
 				</ModalFooter>

@@ -86,8 +86,7 @@ export default class Guild {
 		this.systemChannelId = data.properties.system_channel_id;
 		this.verificationLevel = data.properties.verification_level;
 		this.explicitContentFilter = data.properties.explicit_content_filter;
-		this.defaultMessageNotifications =
-			data.properties.default_message_notifications;
+		this.defaultMessageNotifications = data.properties.default_message_notifications;
 		this.mfaLevel = data.properties.mfa_level;
 		this.vanityUrlCode = data.properties.vanity_url_code;
 		this.premiumTier = data.properties.premium_tier;
@@ -125,11 +124,7 @@ export default class Guild {
 		if (this.memberListStore) {
 			this.memberListStore.update(data);
 		} else {
-			this.memberListStore = new GuildMemberListStore(
-				this.app,
-				this,
-				data,
-			);
+			this.memberListStore = new GuildMemberListStore(this.app, this, data);
 		}
 	}
 

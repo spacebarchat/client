@@ -17,19 +17,13 @@ export default class PresenceStore {
 		Snowflake,
 		Map<
 			Snowflake,
-			Pick<
-				GatewayPresenceUpdate,
-				"activities" | "client_status" | "status"
-			> & {
+			Pick<GatewayPresenceUpdate, "activities" | "client_status" | "status"> & {
 				timestamp: number;
 			}
 		>
 	>();
 	@observable activities = observable.map<Snowflake, GatewayActivity[]>();
-	@observable clientStatuses = observable.map<
-		Snowflake,
-		OneKeyFrom<GatewayPresenceClientStatus>
-	>();
+	@observable clientStatuses = observable.map<Snowflake, OneKeyFrom<GatewayPresenceClientStatus>>();
 
 	constructor(app: AppStore) {
 		this.app = app;
@@ -38,11 +32,7 @@ export default class PresenceStore {
 	}
 
 	@action
-	add(
-		presence:
-			| GatewayPresenceUpdate
-			| GatewayGuildMemberListUpdateMember["presence"],
-	) {
+	add(presence: GatewayPresenceUpdate | GatewayGuildMemberListUpdateMember["presence"]) {
 		if (presence.status) {
 			this.presences.set(presence.user.id, presence.status);
 		}

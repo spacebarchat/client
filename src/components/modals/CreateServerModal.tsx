@@ -7,13 +7,7 @@ import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import { messageFromFieldError } from "../../utils/messageFromFieldError";
-import {
-	Input,
-	InputErrorText,
-	InputLabel,
-	InputWrapper,
-	LabelWrapper,
-} from "../AuthComponents";
+import { Input, InputErrorText, InputLabel, InputWrapper, LabelWrapper } from "../AuthComponents";
 import { Divider } from "../Divider";
 import Icon from "../Icon";
 import AddServerModal from "./AddServerModal";
@@ -169,20 +163,14 @@ function CreateServerModal() {
 				<ModalHeader>
 					<ModalHeaderText>Customize your guild</ModalHeaderText>
 					<ModalSubHeaderText>
-						Give your new guild a personality with a name and an
-						icon. You can always change it later.
+						Give your new guild a personality with a name and an icon. You can always change it later.
 					</ModalSubHeaderText>
 				</ModalHeader>
 
 				<ModelContentContainer>
 					<UploadIcon>
 						<IconContainer>
-							<svg
-								width="80"
-								height="80"
-								viewBox="0 0 80 80"
-								fill="none"
-							>
+							<svg width="80" height="80" viewBox="0 0 80 80" fill="none">
 								<path
 									fillRule="evenodd"
 									clipRule="evenodd"
@@ -244,12 +232,7 @@ function CreateServerModal() {
 				</ModelContentContainer>
 
 				<ModalFooter>
-					<ModalActionItem
-						variant="filled"
-						size="med"
-						onClick={onSubmit}
-						disabled={isLoading}
-					>
+					<ModalActionItem variant="filled" size="med" onClick={onSubmit} disabled={isLoading}>
 						Create
 					</ModalActionItem>
 

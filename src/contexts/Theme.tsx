@@ -133,8 +133,7 @@ const GlobalTheme = createGlobalStyle<{ theme: Theme }>`
 }
 `;
 
-const toDashed = (str: string) =>
-	str.replace(/[A-Z]/g, (m) => "-" + m.toLowerCase());
+const toDashed = (str: string) => str.replace(/[A-Z]/g, (m) => "-" + m.toLowerCase());
 
 export const generateVariables = (theme: Theme) => {
 	return (Object.keys(theme) as ThemeVariables[]).map((key) => {
@@ -143,9 +142,7 @@ export const generateVariables = (theme: Theme) => {
 			const r = parseInt(colour.substring(1, 3), 16);
 			const g = parseInt(colour.substring(3, 5), 16);
 			const b = parseInt(colour.substring(5, 7), 16);
-			return `--${toDashed(key)}: ${theme[key]}; --${toDashed(
-				key,
-			)}-rgb: rgb(${r}, ${g}, ${b});`;
+			return `--${toDashed(key)}: ${theme[key]}; --${toDashed(key)}-rgb: rgb(${r}, ${g}, ${b});`;
 		} catch {
 			return `--${toDashed(key)}: ${theme[key]};`;
 		}

@@ -51,8 +51,7 @@ function LoginPage() {
 	const navigate = useNavigate();
 	const [loading, setLoading] = React.useState(false);
 	const [captchaSiteKey, setCaptchaSiteKey] = React.useState<string>();
-	const [mfaData, setMfaData] =
-		React.useState<IAPILoginResponseMFARequired>();
+	const [mfaData, setMfaData] = React.useState<IAPILoginResponseMFARequired>();
 	const captchaRef = React.useRef<HCaptchaLib>(null);
 	const [debounce, setDebounce] = React.useState<NodeJS.Timeout | null>(null);
 	const [isCheckingInstance, setCheckingInstance] = React.useState(false);
@@ -196,9 +195,7 @@ function LoginPage() {
 					type: "manual",
 					message:
 						(e instanceof Error &&
-							(e?.message?.length > 60
-								? e.message.slice(0, 60) + "..."
-								: e.message)) ||
+							(e?.message?.length > 60 ? e.message.slice(0, 60) + "..." : e.message)) ||
 						"Instance could not be resolved",
 				});
 			}
@@ -217,13 +214,7 @@ function LoginPage() {
 	};
 
 	if (captchaSiteKey) {
-		return (
-			<HCaptcha
-				captchaRef={captchaRef}
-				sitekey={captchaSiteKey}
-				onVerify={onCaptchaVerify}
-			/>
-		);
+		return <HCaptcha captchaRef={captchaRef} sitekey={captchaSiteKey} onVerify={onCaptchaVerify} />;
 	}
 
 	if (mfaData) {
@@ -247,10 +238,7 @@ function LoginPage() {
 				</HeaderContainer>
 
 				<FormContainer onSubmit={onSubmit}>
-					<InputContainer
-						marginBottom={true}
-						style={{ marginTop: 0 }}
-					>
+					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
 						<LabelWrapper error={!!errors.instance}>
 							<InputLabel>Instance</InputLabel>
 							{isCheckingInstance != false && (
@@ -337,18 +325,12 @@ function LoginPage() {
 						Forgot your password?
 					</PasswordResetLink> */}
 
-					<SubmitButton
-						variant="primary"
-						type="submit"
-						disabled={loading}
-					>
+					<SubmitButton variant="primary" type="submit" disabled={loading}>
 						Login
 					</SubmitButton>
 
 					<AuthSwitchPageContainer>
-						<AuthSwitchPageLabel>
-							New to Spacebar?&nbsp;
-						</AuthSwitchPageLabel>
+						<AuthSwitchPageLabel>New to Spacebar?&nbsp;</AuthSwitchPageLabel>
 						<AuthSwitchPageLink
 							onClick={() => {
 								navigate("/register");

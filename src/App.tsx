@@ -32,17 +32,12 @@ function App() {
 						app.setGatewayReady(false);
 						app.gateway.connect(Globals.routeSettings.gateway);
 					} else {
-						logger.debug(
-							"Gateway connect called but socket is not closed",
-						);
+						logger.debug("Gateway connect called but socket is not closed");
 					}
 				} else {
 					logger.debug("user no longer authenticated");
 					if (app.gateway.readyState === WebSocket.OPEN) {
-						app.gateway.disconnect(
-							1000,
-							"user is no longer authenticated",
-						);
+						app.gateway.disconnect(1000, "user is no longer authenticated");
 					}
 
 					navigate("/");
@@ -62,33 +57,15 @@ function App() {
 	return (
 		<Loader>
 			<Routes>
-				<Route
-					index
-					path="/"
-					element={<AuthenticationGuard component={AppPage} />}
-				/>
-				<Route
-					path="/app"
-					element={<AuthenticationGuard component={AppPage} />}
-				/>
+				<Route index path="/" element={<AuthenticationGuard component={AppPage} />} />
+				<Route path="/app" element={<AuthenticationGuard component={AppPage} />} />
 				<Route
 					path="/channels/:guildId/:channelId?"
 					element={<AuthenticationGuard component={ChannelPage} />}
 				/>
-				<Route
-					path="/login"
-					element={<UnauthenticatedGuard component={LoginPage} />}
-				/>
-				<Route
-					path="/register"
-					element={
-						<UnauthenticatedGuard component={RegistrationPage} />
-					}
-				/>
-				<Route
-					path="/logout"
-					element={<AuthenticationGuard component={LogoutPage} />}
-				/>
+				<Route path="/login" element={<UnauthenticatedGuard component={LoginPage} />} />
+				<Route path="/register" element={<UnauthenticatedGuard component={RegistrationPage} />} />
+				<Route path="/logout" element={<AuthenticationGuard component={LogoutPage} />} />
 				<Route path="*" element={<NotFoundPage />} />
 			</Routes>
 		</Loader>

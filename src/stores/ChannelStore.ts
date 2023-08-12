@@ -55,28 +55,17 @@ export default class ChannelStore {
 			category: Channel | null;
 		}[] = [];
 
-		const categories = this.sortPosition(
-			channels.filter((x) => x.type === ChannelType.GuildCategory),
-		);
-		const categorizedChannels = channels.filter(
-			(x) => x.type !== ChannelType.GuildCategory && x.parentId !== null,
-		);
+		const categories = this.sortPosition(channels.filter((x) => x.type === ChannelType.GuildCategory));
+		const categorizedChannels = channels.filter((x) => x.type !== ChannelType.GuildCategory && x.parentId !== null);
 		const uncategorizedChannels = this.sortPosition(
-			channels.filter(
-				(x) =>
-					x.type !== ChannelType.GuildCategory && x.parentId === null,
-			),
+			channels.filter((x) => x.type !== ChannelType.GuildCategory && x.parentId === null),
 		);
 
 		// for each category, add an object containing the category and its children
 		categories.forEach((category) => {
 			result.push({
 				id: category.id,
-				children: this.sortPosition(
-					categorizedChannels.filter(
-						(x) => x.parentId === category.id,
-					),
-				),
+				children: this.sortPosition(categorizedChannels.filter((x) => x.parentId === category.id)),
 				category: category,
 			});
 		});

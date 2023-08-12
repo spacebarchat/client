@@ -9,10 +9,7 @@ export default class GuildMemberStore {
 	private readonly app: AppStore;
 	private readonly guild: Guild;
 
-	@observable private readonly members = new ObservableMap<
-		Snowflake,
-		GuildMember
-	>();
+	@observable private readonly members = new ObservableMap<Snowflake, GuildMember>();
 
 	constructor(app: AppStore, guild: Guild) {
 		this.app = app;
@@ -29,10 +26,7 @@ export default class GuildMemberStore {
 		if (this.members.has(member.user.id)) {
 			return;
 		}
-		this.members.set(
-			member.user.id,
-			new GuildMember(this.app, this.guild, member),
-		);
+		this.members.set(member.user.id, new GuildMember(this.app, this.guild, member));
 	}
 
 	@action

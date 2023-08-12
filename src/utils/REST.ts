@@ -29,9 +29,7 @@ export default class REST {
 		}
 	}
 
-	public static async getEndpointsFromDomain(
-		url: URL,
-	): Promise<RouteSettings> {
+	public static async getEndpointsFromDomain(url: URL): Promise<RouteSettings> {
 		try {
 			return await this.getInstanceDomains(url, url);
 		} catch (e) {
@@ -47,14 +45,9 @@ export default class REST {
 		return await this.getInstanceDomains(wellKnown, url);
 	}
 
-	static async getInstanceDomains(
-		url: URL,
-		knownas: URL,
-	): Promise<RouteSettings> {
+	static async getInstanceDomains(url: URL, knownas: URL): Promise<RouteSettings> {
 		const endpoints = await fetch(
-			`${url.toString()}${
-				url.pathname.includes("api") ? "" : "api"
-			}/policies/instance/domains`,
+			`${url.toString()}${url.pathname.includes("api") ? "" : "api"}/policies/instance/domains`,
 		).then((x) => x.json());
 		return {
 			api: endpoints.apiEndpoint,
@@ -125,11 +118,7 @@ export default class REST {
 						resolve(await res.json());
 					} else {
 						// reject with json if content type is json
-						if (
-							res.headers
-								.get("content-type")
-								?.includes("application/json")
-						) {
+						if (res.headers.get("content-type")?.includes("application/json")) {
 							return reject(await res.json());
 						}
 

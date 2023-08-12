@@ -96,61 +96,24 @@ export default class GatewayConnectionStore {
 
 	private setupDispatchHandler() {
 		this.dispatchHandlers.set(GatewayDispatchEvents.Ready, this.onReady);
-		this.dispatchHandlers.set(
-			GatewayDispatchEvents.Resumed,
-			this.onResumed,
-		);
-		this.dispatchHandlers.set(
-			GatewayDispatchEvents.GuildCreate,
-			this.onGuildCreate,
-		);
-		this.dispatchHandlers.set(
-			GatewayDispatchEvents.GuildUpdate,
-			this.onGuildUpdate,
-		);
-		this.dispatchHandlers.set(
-			GatewayDispatchEvents.GuildDelete,
-			this.onGuildDelete,
-		);
-		this.dispatchHandlers.set(
-			GatewayDispatchEvents.GuildMemberListUpdate,
-			this.onGuildMemberListUpdate,
-		);
+		this.dispatchHandlers.set(GatewayDispatchEvents.Resumed, this.onResumed);
+		this.dispatchHandlers.set(GatewayDispatchEvents.GuildCreate, this.onGuildCreate);
+		this.dispatchHandlers.set(GatewayDispatchEvents.GuildUpdate, this.onGuildUpdate);
+		this.dispatchHandlers.set(GatewayDispatchEvents.GuildDelete, this.onGuildDelete);
+		this.dispatchHandlers.set(GatewayDispatchEvents.GuildMemberListUpdate, this.onGuildMemberListUpdate);
 
-		this.dispatchHandlers.set(
-			GatewayDispatchEvents.ChannelCreate,
-			this.onChannelCreate,
-		);
-		this.dispatchHandlers.set(
-			GatewayDispatchEvents.ChannelDelete,
-			this.onChannelDelete,
-		);
+		this.dispatchHandlers.set(GatewayDispatchEvents.ChannelCreate, this.onChannelCreate);
+		this.dispatchHandlers.set(GatewayDispatchEvents.ChannelDelete, this.onChannelDelete);
 
-		this.dispatchHandlers.set(
-			GatewayDispatchEvents.MessageCreate,
-			this.onMessageCreate,
-		);
-		this.dispatchHandlers.set(
-			GatewayDispatchEvents.MessageUpdate,
-			this.onMessageUpdate,
-		);
-		this.dispatchHandlers.set(
-			GatewayDispatchEvents.MessageDelete,
-			this.onMessageDelete,
-		);
+		this.dispatchHandlers.set(GatewayDispatchEvents.MessageCreate, this.onMessageCreate);
+		this.dispatchHandlers.set(GatewayDispatchEvents.MessageUpdate, this.onMessageUpdate);
+		this.dispatchHandlers.set(GatewayDispatchEvents.MessageDelete, this.onMessageDelete);
 
-		this.dispatchHandlers.set(
-			GatewayDispatchEvents.PresenceUpdate,
-			this.onPresenceUpdate,
-		);
+		this.dispatchHandlers.set(GatewayDispatchEvents.PresenceUpdate, this.onPresenceUpdate);
 	}
 
 	private onopen = () => {
-		this.logger.debug(
-			`[Connected] ${this.url} (took ${
-				Date.now() - this.connectionStartTime!
-			}ms)`,
-		);
+		this.logger.debug(`[Connected] ${this.url} (took ${Date.now() - this.connectionStartTime!}ms)`);
 		this.readyState = WebSocket.OPEN;
 
 		this.handleIdentify();
@@ -204,9 +167,7 @@ export default class GatewayConnectionStore {
 		}
 
 		if (this.socket.readyState !== WebSocket.OPEN) {
-			this.logger.error(
-				`Socket is not open; readyState: ${this.socket.readyState}`,
-			);
+			this.logger.error(`Socket is not open; readyState: ${this.socket.readyState}`);
 			return;
 		}
 		this.logger.debug(`[Gateway] <- ${payload.op}`, payload);
@@ -287,9 +248,7 @@ export default class GatewayConnectionStore {
 	private handleHello = (data: GatewayHelloData) => {
 		this.heartbeatInterval = data.heartbeat_interval;
 		this.logger.info(
-			`[Hello] heartbeat interval: ${data.heartbeat_interval} (took ${
-				Date.now() - this.connectionStartTime!
-			}ms)`,
+			`[Hello] heartbeat interval: ${data.heartbeat_interval} (took ${Date.now() - this.connectionStartTime!}ms)`,
 		);
 		this.startHeartbeater();
 	};
@@ -355,14 +314,14 @@ export default class GatewayConnectionStore {
 			}
 		};
 
-		this.initialHeartbeatTimeout = setTimeout(() => {
-			this.initialHeartbeatTimeout = null;
-			this.heartbeater = setInterval(
-				heartbeaterFn,
-				this.heartbeatInterval!,
-			);
-			heartbeaterFn();
-		}, Math.floor(Math.random() * this.heartbeatInterval!));
+		this.initialHeartbeatTimeout = setTimeout(
+			() => {
+				this.initialHeartbeatTimeout = null;
+				this.heartbeater = setInterval(heartbeaterFn, this.heartbeatInterval!);
+				heartbeaterFn();
+			},
+			Math.floor(Math.random() * this.heartbeatInterval!),
+		);
 	};
 
 	/**
@@ -385,9 +344,7 @@ export default class GatewayConnectionStore {
 	 */
 	private handleHeartbeatTimeout = () => {
 		this.logger.warn(
-			`[Heartbeat ACK Timeout] should reconnect in ${(
-				this.heartbeatInterval! / 1000
-			).toFixed(2)} seconds`,
+			`[Heartbeat ACK Timeout] should reconnect in ${(this.heartbeatInterval! / 1000).toFixed(2)} seconds`,
 		);
 
 		this.socket?.close(4009);
@@ -453,9 +410,7 @@ export default class GatewayConnectionStore {
 	 * Processes a ready dispatch event
 	 */
 	private onReady = (data: GatewayReadyDispatchData) => {
-		this.logger.info(
-			`[Ready] took ${Date.now() - this.connectionStartTime!}ms`,
-		);
+		this.logger.info(`[Ready] took ${Date.now() - this.connectionStartTime!}ms`);
 		const { session_id, guilds, users, user, private_channels } = data;
 		this.sessionId = session_id;
 
@@ -540,17 +495,13 @@ export default class GatewayConnectionStore {
 		});
 	};
 
-	private onGuildMemberListUpdate = (
-		data: GatewayGuildMemberListUpdateDispatchData,
-	) => {
+	private onGuildMemberListUpdate = (data: GatewayGuildMemberListUpdateDispatchData) => {
 		this.logger.debug("Received GuildMemberListUpdate event");
 		const { guild_id } = data;
 		const guild = this.app.guilds.get(guild_id);
 
 		if (!guild) {
-			this.logger.warn(
-				`[GuildMemberListUpdate] Guild ${guild_id} not found`,
-			);
+			this.logger.warn(`[GuildMemberListUpdate] Guild ${guild_id} not found`);
 			return;
 		}
 
@@ -565,9 +516,7 @@ export default class GatewayConnectionStore {
 
 		const guild = this.app.guilds.get(data.guild_id!);
 		if (!guild) {
-			this.logger.warn(
-				`[ChannelCreate] Guild ${data.guild_id} not found for channel ${data.id}`,
-			);
+			this.logger.warn(`[ChannelCreate] Guild ${data.guild_id} not found for channel ${data.id}`);
 			return;
 		}
 		guild.channels.add(data);
@@ -581,9 +530,7 @@ export default class GatewayConnectionStore {
 
 		const guild = this.app.guilds.get(data.guild_id!);
 		if (!guild) {
-			this.logger.warn(
-				`[ChannelDelete] Guild ${data.guild_id} not found for channel ${data.id}`,
-			);
+			this.logger.warn(`[ChannelDelete] Guild ${data.guild_id} not found for channel ${data.id}`);
 			return;
 		}
 		guild.channels.remove(data.id);
@@ -592,16 +539,12 @@ export default class GatewayConnectionStore {
 	private onMessageCreate = (data: GatewayMessageCreateDispatchData) => {
 		const guild = this.app.guilds.get(data.guild_id!);
 		if (!guild) {
-			this.logger.warn(
-				`[MessageCreate] Guild ${data.guild_id} not found for channel ${data.id}`,
-			);
+			this.logger.warn(`[MessageCreate] Guild ${data.guild_id} not found for channel ${data.id}`);
 			return;
 		}
 		const channel = guild.channels.get(data.channel_id);
 		if (!channel) {
-			this.logger.warn(
-				`[MessageCreate] Channel ${data.channel_id} not found for message ${data.id}`,
-			);
+			this.logger.warn(`[MessageCreate] Channel ${data.channel_id} not found for message ${data.id}`);
 			return;
 		}
 
@@ -612,16 +555,12 @@ export default class GatewayConnectionStore {
 	private onMessageUpdate = (data: GatewayMessageUpdateDispatchData) => {
 		const guild = this.app.guilds.get(data.guild_id!);
 		if (!guild) {
-			this.logger.warn(
-				`[MessageUpdate] Guild ${data.guild_id} not found for channel ${data.id}`,
-			);
+			this.logger.warn(`[MessageUpdate] Guild ${data.guild_id} not found for channel ${data.id}`);
 			return;
 		}
 		const channel = guild.channels.get(data.channel_id);
 		if (!channel) {
-			this.logger.warn(
-				`[MessageUpdate] Channel ${data.channel_id} not found for message ${data.id}`,
-			);
+			this.logger.warn(`[MessageUpdate] Channel ${data.channel_id} not found for message ${data.id}`);
 			return;
 		}
 
@@ -631,16 +570,12 @@ export default class GatewayConnectionStore {
 	private onMessageDelete = (data: GatewayMessageDeleteDispatchData) => {
 		const guild = this.app.guilds.get(data.guild_id!);
 		if (!guild) {
-			this.logger.warn(
-				`[MessageDelete] Guild ${data.guild_id} not found for channel ${data.id}`,
-			);
+			this.logger.warn(`[MessageDelete] Guild ${data.guild_id} not found for channel ${data.id}`);
 			return;
 		}
 		const channel = guild.channels.get(data.channel_id);
 		if (!channel) {
-			this.logger.warn(
-				`[MessageDelete] Channel ${data.channel_id} not found for message ${data.id}`,
-			);
+			this.logger.warn(`[MessageDelete] Channel ${data.channel_id} not found for message ${data.id}`);
 			return;
 		}
 

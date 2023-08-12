@@ -48,8 +48,7 @@
 	display: none;
 }
 
-.select-search-container:not(.select-search-is-multiple).select-search-has-focus
-	.select-search-select {
+.select-search-container:not(.select-search-is-multiple).select-search-has-focus .select-search-select {
 	display: block;
 }
 
