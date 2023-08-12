@@ -75,9 +75,7 @@ function JoinServerModal() {
 		const code = data.code.split("/").reverse()[0];
 
 		app.rest
-			.post<never, { guild_id: string; channel_id: string }>(
-				Routes.invite(code),
-			)
+			.post<never, { guild_id: string; channel_id: string }>(Routes.invite(code))
 			.then((r) => {
 				navigate(`/channels/${r.guild_id}/${r.channel_id}`);
 				closeModal();
@@ -158,7 +156,7 @@ function JoinServerModal() {
 								)}
 							</LabelWrapper>
 							<Input
-								{...register("code")}
+								{...register("code", { required: true })}
 								placeholder="https://app.spacebar.chat/invite/cool-guild"
 								type="text"
 								maxLength={9999}
@@ -169,11 +167,7 @@ function JoinServerModal() {
 				</ModelContentContainer>
 
 				<ModalFooter>
-					<ModalActionItem
-						variant="filled"
-						size="med"
-						onClick={onSubmit}
-					>
+					<ModalActionItem variant="filled" size="med" onClick={onSubmit}>
 						Join Guild
 					</ModalActionItem>
 
