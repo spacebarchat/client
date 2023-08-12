@@ -5,6 +5,7 @@ import { useAppStore } from "../stores/AppStore";
 export type ThemeVariables =
 	| "backgroundPrimary"
 	| "backgroundPrimaryAlt"
+	| "backgroundPrimaryHighlight"
 	| "backgroundSecondary"
 	| "backgroundSecondaryAlt"
 	| "backgroundSecondaryHighlight"
@@ -52,6 +53,7 @@ export const ThemePresets: Record<string, Theme> = {
 	light: {
 		backgroundPrimary: "#ffffff",
 		backgroundPrimaryAlt: "",
+		backgroundPrimaryHighlight: "",
 		backgroundSecondary: "#ebe5e4",
 		backgroundSecondaryAlt: "#ebe5e4",
 		backgroundSecondaryHighlight: "#ebe5e4",
@@ -90,6 +92,7 @@ export const ThemePresets: Record<string, Theme> = {
 	dark: {
 		backgroundPrimary: "#2e2e2e",
 		backgroundPrimaryAlt: "#2a2a2a",
+		backgroundPrimaryHighlight: "#262626",
 		backgroundSecondary: "#232323",
 		backgroundSecondaryAlt: "#1e1e1e",
 		backgroundSecondaryHighlight: "#383838",
