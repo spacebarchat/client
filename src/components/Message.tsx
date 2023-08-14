@@ -13,7 +13,6 @@ const Container = styled.div<{ isHeader?: boolean }>`
 	display: flex;
 	flex-direction: row;
 	padding: ${(props) => (props.isHeader ? "4" : "2")}px 12px;
-	align-items: center;
 	margin-top: ${(props) => (props.isHeader ? "20px" : undefined)};
 
 	&:hover {
