@@ -71,7 +71,7 @@ function UserPanel() {
 
 				<ActionsWrapper>
 					<Tooltip title="Settings">
-						<IconButton aria-label="settings" disabled color="#fff">
+						<IconButton aria-label="settings" color="#fff">
 							<Icon icon="mdiCog" size="20px" />
 						</IconButton>
 					</Tooltip>
