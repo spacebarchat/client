@@ -80,6 +80,7 @@ function ChannelList() {
 									style={{
 										marginRight: "8px",
 									}}
+									color="var(--text-secondary)"
 								/>
 							)}
 							<Text isCategory={isCategory}>{channel.name}</Text>
