@@ -1,22 +1,48 @@
+import * as Icons from "@mdi/js";
 import styled from "styled-components";
 import Channel from "../stores/objects/Channel";
+import Icon from "./Icon";
+import Tooltip from "./Tooltip";
 
-const Wrapper = styled.section`
+const IconButton = styled.button`
+	margin: 0;
+	padding: 0;
+	background-color: inherit;
+	border: none;
+
+	&:hover {
+		color: red;
+	}
+`;
+
+interface CustomIconProps {
+	active?: boolean;
+}
+
+const CustomIcon = styled(Icon)<CustomIconProps>`
+	color: ${(props) => (props.active ? "#ffffff" : "var(--text-secondary)")};
+
+	&:hover {
+		color: var(--text);
+	}
+`;
+
+const Container = styled.section`
 	display: flex;
-	padding: 12px 16px;
+	padding: 10px 16px;
 	margin-bottom: 1px;
 	background-color: var(--background-primary-alt);
 	box-shadow: 0 1px 0 hsl(0deg 0% 0% / 0.3);
 	align-items: center;
 `;
 
-const InnerWrapper = styled.div`
+const Wrapper = styled.div`
 	display: flex;
 	flex: 1 1 auto;
 	align-items: center;
 `;
 
-const NameWrapper = styled.div`
+const ChannelNameText = styled.div`
 	font-size: 16px;
 `;
 
@@ -28,27 +54,86 @@ const Divider = styled.div`
 `;
 
 const TopicWrapper = styled.div`
+	display: flex;
+	flex: 1 1 auto;
+`;
+
+const ChannelTopicText = styled.div`
 	font-size: 14px;
+`;
+
+const ActionItemsWrapper = styled.div`
+	display: flex;
+`;
+
+const IconWrapper = styled.div`
+	height: 24px;
+	margin-left: 8px;
+	flex: 0 0 auto;
 `;
 
 interface Props {
 	channel?: Channel;
 }
 
+function ChannelTopic({ channel }: Props) {
+	return (
+		<TopicWrapper>
+			{channel?.topic && (
+				<>
+					<Divider />
+					<ChannelTopicText>{channel.topic}</ChannelTopicText>
+				</>
+			)}
+		</TopicWrapper>
+	);
+}
+
+interface ActionItemProps {
+	icon: keyof typeof Icons;
+	active?: boolean;
+	ariaLabel?: string;
+	tooltip: string;
+}
+
+function ActionItem({ icon, active, ariaLabel, tooltip }: ActionItemProps) {
+	return (
+		<Tooltip title={tooltip}>
+			<IconWrapper>
+				<IconButton
+					onClick={() => {
+						console.log("click");
+					}}
+				>
+					<CustomIcon icon={icon} size="24px" aria-label={ariaLabel} active={active} />
+				</IconButton>
+			</IconWrapper>
+		</Tooltip>
+	);
+}
+
 function ChatHeader({ channel }: Props) {
 	return (
-		<Wrapper>
-			<InnerWrapper>
+		<Container>
+			<Wrapper>
 				{/* // TODO: render a custom bar for the home page */}
-				<NameWrapper>#{channel?.name ?? "ChannelName"}</NameWrapper>
-				{channel?.topic && (
-					<>
-						<Divider />
-						<TopicWrapper>{channel.topic}</TopicWrapper>
-					</>
-				)}
-			</InnerWrapper>
-		</Wrapper>
+				<ChannelNameText>#{channel?.name ?? "ChannelName"}</ChannelNameText>
+				<ChannelTopic channel={channel} />
+				{/* Action Items */}
+				<ActionItemsWrapper>
+					{/* <ActionItem icon="mdiPound" ariaLabel="Threads" /> */}
+					<ActionItem icon="mdiBellBadge" tooltip="Notification Settings" ariaLabel="Notification Settings" />
+					<ActionItem icon="mdiPin" tooltip="Pinned Messages" ariaLabel="Pinned Messages" />
+					<ActionItem
+						icon="mdiAccountMultiple"
+						tooltip="Toggle Member List"
+						ariaLabel="Toggle Member List"
+						active
+					/>
+					<ActionItem icon="mdiInbox" tooltip="Inbox" ariaLabel="Inbox" />
+				</ActionItemsWrapper>
+			</Wrapper>
+		</Container>
 	);
 }
 

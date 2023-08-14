@@ -64,20 +64,16 @@ function UserPanel() {
 				<AvatarWrapper>
 					<Avatar />
 					<Name>
-						<div>
-							<Username>{app.account?.username}</Username>
-						</div>
+						<Username>{app.account?.username}</Username>
 						<Discriminator>#{app.account?.discriminator}</Discriminator>
 					</Name>
 				</AvatarWrapper>
 
 				<ActionsWrapper>
 					<Tooltip title="Settings">
-						<span>
-							<IconButton aria-label="settings" disabled color="#fff">
-								<Icon icon="mdiCog" size="20px" />
-							</IconButton>
-						</span>
+						<IconButton aria-label="settings" disabled color="#fff">
+							<Icon icon="mdiCog" size="20px" />
+						</IconButton>
 					</Tooltip>
 				</ActionsWrapper>
 			</Container>

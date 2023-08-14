@@ -73,7 +73,7 @@ function SidebarAction(props: Props) {
 					{props.icon && (
 						<Icon
 							{...props.icon}
-							color={isHovered && props.useGreenColorScheme ? "#fff" : props.icon.color}
+							color={isHovered && props.useGreenColorScheme ? "var(--text)" : props.icon.color}
 						/>
 					)}
 					{props.label && <span>{props.label}</span>}

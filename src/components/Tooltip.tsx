@@ -9,12 +9,12 @@ export default styled(({ className, ...props }: MuiTooltipProps) => (
 		borderRadius: 5,
 	},
 	[`& .${tooltipClasses.arrow}`]: {
-		color: "black",
+		color: "var(--background-tertiary)",
 	},
 	[`& .${tooltipClasses.tooltip}`]: {
-		backgroundColor: "black",
+		backgroundColor: "var(--background-tertiary)",
+		fontWeight: "400", // TODO: current font doesn't have a 400 weight
 		fontSize: "14px",
-		fontWeight: "600",
 		padding: "8px 12px",
 	},
 }));
