@@ -6,6 +6,7 @@ const GuildSidebarListItem = styled.li`
 	display: flex;
 	justify-content: center;
 	width: 72px;
+	cursor: pointer;
 `;
 
 export default GuildSidebarListItem;
