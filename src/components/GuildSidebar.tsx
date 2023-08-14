@@ -1,3 +1,4 @@
+import { useModals } from "@mattjennings/react-modal-stack";
 import { observer } from "mobx-react-lite";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -6,7 +7,6 @@ import GuildItem from "./GuildItem";
 import GuildSidebarListItem from "./GuildSidebarListItem";
 import SidebarAction from "./SidebarAction";
 import AddServerModal from "./modals/AddServerModal";
-import { useModals } from "@mattjennings/react-modal-stack";
 
 const List = styled.ul`
 	list-style: none;
@@ -25,7 +25,7 @@ const Divider = styled.div`
 	height: 2px;
 	width: 32px;
 	border-radius: 1px;
-	background-color: white;
+	background-color: var(--text-disabled);
 `;
 
 function GuildSidebar() {
