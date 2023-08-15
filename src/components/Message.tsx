@@ -61,7 +61,7 @@ interface Props {
 
 function Message({ message, isHeader, isSending, isFailed }: Props) {
 	const contextMenu = React.useContext(ContextMenuContext);
-	const [contextMenuItems, setContextMenuOptions] = React.useState<IContextMenuItem[]>([
+	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
 		{
 			label: "Copy Message ID",
 			onClick: () => {

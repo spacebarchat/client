@@ -44,7 +44,7 @@ function ChannelListItem({ guild, channel, isCategory, active }: Props) {
 	const navigate = useNavigate();
 
 	const contextMenu = React.useContext(ContextMenuContext);
-	const [contextMenuItems, setContextMenuOptions] = React.useState<IContextMenuItem[]>([
+	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
 		{
 			label: "Copy Channel ID",
 			onClick: () => {
