@@ -1,9 +1,12 @@
+import React from "react";
 import Moment from "react-moment";
 import styled from "styled-components";
+import { ContextMenuContext } from "../contexts/ContextMenuContext";
 import { QueuedMessage } from "../stores/MessageQueue";
 import { default as MessageObject } from "../stores/objects/Message";
 import { calendarStrings } from "../utils/i18n";
 import Avatar from "./Avatar";
+import { IContextMenuItem } from "./ContextMenuItem";
 
 type MessageLike = MessageObject | QueuedMessage;
 
@@ -12,6 +15,7 @@ const MessageListItem = styled.li``;
 const Container = styled.div<{ isHeader?: boolean }>`
 	display: flex;
 	flex-direction: row;
+	position: relative;
 	padding: ${(props) => (props.isHeader ? "4" : "2")}px 12px;
 	margin-top: ${(props) => (props.isHeader ? "20px" : undefined)};
 
@@ -56,9 +60,61 @@ interface Props {
 }
 
 function Message({ message, isHeader, isSending, isFailed }: Props) {
+	const contextMenu = React.useContext(ContextMenuContext);
+	const [contextMenuItems, setContextMenuOptions] = React.useState<IContextMenuItem[]>([
+		{
+			label: "Copy Message ID",
+			onClick: () => {
+				navigator.clipboard.writeText(message.id);
+			},
+			iconProps: {
+				icon: "mdiIdentifier",
+			},
+		},
+	]);
+
+	// construct the context menu options
+	// React.useEffect(() => {
+	// 	// if the message is queued, we don't need a context menu
+	// 	if (isSending) {
+	// 		return;
+	// 	}
+
+	// 	// add delete/resend option if the current user is the message author
+	// 	// if (author?.id === domain.account?.id) {
+	// 	//   items.push({
+	// 	// 	label: failed ? 'Resend Message' : 'Delete Message',
+	// 	// 	onPress: () => {
+	// 	// 	  // TODO: implement
+	// 	// 	  console.debug(
+	// 	// 		failed ? 'should resend message' : 'should delete message',
+	// 	// 	  );
+	// 	// 	},
+	// 	// 	color: theme.colors.palette.red40,
+	// 	// 	iconProps: {
+	// 	// 	  name: failed ? 'reload' : 'delete',
+	// 	// 	},
+	// 	//   });
+	// 	// }
+
+	// 	// setContextMenuOptions(items);
+	// }, [isSending, isFailed]);
+
 	return (
 		<MessageListItem>
-			<Container isHeader={isHeader}>
+			<Container
+				isHeader={isHeader}
+				onContextMenu={(e) => {
+					e.preventDefault();
+					contextMenu.open({
+						position: {
+							x: e.pageX,
+							y: e.pageY,
+						},
+						items: contextMenuItems,
+					});
+				}}
+			>
 				{isHeader && (
 					<Avatar
 						key={message.author.id}
