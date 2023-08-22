@@ -217,6 +217,7 @@ export default class Channel {
 			this.type === ChannelType.GuildVoice ||
 			this.type === ChannelType.GuildStageVoice ||
 			this.type === ChannelType.GuildForum ||
+			this.type === ChannelType.GuildAnnouncement ||
 			this.type === ChannelType.AnnouncementThread ||
 			this.type === ChannelType.Encrypted ||
 			this.type === ChannelType.EncryptedThread ||
