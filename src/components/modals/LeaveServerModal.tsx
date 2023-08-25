@@ -103,7 +103,7 @@ function LeaveServerModal({ guild }: Props) {
 					}}
 				>
 					<CancelButton
-						variant="blank"
+						variant="link"
 						size="med"
 						onClick={() => {
 							closeModal();

@@ -64,7 +64,7 @@ export const ModelContentContainer = styled.div`
 `;
 
 export const ModalActionItem = styled.button<{
-	variant?: "filled" | "blank" | "outlined";
+	variant?: "filled" | "blank" | "outlined" | "link";
 	size?: "med" | "min";
 }>`
 	color: var(--text);
@@ -77,7 +77,7 @@ export const ModalActionItem = styled.button<{
 	outline: none;
 	border-radius: 3px;
 	font-size: 14px;
-	font-weight: 500;
+	font-weight: 400;
 	padding: 2px 16px;
 	cursor: pointer;
 	transition: background-color 0.2s ease-in-out;
@@ -94,6 +94,14 @@ export const ModalActionItem = styled.button<{
 		} else if (props.variant === "blank") {
 			return `
 			background: transparent;
+			`;
+		} else if (props.variant === "link") {
+			return `
+			background: transparent;
+			
+			&:hover {
+				text-decoration: underline;
+			}
 			`;
 		} else if (props.variant === "outlined") {
 			return `

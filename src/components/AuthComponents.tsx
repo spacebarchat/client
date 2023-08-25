@@ -86,7 +86,7 @@ export const InputWrapper = styled.div`
 // TODO: Fix border hover causing small layout shift
 export const Input = styled.input<{ error?: boolean }>`
 	outline: none;
-	background: var(--background-secondary);
+	background: var(--background-secondary-alt);
 	padding: 10px;
 	font-size: 16px;
 	flex: 1;

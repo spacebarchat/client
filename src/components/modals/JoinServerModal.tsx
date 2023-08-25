@@ -6,7 +6,7 @@ import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import { messageFromFieldError } from "../../utils/messageFromFieldError";
-import { Input, InputErrorText, InputLabel, InputWrapper, LabelWrapper } from "../AuthComponents";
+import { Input, InputErrorText, InputLabel, LabelWrapper } from "../AuthComponents";
 import { Divider } from "../Divider";
 import Icon from "../Icon";
 import AddServerModal from "./AddServerModal";
@@ -144,6 +144,7 @@ function JoinServerModal() {
 								required
 								error={!!errors.code}
 								disabled={isLoading}
+								autoFocus
 							/>
 						</InviteInputContainer>
 					</form>
@@ -155,7 +156,7 @@ function JoinServerModal() {
 					</ModalActionItem>
 
 					<ModalActionItem
-						variant="blank"
+						variant="link"
 						size="min"
 						onClick={() => {
 							closeModal();

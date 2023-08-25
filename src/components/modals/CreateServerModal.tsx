@@ -237,7 +237,7 @@ function CreateServerModal() {
 					</ModalActionItem>
 
 					<ModalActionItem
-						variant="blank"
+						variant="link"
 						size="min"
 						onClick={() => {
 							closeModal();
