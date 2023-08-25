@@ -50,6 +50,7 @@ const MessageContent = styled.div<{ sending?: boolean; failed?: boolean }>`
 	word-wrap: anywhere;
 	opacity: ${(props) => (props.sending ? 0.5 : undefined)};
 	color: ${(props) => (props.failed ? "var(--error)" : undefined)};
+	user-select: text;
 `;
 
 interface Props {
