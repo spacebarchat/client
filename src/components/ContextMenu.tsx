@@ -42,9 +42,11 @@ function ContextMenu({ position, close, items, style }: Props) {
 				left: position.x,
 			}}
 		>
-			{items.map((item, index) => {
-				return <ContextMenuItem key={index} item={item} close={close} index={index} />;
-			})}
+			{items
+				.filter((a) => a.visible !== false)
+				.map((item, index) => {
+					return <ContextMenuItem key={index} item={item} close={close} index={index} />;
+				})}
 		</Container>
 	);
 }

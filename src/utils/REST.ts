@@ -134,4 +134,24 @@ export default class REST {
 				.catch(reject);
 		});
 	}
+
+	public async delete(
+		path: string,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		queryParams: Record<string, any> = {},
+	): Promise<void> {
+		return new Promise((resolve, reject) => {
+			const url = REST.makeAPIUrl(path, queryParams);
+			// this.logger.debug(`DELETE ${url}`);
+			return (
+				fetch(url, {
+					method: "DELETE",
+					headers: this.headers,
+				})
+					// .then((res) => res.json())
+					.then(() => resolve())
+					.catch(reject)
+			);
+		});
+	}
 }

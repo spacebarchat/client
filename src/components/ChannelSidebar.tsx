@@ -28,7 +28,7 @@ function ChannelSidebar() {
 	return (
 		<Wrapper>
 			{/* TODO: replace with dm search if no guild */}
-			<ChannelHeader text={guild?.name ?? "Channel Header"} />
+			<ChannelHeader key={guildId} text={guild?.name ?? "Channel Header"} />
 			<ChannelList />
 			<UserPanel />
 		</Wrapper>

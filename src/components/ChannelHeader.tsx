@@ -1,3 +1,4 @@
+import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -31,18 +32,21 @@ interface Props {
 	text: string;
 }
 
-async function ChannelHeader({ text }: Props) {
+function ChannelHeader({ text }: Props) {
 	const app = useAppStore();
 	const contextMenu = React.useContext(ContextMenuContext);
 	const { guildId } = useParams<{
 		guildId: string;
 	}>();
+	const guild = app.guilds.get(guildId!);
+
 	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
 		{
 			label: "Leave Server",
 			color: "var(--danger)",
-			onClick: () => {
+			onClick: async () => {
 				console.log("Leave server", guildId);
+				await app.rest.delete(Routes.userGuild(guildId!));
 			},
 			iconProps: {
 				icon: "mdiLocationExit",
@@ -52,6 +56,7 @@ async function ChannelHeader({ text }: Props) {
 				color: "var(--text)",
 				backgroundColor: "var(--danger)",
 			},
+			visible: guild?.ownerId !== app.account?.id,
 		},
 	]);
 

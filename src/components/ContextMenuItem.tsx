@@ -4,6 +4,7 @@ import Container from "./Container";
 import Icon, { IconProps } from "./Icon";
 
 export interface IContextMenuItem {
+	index?: number;
 	label: string;
 	color?: string;
 	onClick: React.MouseEventHandler<HTMLDivElement>;
@@ -12,6 +13,7 @@ export interface IContextMenuItem {
 		color?: string;
 		backgroundColor?: string;
 	};
+	visible?: boolean;
 }
 
 const ContextMenuContainer = styled(Container)`
@@ -47,8 +49,8 @@ function ContextMenuItem({ item, index, close }: Props) {
 	return (
 		<ContextMenuContainer
 			key={index}
-			onClick={(e) => {
-				item.onClick(e);
+			onClick={async (e) => {
+				await item.onClick(e);
 				close();
 			}}
 			onMouseEnter={() => setIsHovered(true)}
