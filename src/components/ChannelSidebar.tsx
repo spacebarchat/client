@@ -1,6 +1,5 @@
-import { useParams } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 import styled from "styled-components";
-import { useAppStore } from "../stores/AppStore";
 import ChannelHeader from "./ChannelHeader";
 import ChannelList from "./ChannelList";
 import Container from "./Container";
@@ -18,21 +17,14 @@ const Wrapper = styled(Container)`
 `;
 
 function ChannelSidebar() {
-	const app = useAppStore();
-	const { guildId, channelId } = useParams<{
-		guildId: string;
-		channelId: string;
-	}>();
-	const guild = app.guilds.get(guildId!) || null;
-
 	return (
 		<Wrapper>
 			{/* TODO: replace with dm search if no guild */}
-			<ChannelHeader key={guildId} text={guild?.name ?? "Channel Header"} />
+			<ChannelHeader />
 			<ChannelList />
 			<UserPanel />
 		</Wrapper>
 	);
 }
 
-export default ChannelSidebar;
+export default observer(ChannelSidebar);

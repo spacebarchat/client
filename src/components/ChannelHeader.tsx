@@ -1,5 +1,6 @@
-import { Routes } from "@spacebarchat/spacebar-api-types/v9";
-import React from "react";
+import { StackedModalProps, useModals } from "@mattjennings/react-modal-stack";
+import { observer } from "mobx-react-lite";
+import React, { ComponentType } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { ContextMenuContext } from "../contexts/ContextMenuContext";
@@ -7,6 +8,7 @@ import { useAppStore } from "../stores/AppStore";
 import Container from "./Container";
 import { IContextMenuItem } from "./ContextMenuItem";
 import Icon from "./Icon";
+import LeaveServerModal from "./modals/LeaveServerModal";
 
 const Wrapper = styled(Container)`
 	display: flex;
@@ -28,37 +30,45 @@ const HeaderText = styled.header`
 	font-weight: 600;
 `;
 
-interface Props {
-	text: string;
-}
-
-function ChannelHeader({ text }: Props) {
+function ChannelHeader() {
 	const app = useAppStore();
-	const contextMenu = React.useContext(ContextMenuContext);
-	const { guildId } = useParams<{
+	const { guildId, channelId } = useParams<{
 		guildId: string;
+		channelId: string;
 	}>();
 	const guild = app.guilds.get(guildId!);
+	const contextMenu = React.useContext(ContextMenuContext);
+	const { openModal } = useModals();
 
-	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
-		{
-			label: "Leave Server",
-			color: "var(--danger)",
-			onClick: async () => {
-				console.log("Leave server", guildId);
-				await app.rest.delete(Routes.userGuild(guildId!));
-			},
-			iconProps: {
-				icon: "mdiLocationExit",
-				color: "var(--danger)",
-			},
-			hover: {
-				color: "var(--text)",
-				backgroundColor: "var(--danger)",
-			},
-			visible: guild?.ownerId !== app.account?.id,
-		},
-	]);
+	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([]);
+
+	React.useEffect(() => {
+		if (guild && guild.ownerId !== app.account?.id) {
+			console.log("is owner");
+			setContextMenuItems([
+				{
+					label: "Leave Server",
+					color: "var(--danger)",
+					onClick: async () => {
+						openModal(LeaveServerModal as ComponentType<StackedModalProps>, {
+							guild: guild!,
+						});
+					},
+					iconProps: {
+						icon: "mdiLocationExit",
+						color: "var(--danger)",
+					},
+					hover: {
+						color: "var(--text)",
+						backgroundColor: "var(--danger)",
+					},
+				},
+			]);
+		} else {
+			console.log("setting empty array");
+			setContextMenuItems([]);
+		}
+	}, [guild]);
 
 	function openMenu(e: React.MouseEvent<HTMLDivElement>) {
 		e.stopPropagation();
@@ -86,10 +96,10 @@ function ChannelHeader({ text }: Props) {
 
 	return (
 		<Wrapper onClick={openMenu}>
-			<HeaderText>{text}</HeaderText>
+			<HeaderText>{guild?.name ?? "Unknown Guild"}</HeaderText>
 			<Icon icon="mdiChevronDown" size="20px" color="var(--text)" />
 		</Wrapper>
 	);
 }
 
-export default ChannelHeader;
+export default observer(ChannelHeader);

@@ -17,17 +17,16 @@ export const ModalContainer = styled.div`
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background-color: rgba(0, 0, 0, 0.8);
+		background-color: black;
+		opacity: 0.85;
 	}
 `;
 
 export const ModalWrapper = styled.div`
 	width: 440px;
-	border-radius: 10px;
+	border-radius: 4px;
 	background-color: var(--background-secondary);
-	box-shadow:
-		0 1px 2px 0 rgba(0, 0, 0, 0.05),
-		0 1px 3px 1px rgba(0, 0, 0, 0.05);
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 1px 3px 1px rgba(0, 0, 0, 0.05);
 	position: relative;
 	display: flex;
 	justify-content: center;

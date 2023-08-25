@@ -1,4 +1,5 @@
 import { CDNRoutes, ChannelType, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -89,4 +90,4 @@ function GuildItem(props: Props) {
 	);
 }
 
-export default GuildItem;
+export default observer(GuildItem);

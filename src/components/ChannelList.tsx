@@ -27,7 +27,6 @@ function ChannelList() {
 		guildId: string;
 		channelId: string;
 	}>();
-
 	const guild = app.guilds.get(guildId!);
 	if (!guild) return <EmptyChannelList />;
 
