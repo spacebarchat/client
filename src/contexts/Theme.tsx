@@ -95,7 +95,7 @@ export const ThemePresets: Record<string, Theme> = {
 		backgroundPrimaryHighlight: "#262626",
 		backgroundSecondary: "#232323",
 		backgroundSecondaryAlt: "#1e1e1e",
-		backgroundSecondaryHighlight: "#383838",
+		backgroundSecondaryHighlight: "#313131",
 		backgroundTertiary: "#171717",
 		text: "#e9e2e1",
 		textSecondary: "#bdbdbd",

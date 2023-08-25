@@ -11,9 +11,10 @@ interface Props {
 		y: number;
 	};
 	items: IContextMenuItem[];
+	style?: React.CSSProperties;
 }
 
-function ContextMenu({ position, close, items }: Props) {
+function ContextMenu({ position, close, items, style }: Props) {
 	// Close the context menu when the user clicks outside of it
 	React.useEffect(() => {
 		const listener = () => {
@@ -30,9 +31,10 @@ function ContextMenu({ position, close, items }: Props) {
 		<Container
 			onBlur={close}
 			style={{
+				...style,
 				position: "absolute",
 				minWidth: "10vw",
-				maxWidth: "20vw",
+				// maxWidth: "20vw",
 				borderRadius: 4,
 				zIndex: 4,
 				padding: "6px 8px",

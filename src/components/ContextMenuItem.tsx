@@ -1,6 +1,18 @@
+import React from "react";
 import styled from "styled-components";
 import Container from "./Container";
 import Icon, { IconProps } from "./Icon";
+
+export interface IContextMenuItem {
+	label: string;
+	color?: string;
+	onClick: React.MouseEventHandler<HTMLDivElement>;
+	iconProps?: IconProps;
+	hover?: {
+		color?: string;
+		backgroundColor?: string;
+	};
+}
 
 const ContextMenuContainer = styled(Container)`
 	border-radius: 4px;
@@ -8,7 +20,8 @@ const ContextMenuContainer = styled(Container)`
 	cursor: pointer;
 `;
 
-const Wrapper = styled(Container)<{ bgColor?: string }>`
+// we handle the hover state ourselves to prevent "lag" with the icon color
+const Wrapper = styled(Container)<{ hover?: IContextMenuItem["hover"]; hovered?: boolean }>`
 	border-radius: 4px;
 	padding: 6px 8px;
 	flex: 1 1 auto;
@@ -18,17 +31,9 @@ const Wrapper = styled(Container)<{ bgColor?: string }>`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-
-	&:hover {
-		background-color: ${(props) => props.bgColor ?? "var(--primary)"};
-	}
+	color: ${(props) => (props.hovered ? props.hover?.color ?? "var(--text)" : props.color ?? "var(--text)")};
+	background-color: ${(props) => (props.hovered ? props.hover?.backgroundColor ?? "var(--primary)" : "transparent")};
 `;
-
-export interface IContextMenuItem {
-	label: string;
-	onClick: React.MouseEventHandler<HTMLDivElement>;
-	iconProps?: IconProps;
-}
 
 interface Props {
 	item: IContextMenuItem;
@@ -37,6 +42,8 @@ interface Props {
 }
 
 function ContextMenuItem({ item, index, close }: Props) {
+	const [isHovered, setIsHovered] = React.useState(false);
+
 	return (
 		<ContextMenuContainer
 			key={index}
@@ -44,14 +51,27 @@ function ContextMenuItem({ item, index, close }: Props) {
 				item.onClick(e);
 				close();
 			}}
+			onMouseEnter={() => setIsHovered(true)}
+			onMouseLeave={() => setIsHovered(false)}
 		>
-			<Wrapper>
-				<div>{item.label}</div>
+			<Wrapper hover={item.hover} hovered={isHovered} color={item.color}>
+				<div
+					style={{
+						// color: item.color ?? "var(--text)",
+						fontWeight: 500,
+						fontSize: "14px",
+						whiteSpace: "nowrap",
+						overflow: "hidden",
+						textOverflow: "ellipsis",
+					}}
+				>
+					{item.label}
+				</div>
 				{item.iconProps && (
 					<Icon
-						size={item.iconProps.size ?? "20px"}
-						color={item.iconProps.color ?? "var(--text)"}
 						{...item.iconProps}
+						size={item.iconProps.size ?? "20px"}
+						color={isHovered ? item.hover?.color ?? "var(--text)" : item.iconProps.color ?? "var(--text)"}
 					/>
 				)}
 			</Wrapper>

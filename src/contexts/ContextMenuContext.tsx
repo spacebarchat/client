@@ -1,18 +1,22 @@
 import React from "react";
+import { IContextMenuItem } from "../components/ContextMenuItem";
 
 interface Props {
 	position: { x: number; y: number };
 	items: { label: string; onClick: React.MouseEventHandler<HTMLDivElement> }[];
+	style?: React.CSSProperties;
 }
 
 const useValue = () => {
 	const [visible, setVisible] = React.useState(false);
 	const [position, setPosition] = React.useState({ x: 0, y: 0 });
-	const [items, setItems] = React.useState<Props["items"]>([]);
+	const [items, setItems] = React.useState<IContextMenuItem[]>([]);
+	const [style, setStyle] = React.useState<Props["style"]>({});
 
 	const open = (props: Props) => {
 		setPosition(props.position);
 		setItems(props.items);
+		setStyle(props.style);
 		setVisible(true);
 	};
 
@@ -22,6 +26,7 @@ const useValue = () => {
 		visible,
 		position,
 		items,
+		style,
 	};
 };
 
