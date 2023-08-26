@@ -37,31 +37,30 @@ export default class MessageStore {
 
 	@computed
 	get grouped() {
-		const groupedMessages: Message[][] = [];
-		let lastAuthorId: string | undefined = undefined;
-		let lastTimestamp: Date | undefined = undefined;
-		let lastGroup: Message[] | undefined = undefined;
-		for (const message of this.messagesArr) {
-			if (
-				lastAuthorId !== message.author.id ||
-				!lastTimestamp ||
-				message.timestamp.getTime() - lastTimestamp.getTime() > 1000 * 60 * 7
-			) {
-				// start a new group
-				lastAuthorId = message.author.id;
-				lastTimestamp = message.timestamp;
-				lastGroup = [];
-				groupedMessages.push(lastGroup);
-			}
-			if (!lastGroup) {
-				// this should never happen
-				this.logger.error("lastGroup is undefined");
-				continue;
-			}
-			lastGroup.push(message);
-		}
+		// sort messages from the same author and within 7 minutes of each other into groups sorted by time, oldest messages at the end of the list and newest at the start, each groups messages should be sorted from oldest to newest
+		const sortedGroups = this.messagesArr
+			.slice()
+			.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+			.reduce((groups, message) => {
+				const lastGroup = groups[groups.length - 1];
+				const lastMessage = lastGroup?.[lastGroup.length - 1];
+				if (
+					lastMessage &&
+					lastMessage.author.id === message.author.id &&
+					message.timestamp.getTime() - lastMessage.timestamp.getTime() <= 7 * 60 * 1000
+				) {
+					// add to last group
+					lastGroup.push(message);
+				} else {
+					// create new group
+					groups.push([message]);
+				}
+				return groups;
+			}, [] as Message[][])
+			.map((group) => group.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime()))
+			.reverse();
 
-		return groupedMessages;
+		return sortedGroups;
 	}
 
 	has(id: string) {
