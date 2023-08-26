@@ -204,8 +204,6 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 											ratio,
 										);
 
-										console.log(attachment.filename, scaledWidth, scaledHeight);
-
 										return (
 											<div key={attachment.id}>
 												<img
