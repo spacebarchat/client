@@ -111,7 +111,7 @@ function ActionItem({ icon, active, ariaLabel, tooltip }: ActionItemProps) {
 /**
  * Top header for channel messages section
  */
-function MessagesHeader({ channel }: Props) {
+function ChatHeader({ channel }: Props) {
 	return (
 		<Container>
 			<Wrapper>
@@ -136,4 +136,4 @@ function MessagesHeader({ channel }: Props) {
 	);
 }
 
-export default MessagesHeader;
+export default ChatHeader;

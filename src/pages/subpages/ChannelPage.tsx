@@ -5,7 +5,7 @@ import Container from "../../components/Container";
 import ContextMenu from "../../components/ContextMenu";
 import GuildSidebar from "../../components/GuildSidebar";
 import MemberList from "../../components/MemberList";
-import Messages from "../../components/messaging/Messages";
+import Chat from "../../components/messaging/Chat";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 
 const Wrapper = styled(Container)`
@@ -17,7 +17,7 @@ function Test() {
 	return (
 		<>
 			<ChannelSidebar />
-			<Messages />
+			<Chat />
 			<MemberList />
 		</>
 	);

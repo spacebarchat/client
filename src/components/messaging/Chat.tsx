@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
+import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageList from "./MessageList";
-import MessagesHeader from "./MessagesHeader";
 
 const Wrapper = styled.div`
 	display: flex;
@@ -29,7 +29,7 @@ const Spacer = styled.div`
 /**
  * Main component for rendering channel messages
  */
-function Messages() {
+function Chat() {
 	const app = useAppStore();
 	const logger = useLogger("Messages");
 
@@ -43,7 +43,7 @@ function Messages() {
 	if (!guild || !channel) {
 		return (
 			<Wrapper>
-				<MessagesHeader channel={channel} />
+				<ChatHeader channel={channel} />
 				<span>{!guild ? "Unknown Guild" : "Unknown Channel"}</span>
 			</Wrapper>
 		);
@@ -51,7 +51,7 @@ function Messages() {
 
 	return (
 		<Wrapper>
-			<MessagesHeader channel={channel} />
+			<ChatHeader channel={channel} />
 			<Container>
 				<MessageList guild={guild} channel={channel} />
 				<Spacer />
@@ -61,4 +61,4 @@ function Messages() {
 	);
 }
 
-export default observer(Messages);
+export default observer(Chat);
