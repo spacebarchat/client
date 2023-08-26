@@ -1,5 +1,6 @@
 import * as Icons from "@mdi/js";
 import styled from "styled-components";
+import useLogger from "../../hooks/useLogger";
 import Channel from "../../stores/objects/Channel";
 import Icon from "../Icon";
 import { SectionHeader } from "../SectionHeader";
@@ -93,12 +94,14 @@ interface ActionItemProps {
 }
 
 function ActionItem({ icon, active, ariaLabel, tooltip }: ActionItemProps) {
+	const logger = useLogger("ChatHeader.tsx:ActionItem");
+
 	return (
 		<Tooltip title={tooltip}>
 			<IconWrapper>
 				<IconButton
 					onClick={() => {
-						console.log("click");
+						logger.debug("click");
 					}}
 				>
 					<CustomIcon icon={icon} size="24px" aria-label={ariaLabel} active={active} />

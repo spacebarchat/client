@@ -38,7 +38,6 @@ function ChannelHeader() {
 
 	React.useEffect(() => {
 		if (guild && guild.ownerId !== app.account?.id) {
-			console.log("is owner");
 			setContextMenuItems([
 				{
 					label: "Leave Server",
@@ -59,7 +58,6 @@ function ChannelHeader() {
 				},
 			]);
 		} else {
-			console.log("setting empty array");
 			setContextMenuItems([]);
 		}
 	}, [guild]);
