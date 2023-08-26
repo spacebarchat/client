@@ -90,7 +90,13 @@ function ChannelHeader() {
 
 	return (
 		<Wrapper onClick={openMenu}>
-			<HeaderText>{guild?.name ?? "Unknown Guild"}</HeaderText>
+			<HeaderText>
+				{guild?.name
+					? guild.name.length > 18
+						? guild.name.substring(0, 18) + "..."
+						: guild.name
+					: "Unknown Guild"}
+			</HeaderText>
 			<Icon icon="mdiChevronDown" size="20px" color="var(--text)" />
 		</Wrapper>
 	);
