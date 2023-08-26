@@ -2,6 +2,7 @@ import * as Icons from "@mdi/js";
 import styled from "styled-components";
 import Channel from "../../stores/objects/Channel";
 import Icon from "../Icon";
+import { SectionHeader } from "../SectionHeader";
 import Tooltip from "../Tooltip";
 
 const IconButton = styled.button`
@@ -27,13 +28,8 @@ const CustomIcon = styled(Icon)<CustomIconProps>`
 	}
 `;
 
-const Container = styled.section`
-	display: flex;
-	padding: 10px 16px;
-	margin-bottom: 1px;
+const Container = styled(SectionHeader)`
 	background-color: var(--background-primary-alt);
-	box-shadow: 0 1px 0 hsl(0deg 0% 0% / 0.3);
-	align-items: center;
 `;
 
 const Wrapper = styled.div`

@@ -5,19 +5,13 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { ContextMenuContext } from "../contexts/ContextMenuContext";
 import { useAppStore } from "../stores/AppStore";
-import Container from "./Container";
 import { IContextMenuItem } from "./ContextMenuItem";
 import Icon from "./Icon";
+import { SectionHeader } from "./SectionHeader";
 import LeaveServerModal from "./modals/LeaveServerModal";
 
-const Wrapper = styled(Container)`
-	display: flex;
-	padding: 12px 16px;
-	margin-bottom: 1px;
+const Wrapper = styled(SectionHeader)`
 	background-color: var(--background-secondary);
-	box-shadow: 0 1px 0 hsl(0deg 0% 0% / 0.3);
-	align-items: center;
-	justify-content: space-between;
 	cursor: pointer;
 
 	&:hover {
