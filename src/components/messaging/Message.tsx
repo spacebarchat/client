@@ -17,7 +17,7 @@ const Container = styled.div<{ isHeader?: boolean }>`
 	display: flex;
 	flex-direction: row;
 	position: relative;
-	padding: 0 12px;
+	padding: 2px 12px;
 
 	&:hover {
 		background-color: var(--background-primary-highlight);
