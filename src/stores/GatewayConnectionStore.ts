@@ -314,14 +314,11 @@ export default class GatewayConnectionStore {
 			}
 		};
 
-		this.initialHeartbeatTimeout = setTimeout(
-			() => {
-				this.initialHeartbeatTimeout = null;
-				this.heartbeater = setInterval(heartbeaterFn, this.heartbeatInterval!);
-				heartbeaterFn();
-			},
-			Math.floor(Math.random() * this.heartbeatInterval!),
-		);
+		this.initialHeartbeatTimeout = setTimeout(() => {
+			this.initialHeartbeatTimeout = null;
+			this.heartbeater = setInterval(heartbeaterFn, this.heartbeatInterval!);
+			heartbeaterFn();
+		}, Math.floor(Math.random() * this.heartbeatInterval!));
 	};
 
 	/**
@@ -416,10 +413,8 @@ export default class GatewayConnectionStore {
 
 		this.app.setUser(user);
 
-		// TODO: store guilds
 		this.app.guilds.addAll(guilds);
 		this.app.guilds.setInitialGuildsLoaded();
-		// TODO: store users
 		if (users) {
 			this.app.users.addAll(users);
 		}
