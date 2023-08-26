@@ -7,7 +7,7 @@ import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import { messageFromFieldError } from "../../utils/messageFromFieldError";
 import { Input, InputErrorText, InputLabel, LabelWrapper } from "../AuthComponents";
-import { Divider } from "../Divider";
+import { TextDivider } from "../Divider";
 import Icon from "../Icon";
 import AddServerModal from "./AddServerModal";
 import {
@@ -130,7 +130,7 @@ function JoinServerModal() {
 								{errors.code && (
 									<InputErrorText>
 										<>
-											<Divider>-</Divider>
+											<TextDivider>-</TextDivider>
 											{errors.code.message}
 										</>
 									</InputErrorText>
@@ -145,6 +145,7 @@ function JoinServerModal() {
 								error={!!errors.code}
 								disabled={isLoading}
 								autoFocus
+								minLength={6}
 							/>
 						</InviteInputContainer>
 					</form>

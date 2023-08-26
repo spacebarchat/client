@@ -22,7 +22,7 @@ import {
 	SubmitButton,
 	Wrapper,
 } from "../components/AuthComponents";
-import { Divider } from "../components/Divider";
+import { TextDivider } from "../components/Divider";
 import HCaptcha, { HeaderContainer } from "../components/HCaptcha";
 import ForgotPasswordModal from "../components/modals/ForgotPasswordModal";
 import useLogger from "../hooks/useLogger";
@@ -244,7 +244,7 @@ function LoginPage() {
 							{isCheckingInstance != false && (
 								<InputErrorText>
 									<>
-										<Divider>-</Divider>
+										<TextDivider>-</TextDivider>
 										Checking
 									</>
 								</InputErrorText>
@@ -252,7 +252,7 @@ function LoginPage() {
 							{errors.instance && (
 								<InputErrorText>
 									<>
-										<Divider>-</Divider>
+										<TextDivider>-</TextDivider>
 										{errors.instance.message}
 									</>
 								</InputErrorText>
@@ -279,7 +279,7 @@ function LoginPage() {
 							{errors.login && (
 								<InputErrorText>
 									<>
-										<Divider>-</Divider>
+										<TextDivider>-</TextDivider>
 										{errors.login.message}
 									</>
 								</InputErrorText>
@@ -303,7 +303,7 @@ function LoginPage() {
 							{errors.password && (
 								<InputErrorText>
 									<>
-										<Divider>-</Divider>
+										<TextDivider>-</TextDivider>
 										{errors.password.message}
 									</>
 								</InputErrorText>

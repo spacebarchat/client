@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import useLogger from "../hooks/useLogger";
-import { useAppStore } from "../stores/AppStore";
-import Channel from "../stores/objects/Channel";
+import useLogger from "../../hooks/useLogger";
+import { useAppStore } from "../../stores/AppStore";
+import Channel from "../../stores/objects/Channel";
 
 import { useMemo, useState } from "react";
 import { BaseEditor, Descendant, Node, createEditor } from "slate";
 import { HistoryEditor, withHistory } from "slate-history";
 import { Editable, ReactEditor, Slate, withReact } from "slate-react";
-import User from "../stores/objects/User";
-import Snowflake from "../utils/Snowflake";
+import User from "../../stores/objects/User";
+import Snowflake from "../../utils/Snowflake";
 
 type CustomElement = { type: "paragraph"; children: CustomText[] };
 type CustomText = { text: string; bold?: true };
@@ -50,6 +50,9 @@ interface Props {
 	channel?: Channel;
 }
 
+/**
+ * Component for sending messages
+ */
 function MessageInput(props: Props) {
 	const app = useAppStore();
 	const logger = useLogger("MessageInput");

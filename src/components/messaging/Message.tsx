@@ -1,12 +1,12 @@
 import React from "react";
 import Moment from "react-moment";
 import styled from "styled-components";
-import { ContextMenuContext } from "../contexts/ContextMenuContext";
-import { QueuedMessage } from "../stores/MessageQueue";
-import { default as MessageObject } from "../stores/objects/Message";
-import { calendarStrings } from "../utils/i18n";
-import Avatar from "./Avatar";
-import { IContextMenuItem } from "./ContextMenuItem";
+import { ContextMenuContext } from "../../contexts/ContextMenuContext";
+import { QueuedMessage } from "../../stores/MessageQueue";
+import { default as MessageObject } from "../../stores/objects/Message";
+import { calendarStrings } from "../../utils/i18n";
+import Avatar from "../Avatar";
+import { IContextMenuItem } from "./../ContextMenuItem";
 
 type MessageLike = MessageObject | QueuedMessage;
 
@@ -17,7 +17,6 @@ const Container = styled.div<{ isHeader?: boolean }>`
 	flex-direction: row;
 	position: relative;
 	padding: ${(props) => (props.isHeader ? "4" : "2")}px 12px;
-	margin-top: ${(props) => (props.isHeader ? "20px" : undefined)};
 
 	&:hover {
 		background-color: var(--background-primary-highlight);
@@ -60,6 +59,9 @@ interface Props {
 	isFailed?: boolean;
 }
 
+/**
+ * Component for rendering a single message
+ */
 function Message({ message, isHeader, isSending, isFailed }: Props) {
 	const contextMenu = React.useContext(ContextMenuContext);
 	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([

@@ -22,7 +22,7 @@ import {
 	Wrapper,
 } from "../components/AuthComponents";
 import DOBInput from "../components/DOBInput";
-import { Divider } from "../components/Divider";
+import { TextDivider } from "../components/Divider";
 import HCaptcha from "../components/HCaptcha";
 import useLogger from "../hooks/useLogger";
 import { AUTH_NO_BRANDING, useAppStore } from "../stores/AppStore";
@@ -180,7 +180,7 @@ function RegistrationPage() {
 							{errors.email && (
 								<InputErrorText>
 									<>
-										<Divider>-</Divider>
+										<TextDivider>-</TextDivider>
 										{errors.email.message}
 									</>
 								</InputErrorText>
@@ -204,7 +204,7 @@ function RegistrationPage() {
 							{errors.username && (
 								<InputErrorText>
 									<>
-										<Divider>-</Divider>
+										<TextDivider>-</TextDivider>
 										{errors.username.message}
 									</>
 								</InputErrorText>
@@ -226,7 +226,7 @@ function RegistrationPage() {
 							{errors.password && (
 								<InputErrorText>
 									<>
-										<Divider>-</Divider>
+										<TextDivider>-</TextDivider>
 										{errors.password.message}
 									</>
 								</InputErrorText>
@@ -249,7 +249,7 @@ function RegistrationPage() {
 							{errors.date_of_birth && (
 								<InputErrorText>
 									<>
-										<Divider>-</Divider>
+										<TextDivider>-</TextDivider>
 										{errors.date_of_birth.message}
 									</>
 								</InputErrorText>

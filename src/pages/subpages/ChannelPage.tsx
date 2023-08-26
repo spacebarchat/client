@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import ChannelSidebar from "../../components/ChannelSidebar";
-import Chat from "../../components/Chat";
 import Container from "../../components/Container";
 import ContextMenu from "../../components/ContextMenu";
 import GuildSidebar from "../../components/GuildSidebar";
 import MemberList from "../../components/MemberList";
+import Messages from "../../components/messaging/Messages";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 
 const Wrapper = styled(Container)`
@@ -17,7 +17,7 @@ function Test() {
 	return (
 		<>
 			<ChannelSidebar />
-			<Chat />
+			<Messages />
 			<MemberList />
 		</>
 	);

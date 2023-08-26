@@ -1,16 +1,20 @@
 import type { APIMessage } from "@spacebarchat/spacebar-api-types/v9";
 import type { IObservableArray } from "mobx";
 import { action, computed, makeObservable, observable } from "mobx";
+import useLogger from "../hooks/useLogger";
+import Logger from "../utils/Logger";
 import AppStore from "./AppStore";
 import Message from "./objects/Message";
 
 export default class MessageStore {
 	private readonly app: AppStore;
+	private readonly logger: Logger;
 
 	@observable private readonly messagesArr: IObservableArray<Message>;
 
 	constructor(app: AppStore) {
 		this.app = app;
+		this.logger = useLogger("MessageStore.ts");
 
 		this.messagesArr = observable.array([]);
 
@@ -32,11 +36,32 @@ export default class MessageStore {
 	}
 
 	@computed
-	get messages() {
-		return this.messagesArr
-			.slice()
-			.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
-			.filter((x) => x);
+	get grouped() {
+		const groupedMessages: Message[][] = [];
+		let lastAuthorId: string | undefined = undefined;
+		let lastTimestamp: Date | undefined = undefined;
+		let lastGroup: Message[] | undefined = undefined;
+		for (const message of this.messagesArr) {
+			if (
+				lastAuthorId !== message.author.id ||
+				!lastTimestamp ||
+				message.timestamp.getTime() - lastTimestamp.getTime() > 1000 * 60 * 7
+			) {
+				// start a new group
+				lastAuthorId = message.author.id;
+				lastTimestamp = message.timestamp;
+				lastGroup = [];
+				groupedMessages.push(lastGroup);
+			}
+			if (!lastGroup) {
+				// this should never happen
+				this.logger.error("lastGroup is undefined");
+				continue;
+			}
+			lastGroup.push(message);
+		}
+
+		return groupedMessages;
 	}
 
 	has(id: string) {

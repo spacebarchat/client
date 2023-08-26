@@ -144,58 +144,61 @@ export default class Channel {
 	}
 
 	@action
-	async getMessages(
+	getMessages(
 		app: AppStore,
 		isInitial: boolean,
 		limit?: number,
 		before?: SnowflakeType,
 		after?: SnowflakeType,
 		around?: SnowflakeType,
-	) {
-		if (isInitial && this.hasFetchedMessages) {
-			return;
-		}
+	): Promise<number> {
+		return new Promise((resolve, reject) => {
+			if (isInitial && this.hasFetchedMessages) {
+				return;
+			}
 
-		let opts: RESTGetAPIChannelMessagesQuery = {
-			limit: limit || 50,
-		};
+			let opts: RESTGetAPIChannelMessagesQuery = {
+				limit: limit || 50,
+			};
 
-		if (before) {
-			opts = { ...opts, before };
-		}
-		if (after) {
-			opts = { ...opts, after };
-		}
-		if (around) {
-			opts = { ...opts, around };
-		}
+			if (before) {
+				opts = { ...opts, before };
+			}
+			if (after) {
+				opts = { ...opts, after };
+			}
+			if (around) {
+				opts = { ...opts, around };
+			}
 
-		this.hasFetchedMessages = true;
-		this.logger.info(`Fetching messags for ${this.id}`);
-		app.rest
-			.get<RESTGetAPIChannelMessagesResult | APIError>(Routes.channelMessages(this.id), opts)
-			.then((res) => {
-				if ("code" in res) {
-					this.logger.error(res);
-					return;
-				}
-				this.messages.addAll(
-					res.filter((x) => !this.messages.has(x.id)).reverse(),
-					// .sort((a, b) => {
-					//   const aTimestamp = new Date(a.timestamp as unknown as string);
-					//   const bTimestamp = new Date(b.timestamp as unknown as string);
-					//   return aTimestamp.getTime() - bTimestamp.getTime();
-					// })
-				);
-			})
-			.catch((err) => {
-				this.logger.error(err);
-			});
+			this.hasFetchedMessages = true;
+			this.logger.info(`Fetching messags for ${this.id}`);
+			app.rest
+				.get<RESTGetAPIChannelMessagesResult | APIError>(Routes.channelMessages(this.id), opts)
+				.then((res) => {
+					if ("code" in res) {
+						this.logger.error(res);
+						return;
+					}
+					this.messages.addAll(
+						res.filter((x) => !this.messages.has(x.id)),
+						// .sort((a, b) => {
+						//   const aTimestamp = new Date(a.timestamp as unknown as string);
+						//   const bTimestamp = new Date(b.timestamp as unknown as string);
+						//   return aTimestamp.getTime() - bTimestamp.getTime();
+						// })
+					);
+					resolve(res.length);
+				})
+				.catch((err) => {
+					this.logger.error(err);
+					reject(err);
+				});
+		});
 	}
 
 	@action
 	async sendMessage(data: RESTPostAPIChannelMessageJSONBody) {
-		// TODO: handle errors, highlight message as failed
 		return this.app.rest.post<RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult>(
 			Routes.channelMessages(this.id),
 			data,

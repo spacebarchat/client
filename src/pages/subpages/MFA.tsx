@@ -19,7 +19,7 @@ import {
 	SubmitButton,
 	Wrapper,
 } from "../../components/AuthComponents";
-import { Divider } from "../../components/Divider";
+import { TextDivider } from "../../components/Divider";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import {
@@ -108,7 +108,7 @@ function MFA(props: IAPILoginResponseMFARequired) {
 								{errors.code && (
 									<InputErrorText>
 										<>
-											<Divider>-</Divider>
+											<TextDivider>-</TextDivider>
 											{errors.code.message}
 										</>
 									</InputErrorText>

@@ -1,8 +1,8 @@
 import * as Icons from "@mdi/js";
 import styled from "styled-components";
-import Channel from "../stores/objects/Channel";
-import Icon from "./Icon";
-import Tooltip from "./Tooltip";
+import Channel from "../../stores/objects/Channel";
+import Icon from "../Icon";
+import Tooltip from "../Tooltip";
 
 const IconButton = styled.button`
 	margin: 0;
@@ -112,7 +112,10 @@ function ActionItem({ icon, active, ariaLabel, tooltip }: ActionItemProps) {
 	);
 }
 
-function ChatHeader({ channel }: Props) {
+/**
+ * Top header for channel messages section
+ */
+function MessagesHeader({ channel }: Props) {
 	return (
 		<Container>
 			<Wrapper>
@@ -137,4 +140,4 @@ function ChatHeader({ channel }: Props) {
 	);
 }
 
-export default ChatHeader;
+export default MessagesHeader;
