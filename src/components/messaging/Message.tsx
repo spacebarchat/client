@@ -17,7 +17,7 @@ const Container = styled.div<{ isHeader?: boolean }>`
 	display: flex;
 	flex-direction: row;
 	position: relative;
-	padding: ${(props) => (props.isHeader ? "4" : "2")}px 12px;
+	padding: 0 12px;
 
 	&:hover {
 		background-color: var(--background-primary-highlight);
@@ -146,7 +146,12 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 							{message.content}
 						</MessageContent>
 					) : (
-						<div style={{ color: "var(--text-secondary)" }}>MessageType: {MessageType[message.type]}</div>
+						<div>
+							<div style={{ color: "var(--text-secondary)", fontSize: "12px" }}>
+								MessageType({MessageType[message.type]})
+							</div>
+							{message.content ?? "No Content"}
+						</div>
 					)}
 				</MessageContentContainer>
 			</Container>
