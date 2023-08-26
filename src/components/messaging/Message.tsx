@@ -12,7 +12,9 @@ import { IContextMenuItem } from "./../ContextMenuItem";
 
 type MessageLike = MessageObject | QueuedMessage;
 
-const MessageListItem = styled.li``;
+const MessageListItem = styled.li`
+	list-style: none;
+`;
 
 const Container = styled.div<{ isHeader?: boolean }>`
 	display: flex;
