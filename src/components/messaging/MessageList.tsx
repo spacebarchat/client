@@ -62,35 +62,32 @@ function MessageList({ guild, channel }: Props) {
 
 	return (
 		<Container id="scrollable-div">
-			{channel.messages.count === 0 ? (
-				<PulseLoader style={{ display: "flex", justifyContent: "center" }} color="var(--primary)" />
-			) : (
-				<>
-					<InfiniteScroll
-						dataLength={channel.messages.grouped.length}
-						next={fetchMore}
-						style={{ display: "flex", flexDirection: "column-reverse" }} // to put endMessage and loader to the top.
-						hasMore={hasMore}
-						loader={
-							<PulseLoader style={{ display: "flex", justifyContent: "center" }} color="var(--primary)" />
-						}
-						scrollableTarget="scrollable-div"
-						endMessage={
-							<EndMessageContainer>
-								<h1 style={{ fontWeight: 700, margin: "8px 0" }}>Welcome to #{channel.name}!</h1>
-								<p style={{ color: "var(--text-secondary)" }}>
-									This is the start of the #{channel.name} channel.
-								</p>
-								<HorizontalDivider />
-							</EndMessageContainer>
-						}
-					>
-						{channel.messages.grouped.map((group, index) => {
-							return <MessageGroup key={index} messages={group} />;
-						})}
-					</InfiniteScroll>
-				</>
-			)}
+			<InfiniteScroll
+				dataLength={channel.messages.grouped.length}
+				next={fetchMore}
+				style={{ display: "flex", flexDirection: "column-reverse" }} // to put endMessage and loader to the top.
+				hasMore={hasMore}
+				loader={
+					<PulseLoader
+						style={{ display: "flex", justifyContent: "center", alignContent: "center" }}
+						color="var(--primary)"
+					/>
+				}
+				scrollableTarget="scrollable-div"
+				endMessage={
+					<EndMessageContainer>
+						<h1 style={{ fontWeight: 700, margin: "8px 0" }}>Welcome to #{channel.name}!</h1>
+						<p style={{ color: "var(--text-secondary)" }}>
+							This is the start of the #{channel.name} channel.
+						</p>
+						<HorizontalDivider />
+					</EndMessageContainer>
+				}
+			>
+				{channel.messages.grouped.map((group, index) => {
+					return <MessageGroup key={index} messages={group} />;
+				})}
+			</InfiniteScroll>
 		</Container>
 	);
 }
