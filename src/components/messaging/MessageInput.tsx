@@ -96,6 +96,8 @@ function MessageInput(props: Props) {
 				});
 			}
 
+			setContent("");
+
 			// reset slate editor
 			const point = { path: [0, 0], offset: 0 };
 			editor.selection = { anchor: point, focus: point };
