@@ -3,6 +3,7 @@ import React from "react";
 import Moment from "react-moment";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
+import useLogger from "../../hooks/useLogger";
 import { QueuedMessage } from "../../stores/MessageQueue";
 import { default as MessageObject } from "../../stores/objects/Message";
 import { calendarStrings } from "../../utils/i18n";
@@ -52,6 +53,47 @@ const MessageContent = styled.div<{ sending?: boolean; failed?: boolean }>`
 	color: ${(props) => (props.failed ? "var(--error)" : undefined)};
 `;
 
+// max width/height for images
+const maxWidth = 400;
+const maxHeight = 300;
+
+function calculateImageRatio(width: number, height: number) {
+	let o = 1;
+	width > maxWidth && (o = maxWidth / width);
+	width = Math.round(width * o);
+	let a = 1;
+	(height = Math.round(height * o)) > maxHeight && (a = maxHeight / height);
+	return Math.min(o * a, 1);
+}
+
+function calculateScaledDimensions(
+	originalWidth: number,
+	originalHeight: number,
+	ratio: number,
+): { scaledWidth: number; scaledHeight: number } {
+	const deviceResolution = window.devicePixelRatio ?? 1;
+	let scaledWidth = originalWidth;
+	let scaledHeight = originalHeight;
+
+	if (ratio < 1) {
+		scaledWidth = Math.round(originalWidth * ratio);
+		scaledHeight = Math.round(originalHeight * ratio);
+	}
+
+	scaledWidth = Math.min(scaledWidth, maxWidth);
+	scaledHeight = Math.min(scaledHeight, maxHeight);
+
+	if (scaledWidth !== originalWidth || scaledHeight !== originalHeight) {
+		scaledWidth |= 0;
+		scaledHeight |= 0;
+	}
+
+	scaledWidth *= deviceResolution;
+	scaledHeight *= deviceResolution;
+
+	return { scaledWidth, scaledHeight };
+}
+
 interface Props {
 	message: MessageLike;
 	isHeader?: boolean;
@@ -63,6 +105,7 @@ interface Props {
  * Component for rendering a single message
  */
 function Message({ message, isHeader, isSending, isFailed }: Props) {
+	const logger = useLogger("Message.tsx");
 	const contextMenu = React.useContext(ContextMenuContext);
 	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
 		{
@@ -144,6 +187,45 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 					{message.type === MessageType.Default ? (
 						<MessageContent sending={isSending} failed={isFailed}>
 							{message.content}
+							{"attachments" in message &&
+								message.attachments.map((attachment) => {
+									// return (
+									// 	<div key={attachment.id}>
+
+									// 	</div>
+									// );
+									if (attachment.content_type?.startsWith("image")) {
+										const ratio = calculateImageRatio(attachment.width!, attachment.height!);
+										const { scaledWidth, scaledHeight } = calculateScaledDimensions(
+											attachment.width!,
+											attachment.height!,
+											ratio,
+										);
+
+										console.log(attachment.filename, scaledWidth, scaledHeight);
+
+										return (
+											<div key={attachment.id}>
+												<img
+													src={attachment.url}
+													alt={attachment.filename}
+													width={scaledWidth}
+													height={scaledHeight}
+												/>
+											</div>
+										);
+									} else if (attachment.content_type?.startsWith("video")) {
+										return (
+											<div key={attachment.id}>
+												<video controls>
+													<source src={attachment.url} type={attachment.content_type} />
+												</video>
+											</div>
+										);
+									} else {
+										logger.warn(`Unknown attachment type: ${attachment.content_type}`);
+									}
+								})}
 						</MessageContent>
 					) : (
 						<div>
