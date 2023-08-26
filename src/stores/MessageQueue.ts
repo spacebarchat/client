@@ -1,4 +1,5 @@
 import type { APIMessage } from "@spacebarchat/spacebar-api-types/v9";
+import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
 import { action, computed, makeAutoObservable, observable } from "mobx";
 
 import type { IObservableArray } from "mobx";
@@ -25,6 +26,7 @@ export interface QueuedMessage {
 	author: User;
 	content: string;
 	timestamp: Date;
+	type: MessageType;
 }
 
 export default class MessageQueue {
@@ -42,6 +44,7 @@ export default class MessageQueue {
 			...data,
 			timestamp: new Date(),
 			status: QueuedMessageStatus.SENDING,
+			type: MessageType.Default,
 		});
 	}
 

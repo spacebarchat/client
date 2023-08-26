@@ -1,3 +1,4 @@
+import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import Moment from "react-moment";
 import styled from "styled-components";
@@ -141,9 +142,13 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 						</MessageHeader>
 					)}
 
-					<MessageContent sending={isSending} failed={isFailed}>
-						{message.content}
-					</MessageContent>
+					{message.type === MessageType.Default ? (
+						<MessageContent sending={isSending} failed={isFailed}>
+							{message.content}
+						</MessageContent>
+					) : (
+						<div style={{ color: "var(--text-secondary)" }}>MessageType: {MessageType[message.type]}</div>
+					)}
 				</MessageContentContainer>
 			</Container>
 		</MessageListItem>
