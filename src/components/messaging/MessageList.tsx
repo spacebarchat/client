@@ -39,9 +39,8 @@ function MessageList({ guild, channel }: Props) {
 	React.useEffect(() => {
 		if (guild && channel && channel.messages.count === 0) {
 			channel.getMessages(app, true).then((r) => {
-				if (r < 50) {
-					setHasMore(false);
-				}
+				if (r !== 50) setHasMore(false);
+				else setHasMore(true);
 			});
 		}
 	}, [guild, channel]);
@@ -50,13 +49,16 @@ function MessageList({ guild, channel }: Props) {
 		if (!channel.messages.count) {
 			return;
 		}
-		// get first message in the list to use as before
-		const before = channel.messages.grouped[0][0].id;
+
+		// get last group
+		const lastGroup = channel.messages.grouped[channel.messages.grouped.length - 1];
+		// get first message in the group to use as before
+		const before = lastGroup[0].id;
 		logger.debug(`Fetching 50 messages before ${before} for channel ${channel.id}`);
+
 		channel.getMessages(app, false, 50, before).then((r) => {
-			if (r < 50) {
-				setHasMore(false);
-			}
+			if (r !== 50) setHasMore(false);
+			else setHasMore(true);
 		});
 	};
 
@@ -67,6 +69,7 @@ function MessageList({ guild, channel }: Props) {
 				next={fetchMore}
 				style={{ display: "flex", flexDirection: "column-reverse" }} // to put endMessage and loader to the top.
 				hasMore={hasMore}
+				inverse={true}
 				loader={
 					<PulseLoader
 						style={{ display: "flex", justifyContent: "center", alignContent: "center" }}
