@@ -191,11 +191,7 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 							{message.content}
 							{"attachments" in message &&
 								message.attachments.map((attachment) => {
-									// return (
-									// 	<div key={attachment.id}>
-
-									// 	</div>
-									// );
+									let a: JSX.Element = <></>;
 									if (attachment.content_type?.startsWith("image")) {
 										const ratio = calculateImageRatio(attachment.width!, attachment.height!);
 										const { scaledWidth, scaledHeight } = calculateScaledDimensions(
@@ -203,28 +199,29 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 											attachment.height!,
 											ratio,
 										);
-
-										return (
-											<div key={attachment.id}>
-												<img
-													src={attachment.url}
-													alt={attachment.filename}
-													width={scaledWidth}
-													height={scaledHeight}
-												/>
-											</div>
+										a = (
+											<img
+												src={attachment.url}
+												alt={attachment.filename}
+												width={scaledWidth}
+												height={scaledHeight}
+											/>
 										);
 									} else if (attachment.content_type?.startsWith("video")) {
-										return (
-											<div key={attachment.id}>
-												<video controls>
-													<source src={attachment.url} type={attachment.content_type} />
-												</video>
-											</div>
+										{
+											/* TODO: poster thumbnail */
+										}
+										a = (
+											<video controls preload="metadata" width={400}>
+												{/* TODO: the server doesn't return height and width yet for videos */}
+												<source src={attachment.url} type={attachment.content_type} />
+											</video>
 										);
 									} else {
 										logger.warn(`Unknown attachment type: ${attachment.content_type}`);
 									}
+
+									return <div key={attachment.id}>{a}</div>;
 								})}
 						</MessageContent>
 					) : (
