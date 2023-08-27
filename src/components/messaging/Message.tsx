@@ -97,7 +97,6 @@ function calculateScaledDimensions(
 	return { scaledWidth, scaledHeight };
 }
 
-// https://www.js-craft.io/blog/react-detect-url-text-convert-link/
 const Linkify = ({ children }: { children: string }) => {
 	const isUrl = (word: string) => {
 		const urlPattern =
@@ -105,11 +104,6 @@ const Linkify = ({ children }: { children: string }) => {
 		return word.match(urlPattern);
 	};
 
-	// const addMarkup = (word: string) => {
-	// 	return isUrl(word) ? `<a href="${word}" target="_blank" noreferer>${word}</a>` : word;
-	// };
-
-	// split spaces and newlines
 	const words = children.split(/(\s+)/);
 
 	return (
