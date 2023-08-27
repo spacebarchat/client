@@ -8,7 +8,12 @@ import { QueuedMessage } from "../../stores/MessageQueue";
 import { default as MessageObject } from "../../stores/objects/Message";
 import { calendarStrings } from "../../utils/i18n";
 import Avatar from "../Avatar";
+import { Link } from "../Link";
 import { IContextMenuItem } from "./../ContextMenuItem";
+
+// max width/height for images
+const maxWidth = 400;
+const maxHeight = 300;
 
 type MessageLike = MessageObject | QueuedMessage;
 
@@ -55,10 +60,6 @@ const MessageContent = styled.div<{ sending?: boolean; failed?: boolean }>`
 	color: ${(props) => (props.failed ? "var(--error)" : undefined)};
 `;
 
-// max width/height for images
-const maxWidth = 400;
-const maxHeight = 300;
-
 function calculateImageRatio(width: number, height: number) {
 	let o = 1;
 	width > maxWidth && (o = maxWidth / width);
@@ -95,6 +96,40 @@ function calculateScaledDimensions(
 
 	return { scaledWidth, scaledHeight };
 }
+
+// https://www.js-craft.io/blog/react-detect-url-text-convert-link/
+const Linkify = ({ children }: { children: string }) => {
+	const isUrl = (word: string) => {
+		const urlPattern =
+			/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
+		return word.match(urlPattern);
+	};
+
+	// const addMarkup = (word: string) => {
+	// 	return isUrl(word) ? `<a href="${word}" target="_blank" noreferer>${word}</a>` : word;
+	// };
+
+	// split spaces and newlines
+	const words = children.split(/(\s+)/);
+
+	return (
+		<div>
+			{words.map((x) => {
+				if (isUrl(x)) {
+					return (
+						<>
+							<Link href={x} target="_blank" rel="noreferrer">
+								{x}
+							</Link>{" "}
+						</>
+					);
+				} else {
+					return <>{x}</>;
+				}
+			})}
+		</div>
+	);
+};
 
 interface Props {
 	message: MessageLike;
@@ -188,7 +223,7 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 
 					{message.type === MessageType.Default ? (
 						<MessageContent sending={isSending} failed={isFailed}>
-							{message.content}
+							{message.content ? <Linkify>{message.content}</Linkify> : null}
 							{"attachments" in message &&
 								message.attachments.map((attachment) => {
 									let a: JSX.Element = <></>;
