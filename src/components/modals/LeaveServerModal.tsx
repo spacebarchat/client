@@ -23,6 +23,7 @@ const CancelButton = styled(ModalActionItem)`
 	transition: background-color 0.2s ease-in-out;
 	margin-bottom: 8px;
 	font-size: 14px;
+	font-weight: var(--font-weight-medium);
 
 	&:hover {
 		text-decoration: underline;
@@ -33,6 +34,7 @@ const LeaveButton = styled(ModalActionItem)`
 	transition: background-color 0.2s ease-in-out;
 	margin-bottom: 8px;
 	font-size: 14px;
+	font-weight: var(--font-weight-medium);
 	border-radius: 4px;
 	background-color: var(--danger);
 

@@ -21,6 +21,7 @@ const CreateButton = styled(ModalActionItem)`
 	transition: background-color 0.2s ease-in-out;
 	margin-bottom: 8px;
 	font-size: 16px;
+	font-weight: var(--font-weight-medium);
 
 	&:hover {
 		background-color: var(--primary-light);
@@ -31,6 +32,7 @@ const JoinButton = styled(ModalActionItem)`
 	transition: background-color 0.2s ease-in-out;
 	margin-bottom: 8px;
 	font-size: 16px;
+	font-weight: var(--font-weight-medium);
 
 	&:hover {
 		background-color: var(--background-secondary-highlight);

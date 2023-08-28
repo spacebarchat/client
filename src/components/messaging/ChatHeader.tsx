@@ -41,6 +41,7 @@ const Wrapper = styled.div`
 
 const ChannelNameText = styled.div`
 	font-size: 16px;
+	font-weight: var(--font-weight-medium);
 `;
 
 const Divider = styled.div`
@@ -57,6 +58,8 @@ const TopicWrapper = styled.div`
 
 const ChannelTopicText = styled.div`
 	font-size: 14px;
+	font-weight: var(--font-weight-regular);
+	color: var(--text-secondary);
 `;
 
 const ActionItemsWrapper = styled.div`

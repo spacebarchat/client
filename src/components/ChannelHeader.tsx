@@ -20,8 +20,8 @@ const Wrapper = styled(SectionHeader)`
 `;
 
 const HeaderText = styled.header`
-	font-size: 14px;
-	font-weight: 600;
+	font-size: 16px;
+	font-weight: var(--font-weight-medium);
 `;
 
 function ChannelHeader() {

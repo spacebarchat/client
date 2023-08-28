@@ -38,14 +38,14 @@ export const HeaderContainer = styled.div`
 export const Header = styled.h1`
 	margin-bottom: 3px;
 	color: var(--text);
-	font-weight: 600;
+	font-weight: var(--font-weight-semibold);
 	font-size: 24px;
 `;
 
 export const SubHeader = styled.h2<{ noBranding?: boolean }>`
 	margin-top: 3px;
 	color: var(--text-muted);
-	font-weight: 400;
+	font-weight: var(--font-weight-regular);
 	font-size: ${(props) => (props.noBranding ? "20px" : "16px")};
 `;
 
@@ -69,13 +69,13 @@ export const LabelWrapper = styled.div<{ error?: boolean }>`
 
 export const InputErrorText = styled.label`
 	font-size: 14px;
-	font-weight: 400;
+	font-weight: var(--font-weight-regular);
 	font-style: italic;
 `;
 
 export const InputLabel = styled.label`
 	font-size: 14px;
-	font-weight: 700;
+	font-weight: var(--font-weight-semibold);
 `;
 
 export const InputWrapper = styled.div`

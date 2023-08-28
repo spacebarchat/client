@@ -18,6 +18,7 @@ export const ModalHeader = styled.div`
 const SubmitButton = styled(ModalActionItem)`
 	transition: background-color 0.2s ease-in-out;
 	font-size: 16px;
+	font-weight: var(--font-weight-medium);
 
 	&:hover {
 		background-color: var(--background-secondary-highlight);

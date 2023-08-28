@@ -46,7 +46,7 @@ export default styled.button<Props>`
 	padding: 8px 16px;
 	border-radius: 8px;
 	font-size: 13px;
-	font-weight: 700;
+	font-weight: var(--font-weight-medium);
 	cursor: pointer;
 	outline: none;
 	transition: background 0.2s ease-in-out;

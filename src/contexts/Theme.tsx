@@ -47,7 +47,19 @@ export type Overrides = {
 	[variable in ThemeVariables]: string;
 };
 
-export type Theme = Overrides & {
+export type OverridesWithFont = Overrides & {
+	font: {
+		weight: {
+			thin: number;
+			regular: number;
+			medium: number;
+			semibold: number;
+			black: number;
+		};
+	};
+};
+
+export type Theme = OverridesWithFont & {
 	light?: boolean;
 };
 
@@ -92,6 +104,15 @@ export const ThemePresets: Record<string, Theme> = {
 		warningContrastText: "",
 		scrollbarTrack: "",
 		scrollbarThumb: "",
+		font: {
+			weight: {
+				thin: 300,
+				regular: 400,
+				medium: 500,
+				semibold: 700,
+				black: 900,
+			},
+		},
 	},
 	dark: {
 		backgroundPrimary: "#2e2e2e",
@@ -133,6 +154,15 @@ export const ThemePresets: Record<string, Theme> = {
 		warningContrastText: "#040404",
 		scrollbarTrack: "#232323",
 		scrollbarThumb: "#171717",
+		font: {
+			weight: {
+				thin: 300,
+				regular: 400,
+				medium: 500,
+				semibold: 700,
+				black: 900,
+			},
+		},
 	},
 };
 
@@ -144,18 +174,39 @@ const GlobalTheme = createGlobalStyle<{ theme: Theme }>`
 
 const toDashed = (str: string) => str.replace(/[A-Z]/g, (m) => "-" + m.toLowerCase());
 
-export const generateVariables = (theme: Theme) => {
-	return (Object.keys(theme) as ThemeVariables[]).map((key) => {
-		const colour = theme[key];
-		try {
-			const r = parseInt(colour.substring(1, 3), 16);
-			const g = parseInt(colour.substring(3, 5), 16);
-			const b = parseInt(colour.substring(5, 7), 16);
-			return `--${toDashed(key)}: ${theme[key]}; --${toDashed(key)}-rgb: rgb(${r}, ${g}, ${b});`;
-		} catch {
-			return `--${toDashed(key)}: ${theme[key]};`;
+function objectToCSSVariables(obj: any, parentKey = "") {
+	let cssVariables = "";
+
+	for (const key in obj) {
+		if (typeof obj[key] === "object") {
+			cssVariables += objectToCSSVariables(obj[key], `${parentKey}-${key}`);
+		} else {
+			const variableName = `--${parentKey}-${toDashed(key)}`;
+			const variableValue = obj[key];
+			cssVariables += `${variableName}: ${variableValue};\n`;
 		}
-	});
+	}
+
+	return cssVariables;
+}
+
+export const generateVariables = (theme: Theme) => {
+	const EXCLUDED_KEYS = ["light"];
+	return (Object.keys(theme) as ThemeVariables[])
+		.filter((x) => !EXCLUDED_KEYS.includes(x))
+		.map((key) => {
+			const colour = theme[key];
+			try {
+				const r = parseInt(colour.substring(1, 3), 16);
+				const g = parseInt(colour.substring(3, 5), 16);
+				const b = parseInt(colour.substring(5, 7), 16);
+				return `--${toDashed(key)}: ${theme[key]}; --${toDashed(key)}-rgb: rgb(${r}, ${g}, ${b});`;
+			} catch {
+				if (typeof theme[key] === "object") {
+					return objectToCSSVariables(theme[key], key);
+				} else return `--${toDashed(key)}: ${theme[key]};`;
+			}
+		});
 };
 
 export default observer(() => {

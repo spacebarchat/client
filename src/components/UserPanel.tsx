@@ -1,9 +1,11 @@
+import { useModals } from "@mattjennings/react-modal-stack";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
 import IconButton from "./IconButton";
 import Tooltip from "./Tooltip";
+import SettingsModal from "./modals/SettingsModal";
 
 const Section = styled.section`
 	flex: 0 0 auto;
@@ -27,9 +29,9 @@ const AvatarWrapper = styled.div`
 	margin-right: 8px;
 	border-radius: 4px;
 
-	// &:hover {
-	// 	background-color: var(--background-primary-alt);
-	// }
+	&:hover {
+		background-color: var(--background-primary-alt);
+	}
 `;
 
 const Name = styled.div`
@@ -39,11 +41,18 @@ const Name = styled.div`
 
 const Username = styled.div`
 	font-size: 14px;
-	font-weight: 600;
+	font-weight: var(--font-weight-medium);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 `;
 
-const Discriminator = styled.div`
+const Subtext = styled.div`
 	font-size: 12px;
+	font-weight: var(--font-weight-regular);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 `;
 
 const ActionsWrapper = styled.div`
@@ -57,6 +66,11 @@ const ActionsWrapper = styled.div`
 
 function UserPanel() {
 	const app = useAppStore();
+	const { openModal } = useModals();
+
+	const openSettingsModal = () => {
+		openModal(SettingsModal);
+	};
 
 	return (
 		<Section>
@@ -65,13 +79,13 @@ function UserPanel() {
 					<Avatar />
 					<Name>
 						<Username>{app.account?.username}</Username>
-						<Discriminator>#{app.account?.discriminator}</Discriminator>
+						<Subtext>#{app.account?.discriminator}</Subtext>
 					</Name>
 				</AvatarWrapper>
 
 				<ActionsWrapper>
 					<Tooltip title="Settings">
-						<IconButton aria-label="settings" color="#fff">
+						<IconButton aria-label="settings" color="#fff" onClick={openSettingsModal}>
 							<Icon icon="mdiCog" size="20px" />
 						</IconButton>
 					</Tooltip>

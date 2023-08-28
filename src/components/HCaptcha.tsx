@@ -37,7 +37,7 @@ export const HeaderContainer = styled.div`
 `;
 
 export const Header = styled.h1`
-	font-weight: 600;
+	font-weight: var(--font-weight-semibold);
 	margin-bottom: 8px;
 	font-size: 24px;
 	color: var(--text);
@@ -45,7 +45,7 @@ export const Header = styled.h1`
 
 export const SubHeader = styled.h2`
 	color: var(--text-muted);
-	font-weight: 400;
+	font-weight: var(--font-weight-regular);
 	font-size: 16px;
 	margin-bottom: 40px;
 `;

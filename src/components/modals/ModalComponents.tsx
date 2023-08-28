@@ -1,5 +1,8 @@
 import styled from "styled-components";
 
+/**
+ * Main container for all modals, handles the background overlay and positioning
+ */
 export const ModalContainer = styled.div`
 	z-index: 100;
 	position: fixed;
@@ -22,17 +25,24 @@ export const ModalContainer = styled.div`
 	}
 `;
 
-export const ModalWrapper = styled.div`
-	width: 440px;
+/**
+ * Wrapper for modal content, handles the sizing and positioning
+ */
+export const ModalWrapper = styled.div<{ full?: boolean }>`
+	width: ${(props) => (props.full ? "100%" : "440px")};
+	height: ${(props) => (props.full ? "100%" : "auto")};
 	border-radius: 4px;
 	background-color: var(--background-secondary);
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 1px 3px 1px rgba(0, 0, 0, 0.05);
 	position: relative;
 	display: flex;
-	justify-content: center;
-	flex-direction: column;
+	justify-content: ${(props) => (props.full ? undefined : "center")};
+	flex-direction: ${(props) => (props.full ? "row" : "column")};
 `;
 
+/**
+ * Wrapper for modal close button
+ */
 export const ModalCloseWrapper = styled.div`
 	position: absolute;
 	top: 10px;
@@ -41,7 +51,7 @@ export const ModalCloseWrapper = styled.div`
 
 export const ModalHeaderText = styled.h1`
 	font-size: 24px;
-	font-weight: 700;
+	font-weight: var(--font-weight-black);
 	color: var(--text-header);
 	text-align: center;
 	margin: 0;
@@ -50,6 +60,7 @@ export const ModalHeaderText = styled.h1`
 
 export const ModalSubHeaderText = styled.div`
 	font-size: 16px;
+	font-weight: var(--font-weight-regular);
 	color: var(--text-header-secondary);
 	text-align: center;
 	margin-top: 8px;
@@ -77,7 +88,7 @@ export const ModalActionItem = styled.button<{
 	outline: none;
 	border-radius: 3px;
 	font-size: 14px;
-	font-weight: 400;
+	font-weight: var(--font-weight-medium);
 	padding: 2px 16px;
 	cursor: pointer;
 	transition: background-color 0.2s ease-in-out;
@@ -148,4 +159,19 @@ export const ModalFooter = styled.div`
 	display: flex;
 	flex-direction: row-reverse;
 	justify-content: space-between;
+`;
+
+export const ModalFullSidebar = styled.div`
+	display: flex;
+	justify-content: flex-end;
+	flex: 1 0 11.35%;
+	z-index: 1;
+	background-color: var(--background-secondary);
+`;
+export const ModalFullContent = styled.div`
+	position: relative;
+	display: flex;
+	flex: 1 1 42.3%;
+	align-items: flex-start;
+	background-color: var(--background-primary);
 `;

@@ -28,9 +28,9 @@ const Wrapper = styled.div<{ isCategory?: boolean; active?: boolean }>`
 
 const Text = styled.span<{ isCategory?: boolean }>`
 	font-size: 16px;
-	line-height: 16px;
-	text-overflow: ellipsis;
+	font-weight: var(--font-weight-regular);
 	white-space: nowrap;
+	color: var(--text-secondary);
 `;
 
 interface Props {
