@@ -39,7 +39,9 @@ export type ThemeVariables =
 	| "warning"
 	| "warningLight"
 	| "warningDark"
-	| "warningContrastText";
+	| "warningContrastText"
+	| "scrollbarTrack"
+	| "scrollbarThumb";
 
 export type Overrides = {
 	[variable in ThemeVariables]: string;
@@ -88,6 +90,8 @@ export const ThemePresets: Record<string, Theme> = {
 		warningLight: "",
 		warningDark: "",
 		warningContrastText: "",
+		scrollbarTrack: "",
+		scrollbarThumb: "",
 	},
 	dark: {
 		backgroundPrimary: "#2e2e2e",
@@ -127,6 +131,8 @@ export const ThemePresets: Record<string, Theme> = {
 		warningLight: "#fbb747",
 		warningDark: "#af7412",
 		warningContrastText: "#040404",
+		scrollbarTrack: "#232323",
+		scrollbarThumb: "#171717",
 	},
 };
 

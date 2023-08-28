@@ -67,7 +67,7 @@ function MessageList({ guild, channel }: Props) {
 			<InfiniteScroll
 				dataLength={channel.messages.grouped.length}
 				next={fetchMore}
-				style={{ display: "flex", flexDirection: "column-reverse" }} // to put endMessage and loader to the top.
+				style={{ display: "flex", flexDirection: "column-reverse", marginBottom: "30px" }} // to put endMessage and loader to the top.
 				hasMore={hasMore}
 				inverse={true}
 				loader={

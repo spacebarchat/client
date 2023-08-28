@@ -22,10 +22,6 @@ const Container = styled.div`
 	position: relative;
 `;
 
-const Spacer = styled.div`
-	margin-bottom: 30px;
-`;
-
 /**
  * Main component for rendering channel messages
  */
@@ -54,7 +50,6 @@ function Chat() {
 			<ChatHeader channel={channel} />
 			<Container>
 				<MessageList guild={guild} channel={channel} />
-				<Spacer />
 				<MessageInput channel={channel} />
 			</Container>
 		</Wrapper>
