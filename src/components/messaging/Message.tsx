@@ -57,7 +57,7 @@ const MessageTimestamp = styled.div`
 
 const MessageContent = styled.div<{ sending?: boolean; failed?: boolean }>`
 	font-size: 16px;
-	font-weight: var(--font-weight-thin);
+	font-weight: var(--font-weight-light);
 	white-space: pre-wrap;
 	word-wrap: anywhere;
 	opacity: ${(props) => (props.sending ? 0.5 : undefined)};

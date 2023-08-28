@@ -2,6 +2,17 @@ import { observer } from "mobx-react-lite";
 import { createGlobalStyle } from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 
+const font: ThemeFont["font"] = {
+	weight: {
+		thin: 100,
+		light: 300,
+		regular: 400,
+		medium: 500,
+		bold: 700,
+		black: 900,
+	},
+};
+
 export type ThemeVariables =
 	| "backgroundPrimary"
 	| "backgroundPrimaryAlt"
@@ -47,17 +58,21 @@ export type Overrides = {
 	[variable in ThemeVariables]: string;
 };
 
-export type OverridesWithFont = Overrides & {
+export type ThemeFont = {
 	font: {
 		weight: {
-			thin: number;
-			regular: number;
-			medium: number;
-			semibold: number;
-			black: number;
+			thin?: number;
+			light?: number;
+			regular?: number;
+			medium?: number;
+			bold?: number;
+			semibold?: number;
+			black?: number;
 		};
 	};
 };
+
+export type OverridesWithFont = Overrides & ThemeFont;
 
 export type Theme = OverridesWithFont & {
 	light?: boolean;
@@ -104,15 +119,7 @@ export const ThemePresets: Record<string, Theme> = {
 		warningContrastText: "",
 		scrollbarTrack: "",
 		scrollbarThumb: "",
-		font: {
-			weight: {
-				thin: 300,
-				regular: 400,
-				medium: 500,
-				semibold: 700,
-				black: 900,
-			},
-		},
+		font: font,
 	},
 	dark: {
 		backgroundPrimary: "#2e2e2e",
@@ -154,15 +161,7 @@ export const ThemePresets: Record<string, Theme> = {
 		warningContrastText: "#040404",
 		scrollbarTrack: "#232323",
 		scrollbarThumb: "#171717",
-		font: {
-			weight: {
-				thin: 300,
-				regular: 400,
-				medium: 500,
-				semibold: 700,
-				black: 900,
-			},
-		},
+		font: font,
 	},
 };
 

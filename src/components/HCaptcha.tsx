@@ -37,7 +37,7 @@ export const HeaderContainer = styled.div`
 `;
 
 export const Header = styled.h1`
-	font-weight: var(--font-weight-semibold);
+	font-weight: var(--font-weight-bold);
 	margin-bottom: 8px;
 	font-size: 24px;
 	color: var(--text);

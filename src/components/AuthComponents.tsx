@@ -38,7 +38,7 @@ export const HeaderContainer = styled.div`
 export const Header = styled.h1`
 	margin-bottom: 3px;
 	color: var(--text);
-	font-weight: var(--font-weight-semibold);
+	font-weight: var(--font-weight-bold);
 	font-size: 24px;
 `;
 
@@ -75,7 +75,7 @@ export const InputErrorText = styled.label`
 
 export const InputLabel = styled.label`
 	font-size: 14px;
-	font-weight: var(--font-weight-semibold);
+	font-weight: var(--font-weight-bold);
 `;
 
 export const InputWrapper = styled.div`

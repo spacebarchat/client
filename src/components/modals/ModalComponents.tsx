@@ -51,7 +51,7 @@ export const ModalCloseWrapper = styled.div`
 
 export const ModalHeaderText = styled.h1`
 	font-size: 24px;
-	font-weight: var(--font-weight-black);
+	font-weight: var(--font-weight-bold);
 	color: var(--text-header);
 	text-align: center;
 	margin: 0;
