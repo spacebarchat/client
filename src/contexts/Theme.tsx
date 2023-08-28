@@ -66,7 +66,6 @@ export type ThemeFont = {
 			regular?: number;
 			medium?: number;
 			bold?: number;
-			semibold?: number;
 			black?: number;
 		};
 	};
