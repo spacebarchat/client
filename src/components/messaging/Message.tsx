@@ -97,32 +97,33 @@ function calculateScaledDimensions(
 	return { scaledWidth, scaledHeight };
 }
 
+// converts URLs in a string to html links
 const Linkify = ({ children }: { children: string }) => {
-	const isUrl = (word: string) => {
-		const urlPattern =
-			/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
-		return word.match(urlPattern);
-	};
+	const urlPattern = /\bhttps?:\/\/\S+\b\/?/g;
+	const matches = children.match(urlPattern);
+	if (!matches) return <>{children}</>;
 
-	const words = children.split(/(\s+)/);
+	const elements = [];
+	let lastIndex = 0;
 
-	return (
-		<div>
-			{words.map((x) => {
-				if (isUrl(x)) {
-					return (
-						<>
-							<Link href={x} target="_blank" rel="noreferrer">
-								{x}
-							</Link>{" "}
-						</>
-					);
-				} else {
-					return <>{x}</>;
-				}
-			})}
-		</div>
-	);
+	for (const match of matches) {
+		const matchIndex = children.indexOf(match, lastIndex);
+		if (matchIndex > lastIndex) elements.push(children.substring(lastIndex, matchIndex));
+
+		// add a trailing slash if there isn't one
+		const formattedLink = match.endsWith("/") ? match : `${match}/`;
+
+		elements.push(
+			<Link key={matchIndex} href={formattedLink} target="_blank" rel="noreferrer">
+				{formattedLink}
+			</Link>,
+		);
+		lastIndex = matchIndex + match.length;
+	}
+
+	if (lastIndex < children.length) elements.push(children.substring(lastIndex));
+
+	return <>{elements}</>;
 };
 
 interface Props {
