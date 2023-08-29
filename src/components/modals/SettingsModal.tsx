@@ -1,39 +1,38 @@
 import { useModals } from "@mattjennings/react-modal-stack";
 import Icon from "../Icon";
-import { ModalCloseWrapper, ModalContainer, ModalFullContent, ModalFullSidebar, ModalWrapper } from "./ModalComponents";
+import { Modal, ModalCloseWrapper, ModalFullContent, ModalFullSidebar } from "./ModalComponents";
+import { AnimatedModalProps } from "./ModalRenderer";
 
-function SettingsModal() {
+function SettingsModal(props: AnimatedModalProps) {
 	const { closeModal } = useModals();
 
 	return (
-		<ModalContainer>
-			<ModalWrapper full>
-				<ModalFullSidebar>Sidebar</ModalFullSidebar>
+		<Modal full {...props}>
+			<ModalFullSidebar>Sidebar</ModalFullSidebar>
 
-				<ModalFullContent>
-					<ModalCloseWrapper>
-						<button
-							onClick={closeModal}
+			<ModalFullContent>
+				<ModalCloseWrapper>
+					<button
+						onClick={closeModal}
+						style={{
+							background: "none",
+							border: "none",
+							outline: "none",
+						}}
+					>
+						<Icon
+							icon="mdiClose"
+							size={1}
 							style={{
-								background: "none",
-								border: "none",
-								outline: "none",
+								cursor: "pointer",
+								color: "var(--text)",
 							}}
-						>
-							<Icon
-								icon="mdiClose"
-								size={1}
-								style={{
-									cursor: "pointer",
-									color: "var(--text)",
-								}}
-							/>
-						</button>
-					</ModalCloseWrapper>
-					Content
-				</ModalFullContent>
-			</ModalWrapper>
-		</ModalContainer>
+						/>
+					</button>
+				</ModalCloseWrapper>
+				Content
+			</ModalFullContent>
+		</Modal>
 	);
 }
 

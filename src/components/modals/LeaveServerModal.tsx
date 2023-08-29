@@ -6,14 +6,14 @@ import { useAppStore } from "../../stores/AppStore";
 import Guild from "../../stores/objects/Guild";
 import Icon from "../Icon";
 import {
+	Modal,
 	ModalActionItem,
 	ModalCloseWrapper,
-	ModalContainer,
 	ModalFooter,
 	ModalHeaderText,
-	ModalWrapper,
 	ModelContentContainer,
 } from "./ModalComponents";
+import { AnimatedModalProps } from "./ModalRenderer";
 
 export const ModalHeader = styled.div`
 	padding: 16px;
@@ -47,7 +47,7 @@ interface Props {
 	guild: Guild;
 }
 
-function LeaveServerModal({ guild }: Props) {
+function LeaveServerModal(props: Props & AnimatedModalProps) {
 	const app = useAppStore();
 	const { closeModal } = useModals();
 	const navigate = useNavigate();
@@ -57,7 +57,7 @@ function LeaveServerModal({ guild }: Props) {
 	}
 
 	const handleLeaveServer = () => {
-		app.rest.delete(Routes.userGuild(guild.id)).finally(() => {
+		app.rest.delete(Routes.userGuild(props.guild.id)).finally(() => {
 			closeModal();
 			// navigate to @me
 			navigate("channels/@me");
@@ -65,68 +65,66 @@ function LeaveServerModal({ guild }: Props) {
 	};
 
 	return (
-		<ModalContainer>
-			<ModalWrapper>
-				<ModalCloseWrapper>
-					<button
-						onClick={closeModal}
-						style={{
-							background: "none",
-							border: "none",
-							outline: "none",
-						}}
-					>
-						<Icon
-							icon="mdiClose"
-							size={1}
-							style={{
-								cursor: "pointer",
-								color: "var(--text)",
-							}}
-						/>
-					</button>
-				</ModalCloseWrapper>
-
-				<ModalHeader>
-					<ModalHeaderText>Leave {guild.name}</ModalHeaderText>
-				</ModalHeader>
-
-				<ModelContentContainer>
-					<span>
-						Are you sure you want to leave <b>{guild.name}</b>? You won't be able to rejoin this server
-						unless you are re-invited.
-					</span>
-				</ModelContentContainer>
-
-				<ModalFooter
+		<Modal {...props}>
+			<ModalCloseWrapper>
+				<button
+					onClick={closeModal}
 					style={{
-						flexDirection: "row",
-						justifyContent: "flex-end",
+						background: "none",
+						border: "none",
+						outline: "none",
 					}}
 				>
-					<CancelButton
-						variant="link"
-						size="med"
-						onClick={() => {
-							closeModal();
-						}}
-					>
-						Cancel
-					</CancelButton>
-
-					<LeaveButton
-						variant="outlined"
-						size="med"
-						onClick={handleLeaveServer}
+					<Icon
+						icon="mdiClose"
+						size={1}
 						style={{
-							backgroundColor: "var(--danger)",
+							cursor: "pointer",
+							color: "var(--text)",
 						}}
-					>
-						Leave
-					</LeaveButton>
-				</ModalFooter>
-			</ModalWrapper>
-		</ModalContainer>
+					/>
+				</button>
+			</ModalCloseWrapper>
+
+			<ModalHeader>
+				<ModalHeaderText>Leave {props.guild.name}</ModalHeaderText>
+			</ModalHeader>
+
+			<ModelContentContainer>
+				<span>
+					Are you sure you want to leave <b>{props.guild.name}</b>? You won't be able to rejoin this server
+					unless you are re-invited.
+				</span>
+			</ModelContentContainer>
+
+			<ModalFooter
+				style={{
+					flexDirection: "row",
+					justifyContent: "flex-end",
+				}}
+			>
+				<CancelButton
+					variant="link"
+					size="med"
+					onClick={() => {
+						closeModal();
+					}}
+				>
+					Cancel
+				</CancelButton>
+
+				<LeaveButton
+					variant="outlined"
+					size="med"
+					onClick={handleLeaveServer}
+					style={{
+						backgroundColor: "var(--danger)",
+					}}
+				>
+					Leave
+				</LeaveButton>
+			</ModalFooter>
+		</Modal>
 	);
 }
 

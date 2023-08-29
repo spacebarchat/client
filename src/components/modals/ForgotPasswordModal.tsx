@@ -2,14 +2,14 @@ import { useModals } from "@mattjennings/react-modal-stack";
 import styled from "styled-components";
 import Icon from "../Icon";
 import {
+	Modal,
 	ModalActionItem,
 	ModalCloseWrapper,
-	ModalContainer,
 	ModalFooter,
 	ModalHeaderText,
-	ModalWrapper,
 	ModelContentContainer,
 } from "./ModalComponents";
+import { AnimatedModalProps } from "./ModalRenderer";
 
 export const ModalHeader = styled.div`
 	padding: 16px;
@@ -25,52 +25,46 @@ const SubmitButton = styled(ModalActionItem)`
 	}
 `;
 
-function ForgotPasswordModal() {
-	const { openModal, closeModal } = useModals();
-
-	if (!open) {
-		return null;
-	}
+function ForgotPasswordModal(props: AnimatedModalProps) {
+	const { closeModal } = useModals();
 
 	return (
-		<ModalContainer>
-			<ModalWrapper>
-				<ModalCloseWrapper>
-					<button
-						onClick={closeModal}
+		<Modal {...props}>
+			<ModalCloseWrapper>
+				<button
+					onClick={closeModal}
+					style={{
+						background: "none",
+						border: "none",
+						outline: "none",
+					}}
+				>
+					<Icon
+						icon="mdiClose"
+						size={1}
 						style={{
-							background: "none",
-							border: "none",
-							outline: "none",
+							cursor: "pointer",
+							color: "var(--text)",
 						}}
-					>
-						<Icon
-							icon="mdiClose"
-							size={1}
-							style={{
-								cursor: "pointer",
-								color: "var(--text)",
-							}}
-						/>
-					</button>
-				</ModalCloseWrapper>
+					/>
+				</button>
+			</ModalCloseWrapper>
 
-				<ModalHeader>
-					<ModalHeaderText>Instructions Sent</ModalHeaderText>
-				</ModalHeader>
+			<ModalHeader>
+				<ModalHeaderText>Instructions Sent</ModalHeaderText>
+			</ModalHeader>
 
-				<ModelContentContainer>
-					We sent instructions to change your password to user@example.com, please check both your inbox and
-					spam folder.
-				</ModelContentContainer>
+			<ModelContentContainer>
+				We sent instructions to change your password to user@example.com, please check both your inbox and spam
+				folder.
+			</ModelContentContainer>
 
-				<ModalFooter>
-					<SubmitButton variant="filled" size="med" onClick={closeModal}>
-						Okay
-					</SubmitButton>
-				</ModalFooter>
-			</ModalWrapper>
-		</ModalContainer>
+			<ModalFooter>
+				<SubmitButton variant="filled" size="med" onClick={closeModal}>
+					Okay
+				</SubmitButton>
+			</ModalFooter>
+		</Modal>
 	);
 }
 

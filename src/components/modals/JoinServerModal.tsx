@@ -11,15 +11,15 @@ import { TextDivider } from "../Divider";
 import Icon from "../Icon";
 import AddServerModal from "./AddServerModal";
 import {
+	Modal,
 	ModalActionItem,
 	ModalCloseWrapper,
-	ModalContainer,
 	ModalFooter,
 	ModalHeaderText,
 	ModalSubHeaderText,
-	ModalWrapper,
 	ModelContentContainer,
 } from "./ModalComponents";
+import { AnimatedModalProps } from "./ModalRenderer";
 
 export const ModalHeader = styled.div`
 	padding: 16px;
@@ -34,15 +34,11 @@ type FormValues = {
 	code: string;
 };
 
-function JoinServerModal() {
+function JoinServerModal(props: AnimatedModalProps) {
 	const logger = useLogger("JoinServerModal");
-	const { openModal, closeModal } = useModals();
+	const { openModal, closeAllModals } = useModals();
 	const app = useAppStore();
 	const navigate = useNavigate();
-
-	if (!open) {
-		return null;
-	}
 
 	const {
 		register,
@@ -59,7 +55,7 @@ function JoinServerModal() {
 			.post<never, { guild_id: string; channel_id: string }>(Routes.invite(code))
 			.then((r) => {
 				navigate(`/channels/${r.guild_id}/${r.channel_id}`);
-				closeModal();
+				closeAllModals();
 			})
 			.catch((r) => {
 				if ("message" in r) {
@@ -94,81 +90,78 @@ function JoinServerModal() {
 	});
 
 	return (
-		<ModalContainer>
-			<ModalWrapper>
-				<ModalCloseWrapper>
-					<button
-						onClick={closeModal}
+		<Modal {...props}>
+			<ModalCloseWrapper>
+				<button
+					onClick={closeAllModals}
+					style={{
+						background: "none",
+						border: "none",
+						outline: "none",
+					}}
+				>
+					<Icon
+						icon="mdiClose"
+						size={1}
 						style={{
-							background: "none",
-							border: "none",
-							outline: "none",
+							cursor: "pointer",
+							color: "var(--text)",
 						}}
-					>
-						<Icon
-							icon="mdiClose"
-							size={1}
-							style={{
-								cursor: "pointer",
-								color: "var(--text)",
-							}}
+					/>
+				</button>
+			</ModalCloseWrapper>
+
+			<ModalHeader>
+				<ModalHeaderText>Join a Guild</ModalHeaderText>
+				<ModalSubHeaderText>Enter an invite below to join an existing guild.</ModalSubHeaderText>
+			</ModalHeader>
+
+			<ModelContentContainer>
+				<form>
+					<InviteInputContainer>
+						<LabelWrapper error={!!errors.code}>
+							<InputLabel>Invite Link</InputLabel>
+
+							{errors.code && (
+								<InputErrorText>
+									<>
+										<TextDivider>-</TextDivider>
+										{errors.code.message}
+									</>
+								</InputErrorText>
+							)}
+						</LabelWrapper>
+						<Input
+							{...register("code", { required: true })}
+							placeholder="https://app.spacebar.chat/invite/cool-guild"
+							type="text"
+							maxLength={9999}
+							required
+							error={!!errors.code}
+							disabled={isLoading}
+							autoFocus
+							minLength={6}
 						/>
-					</button>
-				</ModalCloseWrapper>
+					</InviteInputContainer>
+				</form>
+			</ModelContentContainer>
 
-				<ModalHeader>
-					<ModalHeaderText>Join a Guild</ModalHeaderText>
-					<ModalSubHeaderText>Enter an invite below to join an existing guild.</ModalSubHeaderText>
-				</ModalHeader>
+			<ModalFooter>
+				<ModalActionItem variant="filled" size="med" onClick={onSubmit}>
+					Join Guild
+				</ModalActionItem>
 
-				<ModelContentContainer>
-					<form>
-						<InviteInputContainer>
-							<LabelWrapper error={!!errors.code}>
-								<InputLabel>Invite Link</InputLabel>
-
-								{errors.code && (
-									<InputErrorText>
-										<>
-											<TextDivider>-</TextDivider>
-											{errors.code.message}
-										</>
-									</InputErrorText>
-								)}
-							</LabelWrapper>
-							<Input
-								{...register("code", { required: true })}
-								placeholder="https://app.spacebar.chat/invite/cool-guild"
-								type="text"
-								maxLength={9999}
-								required
-								error={!!errors.code}
-								disabled={isLoading}
-								autoFocus
-								minLength={6}
-							/>
-						</InviteInputContainer>
-					</form>
-				</ModelContentContainer>
-
-				<ModalFooter>
-					<ModalActionItem variant="filled" size="med" onClick={onSubmit}>
-						Join Guild
-					</ModalActionItem>
-
-					<ModalActionItem
-						variant="link"
-						size="min"
-						onClick={() => {
-							closeModal();
-							openModal(AddServerModal);
-						}}
-					>
-						Back
-					</ModalActionItem>
-				</ModalFooter>
-			</ModalWrapper>
-		</ModalContainer>
+				<ModalActionItem
+					variant="link"
+					size="min"
+					onClick={() => {
+						openModal(AddServerModal);
+					}}
+				>
+					Back
+				</ModalActionItem>
+			</ModalFooter>
+		</Modal>
 	);
 }
 
