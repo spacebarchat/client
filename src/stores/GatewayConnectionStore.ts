@@ -33,6 +33,7 @@ import AppStore from "./AppStore";
 
 const GATEWAY_VERSION = "9";
 const GATEWAY_ENCODING = "json";
+const RECONNECT_TIMEOUT = 10000; // start at 10 seconds, doubles each time
 
 export default class GatewayConnectionStore {
 	private readonly logger: Logger = new Logger("GatewayConnectionStore");
@@ -52,6 +53,7 @@ export default class GatewayConnectionStore {
 	private sequence = 0;
 	private heartbeatAck = true;
 	private lazyRequestChannels = new Map<string, Snowflake[]>(); // guild, channels
+	private reconnectTimeout = 0;
 
 	constructor(app: AppStore) {
 		this.app = app;
@@ -87,6 +89,16 @@ export default class GatewayConnectionStore {
 		this.socket?.close(code, reason);
 	}
 
+	startReconnect() {
+		if (this.reconnectTimeout === 0) this.reconnectTimeout = RECONNECT_TIMEOUT;
+		else this.reconnectTimeout += RECONNECT_TIMEOUT;
+
+		setTimeout(() => {
+			this.logger.debug("Starting reconnect...");
+			this.connect(this.url!);
+		}, this.reconnectTimeout);
+	}
+
 	private setupListeners() {
 		this.socket!.onopen = this.onopen;
 		this.socket!.onmessage = this.onmessage;
@@ -115,6 +127,7 @@ export default class GatewayConnectionStore {
 	private onopen = () => {
 		this.logger.debug(`[Connected] ${this.url} (took ${Date.now() - this.connectionStartTime!}ms)`);
 		this.readyState = WebSocket.OPEN;
+		this.reconnectTimeout = 0;
 
 		this.handleIdentify();
 	};
@@ -227,6 +240,8 @@ export default class GatewayConnectionStore {
 	private handleReconnect() {
 		this.cleanup();
 		this.logger.debug("Received reconnect");
+
+		this.startReconnect();
 	}
 
 	private handleResume() {
@@ -247,6 +262,7 @@ export default class GatewayConnectionStore {
 
 	private handleHello = (data: GatewayHelloData) => {
 		this.heartbeatInterval = data.heartbeat_interval;
+		this.reconnectTimeout = this.heartbeatInterval;
 		this.logger.info(
 			`[Hello] heartbeat interval: ${data.heartbeat_interval} (took ${Date.now() - this.connectionStartTime!}ms)`,
 		);
@@ -284,7 +300,11 @@ export default class GatewayConnectionStore {
 			return;
 		}
 
-		// TODO: handle reconnect/resume
+		this.logger.debug(
+			`Websocket closed with code ${code}; Will reconnect in ${(RECONNECT_TIMEOUT / 1000).toFixed(2)} seconds.`,
+		);
+
+		this.startReconnect();
 	};
 
 	/**
@@ -341,14 +361,15 @@ export default class GatewayConnectionStore {
 	 */
 	private handleHeartbeatTimeout = () => {
 		this.logger.warn(
-			`[Heartbeat ACK Timeout] should reconnect in ${(this.heartbeatInterval! / 1000).toFixed(2)} seconds`,
+			`[Heartbeat ACK Timeout] should reconnect in ${(RECONNECT_TIMEOUT / 1000).toFixed(2)} seconds`,
 		);
 
 		this.socket?.close(4009);
 
-		// TODO: reconnect
 		this.cleanup();
 		this.reset();
+
+		this.startReconnect();
 	};
 
 	/**

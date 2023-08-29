@@ -11,7 +11,6 @@ function ModalRenderer({ stack }: ModalStackValue) {
 	const [isOpen, setOpen] = React.useState(false);
 
 	React.useEffect(() => {
-		console.log(stack.length, displayedStack.length);
 		// we're opening the first modal, so update the stack right away
 		if (stack.length === 1 && displayedStack.length === 0) {
 			setOpen(true);
