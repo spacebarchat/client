@@ -172,6 +172,7 @@ const GlobalTheme = createGlobalStyle<{ theme: Theme }>`
 
 const toDashed = (str: string) => str.replace(/[A-Z]/g, (m) => "-" + m.toLowerCase());
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function objectToCSSVariables(obj: any, parentKey = "") {
 	let cssVariables = "";
 
