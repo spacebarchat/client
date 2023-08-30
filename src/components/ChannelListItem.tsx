@@ -1,3 +1,4 @@
+import { useModals } from "@mattjennings/react-modal-stack";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -6,6 +7,7 @@ import Channel from "../stores/objects/Channel";
 import Guild from "../stores/objects/Guild";
 import { IContextMenuItem } from "./ContextMenuItem";
 import Icon from "./Icon";
+import CreateInviteModal from "./modals/CreateInviteModal";
 
 const ListItem = styled.li<{ isCategory?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};
@@ -43,6 +45,8 @@ interface Props {
 function ChannelListItem({ guild, channel, isCategory, active }: Props) {
 	const navigate = useNavigate();
 
+	const { openModal } = useModals();
+
 	const contextMenu = React.useContext(ContextMenuContext);
 	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
 		{
@@ -52,6 +56,12 @@ function ChannelListItem({ guild, channel, isCategory, active }: Props) {
 			},
 			iconProps: {
 				icon: "mdiIdentifier",
+			},
+		},
+		{
+			label: "Create Channel Invite",
+			onClick: () => {
+				openModal(CreateInviteModal, { guild_id: guild.id, channel_id: channel.id });
 			},
 		},
 	]);

@@ -107,6 +107,14 @@ export const Input = styled.input<{ error?: boolean }>`
 		color: var(--text-disabled);
 		border: 1px solid var(--background-secondary-alt);
 	}
+
+	-moz-appearance: textfield;
+	appearance: textfield;
+
+	&::-webkit-inner-spin-button,
+	&::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+	}
 `;
 
 export const Link = styled.button`

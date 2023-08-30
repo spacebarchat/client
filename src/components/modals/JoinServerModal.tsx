@@ -133,7 +133,7 @@ function JoinServerModal(props: AnimatedModalProps) {
 						</LabelWrapper>
 						<Input
 							{...register("code", { required: true })}
-							placeholder="https://app.spacebar.chat/invite/cool-guild"
+							placeholder={`${window.location.origin}/invite/`}
 							type="text"
 							maxLength={9999}
 							required
