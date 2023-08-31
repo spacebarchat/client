@@ -26,6 +26,7 @@ const Container = styled.div`
 	padding-left: 16px;
 	padding-right: 16px;
 	flex-shrink: 0;
+	z-index: 1;
 `;
 
 const InnerContainer = styled.div`
