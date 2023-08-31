@@ -44,6 +44,7 @@ function ContextMenu({ position, close, items, style }: Props) {
 		>
 			{items
 				.filter((a) => a.visible !== false)
+				.sort((a, b) => (a.index ?? 0) - (b.index ?? 0))
 				.map((item, index) => {
 					return <ContextMenuItem key={index} item={item} close={close} index={index} />;
 				})}

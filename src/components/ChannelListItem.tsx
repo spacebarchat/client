@@ -50,6 +50,7 @@ function ChannelListItem({ guild, channel, isCategory, active }: Props) {
 	const contextMenu = React.useContext(ContextMenuContext);
 	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
 		{
+			index: 1,
 			label: "Copy Channel ID",
 			onClick: () => {
 				navigator.clipboard.writeText(channel.id);
@@ -59,6 +60,7 @@ function ChannelListItem({ guild, channel, isCategory, active }: Props) {
 			},
 		},
 		{
+			index: 0,
 			label: "Create Channel Invite",
 			onClick: () => {
 				openModal(CreateInviteModal, { guild_id: guild.id, channel_id: channel.id });
