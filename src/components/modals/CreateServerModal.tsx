@@ -56,7 +56,7 @@ const FileInput = styled.div`
 	font-size: 0px;
 `;
 
-const InputContainer = styled.div`
+export const InputContainer = styled.div`
 	margin-top: 24px;
 	display: flex;
 	flex-direction: column;
