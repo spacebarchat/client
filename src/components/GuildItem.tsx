@@ -68,6 +68,9 @@ function GuildItem(props: Props) {
 			onClick: () => {
 				openModal(CreateInviteModal, { guild_id: guild.id });
 			},
+			iconProps: {
+				icon: "mdiAccountPlus",
+			},
 		},
 	]);
 

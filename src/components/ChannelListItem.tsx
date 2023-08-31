@@ -65,6 +65,9 @@ function ChannelListItem({ guild, channel, isCategory, active }: Props) {
 			onClick: () => {
 				openModal(CreateInviteModal, { guild_id: guild.id, channel_id: channel.id });
 			},
+			iconProps: {
+				icon: "mdiAccountPlus",
+			},
 		},
 	]);
 
