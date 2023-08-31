@@ -1,3 +1,4 @@
+import { useModals } from "@mattjennings/react-modal-stack";
 import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import Moment from "react-moment";
@@ -6,14 +7,12 @@ import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import useLogger from "../../hooks/useLogger";
 import { QueuedMessage } from "../../stores/MessageQueue";
 import { default as MessageObject } from "../../stores/objects/Message";
+import { calculateImageRatio, calculateScaledDimensions } from "../../utils/Message";
 import { calendarStrings } from "../../utils/i18n";
 import Avatar from "../Avatar";
 import { Link } from "../Link";
+import AttachmentPreviewModal from "../modals/AttachmentPreviewModal";
 import { IContextMenuItem } from "./../ContextMenuItem";
-
-// max width/height for images
-const maxWidth = 400;
-const maxHeight = 300;
 
 type MessageLike = MessageObject | QueuedMessage;
 
@@ -68,43 +67,6 @@ const MessageAttachment = styled.div`
 	cursor: pointer;
 `;
 
-function calculateImageRatio(width: number, height: number) {
-	let o = 1;
-	width > maxWidth && (o = maxWidth / width);
-	width = Math.round(width * o);
-	let a = 1;
-	(height = Math.round(height * o)) > maxHeight && (a = maxHeight / height);
-	return Math.min(o * a, 1);
-}
-
-function calculateScaledDimensions(
-	originalWidth: number,
-	originalHeight: number,
-	ratio: number,
-): { scaledWidth: number; scaledHeight: number } {
-	const deviceResolution = window.devicePixelRatio ?? 1;
-	let scaledWidth = originalWidth;
-	let scaledHeight = originalHeight;
-
-	if (ratio < 1) {
-		scaledWidth = Math.round(originalWidth * ratio);
-		scaledHeight = Math.round(originalHeight * ratio);
-	}
-
-	scaledWidth = Math.min(scaledWidth, maxWidth);
-	scaledHeight = Math.min(scaledHeight, maxHeight);
-
-	if (scaledWidth !== originalWidth || scaledHeight !== originalHeight) {
-		scaledWidth |= 0;
-		scaledHeight |= 0;
-	}
-
-	scaledWidth *= deviceResolution;
-	scaledHeight *= deviceResolution;
-
-	return { scaledWidth, scaledHeight };
-}
-
 // converts URLs in a string to html links
 const Linkify = ({ children }: { children: string }) => {
 	const urlPattern = /\bhttps?:\/\/\S+\b\/?/g;
@@ -146,6 +108,7 @@ interface Props {
  */
 function Message({ message, isHeader, isSending, isFailed }: Props) {
 	const logger = useLogger("Message.tsx");
+	const { openModal } = useModals();
 	const contextMenu = React.useContext(ContextMenuContext);
 	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
 		{
@@ -284,6 +247,9 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 														} as IContextMenuItem,
 													],
 												});
+											}}
+											onClick={() => {
+												openModal(AttachmentPreviewModal, { attachment });
 											}}
 										>
 											{a}

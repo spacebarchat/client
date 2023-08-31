@@ -1,4 +1,4 @@
-import { type StackedModalProps } from "@mattjennings/react-modal-stack";
+import { useModals, type StackedModalProps } from "@mattjennings/react-modal-stack";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import styled from "styled-components";
@@ -16,16 +16,6 @@ export const ModalBase = styled(motion.div)`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	// &::before {
-	// 	content: "";
-	// 	position: absolute;
-	// 	top: 0;
-	// 	left: 0;
-	// 	right: 0;
-	// 	bottom: 0;
-	// 	background-color: black;
-	// 	opacity: 0.85;
-	// }
 `;
 
 /**
@@ -182,9 +172,13 @@ export const ModalFullContent = styled.div`
 interface ModalProps extends StackedModalProps {
 	children: React.ReactNode;
 	full?: boolean;
+	onClick?: () => void;
+	style?: React.CSSProperties;
 }
 
 export function Modal(props: ModalProps) {
+	const { closeModal } = useModals();
+
 	return (
 		<AnimatePresence>
 			{props.open && (
@@ -202,9 +196,14 @@ export function Modal(props: ModalProps) {
 					initial="hide"
 					animate="show"
 					exit="hide"
+					onClick={() => {
+						closeModal();
+					}}
 					{...props}
 				>
-					<ModalWrapper full={props.full}>{props.children}</ModalWrapper>
+					<ModalWrapper full={props.full} style={props.style}>
+						{props.children}
+					</ModalWrapper>
 				</ModalBase>
 			)}
 		</AnimatePresence>
