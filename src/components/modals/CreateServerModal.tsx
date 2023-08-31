@@ -133,7 +133,11 @@ function CreateServerModal(props: AnimatedModalProps) {
 	});
 
 	return (
-		<Modal {...props}>
+		<Modal
+			{...props}
+			// used for clicking outside of the modal to close it
+			onClose={closeAllModals}
+		>
 			<ModalCloseWrapper>
 				<button
 					onClick={closeAllModals}

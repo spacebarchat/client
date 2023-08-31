@@ -173,6 +173,10 @@ interface ModalProps extends StackedModalProps {
 	children: React.ReactNode;
 	full?: boolean;
 	onClick?: () => void;
+	/**
+	 * Custom callback for when a modal is closed by clicking the background overlay
+	 */
+	onClose?: () => void;
 	style?: React.CSSProperties;
 }
 
@@ -196,8 +200,10 @@ export function Modal(props: ModalProps) {
 					initial="hide"
 					animate="show"
 					exit="hide"
-					onClick={() => {
-						closeModal();
+					onClick={(e) => {
+						if (e.target !== e.currentTarget) return;
+						if (props.onClose) props.onClose();
+						else closeModal();
 					}}
 					{...props}
 				>
