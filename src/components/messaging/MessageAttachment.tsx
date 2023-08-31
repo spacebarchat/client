@@ -23,11 +23,13 @@ export default function MessageAttachment({ attachment, contextMenuItems }: Atta
 	const { openModal } = useModals();
 	const contextMenu = React.useContext(ContextMenuContext);
 
+	const url = attachment.proxy_url && attachment.proxy_url.length > 0 ? attachment.proxy_url : attachment.url;
+
 	let a: JSX.Element = <></>;
 	if (attachment.content_type?.startsWith("image")) {
 		const ratio = calculateImageRatio(attachment.width!, attachment.height!);
 		const { scaledWidth, scaledHeight } = calculateScaledDimensions(attachment.width!, attachment.height!, ratio);
-		a = <img src={attachment.url} alt={attachment.filename} width={scaledWidth} height={scaledHeight} />;
+		a = <img src={url} alt={attachment.filename} width={scaledWidth} height={scaledHeight} />;
 	} else if (attachment.content_type?.startsWith("video")) {
 		{
 			/* TODO: poster thumbnail */
@@ -35,7 +37,7 @@ export default function MessageAttachment({ attachment, contextMenuItems }: Atta
 		a = (
 			<video controls preload="metadata" width={400}>
 				{/* TODO: the server doesn't return height and width yet for videos */}
-				<source src={attachment.url} type={attachment.content_type} />
+				<source src={url} type={attachment.content_type} />
 			</video>
 		);
 	} else {

@@ -13,6 +13,7 @@ import { Link } from "../Link";
 import { IContextMenuItem } from "./../ContextMenuItem";
 import AttachmentUploadProgress from "./AttachmentUploadProgress";
 import MessageAttachment from "./MessageAttachment";
+import MessageEmbed from "./MessageEmbed";
 
 type MessageLike = MessageObject | QueuedMessage;
 
@@ -192,6 +193,11 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 							{message.content ? <Linkify>{message.content}</Linkify> : null}
 							{"attachments" in message
 								? message.attachments.map((attachment) => renderAttachment(attachment))
+								: null}
+							{"embeds" in message
+								? message.embeds.map((embed) => (
+										<MessageEmbed embed={embed} contextMenuItems={contextMenuItems} />
+								  ))
 								: null}
 						</MessageContent>
 					) : (
