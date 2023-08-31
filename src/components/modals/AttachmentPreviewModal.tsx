@@ -20,7 +20,6 @@ function AttachmentPreviewModal(props: Props) {
 
 	return (
 		<Modal
-			full
 			style={{
 				display: "flex",
 				alignItems: "center",
