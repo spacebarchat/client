@@ -64,6 +64,10 @@ const MessageContent = styled.div<{ sending?: boolean; failed?: boolean }>`
 	color: ${(props) => (props.failed ? "var(--error)" : undefined)};
 `;
 
+const MessageAttachment = styled.div`
+	cursor: pointer;
+`;
+
 function calculateImageRatio(width: number, height: number) {
 	let o = 1;
 	width > maxWidth && (o = maxWidth / width);
@@ -255,7 +259,36 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 										logger.warn(`Unknown attachment type: ${attachment.content_type}`);
 									}
 
-									return <div key={attachment.id}>{a}</div>;
+									return (
+										<MessageAttachment
+											key={attachment.id}
+											onContextMenu={(e) => {
+												// prevent propagation to the message container
+												e.stopPropagation();
+												e.preventDefault();
+												contextMenu.open({
+													position: {
+														x: e.pageX,
+														y: e.pageY,
+													},
+													items: [
+														...contextMenuItems,
+														{
+															label: "Copy Attachment URL",
+															onClick: () => {
+																navigator.clipboard.writeText(attachment.url);
+															},
+															iconProps: {
+																icon: "mdiLink",
+															},
+														} as IContextMenuItem,
+													],
+												});
+											}}
+										>
+											{a}
+										</MessageAttachment>
+									);
 								})}
 						</MessageContent>
 					) : (
