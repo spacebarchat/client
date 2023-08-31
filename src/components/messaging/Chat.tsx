@@ -1,8 +1,11 @@
+import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
-import { useParams } from "react-router-dom";
+import React from "react";
 import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
+import Channel from "../../stores/objects/Channel";
+import Guild from "../../stores/objects/Guild";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageList from "./MessageList";
@@ -22,19 +25,25 @@ const Container = styled.div`
 	position: relative;
 `;
 
+interface Props {
+	channel?: Channel;
+	guild?: Guild;
+}
+
 /**
  * Main component for rendering channel messages
  */
-function Chat() {
+function Chat({ channel, guild }: Props) {
 	const app = useAppStore();
 	const logger = useLogger("Messages");
 
-	const { guildId, channelId } = useParams<{
-		guildId: string;
-		channelId: string;
-	}>();
-	const guild = app.guilds.get(guildId!);
-	const channel = guild?.channels.get(channelId!);
+	React.useEffect(() => {
+		if (!channel || !guild) return;
+
+		runInAction(() => {
+			app.gateway.onChannelOpen(guild.id, channel.id);
+		});
+	}, [channel, guild]);
 
 	if (!guild || !channel) {
 		return (

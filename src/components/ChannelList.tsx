@@ -1,8 +1,7 @@
 import { ChannelType } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useAppStore } from "../stores/AppStore";
+import Guild from "../stores/objects/Guild";
 import ChannelListItem from "./ChannelListItem";
 
 const List = styled.div`
@@ -21,13 +20,12 @@ function EmptyChannelList() {
 	);
 }
 
-function ChannelList() {
-	const app = useAppStore();
-	const { guildId, channelId } = useParams<{
-		guildId: string;
-		channelId: string;
-	}>();
-	const guild = app.guilds.get(guildId!);
+interface Props {
+	channelId?: string;
+	guild?: Guild;
+}
+
+function ChannelList({ guild, channelId }: Props) {
 	if (!guild) return <EmptyChannelList />;
 
 	return (

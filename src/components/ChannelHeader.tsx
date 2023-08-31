@@ -1,10 +1,10 @@
 import { StackedModalProps, useModals } from "@mattjennings/react-modal-stack";
 import { observer } from "mobx-react-lite";
 import React, { ComponentType } from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { ContextMenuContext } from "../contexts/ContextMenuContext";
 import { useAppStore } from "../stores/AppStore";
+import Guild from "../stores/objects/Guild";
 import { IContextMenuItem } from "./ContextMenuItem";
 import Icon from "./Icon";
 import { SectionHeader } from "./SectionHeader";
@@ -24,13 +24,12 @@ const HeaderText = styled.header`
 	font-weight: var(--font-weight-medium);
 `;
 
-function ChannelHeader() {
+interface Props {
+	guild?: Guild;
+}
+
+function ChannelHeader({ guild }: Props) {
 	const app = useAppStore();
-	const { guildId, channelId } = useParams<{
-		guildId: string;
-		channelId: string;
-	}>();
-	const guild = app.guilds.get(guildId!);
 	const contextMenu = React.useContext(ContextMenuContext);
 	const { openModal } = useModals();
 

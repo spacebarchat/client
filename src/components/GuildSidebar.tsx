@@ -1,6 +1,6 @@
 import { useModals } from "@mattjennings/react-modal-stack";
 import { observer } from "mobx-react-lite";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 import GuildItem from "./GuildItem";
@@ -28,11 +28,14 @@ const Divider = styled.div`
 	background-color: var(--text-disabled);
 `;
 
-function GuildSidebar() {
+interface Props {
+	guildId: string;
+}
+
+function GuildSidebar({ guildId }: Props) {
 	const app = useAppStore();
 	const { openModal } = useModals();
 	const navigate = useNavigate();
-	const { guildId } = useParams<{ guildId: string; channelId: string }>();
 
 	return (
 		<List>
