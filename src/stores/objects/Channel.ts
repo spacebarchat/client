@@ -16,9 +16,11 @@ import type {
 import { ChannelType, Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { action, computed, makeObservable, observable } from "mobx";
 import Logger from "../../utils/Logger";
+import { Permissions } from "../../utils/Permissions";
 import { APIError } from "../../utils/interfaces/api";
 import AppStore from "../AppStore";
 import MessageStore from "../MessageStore";
+import Guild from "./Guild";
 
 export default class Channel {
 	private readonly logger: Logger = new Logger("Channel");
@@ -229,5 +231,33 @@ export default class Channel {
 			this.type === ChannelType.GroupDM ||
 			this.type === ChannelType.DM
 		);
+	}
+
+	getPermission(userId: string, guild: Guild) {
+		const member = guild.members.get(userId);
+		let recipient_ids = this.recipients?.map((x) => x.id);
+		if (!recipient_ids?.length) recipient_ids = undefined;
+
+		const permission = Permissions.finalPermission({
+			user: {
+				id: userId,
+				roles: member?.roles.map((x) => x.id) || [],
+			},
+			guild: {
+				roles: member?.roles || [],
+			},
+			channel: {
+				overwrites: this.permissionOverwrites,
+				owner_id: this.ownerId,
+				recipient_ids,
+			},
+		});
+
+		const obj = new Permissions(permission);
+
+		// pass cache to permission for possible future getPermission calls
+		obj.cache = { guild, member, channel: this, roles: member?.roles, user_id: userId };
+
+		return obj;
 	}
 }

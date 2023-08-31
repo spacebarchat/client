@@ -13,16 +13,6 @@ const Wrapper = styled(Container)`
 	flex-direction: row;
 `;
 
-function Test() {
-	return (
-		<>
-			<ChannelSidebar />
-			<Chat />
-			<MemberList />
-		</>
-	);
-}
-
 function ChannelPage() {
 	const contextMenu = React.useContext(ContextMenuContext);
 
@@ -30,7 +20,9 @@ function ChannelPage() {
 		<Wrapper>
 			{contextMenu.visible && <ContextMenu {...contextMenu} />}
 			<GuildSidebar />
-			<Test />
+			<ChannelSidebar />
+			<Chat />
+			<MemberList />
 		</Wrapper>
 	);
 }

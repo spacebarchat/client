@@ -1,7 +1,10 @@
 import { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
 import { APIUser, CDNRoutes, DefaultUserAvatarAssets, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import { makeObservable, observable } from "mobx";
+import { Permissions } from "../../utils/Permissions";
 import REST from "../../utils/REST";
+import Channel from "./Channel";
+import Guild from "./Guild";
 
 export default class User {
 	id: Snowflake;
@@ -61,5 +64,33 @@ export default class User {
 	get avatarUrl(): string {
 		if (this.avatar) return REST.makeCDNUrl(CDNRoutes.userAvatar(this.id, this.avatar, ImageFormat.PNG));
 		else return this.defaultAvatarUrl;
+	}
+
+	getPermission(guild: Guild, channel: Channel) {
+		const member = guild.members.get(this.id);
+		let recipient_ids = channel?.recipients?.map((x) => x.id);
+		if (!recipient_ids?.length) recipient_ids = undefined;
+
+		const permission = Permissions.finalPermission({
+			user: {
+				id: this.id,
+				roles: member?.roles.map((x) => x.id) || [],
+			},
+			guild: {
+				roles: member?.roles || [],
+			},
+			channel: {
+				overwrites: channel.permissionOverwrites,
+				owner_id: channel?.ownerId,
+				recipient_ids,
+			},
+		});
+
+		const obj = new Permissions(permission);
+
+		// pass cache to permission for possible future getPermission calls
+		obj.cache = { guild, member, channel, roles: member?.roles, user_id: this.id };
+
+		return obj;
 	}
 }

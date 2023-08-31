@@ -300,6 +300,9 @@ export default class GatewayConnectionStore {
 			return;
 		}
 
+		// dont reconnect on "going away"
+		if (code === 1001) return;
+
 		this.logger.debug(
 			`Websocket closed with code ${code}; Will reconnect in ${(RECONNECT_TIMEOUT / 1000).toFixed(2)} seconds.`,
 		);
