@@ -16,13 +16,13 @@ const List = styled.div`
 	margin: 0;
 `;
 
-function EmptyChannelList() {
+export function EmptyChannelList() {
 	return <List></List>;
 }
 
 interface Props {
 	channelId?: string;
-	guild?: Guild;
+	guild: Guild;
 }
 
 function ChannelList({ channelId, guild }: Props) {
@@ -30,7 +30,6 @@ function ChannelList({ channelId, guild }: Props) {
 
 	const renderChannelListItem = React.useCallback(
 		(channel: Channel) => {
-			if (!guild) return null;
 			const permission = Permissions.getPermission(app.account!.id, guild, channel);
 			if (!permission.has("VIEW_CHANNEL")) return null;
 
@@ -48,8 +47,6 @@ function ChannelList({ channelId, guild }: Props) {
 		},
 		[app.account, channelId, guild],
 	);
-
-	if (!guild) return <EmptyChannelList />;
 
 	return <List>{guild.channels.mapped.map((channel) => renderChannelListItem(channel))}</List>;
 }

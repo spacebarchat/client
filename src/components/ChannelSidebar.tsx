@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Channel from "../stores/objects/Channel";
 import Guild from "../stores/objects/Guild";
 import ChannelHeader from "./ChannelHeader";
-import ChannelList from "./ChannelList";
+import ChannelList, { EmptyChannelList } from "./ChannelList";
 import Container from "./Container";
 import UserPanel from "./UserPanel";
 
@@ -30,7 +30,7 @@ function ChannelSidebar({ guild, channelId, guildId }: Props) {
 		<Wrapper>
 			{/* TODO: replace with dm search if no guild */}
 			<ChannelHeader guild={guild} guildId={guildId} />
-			<ChannelList channelId={channelId} guild={guild} />
+			{guild ? <ChannelList channelId={channelId} guild={guild} /> : <EmptyChannelList />}
 			<UserPanel />
 		</Wrapper>
 	);
