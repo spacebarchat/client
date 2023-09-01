@@ -1,9 +1,7 @@
 import { ChannelType } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
-import Channel from "../stores/objects/Channel";
 import Guild from "../stores/objects/Guild";
 import { Permissions } from "../utils/Permissions";
 import ChannelListItem from "./ChannelListItem";
@@ -29,18 +27,26 @@ function ChannelList({ channelId, guild }: Props) {
 	const app = useAppStore();
 	if (!guild) return <EmptyChannelList />;
 
-	const renderChannelItem = React.useCallback((channel: Channel) => {
-		const permission = Permissions.getPermission(app.account!.id, guild, channel);
-		if (!permission.has("VIEW_CHANNEL")) return null;
+	return (
+		<List>
+			{guild.channels.mapped.map((channel) => {
+				const permission = Permissions.getPermission(app.account!.id, guild, channel);
+				if (!permission.has("VIEW_CHANNEL")) return null;
 
-		const active = channelId === channel.id;
-		const isCategory = channel.type === ChannelType.GuildCategory;
-		return (
-			<ChannelListItem key={channel.id} guild={guild} channel={channel} isCategory={isCategory} active={active} />
-		);
-	}, []);
-
-	return <List>{guild.channels.mapped.map((channel) => renderChannelItem(channel))}</List>;
+				const active = channelId === channel.id;
+				const isCategory = channel.type === ChannelType.GuildCategory;
+				return (
+					<ChannelListItem
+						key={channel.id}
+						guild={guild}
+						channel={channel}
+						isCategory={isCategory}
+						active={active}
+					/>
+				);
+			})}
+		</List>
+	);
 }
 
 export default observer(ChannelList);
