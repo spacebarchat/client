@@ -1,4 +1,5 @@
 import {
+	APIGuildMember,
 	APIMessage,
 	ChannelType,
 	GatewayChannelCreateDispatchData,
@@ -445,6 +446,21 @@ export default class GatewayConnectionStore {
 		// TODO: store relationships
 		// TODO: store readstates
 		this.app.privateChannels.addAll(private_channels);
+
+		if (data.merged_members) {
+			// store merged members (the client users member object for each guild)
+			for (const mm of data.merged_members as (APIGuildMember & { guild_id: string; id: string })[][]) {
+				for (const m of mm) {
+					const guild = this.app.guilds.get(m.guild_id);
+					if (!guild) {
+						this.logger.warn(`[Ready] Guild ${m.guild_id} not found for member ${m.id}`);
+						return;
+					}
+					this.logger.debug(`[Ready] Adding member ${m.id} for guild ${guild.name} (${m.guild_id})`);
+					guild.members.add(m);
+				}
+			}
+		}
 
 		this.app.setGatewayReady(true);
 	};

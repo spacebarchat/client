@@ -3,11 +3,14 @@ import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 
-import { useMemo, useState } from "react";
+import { observer } from "mobx-react-lite";
+import React, { useMemo } from "react";
 import { BaseEditor, Descendant, Node, createEditor } from "slate";
 import { HistoryEditor, withHistory } from "slate-history";
 import { Editable, ReactEditor, Slate, withReact } from "slate-react";
+import Guild from "../../stores/objects/Guild";
 import User from "../../stores/objects/User";
+import { Permissions } from "../../utils/Permissions";
 import Snowflake from "../../utils/Snowflake";
 
 type CustomElement = { type: "paragraph"; children: CustomText[] };
@@ -48,7 +51,8 @@ const initialEditorValue: Descendant[] = [
 ];
 
 interface Props {
-	channel?: Channel;
+	channel: Channel;
+	guild?: Guild;
 }
 
 /**
@@ -58,7 +62,13 @@ function MessageInput(props: Props) {
 	const app = useAppStore();
 	const logger = useLogger("MessageInput");
 	const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-	const [content, setContent] = useState("");
+	const [content, setContent] = React.useState("");
+	const [canSendMessages, setCanSendMessages] = React.useState(true);
+
+	React.useEffect(() => {
+		const permission = Permissions.getPermission(app.account!.id, props.guild, props.channel);
+		setCanSendMessages(permission.has("SEND_MESSAGES"));
+	}, []);
 
 	const serialize = (value: Descendant[]) => {
 		return (
@@ -140,9 +150,15 @@ function MessageInput(props: Props) {
 									padding: "12px 16px",
 									overflowY: "auto",
 									maxHeight: "50vh",
+									cursor: !canSendMessages ? "not-allowed" : "text",
 								}}
-								placeholder={`Message ${props.channel?.name}`}
+								placeholder={
+									canSendMessages
+										? `Message ${props.channel?.name}`
+										: "You do not have permission to send messages in this channel."
+								}
 								aria-label="Message input"
+								readOnly={!canSendMessages}
 							/>
 						</Slate>
 					</div>
@@ -152,4 +168,4 @@ function MessageInput(props: Props) {
 	);
 }
 
-export default MessageInput;
+export default observer(MessageInput);

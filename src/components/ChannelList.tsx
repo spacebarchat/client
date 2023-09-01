@@ -1,7 +1,9 @@
 import { ChannelType } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
+import { useAppStore } from "../stores/AppStore";
 import Guild from "../stores/objects/Guild";
+import { Permissions } from "../utils/Permissions";
 import ChannelListItem from "./ChannelListItem";
 
 const List = styled.div`
@@ -26,11 +28,15 @@ interface Props {
 }
 
 function ChannelList({ guild, channelId }: Props) {
+	const app = useAppStore();
 	if (!guild) return <EmptyChannelList />;
 
 	return (
 		<List>
 			{guild.channels.mapped.map((channel) => {
+				const permission = Permissions.getPermission(app.account!.id, guild, channel);
+				if (!permission.has("VIEW_CHANNEL")) return null;
+
 				const active = channelId === channel.id;
 				const isCategory = channel.type === ChannelType.GuildCategory;
 				return (

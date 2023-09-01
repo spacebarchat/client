@@ -57,7 +57,7 @@ function Chat({ channel, guild }: Props) {
 			<ChatHeader channel={channel} />
 			<Container>
 				<MessageList guild={guild} channel={channel} />
-				<MessageInput channel={channel} />
+				<MessageInput channel={channel} guild={guild} />
 			</Container>
 		</Wrapper>
 	);
