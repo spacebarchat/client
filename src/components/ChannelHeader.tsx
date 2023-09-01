@@ -26,9 +26,10 @@ const HeaderText = styled.header`
 
 interface Props {
 	guild?: Guild;
+	guildId?: string;
 }
 
-function ChannelHeader({ guild }: Props) {
+function ChannelHeader({ guild, guildId }: Props) {
 	const app = useAppStore();
 	const contextMenu = React.useContext(ContextMenuContext);
 	const { openModal } = useModals();
@@ -85,15 +86,25 @@ function ChannelHeader({ guild }: Props) {
 		});
 	}
 
+	if (guildId === "@me") {
+		return (
+			<Wrapper
+				style={{
+					cursor: "default",
+					pointerEvents: "none",
+					display: "flex",
+					justifyContent: "center",
+				}}
+			>
+				<HeaderText>Direct Messages</HeaderText>
+			</Wrapper>
+		);
+	}
+	if (!guild) return null;
+
 	return (
 		<Wrapper onClick={openMenu}>
-			<HeaderText>
-				{guild?.name
-					? guild.name.length > 18
-						? guild.name.substring(0, 18) + "..."
-						: guild.name
-					: "Unknown Guild"}
-			</HeaderText>
+			<HeaderText>{guild.name.length > 18 ? guild.name.substring(0, 18) + "..." : guild.name}</HeaderText>
 			<Icon icon="mdiChevronDown" size="20px" color="var(--text)" />
 		</Wrapper>
 	);

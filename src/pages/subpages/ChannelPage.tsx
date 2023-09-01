@@ -6,7 +6,6 @@ import ChannelSidebar from "../../components/ChannelSidebar";
 import Container from "../../components/Container";
 import ContextMenu from "../../components/ContextMenu";
 import GuildSidebar from "../../components/GuildSidebar";
-import MemberList from "../../components/MemberList";
 import Chat from "../../components/messaging/Chat";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { useAppStore } from "../../stores/AppStore";
@@ -32,8 +31,7 @@ function ChannelPage() {
 			{contextMenu.visible && <ContextMenu {...contextMenu} />}
 			<GuildSidebar guildId={guildId!} />
 			<ChannelSidebar channel={channel} guild={guild} channelId={channelId} guildId={guildId} />
-			<Chat channel={channel} guild={guild} />
-			<MemberList />
+			<Chat channel={channel} guild={guild} channelId={channelId} guildId={guildId} />
 		</Wrapper>
 	);
 }

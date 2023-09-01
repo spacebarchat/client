@@ -37,7 +37,7 @@ function MessageList({ guild, channel }: Props) {
 	const [hasMore, setHasMore] = React.useState(true);
 	const [canView, setCanView] = React.useState(false);
 
-	// handles the initial permission check
+	// handles the permission check
 	React.useEffect(() => {
 		const permission = Permissions.getPermission(app.account!.id, guild, channel);
 		setCanView(permission.has("READ_MESSAGE_HISTORY"));

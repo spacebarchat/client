@@ -4,11 +4,24 @@ import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 import Guild from "../../stores/objects/Guild";
+import MemberList from "../MemberList";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageList from "./MessageList";
 
-const Wrapper = styled.div`
+/**
+ * Wrapps chat and member list into a row
+ */
+const WrapperOne = styled.div`
+	display: flex;
+	flex-direction: row;
+	flex: 1 1 100%;
+`;
+
+/**
+ * Wraps the message list, header, and input into a column
+ */
+const WrapperTwo = styled.div`
 	display: flex;
 	flex-direction: column;
 	flex: 1 1 100%;
@@ -26,12 +39,14 @@ const Container = styled.div`
 interface Props {
 	channel?: Channel;
 	guild?: Guild;
+	channelId?: string;
+	guildId?: string;
 }
 
 /**
  * Main component for rendering channel messages
  */
-function Chat({ channel, guild }: Props) {
+function Chat({ channel, guild, guildId }: Props) {
 	const app = useAppStore();
 	const logger = useLogger("Messages");
 
@@ -43,23 +58,41 @@ function Chat({ channel, guild }: Props) {
 	// 	});
 	// }, [channel, guild]);
 
+	if (guildId && guildId === "@me") {
+		return (
+			<WrapperTwo>
+				<span>Home Section Placeholder</span>
+			</WrapperTwo>
+		);
+	}
+
 	if (!guild || !channel) {
 		return (
-			<Wrapper>
-				<ChatHeader channel={channel} />
-				<span>{!guild ? "Unknown Guild" : "Unknown Channel"}</span>
-			</Wrapper>
+			<WrapperTwo>
+				<span
+					style={{
+						color: "var(--text-secondary)",
+						fontSize: "1.5rem",
+						margin: "auto",
+					}}
+				>
+					Unknown Guild or Channel
+				</span>
+			</WrapperTwo>
 		);
 	}
 
 	return (
-		<Wrapper>
-			<ChatHeader channel={channel} />
-			<Container>
-				<MessageList guild={guild} channel={channel} />
-				<MessageInput channel={channel} guild={guild} />
-			</Container>
-		</Wrapper>
+		<WrapperOne>
+			<WrapperTwo>
+				<ChatHeader channel={channel} />
+				<Container>
+					<MessageList guild={guild} channel={channel} />
+					<MessageInput channel={channel} guild={guild} />
+				</Container>
+			</WrapperTwo>
+			<MemberList />
+		</WrapperOne>
 	);
 }
 

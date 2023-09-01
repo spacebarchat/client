@@ -15,11 +15,7 @@ const List = styled.div`
 `;
 
 function EmptyChannelList() {
-	return (
-		<List>
-			<span>skeleton</span>
-		</List>
-	);
+	return <List></List>;
 }
 
 interface Props {
@@ -27,7 +23,7 @@ interface Props {
 	guild?: Guild;
 }
 
-function ChannelList({ guild, channelId }: Props) {
+function ChannelList({ channelId, guild }: Props) {
 	const app = useAppStore();
 	if (!guild) return <EmptyChannelList />;
 

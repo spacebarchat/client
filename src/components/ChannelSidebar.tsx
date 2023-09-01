@@ -25,11 +25,11 @@ interface Props {
 	channelId?: string;
 }
 
-function ChannelSidebar({ guild, channelId }: Props) {
+function ChannelSidebar({ guild, channelId, guildId }: Props) {
 	return (
 		<Wrapper>
 			{/* TODO: replace with dm search if no guild */}
-			<ChannelHeader guild={guild} />
+			<ChannelHeader guild={guild} guildId={guildId} />
 			<ChannelList channelId={channelId} guild={guild} />
 			<UserPanel />
 		</Wrapper>
