@@ -1,4 +1,4 @@
-import type { APIMessage } from "@spacebarchat/spacebar-api-types/v9";
+import type { APIAttachment, APIMessage } from "@spacebarchat/spacebar-api-types/v9";
 import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
 import { action, computed, makeAutoObservable, observable } from "mobx";
 
@@ -16,6 +16,7 @@ export type QueuedMessageData = {
 	channel: string;
 	author: User;
 	content: string;
+	attachments?: File[];
 };
 
 export interface QueuedMessage {
@@ -27,6 +28,7 @@ export interface QueuedMessage {
 	content: string;
 	timestamp: Date;
 	type: MessageType;
+	attachments: APIAttachment[];
 }
 
 export default class MessageQueue {
@@ -45,6 +47,17 @@ export default class MessageQueue {
 			timestamp: new Date(),
 			status: QueuedMessageStatus.SENDING,
 			type: MessageType.Default,
+			attachments:
+				data.attachments?.map((x) => ({
+					id: Snowflake.generate(),
+					filename: x.name,
+					size: x.size,
+					url: URL.createObjectURL(x),
+					proxy_url: URL.createObjectURL(x),
+					height: 0,
+					width: 0,
+					content_type: x.type,
+				})) ?? [],
 		});
 	}
 

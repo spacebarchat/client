@@ -17,7 +17,6 @@ export default class REST {
 			mode: "cors",
 			"User-Agent": "Spacebar-Client/1.0",
 			accept: "application/json",
-			"Content-Type": "application/json",
 		};
 	}
 
@@ -110,7 +109,10 @@ export default class REST {
 			this.logger.debug(`POST ${url}; payload:`, body);
 			return fetch(url, {
 				method: "POST",
-				headers: this.headers,
+				headers: {
+					...this.headers,
+					"Content-Type": "application/json",
+				},
 				body: body ? JSON.stringify(body) : undefined,
 			})
 				.then(async (res) => {
@@ -132,6 +134,41 @@ export default class REST {
 					}
 				})
 				.catch(reject);
+		});
+	}
+
+	public async postFormData<U>(
+		path: string,
+		body: FormData,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		queryParams: Record<string, any> = {},
+		progressCb?: (ev: ProgressEvent) => void,
+	): Promise<U> {
+		return new Promise((resolve, reject) => {
+			const url = REST.makeAPIUrl(path, queryParams);
+			this.logger.debug(`POST ${url}; payload:`, body);
+			const xhr = new XMLHttpRequest();
+			if (progressCb) xhr.upload.addEventListener("progress", progressCb);
+			xhr.addEventListener("loadend", () => {
+				// if success, resolve text or json
+				if (xhr.status >= 200 && xhr.status < 300) {
+					if (xhr.responseType === "json") return resolve(xhr.response);
+
+					return resolve(JSON.parse(xhr.response));
+				}
+
+				// if theres content, reject with text
+				if (xhr.getResponseHeader("content-length") !== "0") return reject(xhr.responseText);
+
+				// reject with status code if theres no content
+				return reject(xhr.statusText);
+			});
+			xhr.open("POST", url);
+			// set headers
+			Object.entries(this.headers).forEach(([key, value]) => {
+				xhr.setRequestHeader(key, value);
+			});
+			xhr.send(body);
 		});
 	}
 

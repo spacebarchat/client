@@ -198,15 +198,22 @@ export default class Channel {
 	}
 
 	@action
-	async sendMessage(data: RESTPostAPIChannelMessageJSONBody) {
+	async sendMessage(data: RESTPostAPIChannelMessageJSONBody | FormData, cb?: (e: ProgressEvent) => void) {
+		if (data instanceof FormData)
+			return this.app.rest.postFormData<RESTPostAPIChannelMessageResult>(
+				Routes.channelMessages(this.id),
+				data,
+				undefined,
+				cb,
+			);
 		return this.app.rest.post<RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult>(
 			Routes.channelMessages(this.id),
 			data,
 		);
 	}
 
-	canSendMessage(content: string) {
-		if (!content || !content.trim() || !content.replace(/\r?\n|\r/g, "")) {
+	canSendMessage(content: string, attachments: File[]) {
+		if (!attachments.length && (!content || !content.trim() || !content.replace(/\r?\n|\r/g, ""))) {
 			return false;
 		}
 
