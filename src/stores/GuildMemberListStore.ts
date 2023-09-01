@@ -118,6 +118,7 @@ export default class GuildMemberListStore {
 					break;
 				}
 				case GatewayGuildMemberListUpdateOperation.DELETE: {
+					this.logger.warn("Unimplemented OP DELETE", item);
 					//   for (const item of items) {
 					//     if ("group" in item) {
 					//       this.logger.debug(
@@ -137,7 +138,7 @@ export default class GuildMemberListStore {
 					break;
 				}
 				case GatewayGuildMemberListUpdateOperation.UPDATE: {
-					this.logger.debug("UPDATE", item);
+					this.logger.warn("Unimplemented OP UPDATE", item);
 					//   for (const item of items) {
 					//     if ("group" in item) {
 					//       //   this.listData[range[0]].title = item.group.id;
@@ -156,6 +157,7 @@ export default class GuildMemberListStore {
 					break;
 				}
 				case GatewayGuildMemberListUpdateOperation.INSERT: {
+					this.logger.warn("Unimplemented OP INSERT", item);
 					// if ('group' in item) {
 					//   this.list.splice(index, 0, item.group.id);
 					// } else {

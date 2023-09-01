@@ -20,6 +20,13 @@ type PermissionString = keyof typeof Permissions.FLAGS;
 export class Permissions extends BitField {
 	cache: PermissionCache = {};
 
+	constructor(bits: BitFieldResolvable = 0) {
+		super(bits);
+		if (this.bitfield & Permissions.FLAGS.ADMINISTRATOR) {
+			this.bitfield = ALL_PERMISSIONS;
+		}
+	}
+
 	static FLAGS = {
 		CREATE_INSTANT_INVITE: BitFlag(0),
 		KICK_MEMBERS: BitFlag(1),
@@ -68,13 +75,6 @@ export class Permissions extends BitField {
 		 */
 		// CUSTOM_PERMISSION: BigInt(1) << BigInt(0) + CUSTOM_PERMISSION_OFFSET
 	};
-
-	constructor(bits: BitFieldResolvable = 0) {
-		super(bits);
-		if (this.bitfield & Permissions.FLAGS.ADMINISTRATOR) {
-			this.bitfield = ALL_PERMISSIONS;
-		}
-	}
 
 	any(permission: PermissionResolvable, checkAdmin = true) {
 		return (checkAdmin && super.any(Permissions.FLAGS.ADMINISTRATOR)) || super.any(permission);
@@ -133,9 +133,7 @@ export class Permissions extends BitField {
 		if (user.id === "0") return new Permissions("ADMINISTRATOR"); // system user id
 
 		const roles = guild.roles.filter((x) => user.roles.includes(x.id));
-		console.log(`Roles`, roles);
 		let permission = Permissions.rolePermission(roles);
-		console.log(`Role permissions`, permission);
 
 		if (channel?.overwrites) {
 			const overwrites = channel.overwrites.filter((x) => {
@@ -143,9 +141,7 @@ export class Permissions extends BitField {
 				if (x.type === 1 && x.id == user.id) return true;
 				return false;
 			});
-			console.log(`channel overwrites`, overwrites);
 			permission = Permissions.channelPermission(overwrites, permission);
-			console.log(`channel permission`, permission);
 		}
 
 		if (channel?.recipient_ids) {
@@ -172,6 +168,42 @@ export class Permissions extends BitField {
 		}
 
 		return new Permissions(permission);
+	}
+
+	static getPermission(user_id?: string, guild?: Guild, channel?: Channel) {
+		if (!user_id) throw new Error("User not found");
+		let member: GuildMember | undefined;
+
+		if (guild) {
+			if (guild?.ownerId === user_id) return new Permissions(Permissions.FLAGS.ADMINISTRATOR);
+			member = guild.members.get(user_id);
+		}
+
+		let recipient_ids = channel?.recipients?.map((x) => x.id);
+		if (!recipient_ids?.length) recipient_ids = undefined;
+
+		// TODO: remove guild.roles and convert recipient_ids to recipients
+		const permission = Permissions.finalPermission({
+			user: {
+				id: user_id,
+				roles: member?.roles.map((x) => x.id) || [],
+			},
+			guild: {
+				roles: member?.roles || [],
+			},
+			channel: {
+				overwrites: channel?.permissionOverwrites,
+				owner_id: channel?.ownerId,
+				recipient_ids,
+			},
+		});
+
+		const obj = new Permissions(permission);
+
+		// pass cache to permission for possible future getPermission calls
+		obj.cache = { guild, member, channel, roles: member?.roles, user_id };
+
+		return obj;
 	}
 }
 
