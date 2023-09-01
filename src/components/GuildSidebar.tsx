@@ -1,8 +1,10 @@
 import { useModals } from "@mattjennings/react-modal-stack";
 import { observer } from "mobx-react-lite";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
+import Guild from "../stores/objects/Guild";
 import GuildItem from "./GuildItem";
 import GuildSidebarListItem from "./GuildSidebarListItem";
 import SidebarAction from "./SidebarAction";
@@ -37,6 +39,10 @@ function GuildSidebar({ guildId }: Props) {
 	const { openModal } = useModals();
 	const navigate = useNavigate();
 
+	const renderGuildItem = React.useCallback((guild: Guild, active: boolean) => {
+		return <GuildItem key={guild.id} guild={guild} active={active} />;
+	}, []);
+
 	return (
 		<List>
 			<SidebarAction
@@ -54,9 +60,7 @@ function GuildSidebar({ guildId }: Props) {
 				<Divider key="divider" />
 			</GuildSidebarListItem>
 			<div aria-label="Servers">
-				{app.guilds.getAll().map((guild) => (
-					<GuildItem key={guild.id} guildId={guild.id} active={guild.id === guildId} />
-				))}
+				{app.guilds.getAll().map((guild) => renderGuildItem(guild, guild.id === guildId))}
 			</div>
 
 			<SidebarAction

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ContextMenuContext } from "../contexts/ContextMenuContext";
 import { useAppStore } from "../stores/AppStore";
+import Guild from "../stores/objects/Guild";
 import { Permissions } from "../utils/Permissions";
 import REST from "../utils/REST";
 import Container from "./Container";
@@ -33,23 +34,20 @@ const Wrapper = styled(Container)<{ active?: boolean; hasImage?: boolean }>`
 `;
 
 interface Props {
-	guildId: string;
+	guild: Guild;
 	active?: boolean;
 }
 
 /**
  * List item for use in the guild sidebar
  */
-function GuildItem(props: Props) {
+function GuildItem({ guild, active }: Props) {
 	const app = useAppStore();
 	const navigate = useNavigate();
 	const { openModal } = useModals();
 
-	const guild = app.guilds.get(props.guildId);
 	const [pillType, setPillType] = React.useState<PillType>("none");
 	const [isHovered, setHovered] = React.useState(false);
-
-	if (!guild) return null;
 
 	const contextMenu = React.useContext(ContextMenuContext);
 	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
@@ -80,15 +78,15 @@ function GuildItem(props: Props) {
 			const permission = Permissions.getPermission(app.account!.id, guild, x);
 			return permission.has("VIEW_CHANNEL") && x.type !== ChannelType.GuildCategory;
 		});
-		navigate(`/channels/${props.guildId}${channel ? `/${channel.id}` : ""}`);
+		navigate(`/channels/${guild.id}${channel ? `/${channel.id}` : ""}`);
 	};
 
 	React.useEffect(() => {
-		if (props.active) return setPillType("active");
+		if (active) return setPillType("active");
 		else if (isHovered) return setPillType("hover");
 		// TODO: unread
 		else return setPillType("none");
-	}, [props.active, isHovered]);
+	}, [active, isHovered]);
 
 	return (
 		<GuildSidebarListItem
@@ -110,14 +108,14 @@ function GuildItem(props: Props) {
 			>
 				<Wrapper
 					onClick={doNavigate}
-					active={props.active}
+					active={active}
 					hasImage={!!guild?.icon}
 					onMouseEnter={() => setHovered(true)}
 					onMouseLeave={() => setHovered(false)}
 				>
 					{guild.icon ? (
 						<img
-							src={REST.makeCDNUrl(CDNRoutes.guildIcon(props.guildId, guild?.icon, ImageFormat.PNG))}
+							src={REST.makeCDNUrl(CDNRoutes.guildIcon(guild.id, guild?.icon, ImageFormat.PNG))}
 							width={48}
 							height={48}
 						/>

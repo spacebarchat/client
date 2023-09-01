@@ -7,6 +7,7 @@ import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 import Guild from "../../stores/objects/Guild";
+import Message from "../../stores/objects/Message";
 import { Permissions } from "../../utils/Permissions";
 import { HorizontalDivider } from "../Divider";
 import MessageGroup from "./MessageGroup";
@@ -54,6 +55,10 @@ function MessageList({ guild, channel }: Props) {
 		}
 	}, [guild, channel, canView]);
 
+	const renderMessageGroup = React.useCallback((group: Message[], index: number) => {
+		return <MessageGroup key={index} messages={group} />;
+	}, []);
+
 	const fetchMore = async () => {
 		if (!channel.messages.count) {
 			return;
@@ -97,9 +102,7 @@ function MessageList({ guild, channel }: Props) {
 						</EndMessageContainer>
 					}
 				>
-					{channel.messages.grouped.map((group, index) => {
-						return <MessageGroup key={index} messages={group} />;
-					})}
+					{channel.messages.grouped.map((group, index) => renderMessageGroup(group, index))}
 				</InfiniteScroll>
 			) : (
 				<div
