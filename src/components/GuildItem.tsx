@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ContextMenuContext } from "../contexts/ContextMenuContext";
 import { useAppStore } from "../stores/AppStore";
+import { Permissions } from "../utils/Permissions";
 import REST from "../utils/REST";
 import Container from "./Container";
 import { IContextMenuItem } from "./ContextMenuItem";
@@ -75,7 +76,10 @@ function GuildItem(props: Props) {
 	]);
 
 	const doNavigate = () => {
-		const channel = guild.channels.mapped.find((x) => x.type !== ChannelType.GuildCategory);
+		const channel = guild.channels.mapped.find((x) => {
+			const permission = Permissions.getPermission(app.account!.id, guild, x);
+			return permission.has("VIEW_CHANNEL") && x.type !== ChannelType.GuildCategory;
+		});
 		navigate(`/channels/${props.guildId}${channel ? `/${channel.id}` : ""}`);
 	};
 
