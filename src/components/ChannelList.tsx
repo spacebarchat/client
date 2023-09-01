@@ -27,10 +27,10 @@ interface Props {
 
 function ChannelList({ channelId, guild }: Props) {
 	const app = useAppStore();
-	if (!guild) return <EmptyChannelList />;
 
 	const renderChannelListItem = React.useCallback(
 		(channel: Channel) => {
+			if (!guild) return null;
 			const permission = Permissions.getPermission(app.account!.id, guild, channel);
 			if (!permission.has("VIEW_CHANNEL")) return null;
 
@@ -48,6 +48,8 @@ function ChannelList({ channelId, guild }: Props) {
 		},
 		[app.account, channelId, guild],
 	);
+
+	if (!guild) return <EmptyChannelList />;
 
 	return <List>{guild.channels.mapped.map((channel) => renderChannelListItem(channel))}</List>;
 }
