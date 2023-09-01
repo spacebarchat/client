@@ -456,7 +456,6 @@ export default class GatewayConnectionStore {
 						this.logger.warn(`[Ready] Guild ${m.guild_id} not found for member ${m.id}`);
 						return;
 					}
-					this.logger.debug(`[Ready] Adding member ${m.id} for guild ${guild.name} (${m.guild_id})`);
 					guild.members.add(m);
 				}
 			}
