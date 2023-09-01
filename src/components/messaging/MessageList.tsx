@@ -7,6 +7,7 @@ import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 import Guild from "../../stores/objects/Guild";
+import { Permissions } from "../../utils/Permissions";
 import { HorizontalDivider } from "../Divider";
 import MessageGroup from "./MessageGroup";
 
@@ -34,16 +35,24 @@ function MessageList({ guild, channel }: Props) {
 	const logger = useLogger("MessageList.tsx");
 	// const messages = [...(channel.messages.messages ?? []), ...(channel ? app.queue.get(channel.id) ?? [] : [])];
 	const [hasMore, setHasMore] = React.useState(true);
+	const [canView, setCanView] = React.useState(false);
+
+	// handles the initial permission check
+	React.useEffect(() => {
+		const permission = Permissions.getPermission(app.account!.id, guild, channel);
+		setCanView(permission.has("READ_MESSAGE_HISTORY"));
+	}, []);
 
 	// handles the initial fetch of channel messages
 	React.useEffect(() => {
+		if (!canView) return;
 		if (guild && channel && channel.messages.count === 0) {
 			channel.getMessages(app, true).then((r) => {
 				if (r !== 50) setHasMore(false);
 				else setHasMore(true);
 			});
 		}
-	}, [guild, channel]);
+	}, [guild, channel, canView]);
 
 	const fetchMore = async () => {
 		if (!channel.messages.count) {
@@ -64,33 +73,45 @@ function MessageList({ guild, channel }: Props) {
 
 	return (
 		<Container id="scrollable-div">
-			<InfiniteScroll
-				dataLength={channel.messages.grouped.length}
-				next={fetchMore}
-				style={{ display: "flex", flexDirection: "column-reverse", marginBottom: "30px" }} // to put endMessage and loader to the top.
-				hasMore={hasMore}
-				inverse={true}
-				loader={
-					<PulseLoader
-						style={{ display: "flex", justifyContent: "center", alignContent: "center" }}
-						color="var(--primary)"
-					/>
-				}
-				scrollableTarget="scrollable-div"
-				endMessage={
-					<EndMessageContainer>
-						<h1 style={{ fontWeight: 700, margin: "8px 0" }}>Welcome to #{channel.name}!</h1>
-						<p style={{ color: "var(--text-secondary)" }}>
-							This is the start of the #{channel.name} channel.
-						</p>
-						<HorizontalDivider />
-					</EndMessageContainer>
-				}
-			>
-				{channel.messages.grouped.map((group, index) => {
-					return <MessageGroup key={index} messages={group} />;
-				})}
-			</InfiniteScroll>
+			{canView ? (
+				<InfiniteScroll
+					dataLength={channel.messages.grouped.length}
+					next={fetchMore}
+					style={{ display: "flex", flexDirection: "column-reverse", marginBottom: "30px" }} // to put endMessage and loader to the top.
+					hasMore={hasMore}
+					inverse={true}
+					loader={
+						<PulseLoader
+							style={{ display: "flex", justifyContent: "center", alignContent: "center" }}
+							color="var(--primary)"
+						/>
+					}
+					scrollableTarget="scrollable-div"
+					endMessage={
+						<EndMessageContainer>
+							<h1 style={{ fontWeight: 700, margin: "8px 0" }}>Welcome to #{channel.name}!</h1>
+							<p style={{ color: "var(--text-secondary)" }}>
+								This is the start of the #{channel.name} channel.
+							</p>
+							<HorizontalDivider />
+						</EndMessageContainer>
+					}
+				>
+					{channel.messages.grouped.map((group, index) => {
+						return <MessageGroup key={index} messages={group} />;
+					})}
+				</InfiniteScroll>
+			) : (
+				<div
+					style={{
+						marginBottom: "30px",
+						paddingLeft: "20px",
+						color: "var(--text-secondary)",
+					}}
+				>
+					You do not have permission to read the history of this channel.
+				</div>
+			)}
 		</Container>
 	);
 }
