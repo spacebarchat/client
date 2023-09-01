@@ -68,7 +68,7 @@ function MessageInput(props: Props) {
 	React.useEffect(() => {
 		const permission = Permissions.getPermission(app.account!.id, props.guild, props.channel);
 		setCanSendMessages(permission.has("SEND_MESSAGES"));
-	}, []);
+	}, [props.channel, props.guild]);
 
 	const serialize = (value: Descendant[]) => {
 		return (
