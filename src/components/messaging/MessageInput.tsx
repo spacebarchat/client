@@ -16,7 +16,7 @@ import Snowflake from "../../utils/Snowflake";
 import { HorizontalDivider } from "../Divider";
 import Icon from "../Icon";
 import IconButton from "../IconButton";
-import AttachmentUpload from "./AttachmentUpload";
+import AttachmentUploadList from "./AttachmentUploadList";
 
 type CustomElement = { type: "paragraph"; children: CustomText[] };
 type CustomText = { text: string; bold?: true };
@@ -210,7 +210,11 @@ function MessageInput(props: Props) {
 						<>
 							<AttachmentsList>
 								{attachments.map((file, index) => (
-									<AttachmentUpload key={index} file={file} remove={() => removeAttachment(index)} />
+									<AttachmentUploadList
+										key={index}
+										file={file}
+										remove={() => removeAttachment(index)}
+									/>
 								))}
 							</AttachmentsList>
 							<HorizontalDivider nomargin />

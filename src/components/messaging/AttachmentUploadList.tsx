@@ -47,7 +47,7 @@ interface Props {
 	remove: () => void;
 }
 
-function AttachmentUpload({ file, remove }: Props) {
+function AttachmentUploadList({ file, remove }: Props) {
 	// create a preview url for the file
 	const previewUrl = URL.createObjectURL(file);
 
@@ -96,4 +96,4 @@ function AttachmentUpload({ file, remove }: Props) {
 	);
 }
 
-export default AttachmentUpload;
+export default AttachmentUploadList;
