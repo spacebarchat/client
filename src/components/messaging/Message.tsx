@@ -1,5 +1,6 @@
 import { useModals } from "@mattjennings/react-modal-stack";
 import { APIAttachment, MessageType } from "@spacebarchat/spacebar-api-types/v9";
+import { observer } from "mobx-react-lite";
 import React from "react";
 import Moment from "react-moment";
 import styled from "styled-components";
@@ -13,6 +14,7 @@ import Avatar from "../Avatar";
 import { Link } from "../Link";
 import AttachmentPreviewModal from "../modals/AttachmentPreviewModal";
 import { IContextMenuItem } from "./../ContextMenuItem";
+import AttachmentUploadProgress from "./AttachmentUploadProgress";
 
 type MessageLike = MessageObject | QueuedMessage;
 
@@ -181,6 +183,8 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 		);
 	}, []);
 
+	if (message instanceof QueuedMessage) console.log(`progress at msg`, message.progress);
+
 	// construct the context menu options
 	// React.useEffect(() => {
 	// 	// if the message is queued, we don't need a context menu
@@ -260,10 +264,16 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 							{message.content ?? "No Content"}
 						</div>
 					)}
+
+					{"files" in message && message.files?.length !== 0 && (
+						<div>
+							<AttachmentUploadProgress message={message} />
+						</div>
+					)}
 				</MessageContentContainer>
 			</Container>
 		</MessageListItem>
 	);
 }
 
-export default Message;
+export default observer(Message);

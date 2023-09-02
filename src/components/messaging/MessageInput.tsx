@@ -111,11 +111,6 @@ function MessageInput(props: Props) {
 		);
 	}, []);
 
-	const uploadProgressCallback = React.useCallback((e: ProgressEvent) => {
-		const progress = Math.round((e.loaded * 100) / e.total);
-		console.log(`uploadProgressCallback`, progress);
-	}, []);
-
 	const onKeyDown = React.useCallback(
 		(e: React.KeyboardEvent<HTMLDivElement>) => {
 			if (e.key === "Enter" && !e.shiftKey) {
@@ -133,12 +128,12 @@ function MessageInput(props: Props) {
 				if (!canSend && !shouldFail) return;
 
 				const nonce = Snowflake.generate();
-				app.queue.add({
+				const msg = app.queue.add({
 					id: nonce,
 					author: app.account! as unknown as User,
 					content,
 					channel: props.channel.id,
-					// attachments,
+					files: attachments,
 				});
 
 				if (shouldSend) {
@@ -153,7 +148,7 @@ function MessageInput(props: Props) {
 					} else {
 						body = { content, nonce };
 					}
-					props.channel.sendMessage(body, uploadProgressCallback).catch((error) => {
+					props.channel.sendMessage(body, msg.progressCallback).catch((error) => {
 						app.queue.error(nonce, error as string);
 					});
 				}

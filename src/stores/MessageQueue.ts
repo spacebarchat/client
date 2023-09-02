@@ -1,4 +1,4 @@
-import type { APIAttachment, APIMessage } from "@spacebarchat/spacebar-api-types/v9";
+import type { APIMessage } from "@spacebarchat/spacebar-api-types/v9";
 import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
 import { action, computed, makeAutoObservable, observable } from "mobx";
 
@@ -16,19 +16,47 @@ export type QueuedMessageData = {
 	channel: string;
 	author: User;
 	content: string;
-	attachments?: File[];
+	files?: File[];
 };
 
-export interface QueuedMessage {
+// export interface QueuedMessage extends QueuedMessageData {
+// 	status: QueuedMessageStatus;
+// 	error?: string;
+// 	timestamp: Date;
+// 	type: MessageType;
+// }
+
+export class QueuedMessage implements QueuedMessageData {
 	id: string;
-	status: QueuedMessageStatus;
-	error?: string;
 	channel: string;
 	author: User;
 	content: string;
+	files?: File[];
+	@observable progress: number;
+	status: QueuedMessageStatus;
+	error?: string;
 	timestamp: Date;
 	type: MessageType;
-	attachments: APIAttachment[];
+
+	constructor(data: QueuedMessageData) {
+		this.id = data.id;
+		this.channel = data.channel;
+		this.author = data.author;
+		this.content = data.content;
+		this.files = data.files;
+		this.progress = 0;
+		this.status = QueuedMessageStatus.SENDING;
+		this.timestamp = new Date();
+		this.type = MessageType.Default;
+
+		makeAutoObservable(this);
+	}
+
+	@action
+	progressCallback(e: ProgressEvent) {
+		this.progress = Math.round((e.loaded / e.total) * 100);
+		console.log(this.progress);
+	}
 }
 
 export default class MessageQueue {
@@ -42,23 +70,15 @@ export default class MessageQueue {
 
 	@action
 	add(data: QueuedMessageData) {
-		this.messages.push({
-			...data,
-			timestamp: new Date(),
-			status: QueuedMessageStatus.SENDING,
-			type: MessageType.Default,
-			attachments:
-				data.attachments?.map((x) => ({
-					id: Snowflake.generate(),
-					filename: x.name,
-					size: x.size,
-					url: URL.createObjectURL(x),
-					proxy_url: URL.createObjectURL(x),
-					height: 0,
-					width: 0,
-					content_type: x.type,
-				})) ?? [],
-		});
+		// this.messages.push({
+		// 	...data,
+		// 	timestamp: new Date(),
+		// 	status: QueuedMessageStatus.SENDING,
+		// 	type: MessageType.Default,
+		// });
+		const msg = new QueuedMessage(data);
+		this.messages.push(msg);
+		return msg;
 	}
 
 	@action

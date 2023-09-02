@@ -4,16 +4,19 @@ import { action, computed, makeObservable, observable } from "mobx";
 import useLogger from "../hooks/useLogger";
 import Logger from "../utils/Logger";
 import AppStore from "./AppStore";
+import { QueuedMessage } from "./MessageQueue";
 import Message from "./objects/Message";
 
 export default class MessageStore {
 	private readonly app: AppStore;
+	private readonly channelId;
 	private readonly logger: Logger;
 
 	@observable private readonly messagesArr: IObservableArray<Message>;
 
-	constructor(app: AppStore) {
+	constructor(app: AppStore, channelId: string) {
 		this.app = app;
+		this.channelId = channelId;
 		this.logger = useLogger("MessageStore.ts");
 
 		this.messagesArr = observable.array([]);
@@ -37,8 +40,8 @@ export default class MessageStore {
 
 	@computed
 	get grouped() {
-		// sort messages from the same author and within 7 minutes of each other into groups sorted by time, oldest messages at the end of the list and newest at the start, each groups messages should be sorted from oldest to newest
-		const sortedGroups = this.messagesArr
+		const messages = [...this.messagesArr, ...this.app.queue.get(this.channelId)];
+		const sortedGroups = messages
 			.slice()
 			.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
 			.reduce((groups, message) => {
@@ -56,7 +59,7 @@ export default class MessageStore {
 					groups.push([message]);
 				}
 				return groups;
-			}, [] as Message[][])
+			}, [] as (Message | QueuedMessage)[][])
 			.map((group) => group.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime()))
 			.reverse();
 

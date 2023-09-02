@@ -58,8 +58,6 @@ export default class Channel {
 	constructor(app: AppStore, channel: APIChannel) {
 		this.app = app;
 
-		this.messages = new MessageStore(app);
-
 		this.id = channel.id;
 		this.createdAt = new Date(channel.created_at);
 		this.name = channel.name;
@@ -87,6 +85,8 @@ export default class Channel {
 		this.webhooks = channel.webhooks;
 		this.flags = channel.flags;
 		this.defaultThreadRateLimitPerUser = channel.default_thread_rate_limit_per_user;
+
+		this.messages = new MessageStore(app, this.id);
 
 		if (channel.messages) {
 			this.messages.addAll(channel.messages);

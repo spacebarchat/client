@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 interface Props {
 	// variant?: "primary" | "secondary" | "danger" | "success" | "warning";
-	outlined?: boolean;
+	variant?: "filled" | "outlined" | "blank";
 	color?: string;
 }
 
@@ -22,7 +22,7 @@ export default styled.button<Props>`
 	background-color: transparent;
 
 	color: ${(props) => {
-		if (props.outlined) return "transparent";
+		if (props.variant === "outlined") return "transparent";
 		// switch (props.variant) {
 		// 	case "primary":
 		// 		return "var(--primary)";
@@ -41,7 +41,7 @@ export default styled.button<Props>`
 	}};
 
 	border: ${(props) => {
-		if (!props.outlined) return "none";
+		if (props.variant !== "outlined") return "none";
 		// switch (props.variant) {
 		// 	case "primary":
 		// 		return "1px solid var(--primary)";
@@ -60,7 +60,7 @@ export default styled.button<Props>`
 	}};
 
 	&:hover {
-		background-color: var(--background-primary-alt);
+		background-color: ${(props) => (props.variant === "blank" ? "transparent" : "var(--background-secondary)")}
 		cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 	}
 `;
