@@ -4,31 +4,58 @@ import useLogger from "../../hooks/useLogger";
 import { IContextMenuItem } from "../ContextMenuItem";
 import MessageAttachment from "./MessageAttachment";
 
+// TODO: move these to a constants file/configurable
 const DESCRIPTION_MAX_CHARS = 345;
+const TITLE_MAX_CHARS = 67;
 
 interface EmbedProps {
 	embed: APIEmbed;
 	contextMenuItems: IContextMenuItem[];
 }
 
-const EmbedContainer = styled.div`
+const EmbedContainer = styled.div<{ type: EmbedType }>`
 	padding: 10px;
 	margin-top: 5px;
 	background: var(--background-secondary);
-	width: min-content;
 	border-radius: 4px;
+	display: grid;
+	grid-template-columns: ${(props) => (props.type == EmbedType.Link ? "auto min-content" : "min-content")};
+	grid-template-rows: auto;
+	max-width: 500px;
+	width: ${(props) => (props.type == EmbedType.Link ? undefined : "min-content")};
+	border: 1px solid var(--background-tertiary);
+`;
+
+const EmbedProvider = styled.div`
+	font-size: 12px;
+	font-weight: var(--font-weight-regular);
 `;
 
 const EmbedHeader = styled.div`
 	color: var(--primary-light);
 	margin-bottom: 10px;
 	font-weight: var(--font-weight-regular);
+	grid-column: 1/1;
 `;
 
 const EmbedDescription = styled.div`
 	margin: 5px 0 5px 0;
 	font-weight: var(--font-weight-light);
 	font-size: 14px;
+	grid-column: 1/1;
+`;
+
+const EmbedImageArticle = styled.div`
+	margin-top: 16px;
+	grid-column: 1/1;
+`;
+
+const EmbedImageLink = styled.div`
+	grid-row: 1/8;
+	grid-column: 2/2;
+	margin-left: 16px;
+	margin-top: 8px;
+	justify-self: end;
 `;
 
 const YoutubeEmbed = styled.iframe`
@@ -50,7 +77,25 @@ const createEmbedAttachment = (embed: APIEmbed, contextMenuItems: IContextMenuIt
 		content_type: "image",
 	};
 
-	return <MessageAttachment contextMenuItems={contextMenuItems} attachment={fakeAttachment} />;
+	const props = {
+		contextMenuItems,
+		attachment: fakeAttachment,
+	};
+
+	if (embed.url && embed.url.startsWith("https://github.com")) embed.type = EmbedType.Article;
+	if (embed.type == EmbedType.Link) {
+		return (
+			<EmbedImageLink>
+				<MessageAttachment {...props} maxWidth={160} maxHeight={80} />
+			</EmbedImageLink>
+		);
+	} else if (embed.type == EmbedType.Article) {
+		return (
+			<EmbedImageArticle>
+				<MessageAttachment {...props} />
+			</EmbedImageArticle>
+		);
+	} else return <MessageAttachment {...props} />;
 };
 
 const createYoutubeEmbed = (embed: APIEmbed) => {
@@ -67,10 +112,21 @@ export default function MessageEmbed({ embed, contextMenuItems }: EmbedProps) {
 	if (embed.type == EmbedType.Video && embed.provider?.name == "YouTube") return createYoutubeEmbed(embed);
 
 	return (
-		<EmbedContainer>
-			{embed.title && <EmbedHeader>{embed.title}</EmbedHeader>}
+		<EmbedContainer type={embed.type ?? EmbedType.Link}>
+			{embed.provider && <EmbedProvider>{embed.provider.name}</EmbedProvider>}
+			{embed.title && (
+				<EmbedHeader>
+					{embed.title.length > TITLE_MAX_CHARS
+						? embed.title.substring(0, TITLE_MAX_CHARS) + "..."
+						: embed.title}
+				</EmbedHeader>
+			)}
 			{embed.description && (
-				<EmbedDescription>{embed.description.substring(0, DESCRIPTION_MAX_CHARS) + "..."}</EmbedDescription>
+				<EmbedDescription>
+					{embed.description.length > DESCRIPTION_MAX_CHARS
+						? embed.description.substring(0, DESCRIPTION_MAX_CHARS) + "..."
+						: embed.description}
+				</EmbedDescription>
 			)}
 			{thumbnail}
 		</EmbedContainer>

@@ -12,12 +12,18 @@ const Attachment = styled.div`
 	cursor: pointer;
 `;
 
+const Image = styled.img`
+	border-radius: 4px;
+`;
+
 interface AttachmentProps {
 	attachment: APIAttachment;
 	contextMenuItems: IContextMenuItem[];
+	maxWidth?: number;
+	maxHeight?: number;
 }
 
-export default function MessageAttachment({ attachment, contextMenuItems }: AttachmentProps) {
+export default function MessageAttachment({ attachment, contextMenuItems, maxWidth, maxHeight }: AttachmentProps) {
 	const logger = useLogger("MessageAttachment");
 
 	const { openModal } = useModals();
@@ -27,9 +33,15 @@ export default function MessageAttachment({ attachment, contextMenuItems }: Atta
 
 	let a: JSX.Element = <></>;
 	if (attachment.content_type?.startsWith("image")) {
-		const ratio = calculateImageRatio(attachment.width!, attachment.height!);
-		const { scaledWidth, scaledHeight } = calculateScaledDimensions(attachment.width!, attachment.height!, ratio);
-		a = <img src={url} alt={attachment.filename} width={scaledWidth} height={scaledHeight} />;
+		const ratio = calculateImageRatio(attachment.width!, attachment.height!, maxWidth, maxHeight);
+		const { scaledWidth, scaledHeight } = calculateScaledDimensions(
+			attachment.width!,
+			attachment.height!,
+			ratio,
+			maxWidth,
+			maxHeight,
+		);
+		a = <Image src={url} alt={attachment.filename} width={scaledWidth} height={scaledHeight} />;
 	} else if (attachment.content_type?.startsWith("video")) {
 		{
 			/* TODO: poster thumbnail */
