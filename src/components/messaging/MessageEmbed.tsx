@@ -14,6 +14,7 @@ const EmbedContainer = styled.div`
 	margin-top: 5px;
 	background: var(--background-secondary);
 	width: min-content;
+	border-radius: 4px;
 `;
 
 const EmbedHeader = styled.div`
