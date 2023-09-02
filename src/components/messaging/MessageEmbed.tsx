@@ -8,6 +8,8 @@ import MessageAttachment from "./MessageAttachment";
 const DESCRIPTION_MAX_CHARS = 345;
 const TITLE_MAX_CHARS = 67;
 
+const ARTICLE_FIXES = ["github.com", "xkcd.com"];
+
 interface EmbedProps {
 	embed: APIEmbed;
 	contextMenuItems: IContextMenuItem[];
@@ -82,7 +84,7 @@ const createEmbedAttachment = (embed: APIEmbed, contextMenuItems: IContextMenuIt
 		attachment: fakeAttachment,
 	};
 
-	if (embed.url && embed.url.startsWith("https://github.com")) embed.type = EmbedType.Article;
+	if (embed.url && ARTICLE_FIXES.some((x) => embed.url?.includes(x))) embed.type = EmbedType.Article;
 	if (embed.type == EmbedType.Link) {
 		return (
 			<EmbedImageLink>
