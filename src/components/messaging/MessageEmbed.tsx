@@ -22,10 +22,13 @@ const EmbedContainer = styled.div`
 const EmbedHeader = styled.div`
 	color: var(--primary-light);
 	margin-bottom: 10px;
+	font-weight: var(--font-weight-regular);
 `;
 
 const EmbedDescription = styled.div`
 	margin: 5px 0 5px 0;
+	font-weight: var(--font-weight-light);
+	font-size: 14px;
 `;
 
 const YoutubeEmbed = styled.iframe`
