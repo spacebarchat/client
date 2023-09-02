@@ -4,6 +4,8 @@ import useLogger from "../../hooks/useLogger";
 import { IContextMenuItem } from "../ContextMenuItem";
 import MessageAttachment from "./MessageAttachment";
 
+const DESCRIPTION_MAX_CHARS = 345;
+
 interface EmbedProps {
 	embed: APIEmbed;
 	contextMenuItems: IContextMenuItem[];
@@ -64,7 +66,9 @@ export default function MessageEmbed({ embed, contextMenuItems }: EmbedProps) {
 	return (
 		<EmbedContainer>
 			{embed.title && <EmbedHeader>{embed.title}</EmbedHeader>}
-			{embed.description && <EmbedDescription>{embed.description}</EmbedDescription>}
+			{embed.description && (
+				<EmbedDescription>{embed.description.substring(0, DESCRIPTION_MAX_CHARS) + "..."}</EmbedDescription>
+			)}
 			{thumbnail}
 		</EmbedContainer>
 	);
