@@ -12,7 +12,7 @@ interface EmbedProps {
 const EmbedContainer = styled.div`
 	padding: 10px;
 	margin-top: 5px;
-	background: rgba(0, 0, 0, 0.3);
+	background: var(--background-secondary);
 	width: min-content;
 `;
 

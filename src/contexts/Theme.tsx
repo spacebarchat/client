@@ -123,7 +123,7 @@ export const ThemePresets: Record<string, Theme> = {
 	dark: {
 		backgroundPrimary: "#2e2e2e",
 		backgroundPrimaryAlt: "#2a2a2a",
-		backgroundPrimaryHighlight: "#262626",
+		backgroundPrimaryHighlight: "#272727",
 		backgroundSecondary: "#232323",
 		backgroundSecondaryAlt: "#1e1e1e",
 		backgroundSecondaryHighlight: "#313131",
