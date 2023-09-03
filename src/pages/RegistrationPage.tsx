@@ -220,7 +220,7 @@ function RegistrationPage() {
 						</InputWrapper>
 					</InputContainer>
 
-					<InputContainer marginBottom={false}>
+					<InputContainer marginBottom>
 						<LabelWrapper error={!!errors.password}>
 							<InputLabel>Password</InputLabel>
 							{errors.password && (
