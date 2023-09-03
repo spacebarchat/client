@@ -6,10 +6,9 @@ import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import useLogger from "../../hooks/useLogger";
 import { calculateImageRatio, calculateScaledDimensions } from "../../utils/Message";
 import { IContextMenuItem } from "../ContextMenuItem";
-import AttachmentPreviewModal from "../modals/AttachmentPreviewModal";
 
-const Attachment = styled.div`
-	cursor: pointer;
+const Attachment = styled.div<{ withPointer?: boolean }>`
+	cursor: ${(props) => (props.withPointer ? "pointer" : "default")};
 `;
 
 const Image = styled.img`
@@ -58,6 +57,7 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 
 	return (
 		<Attachment
+			withPointer={attachment.content_type?.startsWith("image")}
 			key={attachment.id}
 			onContextMenu={(e) => {
 				// prevent propagation to the message container
@@ -83,7 +83,7 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 				});
 			}}
 			onClick={() => {
-				openModal(AttachmentPreviewModal, { attachment });
+				if (!attachment.content_type?.startsWith("image")) return;
 			}}
 		>
 			{finalElement}
