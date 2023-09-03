@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SelectSearch from "react-select-search";
 import styled from "styled-components";
+import { Input } from "./AuthComponents";
 import "./DOBInput.css";
 
 // const MIN_AGE = 13;
@@ -11,17 +12,7 @@ const Container = styled.div`
 	display: flex;
 `;
 
-const Input = styled.input<{ error?: boolean }>`
-	outline: none;
-	background: var(--background-secondary);
-	padding: 10px;
-	font-size: 16px;
-	border-radius: 12px;
-	color: var(--text);
-	margin: 0 0 0 5px;
-	border: none;
-	aria-invalid: ${(props) => (props.error ? "true" : "false")};
-	border: ${(props) => (props.error ? "1px solid red" : "none")};
+const CustomInput = styled(Input)`
 	box-sizing: border-box;
 	width: 100%;
 `;
@@ -198,7 +189,7 @@ export class DOBInput extends Component<Props, State> {
 					value={this.state.month}
 					disabled={this.props.disabled}
 				/>
-				<Input
+				<CustomInput
 					placeholder="Day"
 					onChange={this.onInputChange("day")}
 					value={this.state.day}
@@ -206,7 +197,7 @@ export class DOBInput extends Component<Props, State> {
 					maxLength={2}
 					disabled={this.props.disabled}
 				/>
-				<Input
+				<CustomInput
 					placeholder="Year"
 					onChange={this.onInputChange("year")}
 					value={this.state.year}

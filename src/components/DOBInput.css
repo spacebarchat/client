@@ -7,7 +7,7 @@
 	position: relative;
 	display: block;
 	padding: 10px;
-	background: var(--background-secondary);
+	background: var(--background-secondary-alt);
 	border: none;
 	color: var(--text);
 	outline: none;
@@ -92,7 +92,7 @@
 .select-search-is-selected {
 	font-weight: bold;
 	color: var(--text);
-	background-color: hsl(20, 4%, 25%);
+	background-color: var(--background-primary-alt);
 }
 
 .select-search-row:not(:first-child) .select-search-group-header {
