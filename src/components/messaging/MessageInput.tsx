@@ -51,14 +51,14 @@ const UploadActionWrapper = styled.div`
 	padding: 0 12px;
 `;
 
-const StyledEditable = styled(Editable)<{ canSendMessages?: boolean; canUpload?: boolean }>`
+const StyledEditable = styled(Editable)<{ $canSendMessages?: boolean; $canUpload?: boolean }>`
 	width: 100%;
 	outline: none;
 	word-break: break-word;
-	padding: 12px 16px 12px ${({ canUpload }) => (canUpload ? "0" : "16px")};
+	padding: 12px 16px 12px ${({ $canUpload }) => ($canUpload ? "0" : "16px")};
 	overflow-y: auto;
 	max-height: 50vh;
-	cursor: ${({ canSendMessages }) => (!canSendMessages ? "not-allowed" : "text")};
+	cursor: ${({ $canSendMessages }) => (!$canSendMessages ? "not-allowed" : "text")};
 `;
 
 const CustomIcon = styled(Icon)`
@@ -256,8 +256,8 @@ function MessageInput(props: Props) {
 						)}
 						<Slate editor={editor} initialValue={initialEditorValue} onChange={onChange}>
 							<StyledEditable
-								canSendMessages={canSendMessages}
-								canUpload={canUpload}
+								$canSendMessages={canSendMessages}
+								$canUpload={canUpload}
 								onKeyDown={onKeyDown}
 								value={content}
 								placeholder={

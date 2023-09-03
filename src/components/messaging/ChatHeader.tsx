@@ -17,12 +17,8 @@ const IconButton = styled.button`
 	}
 `;
 
-interface CustomIconProps {
-	active?: boolean;
-}
-
-const CustomIcon = styled(Icon)<CustomIconProps>`
-	color: ${(props) => (props.active ? "#ffffff" : "var(--text-secondary)")};
+const CustomIcon = styled(Icon)<{ $active?: boolean }>`
+	color: ${(props) => (props.$active ? "#ffffff" : "var(--text-secondary)")};
 
 	&:hover {
 		color: var(--text);
@@ -113,7 +109,7 @@ function ActionItem({ icon, active, ariaLabel, tooltip }: ActionItemProps) {
 						logger.debug("click");
 					}}
 				>
-					<CustomIcon icon={icon} size="24px" aria-label={ariaLabel} active={active} />
+					<CustomIcon $active={active} icon={icon} size="24px" aria-label={ariaLabel} />
 				</IconButton>
 			</IconWrapper>
 		</Tooltip>
