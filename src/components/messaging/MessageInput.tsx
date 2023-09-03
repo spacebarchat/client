@@ -61,9 +61,8 @@ const CustomIcon = styled(Icon)`
 
 const AttachmentsList = styled.ul`
 	display: flex;
-	gap: 24px;
-	margin: 0 0 2px 6px;
-	padding: 20px 10px 10px;
+	gap: 8px;
+	padding: 10px;
 	overflow-x: auto;
 	list-style: none;
 `;
@@ -175,23 +174,30 @@ function MessageInput(props: Props) {
 
 	const handleFileUpload = React.useCallback(() => {
 		if (!props.channel) {
-			logger.warn("No channel selected, cannot send message");
+			logger.warn("[HandleFileUpload] Invalid Channel");
 			return;
 		}
 		uploadRef.current?.click();
 	}, [props.channel]);
 
-	const onChangeFile = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-		if (!e.target.files) return;
-		const files = Array.from(e.target.files);
-		setAttachments(files);
-	}, []);
+	const onChangeFile = React.useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			if (!e.target.files) return;
+			const files = Array.from(e.target.files);
+			const newAttachments = [...attachments, ...files];
+			setAttachments(newAttachments);
+		},
+		[attachments],
+	);
 
-	const removeAttachment = React.useCallback((index: number) => {
-		const newAttachments = [...attachments];
-		newAttachments.splice(index, 1);
-		setAttachments(newAttachments);
-	}, []);
+	const removeAttachment = React.useCallback(
+		(index: number) => {
+			const newAttachments = [...attachments];
+			newAttachments.splice(index, 1);
+			setAttachments(newAttachments);
+		},
+		[attachments],
+	);
 
 	return (
 		<Container>

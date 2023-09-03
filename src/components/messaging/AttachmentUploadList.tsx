@@ -16,10 +16,23 @@ const Container = styled.li`
 	max-height: 200px;
 `;
 
+const InnerWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	position: relative;
+`;
+
 const MediaContainer = styled.div`
 	position: relative;
 	margin-top: auto;
 	min-height: 0;
+`;
+
+const Image = styled.img`
+	border-radius: 3px;
+	max-width: 100%;
+	object-fit: contain;
 `;
 
 const ActionsContainer = styled.div`
@@ -42,6 +55,14 @@ const FileDetails = styled.div`
 	margin-top: auto;
 `;
 
+const FileNameWrapper = styled.div`
+	margin-top: 8px;
+	overflow: hidden;
+	white-space: nowrap;
+	font-size: 16px;
+	font-weight: var(--font-weight-regular);
+`;
+
 interface Props {
 	file: File;
 	remove: () => void;
@@ -53,23 +74,9 @@ function AttachmentUploadList({ file, remove }: Props) {
 
 	return (
 		<Container>
-			<div
-				style={{
-					display: "flex",
-					height: "100%",
-					flexDirection: "column",
-					position: "relative",
-				}}
-			>
+			<InnerWrapper>
 				<MediaContainer>
-					<img
-						src={previewUrl}
-						style={{
-							borderRadius: "3px",
-							maxWidth: "100%",
-							objectFit: "contain",
-						}}
-					/>
+					<Image src={previewUrl} />
 				</MediaContainer>
 				<ActionsContainer>
 					<ActionBarWrapper>
@@ -79,19 +86,9 @@ function AttachmentUploadList({ file, remove }: Props) {
 					</ActionBarWrapper>
 				</ActionsContainer>
 				<FileDetails>
-					<div
-						style={{
-							marginTop: "8px",
-							overflow: "hidden",
-							whiteSpace: "nowrap",
-							fontSize: "16px",
-							fontWeight: "var(--font-weight-regular)",
-						}}
-					>
-						{file.name}
-					</div>
+					<FileNameWrapper>{file.name}</FileNameWrapper>
 				</FileDetails>
-			</div>
+			</InnerWrapper>
 		</Container>
 	);
 }

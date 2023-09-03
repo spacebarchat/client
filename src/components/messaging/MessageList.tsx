@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { PulseLoader } from "react-spinners";
+import PulseLoader from "react-spinners/PulseLoader";
 import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
@@ -14,7 +14,7 @@ import { HorizontalDivider } from "../Divider";
 import MessageGroup from "./MessageGroup";
 
 const Container = styled.div`
-	flex: 1;
+	flex: 1 1 auto;
 	overflow-y: auto;
 	display: flex;
 	flex-direction: column-reverse;
@@ -83,12 +83,21 @@ function MessageList({ guild, channel }: Props) {
 				<InfiniteScroll
 					dataLength={channel.messages.grouped.length}
 					next={fetchMore}
-					style={{ display: "flex", flexDirection: "column-reverse", marginBottom: "30px" }} // to put endMessage and loader to the top.
+					style={{
+						display: "flex",
+						flexDirection: "column-reverse",
+						marginBottom: "30px",
+					}} // to put endMessage and loader to the top.
 					hasMore={hasMore}
 					inverse={true}
 					loader={
 						<PulseLoader
-							style={{ display: "flex", justifyContent: "center", alignContent: "center" }}
+							style={{
+								display: "flex",
+								justifyContent: "center",
+								alignContent: "center",
+								marginBottom: "30px",
+							}}
 							color="var(--primary)"
 						/>
 					}

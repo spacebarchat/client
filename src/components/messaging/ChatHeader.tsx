@@ -64,6 +64,12 @@ const ChannelTopicText = styled.div`
 
 const ActionItemsWrapper = styled.div`
 	display: flex;
+	margin-right: 15%;
+
+	// remove the temporary padding that moves it over the chat area on smaller screens where the member list is hidden
+	@media (max-width: 1080px) {
+		margin-right: auto;
+	}
 `;
 
 const IconWrapper = styled.div`

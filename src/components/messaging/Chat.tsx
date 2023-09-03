@@ -15,7 +15,8 @@ import MessageList from "./MessageList";
 const WrapperOne = styled.div`
 	display: flex;
 	flex-direction: row;
-	flex: 1 1 100%;
+	flex: 1 1 auto;
+	overflow: hidden;
 `;
 
 /**
@@ -24,16 +25,17 @@ const WrapperOne = styled.div`
 const WrapperTwo = styled.div`
 	display: flex;
 	flex-direction: column;
-	flex: 1 1 100%;
 	background-color: var(--background-primary-alt);
+	flex: 1 1 auto;
+	overflow: hidden;
 `;
 
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	flex: 1 1 auto;
-	overflow: hidden;
 	position: relative;
+	overflow: hidden;
 `;
 
 interface Props {
@@ -41,6 +43,29 @@ interface Props {
 	guild?: Guild;
 	channelId?: string;
 	guildId?: string;
+}
+
+interface Props2 {
+	channel: Channel;
+	guild: Guild;
+}
+
+export function ChatContent({ channel, guild }: Props2) {
+	return (
+		<Container>
+			<MessageList guild={guild} channel={channel} />
+			<MessageInput channel={channel} guild={guild} />
+		</Container>
+	);
+}
+
+export function Content(props: Props2) {
+	return (
+		<WrapperOne>
+			<ChatContent {...props} />
+			<MemberList />
+		</WrapperOne>
+	);
 }
 
 /**
@@ -83,16 +108,10 @@ function Chat({ channel, guild, guildId }: Props) {
 	}
 
 	return (
-		<WrapperOne>
-			<WrapperTwo>
-				<ChatHeader channel={channel} />
-				<Container>
-					<MessageList guild={guild} channel={channel} />
-					<MessageInput channel={channel} guild={guild} />
-				</Container>
-			</WrapperTwo>
-			<MemberList />
-		</WrapperOne>
+		<WrapperTwo>
+			<ChatHeader channel={channel} />
+			<Content channel={channel} guild={guild} />
+		</WrapperTwo>
 	);
 }
 
