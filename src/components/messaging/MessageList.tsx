@@ -1,19 +1,20 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { PulseLoader } from "react-spinners";
+import PulseLoader from "react-spinners/PulseLoader";
 import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 import Guild from "../../stores/objects/Guild";
 import Message from "../../stores/objects/Message";
+import QueuedMessage from "../../stores/objects/QueuedMessage";
 import { Permissions } from "../../utils/Permissions";
 import { HorizontalDivider } from "../Divider";
 import MessageGroup from "./MessageGroup";
 
 const Container = styled.div`
-	flex: 1;
+	flex: 1 1 auto;
 	overflow-y: auto;
 	display: flex;
 	flex-direction: column-reverse;
@@ -34,7 +35,6 @@ interface Props {
 function MessageList({ guild, channel }: Props) {
 	const app = useAppStore();
 	const logger = useLogger("MessageList.tsx");
-	// const messages = [...(channel.messages.messages ?? []), ...(channel ? app.queue.get(channel.id) ?? [] : [])];
 	const [hasMore, setHasMore] = React.useState(true);
 	const [canView, setCanView] = React.useState(false);
 
@@ -55,7 +55,7 @@ function MessageList({ guild, channel }: Props) {
 		}
 	}, [guild, channel, canView]);
 
-	const renderMessageGroup = React.useCallback((group: Message[], index: number) => {
+	const renderMessageGroup = React.useCallback((group: (Message | QueuedMessage)[], index: number) => {
 		return <MessageGroup key={index} messages={group} />;
 	}, []);
 
@@ -66,6 +66,8 @@ function MessageList({ guild, channel }: Props) {
 
 		// get last group
 		const lastGroup = channel.messages.grouped[channel.messages.grouped.length - 1];
+		// ignore queued messages
+		if ("status" in lastGroup) return;
 		// get first message in the group to use as before
 		const before = lastGroup[0].id;
 		logger.debug(`Fetching 50 messages before ${before} for channel ${channel.id}`);
@@ -82,12 +84,21 @@ function MessageList({ guild, channel }: Props) {
 				<InfiniteScroll
 					dataLength={channel.messages.grouped.length}
 					next={fetchMore}
-					style={{ display: "flex", flexDirection: "column-reverse", marginBottom: "30px" }} // to put endMessage and loader to the top.
+					style={{
+						display: "flex",
+						flexDirection: "column-reverse",
+						marginBottom: "30px",
+					}} // to put endMessage and loader to the top.
 					hasMore={hasMore}
 					inverse={true}
 					loader={
 						<PulseLoader
-							style={{ display: "flex", justifyContent: "center", alignContent: "center" }}
+							style={{
+								display: "flex",
+								justifyContent: "center",
+								alignContent: "center",
+								marginBottom: "30px",
+							}}
 							color="var(--primary)"
 						/>
 					}
@@ -102,7 +113,9 @@ function MessageList({ guild, channel }: Props) {
 						</EndMessageContainer>
 					}
 				>
-					{channel.messages.grouped.map((group, index) => renderMessageGroup(group, index))}
+					{channel.messages.grouped.map((group, index) => (
+						<MessageGroup key={index} messages={group} />
+					))}
 				</InfiniteScroll>
 			) : (
 				<div

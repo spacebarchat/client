@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-export const HorizontalDivider = styled.div`
+export const HorizontalDivider = styled.div<{ nomargin?: boolean }>`
 	width: 100%;
-	margin-top: 24px;
+	margin-top: ${(props) => (props.nomargin ? "0" : "8px")};
 	z-index: 1;
 	height: 0;
 	border-top: thin solid var(--text-disabled);

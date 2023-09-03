@@ -19,6 +19,7 @@ import Logger from "../../utils/Logger";
 import { APIError } from "../../utils/interfaces/api";
 import AppStore from "../AppStore";
 import MessageStore from "../MessageStore";
+import QueuedMessage from "./QueuedMessage";
 
 export default class Channel {
 	private readonly logger: Logger = new Logger("Channel");
@@ -58,8 +59,6 @@ export default class Channel {
 	constructor(app: AppStore, channel: APIChannel) {
 		this.app = app;
 
-		this.messages = new MessageStore(app);
-
 		this.id = channel.id;
 		this.createdAt = new Date(channel.created_at);
 		this.name = channel.name;
@@ -87,6 +86,8 @@ export default class Channel {
 		this.webhooks = channel.webhooks;
 		this.flags = channel.flags;
 		this.defaultThreadRateLimitPerUser = channel.default_thread_rate_limit_per_user;
+
+		this.messages = new MessageStore(app, this.id);
 
 		if (channel.messages) {
 			this.messages.addAll(channel.messages);
@@ -198,15 +199,22 @@ export default class Channel {
 	}
 
 	@action
-	async sendMessage(data: RESTPostAPIChannelMessageJSONBody) {
+	async sendMessage(data: RESTPostAPIChannelMessageJSONBody | FormData, msg?: QueuedMessage) {
+		if (data instanceof FormData)
+			return this.app.rest.postFormData<RESTPostAPIChannelMessageResult>(
+				Routes.channelMessages(this.id),
+				data,
+				undefined,
+				msg,
+			);
 		return this.app.rest.post<RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult>(
 			Routes.channelMessages(this.id),
 			data,
 		);
 	}
 
-	canSendMessage(content: string) {
-		if (!content || !content.trim() || !content.replace(/\r?\n|\r/g, "")) {
+	canSendMessage(content: string, attachments: File[]) {
+		if (!attachments.length && (!content || !content.trim() || !content.replace(/\r?\n|\r/g, ""))) {
 			return false;
 		}
 

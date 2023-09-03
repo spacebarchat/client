@@ -1,9 +1,9 @@
 import type { APIMessage } from "@spacebarchat/spacebar-api-types/v9";
-import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
 import { action, computed, makeAutoObservable, observable } from "mobx";
 
 import type { IObservableArray } from "mobx";
 import Snowflake from "../utils/Snowflake";
+import QueuedMessage from "./objects/QueuedMessage";
 import User from "./objects/User";
 
 export enum QueuedMessageStatus {
@@ -16,18 +16,8 @@ export type QueuedMessageData = {
 	channel: string;
 	author: User;
 	content: string;
+	files?: File[];
 };
-
-export interface QueuedMessage {
-	id: string;
-	status: QueuedMessageStatus;
-	error?: string;
-	channel: string;
-	author: User;
-	content: string;
-	timestamp: Date;
-	type: MessageType;
-}
 
 export default class MessageQueue {
 	@observable private readonly messages: IObservableArray<QueuedMessage>;
@@ -40,12 +30,15 @@ export default class MessageQueue {
 
 	@action
 	add(data: QueuedMessageData) {
-		this.messages.push({
-			...data,
-			timestamp: new Date(),
-			status: QueuedMessageStatus.SENDING,
-			type: MessageType.Default,
-		});
+		// this.messages.push({
+		// 	...data,
+		// 	timestamp: new Date(),
+		// 	status: QueuedMessageStatus.SENDING,
+		// 	type: MessageType.Default,
+		// });
+		const msg = new QueuedMessage(data);
+		this.messages.push(msg);
+		return msg;
 	}
 
 	@action
