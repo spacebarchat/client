@@ -19,10 +19,11 @@ const EmbedContainer = styled.div<{ type: EmbedType }>`
 	background: var(--background-secondary);
 	border-radius: 4px;
 	display: grid;
-	grid-template-columns: ${(props) => (props.type == EmbedType.Link ? "auto min-content" : "min-content")};
+	grid-template-columns: ${(props) =>
+		props.type == EmbedType.Link || props.type == EmbedType.Rich ? "auto min-content" : "min-content"};
 	grid-template-rows: auto;
 	max-width: 500px;
-	width: ${(props) => (props.type == EmbedType.Link ? undefined : "min-content")};
+	width: ${(props) => (props.type == EmbedType.Link || props.type == EmbedType.Rich ? undefined : "min-content")};
 	border: 1px solid var(--background-tertiary);
 `;
 
@@ -104,7 +105,8 @@ const createYoutubeEmbed = (embed: APIEmbed) => {
 export default function MessageEmbed({ embed, contextMenuItems }: EmbedProps) {
 	const logger = useLogger("MessageEmbed");
 
-	const thumbnail = embed.thumbnail ? createEmbedAttachment(embed, contextMenuItems) : null;
+	// seems like the server sometimes sends thumbnails with 0 width and height, and no urls
+	const thumbnail = embed.thumbnail && embed.thumbnail.url ? createEmbedAttachment(embed, contextMenuItems) : null;
 
 	if (embed.type == EmbedType.Image) return thumbnail;
 
