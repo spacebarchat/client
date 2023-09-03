@@ -246,7 +246,6 @@ export default class Message {
 		this.mention_channels = message.mention_channels;
 		this.attachments = message.attachments;
 		this.embeds = message.embeds;
-		console.log(message.embeds.map((embed) => embed.image));
 		this.reactions = message.reactions;
 		this.nonce = message.nonce;
 		this.pinned = message.pinned;

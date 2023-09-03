@@ -67,7 +67,6 @@ const YoutubeEmbed = styled.iframe`
 
 const createEmbedAttachment = (embed: APIEmbed, contextMenuItems: IContextMenuItem[]) => {
 	const url = new URL(embed.url!);
-	console.log(embed.image);
 	const image = embed.thumbnail ?? embed.image;
 	if (!image) return null;
 
