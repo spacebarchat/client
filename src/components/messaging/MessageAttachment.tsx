@@ -47,7 +47,7 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 			/* TODO: poster thumbnail */
 		}
 		a = (
-			<video controls preload="metadata" width={400}>
+			<video playsInline controls preload="metadata" height={400}>
 				{/* TODO: the server doesn't return height and width yet for videos */}
 				<source src={url} type={attachment.content_type} />
 			</video>
