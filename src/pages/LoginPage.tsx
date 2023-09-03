@@ -273,7 +273,7 @@ function LoginPage() {
 						</InputWrapper>
 					</InputContainer>
 
-					<InputContainer marginBottom={false}>
+					<InputContainer marginBottom>
 						<LabelWrapper error={!!errors.login}>
 							<InputLabel>Email</InputLabel>
 							{errors.login && (
