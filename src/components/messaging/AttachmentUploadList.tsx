@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import Icon from "../Icon";
 import IconButton from "../IconButton";
@@ -24,15 +25,23 @@ const InnerWrapper = styled.div`
 `;
 
 const MediaContainer = styled.div`
-	position: relative;
 	margin-top: auto;
 	min-height: 0;
+	display: flex;
+	justify-content: center;
 `;
 
 const Image = styled.img`
 	border-radius: 3px;
 	max-width: 100%;
 	object-fit: contain;
+`;
+
+const Video = styled.video`
+	border-radius: 3px;
+	max-width: 100%;
+	object-fit: contain;
+	height: 100%;
 `;
 
 const ActionsContainer = styled.div`
@@ -69,15 +78,23 @@ interface Props {
 }
 
 function AttachmentUploadList({ file, remove }: Props) {
-	// create a preview url for the file
-	const previewUrl = URL.createObjectURL(file);
+	const generatePreviewElement = React.useCallback(() => {
+		const previewUrl = URL.createObjectURL(file);
+		if (file.type.startsWith("image")) return <Image src={previewUrl} />;
+		else if (file.type.startsWith("video"))
+			return <Video preload="metadata" aria-hidden="true" src={previewUrl}></Video>;
+		else
+			return (
+				<div>
+					<Icon size="48px" icon="mdiFile" />
+				</div>
+			);
+	}, [file]);
 
 	return (
 		<Container>
 			<InnerWrapper>
-				<MediaContainer>
-					<Image src={previewUrl} />
-				</MediaContainer>
+				<MediaContainer>{generatePreviewElement()}</MediaContainer>
 				<ActionsContainer>
 					<ActionBarWrapper>
 						<IconButton onClick={remove}>
