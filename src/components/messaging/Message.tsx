@@ -82,12 +82,9 @@ const Linkify = ({ children }: { children: string }) => {
 		const matchIndex = children.indexOf(match, lastIndex);
 		if (matchIndex > lastIndex) elements.push(children.substring(lastIndex, matchIndex));
 
-		// add a trailing slash if there isn't one
-		const formattedLink = match.endsWith("/") ? match : `${match}/`;
-
 		elements.push(
-			<Link key={matchIndex} href={formattedLink} target="_blank" rel="noreferrer">
-				{formattedLink}
+			<Link key={matchIndex} href={match} target="_blank" rel="noreferrer">
+				{match}
 			</Link>,
 		);
 		lastIndex = matchIndex + match.length;
