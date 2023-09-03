@@ -142,12 +142,7 @@ function MFA(props: IAPILoginResponseMFARequired) {
 						Recieve auth code from SMS
 					</Link> */}
 
-						<Link
-							onClick={() => {
-								window.open("https://youtu.be/dQw4w9WgXcQ", "_blank");
-							}}
-							type="button"
-						>
+						<Link onClick={() => navigate("/login", { replace: true })} type="button">
 							Go Back to Login
 						</Link>
 					</FormContainer>
