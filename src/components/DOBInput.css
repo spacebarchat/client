@@ -68,7 +68,7 @@
 	height: 42px;
 	width: 100%;
 	padding: 0 16px;
-	background: var(--primary);
+	background: var(--background-primary);
 	border: none;
 	outline: none;
 	color: var(--text);
@@ -86,7 +86,7 @@
 
 .select-search-is-highlighted,
 .select-search-option:not(.select-search-is-selected):hover {
-	background: hsl(20, 4%, 20%);
+	background: var(--background-primary-highlight);
 }
 
 .select-search-is-selected {
