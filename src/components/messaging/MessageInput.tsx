@@ -51,6 +51,16 @@ const UploadActionWrapper = styled.div`
 	padding: 0 12px;
 `;
 
+const StyledEditable = styled(Editable)<{ canSendMessages?: boolean; canUpload?: boolean }>`
+	width: 100%;
+	outline: none;
+	word-break: break-word;
+	padding: 12px 16px 12px ${({ canUpload }) => (canUpload ? "0" : "16px")};
+	overflow-y: auto;
+	max-height: 50vh;
+	cursor: ${({ canSendMessages }) => (!canSendMessages ? "not-allowed" : "text")};
+`;
+
 const CustomIcon = styled(Icon)`
 	color: var(--text-secondary);
 
@@ -92,12 +102,14 @@ function MessageInput(props: Props) {
 	const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 	const [content, setContent] = React.useState("");
 	const [canSendMessages, setCanSendMessages] = React.useState(true);
+	const [canUpload, setCanUpload] = React.useState(true);
 	const uploadRef = React.useRef<HTMLInputElement>(null);
 	const [attachments, setAttachments] = React.useState<File[]>([]);
 
 	React.useEffect(() => {
 		const permission = Permissions.getPermission(app.account!.id, props.guild, props.channel);
 		setCanSendMessages(permission.has("SEND_MESSAGES"));
+		setCanUpload(permission.has("ATTACH_FILES"));
 	}, [props.channel, props.guild]);
 
 	const serialize = React.useCallback((value: Descendant[]) => {
@@ -227,31 +239,27 @@ function MessageInput(props: Props) {
 							position: "relative",
 						}}
 					>
-						<UploadActionWrapper>
-							<input
-								type="file"
-								ref={uploadRef}
-								style={{ display: "none" }}
-								onChange={onChangeFile}
-								multiple={true}
-							/>
-							<IconButton onClick={handleFileUpload}>
-								<CustomIcon icon="mdiPlusCircle" size="24px" />
-							</IconButton>
-						</UploadActionWrapper>
+						{canUpload && (
+							<UploadActionWrapper>
+								<input
+									type="file"
+									ref={uploadRef}
+									style={{ display: "none" }}
+									onChange={onChangeFile}
+									multiple={true}
+									disabled={!canSendMessages || !canUpload}
+								/>
+								<IconButton onClick={handleFileUpload} disabled={!canSendMessages || !canUpload}>
+									<CustomIcon icon="mdiPlusCircle" size="24px" />
+								</IconButton>
+							</UploadActionWrapper>
+						)}
 						<Slate editor={editor} initialValue={initialEditorValue} onChange={onChange}>
-							<Editable
+							<StyledEditable
+								canSendMessages={canSendMessages}
+								canUpload={canUpload}
 								onKeyDown={onKeyDown}
 								value={content}
-								style={{
-									width: "100%",
-									outline: "none",
-									wordBreak: "break-word",
-									padding: "12px 16px 12px 0",
-									overflowY: "auto",
-									maxHeight: "50vh",
-									cursor: !canSendMessages ? "not-allowed" : "text",
-								}}
 								placeholder={
 									canSendMessages
 										? `Message ${props.channel?.name}`
