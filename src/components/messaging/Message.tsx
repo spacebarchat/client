@@ -6,8 +6,8 @@ import Moment from "react-moment";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import useLogger from "../../hooks/useLogger";
-import { QueuedMessage } from "../../stores/MessageQueue";
 import { default as MessageObject } from "../../stores/objects/Message";
+import QueuedMessage from "../../stores/objects/QueuedMessage";
 import { calculateImageRatio, calculateScaledDimensions } from "../../utils/Message";
 import { calendarStrings } from "../../utils/i18n";
 import Avatar from "../Avatar";
@@ -182,8 +182,6 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 			</MessageAttachment>
 		);
 	}, []);
-
-	if (message instanceof QueuedMessage) console.log(`progress at msg`, message.progress);
 
 	// construct the context menu options
 	// React.useEffect(() => {

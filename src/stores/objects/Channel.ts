@@ -19,6 +19,7 @@ import Logger from "../../utils/Logger";
 import { APIError } from "../../utils/interfaces/api";
 import AppStore from "../AppStore";
 import MessageStore from "../MessageStore";
+import QueuedMessage from "./QueuedMessage";
 
 export default class Channel {
 	private readonly logger: Logger = new Logger("Channel");
@@ -198,13 +199,13 @@ export default class Channel {
 	}
 
 	@action
-	async sendMessage(data: RESTPostAPIChannelMessageJSONBody | FormData, cb?: (e: ProgressEvent) => void) {
+	async sendMessage(data: RESTPostAPIChannelMessageJSONBody | FormData, msg?: QueuedMessage) {
 		if (data instanceof FormData)
 			return this.app.rest.postFormData<RESTPostAPIChannelMessageResult>(
 				Routes.channelMessages(this.id),
 				data,
 				undefined,
-				cb,
+				msg,
 			);
 		return this.app.rest.post<RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult>(
 			Routes.channelMessages(this.id),

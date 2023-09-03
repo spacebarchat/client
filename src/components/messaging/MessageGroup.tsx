@@ -1,8 +1,9 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import styled from "styled-components";
-import { QueuedMessage, QueuedMessageStatus } from "../../stores/MessageQueue";
+import { QueuedMessageStatus } from "../../stores/MessageQueue";
 import { default as MessageObject } from "../../stores/objects/Message";
+import QueuedMessage from "../../stores/objects/QueuedMessage";
 import Message from "./Message";
 
 const Container = styled.div`
@@ -18,7 +19,6 @@ interface Props {
  */
 function MessageGroup({ messages }: Props) {
 	const renderMessage = React.useCallback((message: MessageObject | QueuedMessage, index: number) => {
-		if (message instanceof QueuedMessage) console.log(`progress at msg group`, message.progress);
 		return (
 			<Message
 				key={message.id}

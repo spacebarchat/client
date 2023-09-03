@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
-import { QueuedMessage } from "../../stores/MessageQueue";
+import { useAppStore } from "../../stores/AppStore";
+import QueuedMessage from "../../stores/objects/QueuedMessage";
 import Icon from "../Icon";
 import IconButton from "../IconButton";
 
@@ -41,7 +42,7 @@ interface Props {
 }
 
 function AttachmentUploadProgress({ message }: Props) {
-	console.log(message.progress);
+	const app = useAppStore();
 
 	return (
 		<Container>
@@ -49,7 +50,14 @@ function AttachmentUploadProgress({ message }: Props) {
 				<div>{message.files!.length === 1 ? message.files![0].name : `${message.files!.length} files`}</div>
 				<Progress value={message.progress} max={100} />
 			</Wrapper>
-			<IconButton variant="blank">
+			<IconButton
+				variant="blank"
+				onClick={() => {
+					message.abort();
+					// remove the message from the queue
+					app.queue.remove(message.id);
+				}}
+			>
 				<CustomIcon icon="mdiClose" size="24px" />
 			</IconButton>
 		</Container>

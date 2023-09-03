@@ -4,8 +4,8 @@ import { action, computed, makeObservable, observable } from "mobx";
 import useLogger from "../hooks/useLogger";
 import Logger from "../utils/Logger";
 import AppStore from "./AppStore";
-import { QueuedMessage } from "./MessageQueue";
 import Message from "./objects/Message";
+import QueuedMessage from "./objects/QueuedMessage";
 
 export default class MessageStore {
 	private readonly app: AppStore;

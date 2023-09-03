@@ -123,7 +123,6 @@ function MessageInput(props: Props) {
 				const shouldSend = !app.experiments.isTreatmentEnabled("message_queue", 1);
 
 				const canSend = props.channel.canSendMessage(content, attachments);
-				console.log(`canSendMessage`, canSend);
 				if (!canSend && !shouldFail) return;
 
 				const nonce = Snowflake.generate();
@@ -147,8 +146,8 @@ function MessageInput(props: Props) {
 					} else {
 						body = { content, nonce };
 					}
-					props.channel.sendMessage(body, msg.progressCallback).catch((error) => {
-						app.queue.error(nonce, error as string);
+					props.channel.sendMessage(body, msg).catch((error) => {
+						if (error) app.queue.error(nonce, error as string);
 					});
 				}
 

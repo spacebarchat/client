@@ -1,9 +1,9 @@
 import type { APIMessage } from "@spacebarchat/spacebar-api-types/v9";
-import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
 import { action, computed, makeAutoObservable, observable } from "mobx";
 
 import type { IObservableArray } from "mobx";
 import Snowflake from "../utils/Snowflake";
+import QueuedMessage from "./objects/QueuedMessage";
 import User from "./objects/User";
 
 export enum QueuedMessageStatus {
@@ -18,46 +18,6 @@ export type QueuedMessageData = {
 	content: string;
 	files?: File[];
 };
-
-// export interface QueuedMessage extends QueuedMessageData {
-// 	status: QueuedMessageStatus;
-// 	error?: string;
-// 	timestamp: Date;
-// 	type: MessageType;
-// }
-
-export class QueuedMessage implements QueuedMessageData {
-	id: string;
-	channel: string;
-	author: User;
-	content: string;
-	files?: File[];
-	@observable progress: number;
-	status: QueuedMessageStatus;
-	error?: string;
-	timestamp: Date;
-	type: MessageType;
-
-	constructor(data: QueuedMessageData) {
-		this.id = data.id;
-		this.channel = data.channel;
-		this.author = data.author;
-		this.content = data.content;
-		this.files = data.files;
-		this.progress = 0;
-		this.status = QueuedMessageStatus.SENDING;
-		this.timestamp = new Date();
-		this.type = MessageType.Default;
-
-		makeAutoObservable(this);
-	}
-
-	@action
-	progressCallback(e: ProgressEvent) {
-		this.progress = Math.round((e.loaded / e.total) * 100);
-		console.log(this.progress);
-	}
-}
 
 export default class MessageQueue {
 	@observable private readonly messages: IObservableArray<QueuedMessage>;

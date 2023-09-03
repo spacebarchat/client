@@ -5,10 +5,10 @@ import PulseLoader from "react-spinners/PulseLoader";
 import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
-import { QueuedMessage } from "../../stores/MessageQueue";
 import Channel from "../../stores/objects/Channel";
 import Guild from "../../stores/objects/Guild";
 import Message from "../../stores/objects/Message";
+import QueuedMessage from "../../stores/objects/QueuedMessage";
 import { Permissions } from "../../utils/Permissions";
 import { HorizontalDivider } from "../Divider";
 import MessageGroup from "./MessageGroup";
@@ -66,6 +66,7 @@ function MessageList({ guild, channel }: Props) {
 
 		// get last group
 		const lastGroup = channel.messages.grouped[channel.messages.grouped.length - 1];
+		// ignore queued messages
 		if ("status" in lastGroup) return;
 		// get first message in the group to use as before
 		const before = lastGroup[0].id;
@@ -112,7 +113,9 @@ function MessageList({ guild, channel }: Props) {
 						</EndMessageContainer>
 					}
 				>
-					{channel.messages.grouped.map((group, index) => renderMessageGroup(group, index))}
+					{channel.messages.grouped.map((group, index) => (
+						<MessageGroup key={index} messages={group} />
+					))}
 				</InfiniteScroll>
 			) : (
 				<div

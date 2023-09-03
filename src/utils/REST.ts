@@ -3,6 +3,7 @@
 // import {DomainStore} from '../stores/DomainStore';
 
 import AppStore from "../stores/AppStore";
+import QueuedMessage from "../stores/objects/QueuedMessage";
 import { Globals, RouteSettings } from "./Globals";
 import Logger from "./Logger";
 
@@ -142,13 +143,22 @@ export default class REST {
 		body: FormData,
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		queryParams: Record<string, any> = {},
-		progressCb?: (ev: ProgressEvent) => void,
+		msg?: QueuedMessage,
 	): Promise<U> {
 		return new Promise((resolve, reject) => {
 			const url = REST.makeAPIUrl(path, queryParams);
 			this.logger.debug(`POST ${url}; payload:`, body);
 			const xhr = new XMLHttpRequest();
-			if (progressCb) xhr.upload.addEventListener("progress", progressCb);
+			if (msg) {
+				// add abort callback
+				msg.setAbortCallback(() => {
+					this.logger.debug("[PostFormData]: Message called abort");
+					xhr.abort();
+					reject("aborted");
+				});
+				// add progress listener
+				xhr.upload.addEventListener("progress", (e: ProgressEvent) => msg.updateProgress(e));
+			}
 			xhr.addEventListener("loadend", () => {
 				// if success, resolve text or json
 				if (xhr.status >= 200 && xhr.status < 300) {
