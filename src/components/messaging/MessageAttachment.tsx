@@ -10,6 +10,7 @@ import AttachmentPreviewModal from "../modals/AttachmentPreviewModal";
 
 const Attachment = styled.div<{ withPointer?: boolean }>`
 	cursor: ${(props) => (props.withPointer ? "pointer" : "default")};
+	width: min-content;
 `;
 
 const Image = styled.img`
