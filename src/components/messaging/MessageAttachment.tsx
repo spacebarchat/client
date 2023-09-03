@@ -31,7 +31,7 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 
 	const url = attachment.proxy_url && attachment.proxy_url.length > 0 ? attachment.proxy_url : attachment.url;
 
-	let a: JSX.Element = <></>;
+	let finalElement: JSX.Element = <></>;
 	if (attachment.content_type?.startsWith("image")) {
 		const ratio = calculateImageRatio(attachment.width!, attachment.height!, maxWidth, maxHeight);
 		const { scaledWidth, scaledHeight } = calculateScaledDimensions(
@@ -41,12 +41,12 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 			maxWidth,
 			maxHeight,
 		);
-		a = <Image src={url} alt={attachment.filename} width={scaledWidth} height={scaledHeight} />;
+		finalElement = <Image src={url} alt={attachment.filename} width={scaledWidth} height={scaledHeight} />;
 	} else if (attachment.content_type?.startsWith("video")) {
 		{
 			/* TODO: poster thumbnail */
 		}
-		a = (
+		finalElement = (
 			<video playsInline controls preload="metadata" height={400}>
 				{/* TODO: the server doesn't return height and width yet for videos */}
 				<source src={url} type={attachment.content_type} />
@@ -86,7 +86,7 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 				openModal(AttachmentPreviewModal, { attachment });
 			}}
 		>
-			{a}
+			{finalElement}
 		</Attachment>
 	);
 }
