@@ -23,7 +23,7 @@ const EmbedContainer = styled.div<{ type: EmbedType }>`
 		props.type == EmbedType.Link || props.type == EmbedType.Rich ? "auto min-content" : "min-content"};
 	grid-template-rows: auto;
 	max-width: 500px;
-	width: ${(props) => (props.type == EmbedType.Link || props.type == EmbedType.Rich ? undefined : "min-content")};
+	width: ${(props) => (props.type == EmbedType.Link ? undefined : "min-content")};
 	border: 1px solid var(--background-tertiary);
 `;
 
@@ -67,14 +67,18 @@ const YoutubeEmbed = styled.iframe`
 
 const createEmbedAttachment = (embed: APIEmbed, contextMenuItems: IContextMenuItem[]) => {
 	const url = new URL(embed.url!);
+	console.log(embed.image);
+	const image = embed.thumbnail ?? embed.image;
+	if (!image) return null;
+
 	const fakeAttachment: APIAttachment = {
 		id: embed.url as string,
 		filename: url.pathname.split("/").reverse()[0],
 		size: -1,
-		width: embed.thumbnail!.width,
-		height: embed.thumbnail!.height,
-		proxy_url: embed.thumbnail!.proxy_url!,
-		url: embed.thumbnail!.url,
+		width: image.width,
+		height: image.height,
+		proxy_url: image.proxy_url!,
+		url: image.url,
 		content_type: "image",
 	};
 
@@ -89,7 +93,7 @@ const createEmbedAttachment = (embed: APIEmbed, contextMenuItems: IContextMenuIt
 				<MessageAttachment {...props} maxWidth={160} maxHeight={80} />
 			</EmbedImageLink>
 		);
-	} else if (embed.type == EmbedType.Article) {
+	} else if (embed.type == EmbedType.Article || embed.type == EmbedType.Rich) {
 		return (
 			<EmbedImageArticle>
 				<MessageAttachment {...props} />
@@ -106,7 +110,8 @@ export default function MessageEmbed({ embed, contextMenuItems }: EmbedProps) {
 	const logger = useLogger("MessageEmbed");
 
 	// seems like the server sometimes sends thumbnails with 0 width and height, and no urls
-	const thumbnail = embed.thumbnail && embed.thumbnail.url ? createEmbedAttachment(embed, contextMenuItems) : null;
+	const image = embed.thumbnail ?? embed.image;
+	const thumbnail = image && image.url ? createEmbedAttachment(embed, contextMenuItems) : null;
 
 	if (embed.type == EmbedType.Image) return thumbnail;
 

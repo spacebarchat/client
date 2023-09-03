@@ -1,4 +1,4 @@
-import { APIAttachment, MessageType } from "@spacebarchat/spacebar-api-types/v9";
+import { APIAttachment, APIEmbed, MessageType } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import Moment from "react-moment";
@@ -123,6 +123,10 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 		[contextMenuItems],
 	);
 
+	const renderEmbed = React.useCallback((embed: APIEmbed) => {
+		return <MessageEmbed embed={embed} contextMenuItems={contextMenuItems} />;
+	}, []);
+
 	// construct the context menu options
 	// React.useEffect(() => {
 	// 	// if the message is queued, we don't need a context menu
@@ -194,11 +198,7 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 							{"attachments" in message
 								? message.attachments.map((attachment) => renderAttachment(attachment))
 								: null}
-							{"embeds" in message
-								? message.embeds.map((embed) => (
-										<MessageEmbed embed={embed} contextMenuItems={contextMenuItems} />
-								  ))
-								: null}
+							{"embeds" in message ? message.embeds.map((embed) => renderEmbed(embed)) : null}
 						</MessageContent>
 					) : (
 						<div>
