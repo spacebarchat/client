@@ -59,6 +59,19 @@ const EmbedImageLink = styled.div`
 	justify-self: end;
 `;
 
+const EmbedFooter = styled.div`
+	display: flex;
+	align-items: center;
+	grid-row: auto/auto;
+	grid-column: 1/1;
+	margin-top: 10px;
+`;
+
+const EmbedFooterText = styled.span`
+	font-size: 12px;
+	font-weight: var(--font-weight-regular);
+`;
+
 const YoutubeEmbed = styled.iframe`
 	display: block;
 	outline: none;
@@ -134,6 +147,11 @@ export default function MessageEmbed({ embed, contextMenuItems }: EmbedProps) {
 				</EmbedDescription>
 			)}
 			{thumbnail}
+			{embed.footer && (
+				<EmbedFooter>
+					<EmbedFooterText>{embed.footer.text}</EmbedFooterText>
+				</EmbedFooter>
+			)}
 		</EmbedContainer>
 	);
 }
