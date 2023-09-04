@@ -1,6 +1,7 @@
 import { APIAttachment, APIEmbed, EmbedType } from "@spacebarchat/spacebar-api-types/v9";
 import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
+import { decimalColorToHex } from "../../utils/Utils";
 import { IContextMenuItem } from "../ContextMenuItem";
 import MessageAttachment from "./MessageAttachment";
 
@@ -13,18 +14,21 @@ interface EmbedProps {
 	contextMenuItems: IContextMenuItem[];
 }
 
-const EmbedContainer = styled.div<{ type: EmbedType }>`
+const EmbedContainer = styled.div<{ $type: EmbedType; $color?: string }>`
 	padding: 10px;
 	margin-top: 5px;
 	background: var(--background-secondary);
 	border-radius: 4px;
 	display: grid;
 	grid-template-columns: ${(props) =>
-		props.type == EmbedType.Link || props.type == EmbedType.Rich ? "auto min-content" : "min-content"};
+		props.$type == EmbedType.Link || props.$type == EmbedType.Rich ? "auto min-content" : "min-content"};
 	grid-template-rows: auto;
 	max-width: 500px;
-	width: ${(props) => (props.type == EmbedType.Link ? undefined : "min-content")};
-	border: 1px solid var(--background-tertiary);
+	width: ${(props) => (props.$type == EmbedType.Link ? undefined : "min-content")};
+
+	border-left-width: 5px;
+	border-left-color: ${(props) => props.$color ?? "var(--background-tertiary)"};
+	border-left-style: solid;
 `;
 
 const EmbedProvider = styled.div`
@@ -130,7 +134,10 @@ export default function MessageEmbed({ embed, contextMenuItems }: EmbedProps) {
 	if (embed.type == EmbedType.Video && embed.provider?.name == "YouTube") return createYoutubeEmbed(embed);
 
 	return (
-		<EmbedContainer type={embed.type ?? EmbedType.Link}>
+		<EmbedContainer
+			$type={embed.type ?? EmbedType.Link}
+			$color={embed.color ? decimalColorToHex(embed.color) : undefined}
+		>
 			{embed.provider && <EmbedProvider>{embed.provider.name}</EmbedProvider>}
 			{embed.title && (
 				<EmbedHeader>
