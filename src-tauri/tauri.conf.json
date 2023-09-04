@@ -56,11 +56,20 @@
 		"windows": [
 			{
 				"fullscreen": false,
-				"height": 600,
 				"resizable": true,
 				"title": "Spacebar",
-				"width": 800,
-				"maximized": true
+				"maximized": true,
+				"visible": false,
+				"label": "main"
+			},
+			{
+				"width": 400,
+				"height": 200,
+				"decorations": false,
+				"url": "splashscreen.html",
+				"label": "splashscreen",
+				"resizable": false,
+				"center": true
 			}
 		]
 	}
