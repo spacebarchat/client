@@ -20,8 +20,7 @@ const EmbedContainer = styled.div<{ $type: EmbedType; $color?: string }>`
 	background: var(--background-secondary);
 	border-radius: 4px;
 	display: grid;
-	grid-template-columns: ${(props) =>
-		props.$type == EmbedType.Link || props.$type == EmbedType.Rich ? "auto min-content" : "max-content"};
+	grid-template-columns: auto;
 	grid-template-rows: auto;
 	max-width: 500px;
 	width: ${(props) => (props.$type == EmbedType.Link ? undefined : "min-content")};
