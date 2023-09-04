@@ -29,7 +29,7 @@
 				"icons/icon.icns",
 				"icons/icon.ico"
 			],
-			"identifier": "com.tauri.dev",
+			"identifier": "chat.spacebar.app",
 			"longDescription": "",
 			"macOS": {
 				"entitlements": null,
