@@ -63,7 +63,7 @@ const ActionItemsWrapper = styled.div`
 	margin-right: 15%;
 
 	// remove the temporary padding that moves it over the chat area on smaller screens where the member list is hidden
-	@media (max-width: 1080px) {
+	@media (max-width: 1050px) {
 		margin-right: auto;
 	}
 `;

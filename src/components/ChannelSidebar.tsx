@@ -13,7 +13,7 @@ const Wrapper = styled(Container)`
 	flex: 0 0 240px;
 	background-color: var(--background-secondary);
 
-	@media (max-width: 1080px) {
+	@media (max-width: 810px) {
 		display: none;
 	}
 `;

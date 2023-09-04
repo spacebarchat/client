@@ -8,7 +8,7 @@ const Container = styled.div`
 	background-color: var(--background-secondary);
 	height: 100%;
 
-	@media (max-width: 1080px) {
+	@media (max-width: 1050px) {
 		display: none;
 	}
 `;

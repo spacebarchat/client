@@ -18,7 +18,7 @@ const List = styled.ul`
 	flex: 0 0 48px;
 	align-items: center;
 
-	@media (max-width: 1080px) {
+	@media (max-width: 560px) {
 		display: none;
 	}
 `;
