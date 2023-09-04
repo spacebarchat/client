@@ -21,7 +21,7 @@ const EmbedContainer = styled.div<{ $type: EmbedType; $color?: string }>`
 	border-radius: 4px;
 	display: grid;
 	grid-template-columns: ${(props) =>
-		props.$type == EmbedType.Link || props.$type == EmbedType.Rich ? "auto min-content" : "min-content"};
+		props.$type == EmbedType.Link || props.$type == EmbedType.Rich ? "auto min-content" : "max-content"};
 	grid-template-rows: auto;
 	max-width: 500px;
 	width: ${(props) => (props.$type == EmbedType.Link ? undefined : "min-content")};
@@ -34,20 +34,21 @@ const EmbedContainer = styled.div<{ $type: EmbedType; $color?: string }>`
 const EmbedProvider = styled.div`
 	font-size: 12px;
 	font-weight: var(--font-weight-regular);
+	margin-top: 10px;
 `;
 
 const EmbedHeader = styled.div`
 	color: var(--primary-light);
-	margin-bottom: 10px;
 	font-weight: var(--font-weight-regular);
 	grid-column: 1/1;
+	margin-top: 10px;
 `;
 
 const EmbedDescription = styled.div`
-	margin: 5px 0 5px 0;
 	font-weight: var(--font-weight-light);
 	font-size: 14px;
 	grid-column: 1/1;
+	margin-top: 10px;
 `;
 
 const EmbedImageArticle = styled.div`
@@ -59,7 +60,7 @@ const EmbedImageLink = styled.div`
 	grid-row: 1/8;
 	grid-column: 2/2;
 	margin-left: 16px;
-	margin-top: 8px;
+	margin-top: 10px;
 	justify-self: end;
 `;
 
@@ -80,6 +81,7 @@ const YoutubeEmbed = styled.iframe`
 	display: block;
 	outline: none;
 	border: none;
+	margin-top: 10px;
 `;
 
 const createEmbedAttachment = (embed: APIEmbed, contextMenuItems: IContextMenuItem[]) => {
@@ -115,7 +117,16 @@ const createEmbedAttachment = (embed: APIEmbed, contextMenuItems: IContextMenuIt
 				<MessageAttachment {...props} />
 			</EmbedImageArticle>
 		);
-	} else return <MessageAttachment {...props} />;
+	} else
+		return (
+			<div
+				style={{
+					marginTop: "10px",
+				}}
+			>
+				<MessageAttachment {...props} />
+			</div>
+		);
 };
 
 const createYoutubeEmbed = (embed: APIEmbed) => {
@@ -127,11 +138,10 @@ export default function MessageEmbed({ embed, contextMenuItems }: EmbedProps) {
 
 	// seems like the server sometimes sends thumbnails with 0 width and height, and no urls
 	const image = embed.thumbnail ?? embed.image;
-	const thumbnail = image && image.url ? createEmbedAttachment(embed, contextMenuItems) : null;
+	const isYoutubeVideo = embed.type == EmbedType.Video && embed.provider?.name == "YouTube";
+	const thumbnail = image && image.url && !isYoutubeVideo ? createEmbedAttachment(embed, contextMenuItems) : null;
 
 	if (embed.type == EmbedType.Image) return thumbnail;
-
-	if (embed.type == EmbedType.Video && embed.provider?.name == "YouTube") return createYoutubeEmbed(embed);
 
 	return (
 		<EmbedContainer
@@ -146,7 +156,7 @@ export default function MessageEmbed({ embed, contextMenuItems }: EmbedProps) {
 						: embed.title}
 				</EmbedHeader>
 			)}
-			{embed.description && (
+			{embed.description && !isYoutubeVideo && (
 				<EmbedDescription>
 					{embed.description.length > DESCRIPTION_MAX_CHARS
 						? embed.description.substring(0, DESCRIPTION_MAX_CHARS) + "..."
@@ -154,6 +164,7 @@ export default function MessageEmbed({ embed, contextMenuItems }: EmbedProps) {
 				</EmbedDescription>
 			)}
 			{thumbnail}
+			{isYoutubeVideo && createYoutubeEmbed(embed)}
 			{embed.footer && (
 				<EmbedFooter>
 					<EmbedFooterText>{embed.footer.text}</EmbedFooterText>
