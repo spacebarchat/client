@@ -1,20 +1,19 @@
-import { useModals } from "@mattjennings/react-modal-stack";
-import { APIAttachment, MessageType } from "@spacebarchat/spacebar-api-types/v9";
+import { APIAttachment, APIEmbed, MessageType } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import Moment from "react-moment";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
-import useLogger from "../../hooks/useLogger";
+import { useAppStore } from "../../stores/AppStore";
 import { default as MessageObject } from "../../stores/objects/Message";
 import QueuedMessage from "../../stores/objects/QueuedMessage";
-import { calculateImageRatio, calculateScaledDimensions } from "../../utils/Message";
 import { calendarStrings } from "../../utils/i18n";
 import Avatar from "../Avatar";
 import { Link } from "../Link";
-import AttachmentPreviewModal from "../modals/AttachmentPreviewModal";
 import { IContextMenuItem } from "./../ContextMenuItem";
 import AttachmentUploadProgress from "./AttachmentUploadProgress";
+import MessageAttachment from "./MessageAttachment";
+import MessageEmbed from "./MessageEmbed";
 
 type MessageLike = MessageObject | QueuedMessage;
 
@@ -65,10 +64,6 @@ const MessageContent = styled.div<{ sending?: boolean; failed?: boolean }>`
 	color: ${(props) => (props.failed ? "var(--error)" : undefined)};
 `;
 
-const MessageAttachment = styled.div`
-	cursor: pointer;
-`;
-
 // converts URLs in a string to html links
 const Linkify = ({ children }: { children: string }) => {
 	const urlPattern = /\bhttps?:\/\/\S+\b\/?/g;
@@ -106,8 +101,8 @@ interface Props {
  * Component for rendering a single message
  */
 function Message({ message, isHeader, isSending, isFailed }: Props) {
-	const logger = useLogger("Message.tsx");
-	const { openModal } = useModals();
+	const app = useAppStore();
+
 	const contextMenu = React.useContext(ContextMenuContext);
 	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
 		{
@@ -121,63 +116,15 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 		},
 	]);
 
-	const renderAttachment = React.useCallback((attachment: APIAttachment) => {
-		let a: JSX.Element = <></>;
-		if (attachment.content_type?.startsWith("image")) {
-			const ratio = calculateImageRatio(attachment.width!, attachment.height!);
-			const { scaledWidth, scaledHeight } = calculateScaledDimensions(
-				attachment.width!,
-				attachment.height!,
-				ratio,
-			);
-			a = <img src={attachment.url} alt={attachment.filename} width={scaledWidth} height={scaledHeight} />;
-		} else if (attachment.content_type?.startsWith("video")) {
-			{
-				/* TODO: poster thumbnail */
-			}
-			a = (
-				<video controls preload="metadata" width={400}>
-					{/* TODO: the server doesn't return height and width yet for videos */}
-					<source src={attachment.url} type={attachment.content_type} />
-				</video>
-			);
-		} else {
-			logger.warn(`Unknown attachment type: ${attachment.content_type}`);
-		}
+	const renderAttachment = React.useCallback(
+		(attachment: APIAttachment) => {
+			return <MessageAttachment attachment={attachment} contextMenuItems={contextMenuItems} />;
+		},
+		[contextMenuItems],
+	);
 
-		return (
-			<MessageAttachment
-				key={attachment.id}
-				onContextMenu={(e) => {
-					// prevent propagation to the message container
-					e.stopPropagation();
-					e.preventDefault();
-					contextMenu.open({
-						position: {
-							x: e.pageX,
-							y: e.pageY,
-						},
-						items: [
-							...contextMenuItems,
-							{
-								label: "Copy Attachment URL",
-								onClick: () => {
-									navigator.clipboard.writeText(attachment.url);
-								},
-								iconProps: {
-									icon: "mdiLink",
-								},
-							} as IContextMenuItem,
-						],
-					});
-				}}
-				onClick={() => {
-					openModal(AttachmentPreviewModal, { attachment });
-				}}
-			>
-				{a}
-			</MessageAttachment>
-		);
+	const renderEmbed = React.useCallback((embed: APIEmbed) => {
+		return <MessageEmbed embed={embed} contextMenuItems={contextMenuItems} />;
 	}, []);
 
 	// construct the context menu options
@@ -248,8 +195,10 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 					{message.type === MessageType.Default ? (
 						<MessageContent sending={isSending} failed={isFailed}>
 							{message.content ? <Linkify>{message.content}</Linkify> : null}
-							{"attachments" in message &&
-								message.attachments.map((attachment) => renderAttachment(attachment))}
+							{"attachments" in message
+								? message.attachments.map((attachment) => renderAttachment(attachment))
+								: null}
+							{"embeds" in message ? message.embeds.map((embed) => renderEmbed(embed)) : null}
 						</MessageContent>
 					) : (
 						<div>
