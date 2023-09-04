@@ -35,6 +35,9 @@ dependencies:
   '@spacebarchat/spacebar-api-types':
     specifier: 0.37.49
     version: 0.37.49
+  '@tauri-apps/api':
+    specifier: ^1.4.0
+    version: 1.4.0
   '@testing-library/jest-dom':
     specifier: ^5.16.5
     version: 5.16.5
@@ -2914,6 +2917,11 @@ packages:
       loader-utils: 2.0.4
     transitivePeerDependencies:
       - supports-color
+
+  /@tauri-apps/api@1.4.0:
+    resolution: {integrity: sha512-Jd6HPoTM1PZSFIzq7FB8VmMu3qSSyo/3lSwLpoapW+lQ41CL5Dow2KryLg+gyazA/58DRWI9vu/XpEeHK4uMdw==}
+    engines: {node: '>= 14.6.0', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
+    dev: false
 
   /@tauri-apps/cli-darwin-arm64@1.4.0:
     resolution: {integrity: sha512-nA/ml0SfUt6/CYLVbHmT500Y+ijqsuv5+s9EBnVXYSLVg9kbPUZJJHluEYK+xKuOj6xzyuT/+rZFMRapmJD3jQ==}
