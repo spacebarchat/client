@@ -52,7 +52,7 @@ function App() {
 		logger.debug("Loading complete");
 		app.setAppLoading(false);
 		// @ts-expect-error check if tauri api is defined
-		if (window.__TAURI__) invoke("close_splashscreen");
+		if (window.__TAURI_IPC__) invoke("close_splashscreen");
 
 		return dispose;
 	}, []);

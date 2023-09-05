@@ -22,7 +22,7 @@
 		"@mdi/react": "^1.6.1",
 		"@mui/material": "^5.13.0",
 		"@spacebarchat/spacebar-api-types": "0.37.49",
-		"@tauri-apps/api": "^1.4.0",
+		"@tauri-apps/api": "2.0.0-alpha.6",
 		"@testing-library/jest-dom": "^5.16.5",
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^13.5.0",
@@ -82,7 +82,7 @@
 	},
 	"devDependencies": {
 		"@craco/craco": "^7.1.0",
-		"@tauri-apps/cli": "^1.4.0",
+		"@tauri-apps/cli": "2.0.0-alpha.11",
 		"@types/loadable__component": "^5.13.4",
 		"@types/styled-components": "^5.1.26",
 		"@typescript-eslint/eslint-plugin": "^5.59.5",
