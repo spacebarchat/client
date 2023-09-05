@@ -24,7 +24,7 @@ export default class AppStore {
 	// whether the app is still loading
 	@observable isAppLoading = true;
 
-	@observable isNetworkConnected = true; // TODO: Implement this
+	@observable isNetworkConnected = true;
 	@observable tokenLoaded = false;
 	@observable token: string | null = null;
 
@@ -42,6 +42,9 @@ export default class AppStore {
 
 	constructor() {
 		makeAutoObservable(this);
+
+		window.addEventListener("online", () => this.setNetworkConnected(true));
+		window.addEventListener("offline", () => this.setNetworkConnected(false));
 	}
 
 	@action
@@ -91,12 +94,17 @@ export default class AppStore {
 		secureLocalStorage.removeItem("token");
 	}
 
+	@action
+	setNetworkConnected(value: boolean) {
+		this.isNetworkConnected = value;
+	}
+
 	@computed
 	/**
 	 * Whether the app is done loading and ready to be displayed
 	 */
 	get isReady() {
-		return !this.isAppLoading && this.isGatewayReady && this.isNetworkConnected;
+		return !this.isAppLoading && this.isGatewayReady /* && this.isNetworkConnected */;
 	}
 }
 

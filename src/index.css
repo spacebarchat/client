@@ -6,7 +6,6 @@ h5,
 h6,
 p,
 span {
-	color: var(--text);
 	padding: 0;
 	margin: 0;
 }

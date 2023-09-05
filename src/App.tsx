@@ -8,7 +8,9 @@ import RegistrationPage from "./pages/RegistrationPage";
 
 import { reaction } from "mobx";
 import Loader from "./components/Loader";
+import OfflineBanner from "./components/banners/OfflineBanner";
 import { UnauthenticatedGuard } from "./components/guards/UnauthenticatedGuard";
+import { BannerContext } from "./contexts/BannerContext";
 import useLogger from "./hooks/useLogger";
 import AppPage from "./pages/AppPage";
 import LogoutPage from "./pages/LogoutPage";
@@ -18,6 +20,7 @@ import { Globals } from "./utils/Globals";
 
 function App() {
 	const app = useAppStore();
+	const bannerContext = React.useContext(BannerContext);
 	const logger = useLogger("App");
 	const navigate = useNavigate();
 
@@ -53,6 +56,15 @@ function App() {
 
 		return dispose;
 	}, []);
+
+	React.useEffect(() => {
+		if (!app.isNetworkConnected)
+			bannerContext.setContent({
+				forced: true,
+				element: <OfflineBanner />,
+			});
+		else bannerContext.close();
+	}, [app.isNetworkConnected]);
 
 	return (
 		<Loader>

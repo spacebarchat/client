@@ -16,6 +16,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import ModalRenderer from "./components/modals/ModalRenderer";
+import { BannerContextProvider } from "./contexts/BannerContext";
 import { ContextMenuContextProvider } from "./contexts/ContextMenuContext";
 import Theme from "./contexts/Theme";
 import "./index.css";
@@ -25,7 +26,9 @@ root.render(
 	<BrowserRouter>
 		<ModalStack renderModals={ModalRenderer}>
 			<ContextMenuContextProvider>
-				<App />
+				<BannerContextProvider>
+					<App />
+				</BannerContextProvider>
 			</ContextMenuContextProvider>
 			<Theme />
 		</ModalStack>
