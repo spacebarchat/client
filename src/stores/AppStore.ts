@@ -104,8 +104,7 @@ export default class AppStore {
 	 * Whether the app is done loading and ready to be displayed
 	 */
 	get isReady() {
-		// return !this.isAppLoading && this.isGatewayReady /* && this.isNetworkConnected */;
-		return false;
+		return !this.isAppLoading && this.isGatewayReady /* && this.isNetworkConnected */;
 	}
 }
 
