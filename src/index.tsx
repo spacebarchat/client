@@ -21,6 +21,8 @@ import { ContextMenuContextProvider } from "./contexts/ContextMenuContext";
 import Theme from "./contexts/Theme";
 import "./index.css";
 
+export const isTauri = !!window.__TAURI__;
+
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
 	<BrowserRouter>
