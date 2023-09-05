@@ -1,14 +1,32 @@
 import { useModals } from "@mattjennings/react-modal-stack";
+import { useAppStore } from "../../stores/AppStore";
+import Button from "../Button";
 import Icon from "../Icon";
-import { Modal, ModalCloseWrapper, ModalFullContent, ModalFullSidebar } from "./ModalComponents";
+import {
+	Modal,
+	ModalCloseWrapper,
+	ModalFullContent,
+	ModalFullSidebar,
+	ModalFullSidebarContent,
+} from "./ModalComponents";
 import { AnimatedModalProps } from "./ModalRenderer";
 
 function SettingsModal(props: AnimatedModalProps) {
+	const app = useAppStore();
 	const { closeModal } = useModals();
 
 	return (
 		<Modal full {...props}>
-			<ModalFullSidebar>Sidebar</ModalFullSidebar>
+			<ModalFullSidebar>
+				<ModalFullSidebarContent>
+					Sidebar
+					<div>
+						<Button variant="danger" onClick={() => app.logout()}>
+							Logout
+						</Button>
+					</div>
+				</ModalFullSidebarContent>
+			</ModalFullSidebar>
 
 			<ModalFullContent>
 				<ModalCloseWrapper>

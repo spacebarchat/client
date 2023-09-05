@@ -16,6 +16,7 @@ export const ModalBase = styled(motion.div)`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	color: var(--text);
 `;
 
 /**
@@ -161,6 +162,12 @@ export const ModalFullSidebar = styled.div`
 	z-index: 1;
 	background-color: var(--background-secondary);
 `;
+
+export const ModalFullSidebarContent = styled.div`
+	display: flex;
+	flex-direction: column;
+`;
+
 export const ModalFullContent = styled.div`
 	position: relative;
 	display: flex;
