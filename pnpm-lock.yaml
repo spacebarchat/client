@@ -38,6 +38,33 @@ dependencies:
   '@tauri-apps/api':
     specifier: 2.0.0-alpha.6
     version: 2.0.0-alpha.6
+  '@tauri-apps/plugin-authenticator':
+    specifier: 2.0.0-alpha.1
+    version: 2.0.0-alpha.1
+  '@tauri-apps/plugin-autostart':
+    specifier: 2.0.0-alpha.1
+    version: 2.0.0-alpha.1
+  '@tauri-apps/plugin-clipboard-manager':
+    specifier: 2.0.0-alpha.1
+    version: 2.0.0-alpha.1
+  '@tauri-apps/plugin-dialog':
+    specifier: 2.0.0-alpha.1
+    version: 2.0.0-alpha.1
+  '@tauri-apps/plugin-log':
+    specifier: 2.0.0-alpha.1
+    version: 2.0.0-alpha.1
+  '@tauri-apps/plugin-notification':
+    specifier: 2.0.0-alpha.1
+    version: 2.0.0-alpha.1
+  '@tauri-apps/plugin-process':
+    specifier: 2.0.0-alpha.1
+    version: 2.0.0-alpha.1
+  '@tauri-apps/plugin-stronghold':
+    specifier: 2.0.0-alpha.2
+    version: 2.0.0-alpha.2
+  '@tauri-apps/plugin-updater':
+    specifier: 2.0.0-alpha.1
+    version: 2.0.0-alpha.1
   '@testing-library/jest-dom':
     specifier: ^5.16.5
     version: 5.16.5
@@ -3039,6 +3066,60 @@ packages:
       '@tauri-apps/cli-win32-ia32-msvc': 2.0.0-alpha.11
       '@tauri-apps/cli-win32-x64-msvc': 2.0.0-alpha.11
     dev: true
+
+  /@tauri-apps/plugin-authenticator@2.0.0-alpha.1:
+    resolution: {integrity: sha512-MxV+g7vweAH1Zgr9iUrH84VgrEAvoPoNZ9S0lKQ4kyt2BNmmOSdKjcoRxKxD8x7G8FRzTDypAdte0aMgtoG+Ag==}
+    dependencies:
+      '@tauri-apps/api': 2.0.0-alpha.6
+    dev: false
+
+  /@tauri-apps/plugin-autostart@2.0.0-alpha.1:
+    resolution: {integrity: sha512-xs72S8KCYzt9puML4vrmPvg2/wpUuRg4NMEp+12A7XwCP4mQ9js0fFPKSma770TVeJGpzhdJFvDTdWgrVyhYng==}
+    dependencies:
+      '@tauri-apps/api': 2.0.0-alpha.6
+    dev: false
+
+  /@tauri-apps/plugin-clipboard-manager@2.0.0-alpha.1:
+    resolution: {integrity: sha512-zXybHu31RCx58ZGU7/kUHcvoXW2AX6kBXBZsKHv4rYe7Z869WmDLDC7iU23/dAJLu7xAPTJzJ/HbeMfbrfJ4hg==}
+    dependencies:
+      '@tauri-apps/api': 2.0.0-alpha.6
+    dev: false
+
+  /@tauri-apps/plugin-dialog@2.0.0-alpha.1:
+    resolution: {integrity: sha512-Fqv7zB7qvR6DkcH1dafHcRRNWRSFwj637/G2MQ+kKrmk1ErfV95lcYjpIhmUaETQSPKeogSI6A78kSnO89cvHQ==}
+    dependencies:
+      '@tauri-apps/api': 2.0.0-alpha.6
+    dev: false
+
+  /@tauri-apps/plugin-log@2.0.0-alpha.1:
+    resolution: {integrity: sha512-+7iuIWyshYZKA8NtBb7YRnAMoAjkcN1CR4iNtQh1XBlc0e1CGaDNlk6DdkVuO5/0kT0Qlge+q1SndtpG4gNiLA==}
+    dependencies:
+      '@tauri-apps/api': 2.0.0-alpha.6
+    dev: false
+
+  /@tauri-apps/plugin-notification@2.0.0-alpha.1:
+    resolution: {integrity: sha512-/U046gKo0RsPsi7OTQEuu2ezWrhBNheTMA+iyMWb65N9mMSORul66Y1oKXzJOqeMsSQcL4V+WPz+6wzMGHY7lQ==}
+    dependencies:
+      '@tauri-apps/api': 2.0.0-alpha.6
+    dev: false
+
+  /@tauri-apps/plugin-process@2.0.0-alpha.1:
+    resolution: {integrity: sha512-ljTtJmuuURR1Q+H8zvbMX9pmMZdJQWMXGsUEK2aBNlUo4qE2AniXLjoaE1jJQ1NF2LKptJRSY1bSUi+OyEkjGg==}
+    dependencies:
+      '@tauri-apps/api': 2.0.0-alpha.6
+    dev: false
+
+  /@tauri-apps/plugin-stronghold@2.0.0-alpha.2:
+    resolution: {integrity: sha512-G01gRHjD1QCNn2EK/hgHJYy0tFEfjuKpU104JOgeYVEbkJX7G92hjxfyLqe++LoihPF/sUa6VHEUVVXBsRa71Q==}
+    dependencies:
+      '@tauri-apps/api': 2.0.0-alpha.6
+    dev: false
+
+  /@tauri-apps/plugin-updater@2.0.0-alpha.1:
+    resolution: {integrity: sha512-rJoVc/N8gg1MkUOFZdx5h39V47elddwnOjs0sAPhaGfwct7okmFMRnXpN/MwHoprTkK2+6EDLOvhf0jFMiy4JA==}
+    dependencies:
+      '@tauri-apps/api': 2.0.0-alpha.6
+    dev: false
 
   /@testing-library/dom@8.20.0:
     resolution: {integrity: sha512-d9ULIT+a4EXLX3UU8FBjauG9NnsZHkHztXoIcTsOKoOw030fyjheN9svkTULjJxtYag9DZz5Jz5qkWZDPxTFwA==}
