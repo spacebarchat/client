@@ -2,12 +2,12 @@
 	"$schema": "../node_modules/@tauri-apps/cli/schema.json",
 	"build": {
 		"beforeBuildCommand": "pnpm build",
-		"beforeDevCommand": "pnpm start",
-		"devPath": "http://localhost:3000",
+		"beforeDevCommand": "pnpm dev",
+		"devPath": "http://localhost:5173",
 		"distDir": "../build"
 	},
 	"package": {
-		"productName": "spacebar-client",
+		"productName": "Spacebar",
 		"version": "0.1.0"
 	},
 	"tauri": {
