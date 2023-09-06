@@ -1,4 +1,5 @@
 import { useModals } from "@mattjennings/react-modal-stack";
+import { GIT_BRANCH, GIT_REVISION, REPO_URL } from "../../utils/revison";
 import Icon from "../Icon";
 import { Modal, ModalCloseWrapper, ModalFullContent, ModalFullSidebar } from "./ModalComponents";
 import { AnimatedModalProps } from "./ModalRenderer";
@@ -30,7 +31,20 @@ function SettingsModal(props: AnimatedModalProps) {
 						/>
 					</button>
 				</ModalCloseWrapper>
-				Content
+				<div>
+					<span>Client Version: </span>
+					<a href={`${REPO_URL}/commit/${GIT_REVISION}`} target="_blank" rel="noreferrer">
+						{GIT_REVISION.substring(0, 7)}
+					</a>
+					{` `}
+					<a
+						href={GIT_BRANCH !== "DETACHED" ? `${REPO_URL}/tree/${GIT_BRANCH}` : undefined}
+						target="_blank"
+						rel="noreferrer"
+					>
+						({GIT_BRANCH})
+					</a>
+				</div>
 			</ModalFullContent>
 		</Modal>
 	);
