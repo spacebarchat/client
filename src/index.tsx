@@ -21,8 +21,7 @@ import { ContextMenuContextProvider } from "./contexts/ContextMenuContext";
 import Theme from "./contexts/Theme";
 import "./index.css";
 
-const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-root.render(
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<BrowserRouter>
 		<ModalStack renderModals={ModalRenderer}>
 			<ContextMenuContextProvider>

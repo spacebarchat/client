@@ -161,6 +161,7 @@ export const ModalFullSidebar = styled.div`
 	flex: 1 0 11.35%;
 	z-index: 1;
 	background-color: var(--background-secondary);
+	padding: 10px;
 `;
 
 export const ModalFullSidebarContent = styled.div`
@@ -174,6 +175,7 @@ export const ModalFullContent = styled.div`
 	flex: 1 1 42.3%;
 	align-items: flex-start;
 	background-color: var(--background-primary);
+	padding: 10px;
 `;
 
 interface ModalProps extends StackedModalProps {
