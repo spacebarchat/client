@@ -14,6 +14,7 @@ import { BannerContext } from "./contexts/BannerContext";
 import useLogger from "./hooks/useLogger";
 import AppPage from "./pages/AppPage";
 import LogoutPage from "./pages/LogoutPage";
+import SwipeTest from "./pages/SwipeTest";
 import ChannelPage from "./pages/subpages/ChannelPage";
 import { useAppStore } from "./stores/AppStore";
 import { Globals } from "./utils/Globals";
@@ -78,6 +79,7 @@ function App() {
 				<Route path="/login" element={<UnauthenticatedGuard component={LoginPage} />} />
 				<Route path="/register" element={<UnauthenticatedGuard component={RegistrationPage} />} />
 				<Route path="/logout" element={<AuthenticationGuard component={LogoutPage} />} />
+				<Route path="/swipe" element={<SwipeTest />} />
 				<Route path="*" element={<NotFoundPage />} />
 			</Routes>
 		</Loader>
