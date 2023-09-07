@@ -23,6 +23,7 @@ export const AuthContainer = styled(Container)`
 	@media (max-width: 480px) {
 		width: 100%;
 		height: 100%;
+		justify-content: center;
 	}
 
 	@media (min-width: 480px) {
