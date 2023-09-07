@@ -1,38 +1,29 @@
 [package]
-name = "app"
-version = "0.1.0"
-description = "Open source, themeable and extendable discord-compatible native Spacebar client"
-authors = ["Puyodead1"]
-license = "AGPL-3.0-only"
-repository = "https://github.com/spacebarchat/client"
-default-run = "app"
+name = "tauri-app"
+version = "0.0.0"
+description = "A Tauri App"
+authors = ["you"]
+license = ""
+repository = ""
 edition = "2021"
-rust-version = "1.60"
+
+[lib]
+name = "tauri_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
 tauri-build = { version = "2.0.0-alpha", features = [] }
 
-# you can add the dependencies on the `[dependencies]` section if you do not target mobile
-[target."cfg(not(any(target_os = \"android\", target_os = \"ios\")))".dependencies]
-tauri-plugin-updater = "2.0.0-alpha"
-tauri-plugin-authenticator = "2.0.0-alpha"
-
 [dependencies]
-serde_json = "1.0"
-serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "2.0.0-alpha", features = [] }
-tauri-plugin-stronghold = "2.0.0-alpha"
-tauri-plugin-single-instance = "2.0.0-alpha"
-tauri-plugin-notification = "2.0.0-alpha"
-tauri-plugin-autostart = "2.0.0-alpha"
-tauri-plugin-clipboard-manager = "2.0.0-alpha"
-tauri-plugin-dialog = "2.0.0-alpha"
-tauri-plugin-process = "2.0.0-alpha"
+tauri-plugin-window = "2.0.0-alpha"
+tauri-plugin-shell = "2.0.0-alpha"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 
 [features]
-# this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.
-# If you use cargo directly instead of tauri's cli you can use this feature flag to switch between tauri's `dev` and `build` modes.
+# this feature is used for production builds or when `devPath` points to the filesystem
 # DO NOT REMOVE!!
 custom-protocol = ["tauri/custom-protocol"]

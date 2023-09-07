@@ -50,8 +50,7 @@
 		"slate": "^0.94.1",
 		"slate-history": "^0.93.0",
 		"slate-react": "^0.98.1",
-		"styled-components": "^5.3.10",
-		"vite-plugin-svgr": "^3.2.0"
+		"styled-components": "^5.3.10"
 	},
 	"devDependencies": {
 		"@craco/craco": "^7.1.0",
@@ -70,7 +69,9 @@
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-react-refresh": "^0.4.3",
 		"typescript": "^5.0.2",
-		"vite": "^4.4.5"
+		"vite": "^4.4.5",
+		"internal-ip": "^7.0.0",
+		"vite-plugin-svgr": "^3.2.0"
 	},
 	"homepage": "https://spacebar.chat",
 	"license": "AGPL-3.0-only",
@@ -85,7 +86,11 @@
 		"dev": "vite",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"lint:fix": "pnpx prettier . --write",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"tauri:dev": "tauri dev",
+		"tauri:build": "tauri build",
+		"tauri:android:dev": "tauri android dev",
+		"tauri:android:build": "tauri android build"
 	},
 	"type": "module",
 	"version": "0.1.0"
