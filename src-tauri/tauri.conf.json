@@ -8,7 +8,7 @@
 	},
 	"package": {
 		"productName": "Spacebar",
-		"version": "0.1.0"
+		"version": "../package.json"
 	},
 	"tauri": {
 		"bundle": {
@@ -31,7 +31,17 @@
 				"fullscreen": false,
 				"resizable": true,
 				"title": "Spacebar",
-				"maximized": true
+				"maximized": true,
+				"visible": false,
+				"label": "main"
+			},
+			{
+				"width": 400,
+				"height": 200,
+				"decorations": false,
+				"center": true,
+				"url": "splashscreen.html",
+				"label": "splashscreen"
 			}
 		]
 	},

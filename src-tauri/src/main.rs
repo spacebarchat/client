@@ -3,5 +3,5 @@
 
 fn main() {
     #[cfg(desktop)]
-    tauri_app_lib::run();
+    spacebar::run();
 }

@@ -1,3 +1,3 @@
-package com.tauri.tauri_app
+package chat.spacebar.app
 
 class MainActivity : TauriActivity()

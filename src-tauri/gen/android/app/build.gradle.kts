@@ -6,10 +6,10 @@ plugins {
 
 android {
     compileSdk = 33
-    namespace = "com.tauri.tauri_app"
+    namespace = "chat.spacebar.app"
     defaultConfig {
         manifestPlaceholders["usesCleartextTraffic"] = "false"
-        applicationId = "com.tauri.tauri_app"
+        applicationId = "chat.spacebar.app"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

@@ -1,14 +1,14 @@
 [package]
-name = "tauri-app"
-version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
+name = "app"
+version = "0.1.0"
+description = "Spacebar Client"
+authors = ["Puyodead1"]
+license = "AGPL-3.0-only"
+repository = "https://github.com/spacebarchat/client"
 edition = "2021"
 
 [lib]
-name = "tauri_app_lib"
+name = "spacebar"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -17,9 +17,9 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2.0.0-alpha", features = [] }
 
 [dependencies]
-tauri = { version = "2.0.0-alpha", features = [] }
-tauri-plugin-window = "2.0.0-alpha"
-tauri-plugin-shell = "2.0.0-alpha"
+# tauri = { version = "2.0.0-alpha", features = [] }
+tauri = { git = "https://github.com/tauri-apps/tauri.git", branch = "fix/windows-custom-protocol-url", features = [
+] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 
