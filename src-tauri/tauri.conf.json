@@ -7,14 +7,14 @@
 		"withGlobalTauri": false
 	},
 	"package": {
-		"productName": "tauri-app",
-		"version": "0.0.0"
+		"productName": "Spacebar",
+		"version": "0.1.0"
 	},
 	"tauri": {
 		"bundle": {
 			"active": true,
 			"targets": "all",
-			"identifier": "com.tauri.dev",
+			"identifier": "chat.spacebar.app",
 			"icon": [
 				"icons/32x32.png",
 				"icons/128x128.png",
