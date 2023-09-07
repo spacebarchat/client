@@ -6,7 +6,6 @@ import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFound";
 import RegistrationPage from "./pages/RegistrationPage";
 
-import { invoke } from "@tauri-apps/api";
 import { reaction } from "mobx";
 import Loader from "./components/Loader";
 import OfflineBanner from "./components/banners/OfflineBanner";
@@ -55,8 +54,6 @@ function App() {
 
 		logger.debug("Loading complete");
 		app.setAppLoading(false);
-		// @ts-expect-error check if tauri api is defined
-		if (window.__TAURI_IPC__) invoke("close_splashscreen");
 
 		return dispose;
 	}, []);
