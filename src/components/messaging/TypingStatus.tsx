@@ -45,7 +45,7 @@ function TypingStatus({ channel }: Props) {
 		const userCount = typingUsers.length;
 
 		if (userCount === 0) {
-			return "";
+			return null;
 		} else if (userCount === 1) {
 			return (
 				<>
@@ -53,18 +53,17 @@ function TypingStatus({ channel }: Props) {
 				</>
 			);
 		} else if (userCount === 2) {
-			return typingUsers.map((user) => <Bold>{user.username}</Bold>).join(" and ") + " are typing...";
+			return (
+				<>
+					<Bold>{typingUsers[0].username}</Bold> and <Bold>{typingUsers[1].username}</Bold> are typing...{" "}
+				</>
+			);
 		} else if (userCount === 3) {
 			return (
-				typingUsers
-					.slice(0, 2)
-					.map((user) => <Bold>${user.username}</Bold>)
-					.join(", ") +
-				(
-					<>
-						and <Bold>${typingUsers[2].username}</Bold> are typing...
-					</>
-				)
+				<>
+					<Bold>{typingUsers[0].username}</Bold>, <Bold>{typingUsers[1].username}</Bold> and{" "}
+					<Bold>{typingUsers[2].username}</Bold> are typing...{" "}
+				</>
 			);
 		} else {
 			return <>Several people are typing...</>;
