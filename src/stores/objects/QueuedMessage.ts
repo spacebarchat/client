@@ -1,5 +1,5 @@
 import { APIUser, MessageType } from "@spacebarchat/spacebar-api-types/v9";
-import { action, makeAutoObservable, observable } from "mobx";
+import { action, observable } from "mobx";
 import AppStore from "../AppStore";
 import MessageBase from "./MessageBase";
 
@@ -30,11 +30,8 @@ export default class QueuedMessage extends MessageBase {
 		super(app, data);
 		this.id = data.id;
 		this.channel = data.channel;
-		this.content = data.content;
 		this.files = data.files;
 		this.status = QueuedMessageStatus.SENDING;
-
-		makeAutoObservable(this);
 	}
 
 	@action
