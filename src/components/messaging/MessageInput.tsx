@@ -17,6 +17,7 @@ import { HorizontalDivider } from "../Divider";
 import Icon from "../Icon";
 import IconButton from "../IconButton";
 import AttachmentUploadList from "./AttachmentUploadList";
+import TypingStatus from "./TypingStatus";
 
 type CustomElement = { type: "paragraph"; children: CustomText[] };
 type CustomText = { text: string; bold?: true };
@@ -180,6 +181,12 @@ function MessageInput(props: Props) {
 		const isAstChange = editor.operations.some((op) => "set_selection" !== op.type);
 		if (isAstChange) {
 			setContent(serialize(value));
+
+			// send typing event
+			if (!props.channel.isTyping) {
+				logger.debug("Sending typing event");
+				props.channel.sendTyping();
+			}
 		}
 	}, []);
 
@@ -271,6 +278,8 @@ function MessageInput(props: Props) {
 						</Slate>
 					</div>
 				</div>
+
+				<TypingStatus channel={props.channel} />
 			</InnerContainer>
 		</Container>
 	);

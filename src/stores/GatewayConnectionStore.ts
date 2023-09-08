@@ -25,6 +25,7 @@ import {
 	GatewayReadyDispatchData,
 	GatewayReceivePayload,
 	GatewaySendPayload,
+	GatewayTypingStartDispatchData,
 	PresenceUpdateStatus,
 	Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
@@ -123,6 +124,8 @@ export default class GatewayConnectionStore {
 		this.dispatchHandlers.set(GatewayDispatchEvents.MessageDelete, this.onMessageDelete);
 
 		this.dispatchHandlers.set(GatewayDispatchEvents.PresenceUpdate, this.onPresenceUpdate);
+
+		this.dispatchHandlers.set(GatewayDispatchEvents.TypingStart, this.onTypingStart);
 	}
 
 	private onopen = () => {
@@ -618,5 +621,20 @@ export default class GatewayConnectionStore {
 
 	private onPresenceUpdate = (data: GatewayPresenceUpdateDispatchData) => {
 		this.app.presences.add(data);
+	};
+
+	private onTypingStart = (data: GatewayTypingStartDispatchData) => {
+		const guild = this.app.guilds.get(data.guild_id!);
+		if (!guild) {
+			this.logger.warn(`[TypingStart] Guild ${data.guild_id} not found for channel ${data.channel_id}`);
+			return;
+		}
+		const channel = guild.channels.get(data.channel_id);
+		if (!channel) {
+			this.logger.warn(`[TypingStart] Channel ${data.channel_id} not found`);
+			return;
+		}
+
+		channel.handleTyping(data);
 	};
 }

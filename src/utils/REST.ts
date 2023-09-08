@@ -117,22 +117,18 @@ export default class REST {
 				body: body ? JSON.stringify(body) : undefined,
 			})
 				.then(async (res) => {
-					if (res.ok) {
-						resolve(await res.json());
-					} else {
-						// reject with json if content type is json
-						if (res.headers.get("content-type")?.includes("application/json")) {
-							return reject(await res.json());
-						}
-
-						// if theres content, reject with text
-						if (res.headers.get("content-length") !== "0") {
-							return reject(await res.text());
-						}
-
-						// reject with status code if theres no content
-						return reject(res.statusText);
+					// resolve with json if content type is json
+					if (res.headers.get("content-type")?.includes("application/json")) {
+						return resolve(await res.json());
 					}
+
+					// if theres content, resolve with text
+					if (res.headers.get("content-length") !== "0") {
+						return resolve((await res.text()) as U);
+					}
+
+					if (res.ok) return resolve(res.status as U);
+					else return reject(res.statusText);
 				})
 				.catch(reject);
 		});

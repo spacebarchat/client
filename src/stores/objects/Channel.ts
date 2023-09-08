@@ -6,6 +6,7 @@ import type {
 	APIReadState,
 	APIUser,
 	APIWebhook,
+	GatewayTypingStartDispatchData,
 	GatewayVoiceState,
 	RESTGetAPIChannelMessagesQuery,
 	RESTGetAPIChannelMessagesResult,
@@ -14,12 +15,13 @@ import type {
 	Snowflake as SnowflakeType,
 } from "@spacebarchat/spacebar-api-types/v9";
 import { ChannelType, Routes } from "@spacebarchat/spacebar-api-types/v9";
-import { action, computed, makeObservable, observable } from "mobx";
+import { ObservableMap, action, computed, makeObservable, observable, runInAction } from "mobx";
 import Logger from "../../utils/Logger";
 import { APIError } from "../../utils/interfaces/api";
 import AppStore from "../AppStore";
 import MessageStore from "../MessageStore";
 import QueuedMessage from "./QueuedMessage";
+import User from "./User";
 
 export default class Channel {
 	private readonly logger: Logger = new Logger("Channel");
@@ -54,10 +56,13 @@ export default class Channel {
 	@observable flags: number;
 	@observable defaultThreadRateLimitPerUser: number;
 	@observable channelIcon?: keyof typeof Icons;
+	@observable typingCache: ObservableMap<SnowflakeType, User>;
+	@observable isTyping = false;
 	private hasFetchedMessages = false;
 
 	constructor(app: AppStore, channel: APIChannel) {
 		this.app = app;
+		this.typingCache = new ObservableMap();
 
 		this.id = channel.id;
 		this.createdAt = new Date(channel.created_at);
@@ -213,6 +218,37 @@ export default class Channel {
 		);
 	}
 
+	@action
+	async sendTyping() {
+		this.isTyping = true;
+		await this.app.rest.post<void, void>(Routes.channelTyping(this.id));
+
+		// expire after 10 seconds
+		setTimeout(() => {
+			runInAction(() => {
+				this.isTyping = false;
+			});
+		}, 10000); // TODO: make this configurable?
+	}
+
+	@action
+	handleTyping(data: GatewayTypingStartDispatchData) {
+		// this.typingCache.set(data.user_id, data);
+		const user = this.app.users.get(data.user_id);
+		if (!user) {
+			this.logger.warn(`[handleTyping] Unknown user ${data.user_id}`);
+			return;
+		}
+		this.typingCache.set(data.user_id, user);
+
+		// expire after 10 seconds
+		setTimeout(() => {
+			runInAction(() => {
+				this.typingCache.delete(data.user_id);
+			});
+		}, 10000); // TODO: make this configurable?
+	}
+
 	canSendMessage(content: string, attachments: File[]) {
 		if (!attachments.length && (!content || !content.trim() || !content.replace(/\r?\n|\r/g, ""))) {
 			return false;
@@ -237,5 +273,10 @@ export default class Channel {
 			this.type === ChannelType.GroupDM ||
 			this.type === ChannelType.DM
 		);
+	}
+
+	@computed
+	get typingUsers() {
+		return Array.from(this.typingCache.values()).filter((x) => x.id !== this.app.account!.id);
 	}
 }
