@@ -1,5 +1,4 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { PulseLoader } from "react-spinners";
 import styled from "styled-components";
 import Channel from "../../stores/objects/Channel";
@@ -41,7 +40,7 @@ interface Props {
 }
 
 function TypingStatus({ channel }: Props) {
-	const getFormattedString = React.useCallback(() => {
+	const getFormattedString = () => {
 		const typingUsers = channel.typingUsers;
 		const userCount = typingUsers.length;
 
@@ -70,7 +69,7 @@ function TypingStatus({ channel }: Props) {
 		} else {
 			return <>Several people are typing...</>;
 		}
-	}, [channel]);
+	};
 
 	if (!channel.typingUsers.length) return null;
 
