@@ -21,7 +21,6 @@ import { APIError } from "../../utils/interfaces/api";
 import AppStore from "../AppStore";
 import MessageStore from "../MessageStore";
 import QueuedMessage from "./QueuedMessage";
-import User from "./User";
 
 export default class Channel {
 	private readonly logger: Logger = new Logger("Channel");
@@ -56,7 +55,7 @@ export default class Channel {
 	@observable flags: number;
 	@observable defaultThreadRateLimitPerUser: number;
 	@observable channelIcon?: keyof typeof Icons;
-	@observable typingCache: ObservableMap<SnowflakeType, User>;
+	@observable typingCache: ObservableMap<SnowflakeType, GatewayTypingStartDispatchData>;
 	@observable isTyping = false;
 	private hasFetchedMessages = false;
 
@@ -233,13 +232,7 @@ export default class Channel {
 
 	@action
 	handleTyping(data: GatewayTypingStartDispatchData) {
-		// this.typingCache.set(data.user_id, data);
-		const user = this.app.users.get(data.user_id);
-		if (!user) {
-			this.logger.warn(`[handleTyping] Unknown user ${data.user_id}`);
-			return;
-		}
-		this.typingCache.set(data.user_id, user);
+		this.typingCache.set(data.user_id, data);
 
 		// expire after 10 seconds
 		setTimeout(() => {
@@ -276,7 +269,9 @@ export default class Channel {
 	}
 
 	@computed
-	get typingUsers() {
-		return Array.from(this.typingCache.values()).filter((x) => x.id !== this.app.account!.id);
+	get typingUsers(): APIUser[] {
+		return Array.from(this.typingCache.values())
+			.map((x) => x.member!.user!)
+			.filter((x) => x && x.id !== this.app.account!.id);
 	}
 }
