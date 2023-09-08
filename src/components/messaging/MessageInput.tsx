@@ -6,9 +6,9 @@ import Channel from "../../stores/objects/Channel";
 import { MessageType, RESTPostAPIChannelMessageJSONBody } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import React, { useMemo } from "react";
-import { BaseEditor, Descendant, Node, createEditor } from "slate";
-import { HistoryEditor, withHistory } from "slate-history";
-import { Editable, ReactEditor, Slate, withReact } from "slate-react";
+import { Descendant, Node, createEditor } from "slate";
+import { withHistory } from "slate-history";
+import { Editable, Slate, withReact } from "slate-react";
 import Guild from "../../stores/objects/Guild";
 import { Permissions } from "../../utils/Permissions";
 import Snowflake from "../../utils/Snowflake";
@@ -17,17 +17,6 @@ import Icon from "../Icon";
 import IconButton from "../IconButton";
 import AttachmentUploadList from "./AttachmentUploadList";
 import TypingStatus from "./TypingStatus";
-
-type CustomElement = { type: "paragraph"; children: CustomText[] };
-type CustomText = { text: string; bold?: true };
-
-declare module "slate" {
-	interface CustomTypes {
-		Editor: BaseEditor & ReactEditor & HistoryEditor;
-		Element: CustomElement;
-		Text: CustomText;
-	}
-}
 
 const Container = styled.div`
 	margin-top: -8px;
@@ -105,6 +94,19 @@ function MessageInput(props: Props) {
 	const [canUpload, setCanUpload] = React.useState(true);
 	const uploadRef = React.useRef<HTMLInputElement>(null);
 	const [attachments, setAttachments] = React.useState<File[]>([]);
+
+	editor.insertData = (data) => {
+		console.log("insert data", data);
+		const text = data.getData("text/plain");
+		const { files } = data;
+
+		if (files && files.length > 0) {
+			const newAttachments = [...attachments, ...files];
+			setAttachments(newAttachments);
+		} else {
+			editor.insertText(text);
+		}
+	};
 
 	React.useEffect(() => {
 		const permission = Permissions.getPermission(app.account!.id, props.guild, props.channel);
