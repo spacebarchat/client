@@ -96,7 +96,6 @@ function MessageInput(props: Props) {
 	const [attachments, setAttachments] = React.useState<File[]>([]);
 
 	editor.insertData = (data) => {
-		console.log("insert data", data);
 		const text = data.getData("text/plain");
 		const { files } = data;
 
