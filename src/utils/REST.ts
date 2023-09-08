@@ -4,8 +4,9 @@
 
 import AppStore from "../stores/AppStore";
 import QueuedMessage from "../stores/objects/QueuedMessage";
-import { Globals, RouteSettings } from "./Globals";
+import { Globals } from "./Globals";
 import Logger from "./Logger";
+import { RouteSettings } from "./constants";
 
 export default class REST {
 	private readonly logger = new Logger("REST");

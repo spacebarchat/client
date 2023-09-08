@@ -1,9 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import styled from "styled-components";
-import { QueuedMessageStatus } from "../../stores/MessageQueue";
 import { default as MessageObject } from "../../stores/objects/Message";
-import QueuedMessage from "../../stores/objects/QueuedMessage";
+import QueuedMessage, { QueuedMessageStatus } from "../../stores/objects/QueuedMessage";
 import Message from "./Message";
 
 const Container = styled.div`

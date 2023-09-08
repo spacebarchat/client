@@ -38,7 +38,7 @@ export default class AppStore {
 	@observable rest = new REST(this);
 	@observable experiments = new ExperimentsStore();
 	@observable presences = new PresenceStore(this);
-	@observable queue = new MessageQueue();
+	@observable queue = new MessageQueue(this);
 
 	constructor() {
 		makeAutoObservable(this);

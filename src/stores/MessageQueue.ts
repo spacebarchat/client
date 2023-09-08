@@ -3,26 +3,14 @@ import { action, computed, makeAutoObservable, observable } from "mobx";
 
 import type { IObservableArray } from "mobx";
 import Snowflake from "../utils/Snowflake";
-import QueuedMessage from "./objects/QueuedMessage";
-import User from "./objects/User";
-
-export enum QueuedMessageStatus {
-	SENDING = "sending",
-	FAILED = "failed",
-}
-
-export type QueuedMessageData = {
-	id: string;
-	channel: string;
-	author: User;
-	content: string;
-	files?: File[];
-};
+import AppStore from "./AppStore";
+import type { QueuedMessageData } from "./objects/QueuedMessage";
+import QueuedMessage, { QueuedMessageStatus } from "./objects/QueuedMessage";
 
 export default class MessageQueue {
 	@observable private readonly messages: IObservableArray<QueuedMessage>;
 
-	constructor() {
+	constructor(private readonly app: AppStore) {
 		this.messages = observable.array([]);
 
 		makeAutoObservable(this);
@@ -36,7 +24,7 @@ export default class MessageQueue {
 		// 	status: QueuedMessageStatus.SENDING,
 		// 	type: MessageType.Default,
 		// });
-		const msg = new QueuedMessage(data);
+		const msg = new QueuedMessage(this.app, data);
 		this.messages.push(msg);
 		return msg;
 	}

@@ -1,5 +1,5 @@
+import type { APIUser } from "@spacebarchat/spacebar-api-types/v9";
 import {
-	APIUser,
 	CDNRoutes,
 	DefaultUserAvatarAssets,
 	ImageFormat,
@@ -23,10 +23,13 @@ export default class AccountStore {
 	@observable premiumType?: UserPremiumType.NitroClassic | UserPremiumType.Nitro | UserPremiumType.NitroBasic;
 	@observable flags?: UserFlags;
 	@observable publicFlags?: UserFlags;
+	@observable raw: APIUser;
 	//   phone: string | null;
 	//   nsfwAllowed: boolean | null;
 
 	constructor(user: APIUser) {
+		this.raw = user;
+
 		this.id = user.id;
 		this.username = user.username;
 		this.discriminator = user.discriminator;

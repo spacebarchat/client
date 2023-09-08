@@ -1,30 +1,38 @@
-import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
+import { APIUser, MessageType } from "@spacebarchat/spacebar-api-types/v9";
 import { action, makeAutoObservable, observable } from "mobx";
-import { QueuedMessageData, QueuedMessageStatus } from "../MessageQueue";
-import User from "./User";
+import AppStore from "../AppStore";
+import MessageBase from "./MessageBase";
 
-export default class QueuedMessage {
+export enum QueuedMessageStatus {
+	SENDING = "sending",
+	FAILED = "failed",
+}
+
+export type QueuedMessageData = {
 	id: string;
 	channel: string;
-	author: User;
 	content: string;
+	files?: File[];
+	timestamp: string;
+	type: MessageType;
+	author: APIUser;
+};
+
+export default class QueuedMessage extends MessageBase {
+	channel: string;
 	files?: File[];
 	@observable progress = 0;
 	status: QueuedMessageStatus;
 	error?: string;
-	timestamp: Date;
-	type: MessageType;
 	abortCallback?: () => void;
 
-	constructor(data: QueuedMessageData) {
+	constructor(app: AppStore, data: QueuedMessageData) {
+		super(app, data);
 		this.id = data.id;
 		this.channel = data.channel;
-		this.author = data.author;
 		this.content = data.content;
 		this.files = data.files;
 		this.status = QueuedMessageStatus.SENDING;
-		this.timestamp = new Date();
-		this.type = MessageType.Default;
 
 		makeAutoObservable(this);
 	}

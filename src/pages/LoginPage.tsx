@@ -27,8 +27,9 @@ import HCaptcha, { HeaderContainer } from "../components/HCaptcha";
 import ForgotPasswordModal from "../components/modals/ForgotPasswordModal";
 import useLogger from "../hooks/useLogger";
 import { AUTH_NO_BRANDING, useAppStore } from "../stores/AppStore";
-import { Globals, RouteSettings } from "../utils/Globals";
+import { Globals } from "../utils/Globals";
 import REST from "../utils/REST";
+import { RouteSettings } from "../utils/constants";
 import {
 	IAPILoginRequest,
 	IAPILoginResponse,

@@ -5,8 +5,7 @@ import Moment from "react-moment";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { useAppStore } from "../../stores/AppStore";
-import { default as MessageObject } from "../../stores/objects/Message";
-import QueuedMessage from "../../stores/objects/QueuedMessage";
+import { MessageLike } from "../../stores/objects/Message";
 import { calendarStrings } from "../../utils/i18n";
 import Avatar from "../Avatar";
 import { Link } from "../Link";
@@ -14,8 +13,6 @@ import { IContextMenuItem } from "./../ContextMenuItem";
 import AttachmentUploadProgress from "./AttachmentUploadProgress";
 import MessageAttachment from "./MessageAttachment";
 import MessageEmbed from "./MessageEmbed";
-
-type MessageLike = MessageObject | QueuedMessage;
 
 const MessageListItem = styled.li`
 	list-style: none;
@@ -154,6 +151,51 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 	// 	// setContextMenuOptions(items);
 	// }, [isSending, isFailed]);
 
+	// handles creating the message content based on the message type
+	const renderMessageContent = React.useCallback(() => {
+		switch (message.type) {
+			case MessageType.Default:
+				return (
+					<MessageContent sending={isSending} failed={isFailed}>
+						{message.content ? <Linkify>{message.content}</Linkify> : null}
+						{"attachments" in message
+							? message.attachments.map((attachment) => renderAttachment(attachment))
+							: null}
+						{"embeds" in message ? message.embeds.map((embed) => renderEmbed(embed)) : null}
+					</MessageContent>
+				);
+			case MessageType.UserJoin: {
+				// TODO: render only the join message and timestamp, will require a bit of refactoring
+				const msg = message.getJoinMessage();
+				const split = msg.split("{author}");
+				return (
+					<MessageContent
+						style={{
+							color: "var(--text-secondary)",
+							fontWeight: "var(--font-weight-regular)",
+							fontSize: "16px",
+						}}
+					>
+						{split[0]}
+						<Link color="var(--text)" style={{ fontWeight: "var(--font-weight-medium)" }}>
+							{message.author.username}
+						</Link>
+						{split[1]}
+					</MessageContent>
+				);
+			}
+			default:
+				return (
+					<div>
+						<div style={{ color: "var(--text-secondary)", fontSize: "12px" }}>
+							MessageType({MessageType[message.type]})
+						</div>
+						{message.content}
+					</div>
+				);
+		}
+	}, [message, isSending, isFailed, renderAttachment, renderEmbed]);
+
 	return (
 		<MessageListItem>
 			<Container
@@ -192,22 +234,7 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 						</MessageHeader>
 					)}
 
-					{message.type === MessageType.Default ? (
-						<MessageContent sending={isSending} failed={isFailed}>
-							{message.content ? <Linkify>{message.content}</Linkify> : null}
-							{"attachments" in message
-								? message.attachments.map((attachment) => renderAttachment(attachment))
-								: null}
-							{"embeds" in message ? message.embeds.map((embed) => renderEmbed(embed)) : null}
-						</MessageContent>
-					) : (
-						<div>
-							<div style={{ color: "var(--text-secondary)", fontSize: "12px" }}>
-								MessageType({MessageType[message.type]})
-							</div>
-							{message.content ?? "No Content"}
-						</div>
-					)}
+					{renderMessageContent()}
 
 					{"files" in message && message.files?.length !== 0 && (
 						<div>

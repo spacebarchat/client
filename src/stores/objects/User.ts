@@ -1,5 +1,6 @@
 import { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
-import { APIUser, CDNRoutes, DefaultUserAvatarAssets, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
+import type { APIUser } from "@spacebarchat/spacebar-api-types/v9";
+import { CDNRoutes, DefaultUserAvatarAssets, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import { makeObservable, observable } from "mobx";
 import REST from "../../utils/REST";
 
@@ -16,8 +17,11 @@ export default class User {
 	@observable accent_color: unknown | null;
 	@observable pronouns?: string;
 	@observable theme_colors?: unknown;
+	@observable raw: APIUser;
 
 	constructor(user: APIUser) {
+		this.raw = user;
+
 		this.id = user.id;
 		this.username = user.username;
 		this.discriminator = user.discriminator;

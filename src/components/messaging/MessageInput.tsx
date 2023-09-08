@@ -3,14 +3,13 @@ import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 
-import { RESTPostAPIChannelMessageJSONBody } from "@spacebarchat/spacebar-api-types/v9";
+import { MessageType, RESTPostAPIChannelMessageJSONBody } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import React, { useMemo } from "react";
 import { BaseEditor, Descendant, Node, createEditor } from "slate";
 import { HistoryEditor, withHistory } from "slate-history";
 import { Editable, ReactEditor, Slate, withReact } from "slate-react";
 import Guild from "../../stores/objects/Guild";
-import User from "../../stores/objects/User";
 import { Permissions } from "../../utils/Permissions";
 import Snowflake from "../../utils/Snowflake";
 import { HorizontalDivider } from "../Divider";
@@ -141,10 +140,12 @@ function MessageInput(props: Props) {
 				const nonce = Snowflake.generate();
 				const msg = app.queue.add({
 					id: nonce,
-					author: app.account! as unknown as User,
 					content,
 					channel: props.channel.id,
 					files: attachments,
+					timestamp: new Date().toISOString(),
+					type: MessageType.Default,
+					author: app.account!.raw,
 				});
 
 				if (shouldSend) {
