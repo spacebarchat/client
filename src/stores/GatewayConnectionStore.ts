@@ -1,3 +1,4 @@
+import { debounce } from "@mui/material";
 import {
 	APIGuildMember,
 	APIMessage,
@@ -635,6 +636,12 @@ export default class GatewayConnectionStore {
 			return;
 		}
 
-		channel.handleTyping(data);
+		if (!channel.typingIds.has(data.user_id)) {
+			channel.typingIds.add(data.user_id);
+			debounce(() => {
+				this.logger.debug(`Removing ${data.user_id} from typing user list`);
+				channel.typingIds.delete(data.user_id);
+			}, 10000)();
+		}
 	};
 }

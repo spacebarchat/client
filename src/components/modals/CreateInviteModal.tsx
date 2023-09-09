@@ -213,13 +213,11 @@ function CreateInviteModal(props: InviteModalProps) {
 	const handleAgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setMaxAge(EXPIRE_OPTIONS.find((x) => x.value === Number(e.target.value)) ?? EXPIRE_OPTIONS[5]);
 		setIsEdited(true);
-		console.log("max age changed");
 	};
 
 	const handleMaxUsesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setMaxUses(MAX_USES_OPTIONS.find((x) => x.value === Number(e.target.value)) ?? MAX_USES_OPTIONS[0]);
 		setIsEdited(true);
-		console.log("max uses changed");
 	};
 
 	React.useEffect(() => createCode(), []);

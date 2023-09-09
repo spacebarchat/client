@@ -4,6 +4,7 @@ import secureLocalStorage from "react-secure-storage";
 import Logger from "../utils/Logger";
 import REST from "../utils/REST";
 import AccountStore from "./AccountStore";
+import ChannelStore from "./ChannelStore";
 import ExperimentsStore from "./ExperimentsStore";
 import GatewayConnectionStore from "./GatewayConnectionStore";
 import GuildStore from "./GuildStore";
@@ -33,6 +34,7 @@ export default class AppStore {
 	@observable account: AccountStore | null = null;
 	@observable gateway = new GatewayConnectionStore(this);
 	@observable guilds = new GuildStore(this);
+	@observable channels = new ChannelStore(this);
 	@observable users = new UserStore();
 	@observable privateChannels = new PrivateChannelStore(this);
 	@observable rest = new REST(this);
