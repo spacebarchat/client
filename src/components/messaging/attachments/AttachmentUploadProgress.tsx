@@ -1,9 +1,9 @@
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
-import { useAppStore } from "../../stores/AppStore";
-import QueuedMessage from "../../stores/objects/QueuedMessage";
-import Icon from "../Icon";
-import IconButton from "../IconButton";
+import { useAppStore } from "../../../stores/AppStore";
+import QueuedMessage from "../../../stores/objects/QueuedMessage";
+import Icon from "../../Icon";
+import IconButton from "../../IconButton";
 
 const Container = styled.div`
 	max-width: 25%;

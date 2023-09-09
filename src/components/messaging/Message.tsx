@@ -10,9 +10,9 @@ import { calendarStrings } from "../../utils/i18n";
 import Avatar from "../Avatar";
 import { Link } from "../Link";
 import { IContextMenuItem } from "./../ContextMenuItem";
-import AttachmentUploadProgress from "./AttachmentUploadProgress";
 import MessageAttachment from "./MessageAttachment";
 import MessageEmbed from "./MessageEmbed";
+import AttachmentUploadProgress from "./attachments/AttachmentUploadProgress";
 
 const MessageListItem = styled.li`
 	list-style: none;

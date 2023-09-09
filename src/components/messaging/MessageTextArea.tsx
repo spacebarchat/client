@@ -4,26 +4,24 @@ import styled from "styled-components";
 import { isTouchscreenDevice } from "../../utils/isTouchscreenDevice";
 
 const Container = styled.div`
+	flex: 1;
 	display: flex;
-	flex-direction: column;
-	padding: 0 16px;
 `;
 
 const TextArea = styled(TextareaAutosize)`
 	resize: none;
 	border: none;
 	outline: none;
-	padding: 10px 16px 10px 10px;
-	margin-bottom: 25px;
-	background-color: var(--background-primary);
+	background-color: transparent;
 	color: var(--text);
-	border-radius: 10px;
+	// border-radius: 10px;
 	overflow-wrap: break-word;
 	word-break: break-word;
 	white-space: break-spaces;
 	font-size: 16px;
 	font-family: var(--font-family);
-	margin-top: -10px;
+	flex: 1;
+	padding: 13px 0;
 
 	&:disabled {
 		cursor: not-allowed;

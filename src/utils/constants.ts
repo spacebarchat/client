@@ -28,3 +28,6 @@ export const USER_JOIN_MESSAGES = [
 	"Good to see you, {author}.",
 	"Yay you made it, {author}!",
 ];
+
+// TODO: this should come from the server
+export const MAX_UPLOAD_SIZE = 1024 * 1024 * 1024; // 1GB, taken from spacebar server default
