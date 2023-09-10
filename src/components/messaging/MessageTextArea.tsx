@@ -21,7 +21,7 @@ const TextArea = styled(TextareaAutosize)`
 	font-size: 16px;
 	font-family: var(--font-family);
 	flex: 1;
-	padding: 13px 0;
+	padding: 13px 10px;
 
 	&:disabled {
 		cursor: not-allowed;
