@@ -145,7 +145,7 @@ function MessageInput({ channel }: Props) {
 
 				<InnerInnerWrapper>
 					<UploadWrapper>
-						{channel.hasPermission("ATTACH_FILES") && (
+						{channel.hasPermission("ATTACH_FILES") && channel.hasPermission("SEND_MESSAGES") && (
 							<FileUpload
 								append={(files) => {
 									if (files.length === 0) return;
