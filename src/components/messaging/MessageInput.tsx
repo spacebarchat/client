@@ -98,14 +98,13 @@ function MessageInput({ channel }: Props) {
 	/**
 	 * @returns Whether or not a message can be sent given the current state
 	 */
-	const canSendMessage = () =>
-		React.useCallback(() => {
-			if (!uploadState.files.length && (!content || !content.trim() || !content.replace(/\r?\n|\r/g, ""))) {
-				return false;
-			}
+	const canSendMessage = React.useCallback(() => {
+		if (!uploadState.files.length && (!content || !content.trim() || !content.replace(/\r?\n|\r/g, ""))) {
+			return false;
+		}
 
-			return true;
-		}, [uploadState, content]);
+		return true;
+	}, [uploadState, content]);
 
 	const send = React.useCallback(() => {
 		if (!canSendMessage()) return;
