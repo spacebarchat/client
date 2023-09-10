@@ -1,4 +1,3 @@
-import { debounce } from "@mui/material";
 import {
 	APIGuildMember,
 	APIMessage,
@@ -637,11 +636,11 @@ export default class GatewayConnectionStore {
 		}
 
 		if (!channel.typingIds.has(data.user_id)) {
+			this.logger.debug(`[TypingStart] ${data.user_id} has started typing in ${channel.id}`);
 			channel.typingIds.add(data.user_id);
-			debounce(() => {
-				this.logger.debug(`Removing ${data.user_id} from typing user list`);
-				channel.typingIds.delete(data.user_id);
-			}, 10000)();
+
+			// TODO: expire typing
 		}
+		// TODO: reset typing expiration
 	};
 }

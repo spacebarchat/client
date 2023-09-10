@@ -58,7 +58,8 @@ export default class Channel {
 	@observable defaultThreadRateLimitPerUser: number;
 	@observable channelIcon?: keyof typeof Icons;
 	@observable typingIds: ObservableSet<SnowflakeType>;
-	private hasFetchedMessages = false;
+	@observable typing: number | null = null;
+	private hasFetchedInitialMessages = false;
 
 	constructor(app: AppStore, channel: APIChannel) {
 		this.app = app;
@@ -159,9 +160,7 @@ export default class Channel {
 		around?: SnowflakeType,
 	): Promise<number> {
 		return new Promise((resolve, reject) => {
-			if (isInitial && this.hasFetchedMessages) {
-				return;
-			}
+			if (isInitial && this.hasFetchedInitialMessages) return;
 
 			let opts: RESTGetAPIChannelMessagesQuery = {
 				limit: limit || 50,
@@ -177,8 +176,8 @@ export default class Channel {
 				opts = { ...opts, around };
 			}
 
-			this.hasFetchedMessages = true;
-			this.logger.info(`Fetching messags for ${this.id}`);
+			this.hasFetchedInitialMessages = true;
+			this.logger.info(`Fetching initial messages for ${this.id}`);
 			app.rest
 				.get<RESTGetAPIChannelMessagesResult | APIError>(Routes.channelMessages(this.id), opts)
 				.then((res) => {
@@ -250,5 +249,20 @@ export default class Channel {
 			this,
 		);
 		return permissions.has(permission);
+	}
+
+	@action
+	async startTyping() {
+		if (this.typing && this.typing > Date.now()) return;
+
+		this.logger.debug("Client user has started typing");
+		this.typing = Date.now() + 10_000;
+		await this.app.rest.post(Routes.channelTyping(this.id));
+	}
+
+	@action
+	stopTyping() {
+		this.logger.debug("Client user has stopped typing");
+		this.typing = null;
 	}
 }

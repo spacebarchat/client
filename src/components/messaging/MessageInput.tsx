@@ -1,11 +1,6 @@
 import Channel from "../../stores/objects/Channel";
 
-import {
-	ChannelType,
-	MessageType,
-	RESTPostAPIChannelMessageJSONBody,
-	Routes,
-} from "@spacebarchat/spacebar-api-types/v9";
+import { ChannelType, MessageType, RESTPostAPIChannelMessageJSONBody } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import styled from "styled-components";
@@ -77,39 +72,14 @@ function MessageInput({ channel }: Props) {
 		type: UploadStateType.NONE,
 		files: [],
 	});
-	const [typing, setTyping] = React.useState<number | boolean>();
 
 	/**
-	 * Starts typing for client user and triggers gateway event
+	 * Debounced stopTyping
 	 */
-	const startTyping = React.useCallback(async () => {
-		if (typeof typing === "number" && typing > +new Date()) return;
-
-		logger.debug("ShouldStartTyping");
-		await app.rest.post(Routes.channelTyping(channel.id));
-		setTyping(+new Date() + 10_000);
-	}, [typing, setTyping]);
-
-	/**
-	 * Stops typing for client user
-	 */
-	const stopTyping = React.useCallback(
-		(force?: boolean) => {
-			if (force || typing) {
-				logger.debug("ShouldStopTyping");
-				setTyping(false);
-			}
-		},
-		[typing, setTyping],
+	const debouncedStopTyping = React.useCallback(
+		debounce(() => channel.stopTyping(), 10_000),
+		[channel],
 	);
-
-	/**
-	 * Debounced version of stopTyping
-	 */
-	const debouncedStopTyping = React.useCallback(debounce(stopTyping as (...args: unknown[]) => void, 10_000), [
-		channel,
-		stopTyping,
-	]);
 
 	/**
 	 * @returns Whether or not a message can be sent given the current state
@@ -123,7 +93,7 @@ function MessageInput({ channel }: Props) {
 	}, [uploadState, content]);
 
 	const sendMessage = React.useCallback(async () => {
-		stopTyping();
+		channel.stopTyping();
 		const shouldFail = app.experiments.isTreatmentEnabled("message_queue", 2);
 		const shouldSend = !app.experiments.isTreatmentEnabled("message_queue", 1);
 
@@ -196,7 +166,7 @@ function MessageInput({ channel }: Props) {
 
 	const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setContent(e.target.value);
-		startTyping();
+		channel.startTyping();
 	};
 
 	return (
