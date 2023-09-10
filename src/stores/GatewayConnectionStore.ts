@@ -639,8 +639,8 @@ export default class GatewayConnectionStore {
 			this.logger.debug(`[TypingStart] ${data.user_id} has started typing in ${channel.id}`);
 			channel.typingIds.add(data.user_id);
 
-			// TODO: expire typing
+			// TODO: expire typing after 10 seconds
 		}
-		// TODO: reset typing expiration
+		// TODO: reset expiration timer
 	};
 }
