@@ -37,7 +37,6 @@ export default class QueuedMessage extends MessageBase {
 	@action
 	updateProgress(e: ProgressEvent) {
 		this.progress = Math.round((e.loaded / e.total) * 100);
-		console.log(this.progress);
 	}
 
 	@action

@@ -18,12 +18,6 @@ export default class MessageQueue {
 
 	@action
 	add(data: QueuedMessageData) {
-		// this.messages.push({
-		// 	...data,
-		// 	timestamp: new Date(),
-		// 	status: QueuedMessageStatus.SENDING,
-		// 	type: MessageType.Default,
-		// });
 		const msg = new QueuedMessage(this.app, data);
 		this.messages.push(msg);
 		return msg;
