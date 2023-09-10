@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import React, { Fragment } from "react";
 import styled from "styled-components";
 import { bytesToSize } from "../../../utils/Utils";
@@ -160,4 +161,4 @@ function AttachmentUploadList({ state, remove }: Props) {
 	);
 }
 
-export default AttachmentUploadList;
+export default observer(AttachmentUploadList);

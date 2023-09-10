@@ -22,8 +22,8 @@ export default class QueuedMessage extends MessageBase {
 	channel: string;
 	files?: File[];
 	@observable progress = 0;
-	status: QueuedMessageStatus;
-	error?: string;
+	@observable status: QueuedMessageStatus;
+	@observable error?: string;
 	abortCallback?: () => void;
 
 	constructor(app: AppStore, data: QueuedMessageData) {
@@ -37,8 +37,10 @@ export default class QueuedMessage extends MessageBase {
 	@action
 	updateProgress(e: ProgressEvent) {
 		this.progress = Math.round((e.loaded / e.total) * 100);
+		console.log(this.progress);
 	}
 
+	@action
 	setAbortCallback(cb: () => void) {
 		this.abortCallback = cb;
 	}
@@ -47,5 +49,14 @@ export default class QueuedMessage extends MessageBase {
 		if (this.abortCallback) {
 			this.abortCallback();
 		}
+	}
+
+	@action
+	/**
+	 * Mark this message as failed.
+	 */
+	fail(error: string) {
+		this.error = error;
+		this.status = QueuedMessageStatus.FAILED;
 	}
 }

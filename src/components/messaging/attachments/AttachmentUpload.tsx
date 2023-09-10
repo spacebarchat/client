@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import React from "react";
 import styled from "styled-components";
 import useLogger from "../../../hooks/useLogger";
@@ -102,4 +103,4 @@ function FileUpload({ append }: Props) {
 	);
 }
 
-export default FileUpload;
+export default observer(FileUpload);

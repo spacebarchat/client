@@ -4,7 +4,6 @@ import React from "react";
 import Moment from "react-moment";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
-import { useAppStore } from "../../stores/AppStore";
 import { MessageLike } from "../../stores/objects/Message";
 import { calendarStrings } from "../../utils/i18n";
 import Avatar from "../Avatar";
@@ -98,8 +97,6 @@ interface Props {
  * Component for rendering a single message
  */
 function Message({ message, isHeader, isSending, isFailed }: Props) {
-	const app = useAppStore();
-
 	const contextMenu = React.useContext(ContextMenuContext);
 	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
 		{
@@ -237,9 +234,7 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 					{renderMessageContent()}
 
 					{"files" in message && message.files?.length !== 0 && (
-						<div>
-							<AttachmentUploadProgress message={message} />
-						</div>
+						<AttachmentUploadProgress message={message} />
 					)}
 				</MessageContentContainer>
 			</Container>

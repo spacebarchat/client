@@ -41,13 +41,6 @@ export default class MessageQueue {
 		message.status = QueuedMessageStatus.SENDING;
 	}
 
-	@action
-	error(id: string, error: string) {
-		const message = this.messages.find((x) => x.id === id)!;
-		message.error = error;
-		message.status = QueuedMessageStatus.FAILED;
-	}
-
 	@computed
 	get(channel: Snowflake) {
 		return this.messages.filter((message) => message.channel === channel);
