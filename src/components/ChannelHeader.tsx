@@ -22,6 +22,9 @@ const Wrapper = styled(SectionHeader)`
 const HeaderText = styled.header`
 	font-size: 16px;
 	font-weight: var(--font-weight-medium);
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 `;
 
 interface Props {
@@ -104,7 +107,7 @@ function ChannelHeader({ guild, guildId }: Props) {
 
 	return (
 		<Wrapper onClick={openMenu}>
-			<HeaderText>{guild.name.length > 18 ? guild.name.substring(0, 18) + "..." : guild.name}</HeaderText>
+			<HeaderText>{guild.name}</HeaderText>
 			<Icon icon="mdiChevronDown" size="20px" color="var(--text)" />
 		</Wrapper>
 	);

@@ -194,10 +194,7 @@ function LoginPage() {
 				setCheckingInstance(false);
 				return setError("instance", {
 					type: "manual",
-					message:
-						(e instanceof Error &&
-							(e?.message?.length > 60 ? e.message.slice(0, 60) + "..." : e.message)) ||
-						"Instance could not be resolved",
+					message: (e instanceof Error && e.message) || "Instance could not be resolved",
 				});
 			}
 

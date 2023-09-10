@@ -102,10 +102,7 @@ function GuildItem({ guild, active }: Props) {
 			}}
 		>
 			<SidebarPill type={pillType} />
-			<Tooltip
-				title={guild.name.length > 18 ? guild.name.substring(0, 18) + "..." : guild.name}
-				placement="right"
-			>
+			<Tooltip title={guild.name} placement="right">
 				<Wrapper
 					onClick={doNavigate}
 					active={active}

@@ -71,6 +71,9 @@ export const InputErrorText = styled.label`
 	font-size: 14px;
 	font-weight: var(--font-weight-regular);
 	font-style: italic;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 `;
 
 export const InputLabel = styled.label`
