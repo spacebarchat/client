@@ -14,7 +14,7 @@ import type {
 	Snowflake as SnowflakeType,
 } from "@spacebarchat/spacebar-api-types/v9";
 import { ChannelType, Routes } from "@spacebarchat/spacebar-api-types/v9";
-import { ObservableSet, action, computed, makeObservable, observable } from "mobx";
+import { ObservableMap, action, computed, makeObservable, observable } from "mobx";
 import Logger from "../../utils/Logger";
 import type { PermissionResolvable } from "../../utils/Permissions";
 import { Permissions } from "../../utils/Permissions";
@@ -57,13 +57,13 @@ export default class Channel {
 	@observable flags: number;
 	@observable defaultThreadRateLimitPerUser: number;
 	@observable channelIcon?: keyof typeof Icons;
-	@observable typingIds: ObservableSet<SnowflakeType>;
+	@observable typingIds: ObservableMap<SnowflakeType, (...args: unknown[]) => void>;
 	@observable typing: number | null = null;
 	private hasFetchedInitialMessages = false;
 
 	constructor(app: AppStore, channel: APIChannel) {
 		this.app = app;
-		this.typingIds = new ObservableSet();
+		this.typingIds = new ObservableMap();
 
 		this.id = channel.id;
 		this.createdAt = new Date(channel.created_at);
@@ -237,7 +237,7 @@ export default class Channel {
 
 	@computed
 	get typingUsers(): User[] {
-		return Array.from(this.typingIds.values())
+		return Array.from(this.typingIds.keys())
 			.map((x) => this.app.users.get(x) as User)
 			.filter((x) => x && x.id !== this.app.account!.id);
 	}
@@ -261,8 +261,10 @@ export default class Channel {
 	}
 
 	@action
-	stopTyping() {
-		this.logger.debug("Client user has stopped typing");
-		this.typing = null;
+	stopTyping(force?: boolean) {
+		if (force || this.typing) {
+			this.logger.debug("Client user has stopped typing");
+			this.typing = null;
+		}
 	}
 }
