@@ -24,6 +24,37 @@ const HoverIcon = styled(Icon)`
 	}
 `;
 
+// https://github.com/revoltchat/revite/blob/master/src/controllers/client/jsx/legacy/FileUploads.tsx#L81
+let input: HTMLInputElement;
+export function fileUpload(cb: (files: File[]) => void, onFileTooLarge: () => void) {
+	if (input) input.remove();
+
+	input = document.createElement("input");
+
+	input.accept = "*";
+	input.type = "file";
+	input.multiple = true;
+	input.style.display = "none";
+
+	input.addEventListener("change", async (e) => {
+		const files = (e.currentTarget as HTMLInputElement)?.files;
+		if (!files) return;
+
+		for (const file of files) {
+			if (file.size > MAX_UPLOAD_SIZE) {
+				return onFileTooLarge();
+			}
+		}
+
+		cb(Array.from(files));
+	});
+
+	// iOS requires us to append the file input
+	// to DOM to allow us to add any images
+	document.body.appendChild(input);
+	input.click();
+}
+
 interface Props {
 	append: (files: File[]) => void;
 }
@@ -31,8 +62,13 @@ interface Props {
 function FileUpload({ append }: Props) {
 	const logger = useLogger("FileUpload");
 
+	const fileTooLarge = () => {
+		// TODO: show error modal
+		logger.error("File too large");
+	};
+
 	const onClick = () => {
-		// TODO:
+		fileUpload(append, fileTooLarge);
 	};
 
 	React.useEffect(() => {
@@ -46,8 +82,7 @@ function FileUpload({ append }: Props) {
 					const blob = item.getAsFile();
 					if (blob) {
 						if (blob.size > MAX_UPLOAD_SIZE) {
-							// TODO: show error modal
-							logger.error("File too large");
+							fileTooLarge();
 							continue;
 						}
 
@@ -73,8 +108,7 @@ function FileUpload({ append }: Props) {
 				const files = [];
 				for (const item of dropped) {
 					if (item.size > MAX_UPLOAD_SIZE) {
-						// TODO: show error modal
-						logger.error("File too large");
+						fileTooLarge();
 						continue;
 					}
 
