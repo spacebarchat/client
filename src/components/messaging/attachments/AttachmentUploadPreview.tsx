@@ -5,8 +5,6 @@ import { bytesToSize, getFileDetails, getFileIcon } from "../../../utils/Utils";
 import { HorizontalDivider } from "../../Divider";
 import Icon from "../../Icon";
 import IconButton from "../../IconButton";
-import { UploadState, UploadStateType } from "../MessageInput";
-
 const Container = styled.ul`
 	display: flex;
 	gap: 8px;
@@ -131,12 +129,12 @@ function File({ file, remove }: FileProps) {
 }
 
 interface Props {
-	state: UploadState;
+	attachments: File[];
 	remove: (index: number) => void;
 }
 
-function AttachmentUploadList({ state, remove }: Props) {
-	if (state.type === UploadStateType.NONE) return null;
+function AttachmentUploadList({ attachments, remove }: Props) {
+	if (attachments.length === 0) return null;
 
 	return (
 		<div
@@ -146,7 +144,7 @@ function AttachmentUploadList({ state, remove }: Props) {
 			}}
 		>
 			<Container>
-				{state.files.map((file, index) => (
+				{attachments.map((file, index) => (
 					<Fragment key={index}>
 						<File file={file} remove={() => remove(index)} />
 					</Fragment>

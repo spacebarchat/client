@@ -44,18 +44,6 @@ const ButtonWrapper = styled.div`
 	align-items: center;
 `;
 
-export enum UploadStateType {
-	NONE,
-	ATTACHED,
-	UPLOADING,
-	SENDING,
-}
-
-export interface UploadState {
-	type: UploadStateType;
-	files: File[];
-}
-
 interface Props {
 	channel: Channel;
 	guild?: Guild;
@@ -68,10 +56,7 @@ function MessageInput({ channel }: Props) {
 	const app = useAppStore();
 	const logger = useLogger("MessageInput");
 	const [content, setContent] = React.useState("");
-	const [uploadState, setUploadState] = React.useState<UploadState>({
-		type: UploadStateType.NONE,
-		files: [],
-	});
+	const [attachments, setAttachments] = React.useState<File[]>([]);
 
 	/**
 	 * Debounced stopTyping
@@ -85,12 +70,12 @@ function MessageInput({ channel }: Props) {
 	 * @returns Whether or not a message can be sent given the current state
 	 */
 	const canSendMessage = React.useCallback(() => {
-		if (!uploadState.files.length && (!content || !content.trim() || !content.replace(/\r?\n|\r/g, ""))) {
+		if (!attachments.length && (!content || !content.trim() || !content.replace(/\r?\n|\r/g, ""))) {
 			return false;
 		}
 
 		return true;
-	}, [uploadState, content]);
+	}, [attachments, content]);
 
 	const sendMessage = React.useCallback(async () => {
 		channel.stopTyping();
@@ -100,16 +85,16 @@ function MessageInput({ channel }: Props) {
 		if (!canSendMessage() && !shouldFail) return;
 
 		const contentCopy = content;
-		const uploadStateCopy = { ...uploadState };
+		const attachmentsCopy = attachments;
 
 		setContent("");
-		setUploadState({ type: UploadStateType.NONE, files: [] });
+		setAttachments([]);
 
 		const nonce = Snowflake.generate();
 		const msg = app.queue.add({
 			id: nonce,
 			content: contentCopy,
-			files: uploadState.files,
+			files: attachmentsCopy,
 			author: app.account!.raw,
 			channel: channel.id,
 			timestamp: new Date().toISOString(),
@@ -119,10 +104,10 @@ function MessageInput({ channel }: Props) {
 		if (shouldSend) {
 			try {
 				let body: RESTPostAPIChannelMessageJSONBody | FormData;
-				if (uploadStateCopy.files.length > 0) {
+				if (attachmentsCopy.length > 0) {
 					const data = new FormData();
 					data.append("payload_json", JSON.stringify({ content, nonce }));
-					uploadStateCopy.files.forEach((file, index) => {
+					attachmentsCopy.forEach((file, index) => {
 						data.append(`files[${index}]`, file);
 					});
 					body = data;
@@ -137,7 +122,7 @@ function MessageInput({ channel }: Props) {
 		} else {
 			msg.fail("Message queue experiment");
 		}
-	}, [content, uploadState, channel, canSendMessage]);
+	}, [content, attachments, channel, canSendMessage]);
 
 	const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		if (e.ctrlKey && e.key === "Enter") {
@@ -153,11 +138,8 @@ function MessageInput({ channel }: Props) {
 		}
 
 		if (e.key === "Escape") {
-			if (uploadState.type === UploadStateType.ATTACHED && uploadState.files.length > 0) {
-				setUploadState({
-					type: UploadStateType.NONE,
-					files: [],
-				});
+			if (attachments.length > 0) {
+				setAttachments([]);
 			}
 		}
 
@@ -173,15 +155,11 @@ function MessageInput({ channel }: Props) {
 		<Container>
 			<InnerWrapper>
 				<AttachmentUploadList
-					state={uploadState}
+					attachments={attachments}
 					remove={(index) => {
-						if (uploadState.type !== UploadStateType.ATTACHED) return;
-						if (uploadState.files.length === 1) setUploadState({ type: UploadStateType.NONE, files: [] });
-						else
-							setUploadState({
-								type: UploadStateType.ATTACHED,
-								files: uploadState.files.filter((_, i) => i !== index),
-							});
+						if (attachments.length === 0) return;
+						if (attachments.length === 1) setAttachments([]);
+						else setAttachments(attachments.filter((_, i) => i !== index));
 					}}
 				/>
 
@@ -191,13 +169,7 @@ function MessageInput({ channel }: Props) {
 							<AttachmentUpload
 								append={(files) => {
 									if (files.length === 0) return;
-									if (uploadState.type === UploadStateType.NONE)
-										setUploadState({ type: UploadStateType.ATTACHED, files });
-									else if (uploadState.type === UploadStateType.ATTACHED)
-										setUploadState({
-											type: UploadStateType.ATTACHED,
-											files: [...uploadState.files, ...files],
-										});
+									setAttachments([...attachments, ...files]);
 								}}
 							/>
 						)}
@@ -215,11 +187,7 @@ function MessageInput({ channel }: Props) {
 								  }`
 								: "You do not have permission to send messages in this channel."
 						}
-						disabled={
-							!channel.hasPermission("SEND_MESSAGES") ||
-							uploadState.type === UploadStateType.UPLOADING ||
-							uploadState.type === UploadStateType.SENDING
-						}
+						disabled={!channel.hasPermission("SEND_MESSAGES")}
 						onChange={onChange}
 						onKeyDown={onKeyDown}
 					/>
