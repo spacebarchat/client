@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { Fragment } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PulseLoader from "react-spinners/PulseLoader";
 import styled from "styled-components";
@@ -7,8 +7,6 @@ import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 import Guild from "../../stores/objects/Guild";
-import Message from "../../stores/objects/Message";
-import QueuedMessage from "../../stores/objects/QueuedMessage";
 import { Permissions } from "../../utils/Permissions";
 import { HorizontalDivider } from "../Divider";
 import MessageGroup from "./MessageGroup";
@@ -54,10 +52,6 @@ function MessageList({ guild, channel }: Props) {
 			});
 		}
 	}, [guild, channel, canView]);
-
-	const renderMessageGroup = React.useCallback((group: (Message | QueuedMessage)[], index: number) => {
-		return <MessageGroup key={index} messages={group} />;
-	}, []);
 
 	const fetchMore = async () => {
 		if (!channel.messages.count) {
@@ -114,7 +108,9 @@ function MessageList({ guild, channel }: Props) {
 					}
 				>
 					{channel.messages.grouped.map((group, index) => (
-						<MessageGroup key={index} messages={group} />
+						<Fragment key={index}>
+							<MessageGroup messages={group} />
+						</Fragment>
 					))}
 				</InfiniteScroll>
 			) : (

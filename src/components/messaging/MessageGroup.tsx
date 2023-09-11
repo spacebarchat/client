@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import { Fragment } from "react";
 import styled from "styled-components";
 import { default as MessageObject } from "../../stores/objects/Message";
 import QueuedMessage, { QueuedMessageStatus } from "../../stores/objects/QueuedMessage";
@@ -17,19 +17,20 @@ interface Props {
  * Component that handles rendering a group of messages from the same author
  */
 function MessageGroup({ messages }: Props) {
-	const renderMessage = React.useCallback((message: MessageObject | QueuedMessage, index: number) => {
-		return (
-			<Message
-				key={message.id}
-				message={message}
-				isHeader={index === 0}
-				isSending={"status" in message && message.status === QueuedMessageStatus.SENDING}
-				isFailed={"status" in message && message.status === QueuedMessageStatus.FAILED}
-			/>
-		);
-	}, []);
-
-	return <Container>{messages.map((message, index) => renderMessage(message, index))}</Container>;
+	return (
+		<Container>
+			{messages.map((message, index) => (
+				<Fragment key={message.id}>
+					<Message
+						message={message}
+						isHeader={index === 0}
+						isSending={"status" in message && message.status === QueuedMessageStatus.SENDING}
+						isFailed={"status" in message && message.status === QueuedMessageStatus.FAILED}
+					/>
+				</Fragment>
+			))}
+		</Container>
+	);
 }
 
 export default observer(MessageGroup);

@@ -1,6 +1,6 @@
-import { APIAttachment, APIEmbed, MessageType } from "@spacebarchat/spacebar-api-types/v9";
+import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { Fragment } from "react";
 import Moment from "react-moment";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
@@ -110,17 +110,6 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 		},
 	]);
 
-	const renderAttachment = React.useCallback(
-		(attachment: APIAttachment, index: number) => {
-			return <MessageAttachment key={index} attachment={attachment} contextMenuItems={contextMenuItems} />;
-		},
-		[contextMenuItems],
-	);
-
-	const renderEmbed = React.useCallback((embed: APIEmbed, index: number) => {
-		return <MessageEmbed key={index} embed={embed} contextMenuItems={contextMenuItems} />;
-	}, []);
-
 	// construct the context menu options
 	// React.useEffect(() => {
 	// 	// if the message is queued, we don't need a context menu
@@ -156,9 +145,24 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 					<MessageContent sending={isSending} failed={isFailed}>
 						{message.content ? <Linkify>{message.content}</Linkify> : null}
 						{"attachments" in message
-							? message.attachments.map((attachment, index) => renderAttachment(attachment, index))
+							? message.attachments.map((attachment, index) => (
+									<Fragment key={index}>
+										<MessageAttachment
+											key={index}
+											attachment={attachment}
+											contextMenuItems={contextMenuItems}
+										/>
+									</Fragment>
+							  ))
 							: null}
-						{"embeds" in message ? message.embeds.map((embed, index) => renderEmbed(embed, index)) : null}
+						{"embeds" in message
+							? message.embeds.map((embed, index) => (
+									<Fragment key={index}>
+										{" "}
+										<MessageEmbed key={index} embed={embed} contextMenuItems={contextMenuItems} />;
+									</Fragment>
+							  ))
+							: null}
 					</MessageContent>
 				);
 			case MessageType.UserJoin: {
@@ -191,7 +195,7 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 					</div>
 				);
 		}
-	}, [message, isSending, isFailed, renderAttachment, renderEmbed]);
+	}, [message, isSending, isFailed]);
 
 	return (
 		<MessageListItem>
