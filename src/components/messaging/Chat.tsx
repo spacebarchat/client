@@ -8,6 +8,7 @@ import MemberList from "../MemberList";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageList from "./MessageList";
+import TypingIndicator from "./TypingIndicator";
 
 /**
  * Wrapps chat and member list into a row
@@ -50,16 +51,17 @@ interface Props2 {
 	guild: Guild;
 }
 
-export function ChatContent({ channel, guild }: Props2) {
+function ChatContent({ channel, guild }: Props2) {
 	return (
 		<Container>
 			<MessageList guild={guild} channel={channel} />
 			<MessageInput channel={channel} guild={guild} />
+			<TypingIndicator channel={channel} />
 		</Container>
 	);
 }
 
-export function Content(props: Props2) {
+function Content(props: Props2) {
 	return (
 		<WrapperOne>
 			<ChatContent {...props} />

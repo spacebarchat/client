@@ -42,16 +42,15 @@ interface Props {
 
 function TypingIndicator({ channel }: Props) {
 	const app = useAppStore();
-	const users = channel.typingUsers.filter((x) => typeof x !== "undefined" && x.id !== app.account!.id);
 
-	if (users.length > 0) {
-		users.sort((a, b) => a.username.toUpperCase().localeCompare(b.username.toUpperCase()));
+	if (channel.typingUsers.length > 0) {
+		channel.typingUsers.sort((a, b) => a.username.toUpperCase().localeCompare(b.username.toUpperCase()));
 
 		let text;
-		if (users.length >= 5) {
+		if (channel.typingUsers.length >= 5) {
 			text = <TypingText>Several people are typing...</TypingText>;
-		} else if (users.length > 1) {
-			const userlist = users.map((x) => <Bold>{x.username}</Bold>);
+		} else if (channel.typingUsers.length > 1) {
+			const userlist = channel.typingUsers.map((x) => <Bold>{x.username}</Bold>);
 			const user = userlist.pop();
 
 			text = (
@@ -62,7 +61,7 @@ function TypingIndicator({ channel }: Props) {
 		} else {
 			text = (
 				<TypingText>
-					<Bold>{users[0].username} is typing...</Bold>
+					<Bold>{channel.typingUsers[0].username} is typing...</Bold>
 				</TypingText>
 			);
 		}

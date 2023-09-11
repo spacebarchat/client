@@ -638,11 +638,11 @@ export default class GatewayConnectionStore {
 
 		const stop = debounce(() => {
 			this.logger.debug(`[TypingStart] ${data.user_id} has stopped typing in ${channel.id}`);
-			channel.typingIds.delete(data.user_id);
+			runInAction(() => channel.typingIds.delete(data.user_id));
 		}, 12_000); // little bit of extra delay to allow clients to send continuation typing events
 
 		if (!channel.typingIds.has(data.user_id)) {
-			channel.typingIds.set(data.user_id, stop);
+			runInAction(() => channel.typingIds.set(data.user_id, stop));
 			stop();
 		} else {
 			this.logger.debug(`[TypingStart] ${data.user_id} is still typing in ${channel.id}`);
