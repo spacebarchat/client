@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { Fragment } from "react";
 import styled from "styled-components";
-import { bytesToSize } from "../../../utils/Utils";
+import { bytesToSize, getFileDetails, getFileIcon } from "../../../utils/Utils";
 import { HorizontalDivider } from "../../Divider";
 import Icon from "../../Icon";
 import IconButton from "../../IconButton";
@@ -102,23 +102,12 @@ interface FileProps {
 function File({ file, remove }: FileProps) {
 	const generatePreviewElement = React.useCallback(() => {
 		const previewUrl = URL.createObjectURL(file);
-		console.log(file.type);
-		if (file.type.startsWith("image")) return <Image src={previewUrl} />;
-		// these are the only supported video formats by most browsers (safari doesn't support ogg)
-		else if (["video/webm", "video/ogg", "video/mp4"].includes(file.type.toLowerCase()))
-			return <Video preload="metadata" aria-hidden="true" src={previewUrl}></Video>;
-		else if (file.type.startsWith("audio")) {
-			return (
-				<div>
-					<Icon size="48px" icon="mdiVolumeHigh" />
-				</div>
-			);
-		} else
-			return (
-				<div>
-					<Icon size="48px" icon="mdiFile" />
-				</div>
-			);
+		const fileDetails = getFileDetails(file);
+		if (fileDetails.isEmbeddable) {
+			if (fileDetails.isVideo) return <Video preload="metadata" aria-hidden="true" src={previewUrl}></Video>;
+			if (fileDetails.isImage) return <Image src={previewUrl} />;
+		}
+		return <Icon size={5} icon={getFileIcon(file)} />;
 	}, [file]);
 
 	return (
