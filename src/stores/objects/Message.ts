@@ -18,7 +18,7 @@ import type {
 	MessageFlags,
 	Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
-import { action, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import AppStore from "../AppStore";
 import MessageBase from "./MessageBase";
 import QueuedMessage, { QueuedMessageData } from "./QueuedMessage";
@@ -232,6 +232,8 @@ export default class Message extends MessageBase {
 		this.sticker_items = data.sticker_items;
 		this.stickers = data.stickers;
 		this.position = data.position;
+
+		makeObservable(this);
 	}
 
 	@action
