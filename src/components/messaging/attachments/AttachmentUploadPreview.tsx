@@ -102,10 +102,18 @@ interface FileProps {
 function File({ file, remove }: FileProps) {
 	const generatePreviewElement = React.useCallback(() => {
 		const previewUrl = URL.createObjectURL(file);
+		console.log(file.type);
 		if (file.type.startsWith("image")) return <Image src={previewUrl} />;
-		else if (file.type.startsWith("video"))
+		// these are the only supported video formats by most browsers (safari doesn't support ogg)
+		else if (["video/webm", "video/ogg", "video/mp4"].includes(file.type.toLowerCase()))
 			return <Video preload="metadata" aria-hidden="true" src={previewUrl}></Video>;
-		else
+		else if (file.type.startsWith("audio")) {
+			return (
+				<div>
+					<Icon size="48px" icon="mdiVolumeHigh" />
+				</div>
+			);
+		} else
 			return (
 				<div>
 					<Icon size="48px" icon="mdiFile" />
