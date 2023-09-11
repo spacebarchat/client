@@ -169,7 +169,7 @@ function MessageInput({ channel }: Props) {
 							<AttachmentUpload
 								append={(files) => {
 									if (files.length === 0) return;
-									setAttachments([...attachments, ...files]);
+									setAttachments((prev) => [...prev, ...files]);
 								}}
 							/>
 						)}
