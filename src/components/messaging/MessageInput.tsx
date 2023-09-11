@@ -11,7 +11,7 @@ import Snowflake from "../../utils/Snowflake";
 import { debounce } from "../../utils/debounce";
 import { isTouchscreenDevice } from "../../utils/isTouchscreenDevice";
 import MessageTextArea from "./MessageTextArea";
-import FileUpload from "./attachments/AttachmentUpload";
+import AttachmentUpload from "./attachments/AttachmentUpload";
 import AttachmentUploadList from "./attachments/AttachmentUploadPreview";
 
 const Container = styled.div`
@@ -188,7 +188,7 @@ function MessageInput({ channel }: Props) {
 				<InnerInnerWrapper>
 					<UploadWrapper>
 						{channel.hasPermission("ATTACH_FILES") && channel.hasPermission("SEND_MESSAGES") && (
-							<FileUpload
+							<AttachmentUpload
 								append={(files) => {
 									if (files.length === 0) return;
 									if (uploadState.type === UploadStateType.NONE)

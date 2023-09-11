@@ -59,8 +59,8 @@ interface Props {
 	append: (files: File[]) => void;
 }
 
-function FileUpload({ append }: Props) {
-	const logger = useLogger("FileUpload");
+function AttachmentUpload({ append }: Props) {
+	const logger = useLogger("AttachmentUpload");
 
 	const fileTooLarge = () => {
 		// TODO: show error modal
@@ -137,4 +137,4 @@ function FileUpload({ append }: Props) {
 	);
 }
 
-export default observer(FileUpload);
+export default observer(AttachmentUpload);
