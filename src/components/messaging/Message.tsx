@@ -111,14 +111,14 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 	]);
 
 	const renderAttachment = React.useCallback(
-		(attachment: APIAttachment) => {
-			return <MessageAttachment attachment={attachment} contextMenuItems={contextMenuItems} />;
+		(attachment: APIAttachment, index: number) => {
+			return <MessageAttachment key={index} attachment={attachment} contextMenuItems={contextMenuItems} />;
 		},
 		[contextMenuItems],
 	);
 
-	const renderEmbed = React.useCallback((embed: APIEmbed) => {
-		return <MessageEmbed embed={embed} contextMenuItems={contextMenuItems} />;
+	const renderEmbed = React.useCallback((embed: APIEmbed, index: number) => {
+		return <MessageEmbed key={index} embed={embed} contextMenuItems={contextMenuItems} />;
 	}, []);
 
 	// construct the context menu options
@@ -156,9 +156,9 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 					<MessageContent sending={isSending} failed={isFailed}>
 						{message.content ? <Linkify>{message.content}</Linkify> : null}
 						{"attachments" in message
-							? message.attachments.map((attachment) => renderAttachment(attachment))
+							? message.attachments.map((attachment, index) => renderAttachment(attachment, index))
 							: null}
-						{"embeds" in message ? message.embeds.map((embed) => renderEmbed(embed)) : null}
+						{"embeds" in message ? message.embeds.map((embed, index) => renderEmbed(embed, index)) : null}
 					</MessageContent>
 				);
 			case MessageType.UserJoin: {
