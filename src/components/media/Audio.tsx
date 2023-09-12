@@ -10,13 +10,17 @@ const Container = styled.div`
 	background-color: var(--background-secondary);
 	padding: 12px;
 	border-radius: 5px;
-	width: max-content;
 	flex: auto;
 	border: 1px solid var(--background-secondary-alt);
 	justify-content: space-between;
 	box-sizing: border-box;
-	max-width: 100%;
 	flex-direction: column;
+	min-width: 300px;
+	width: 420px;
+
+	@media only screen and (max-width: 420px) {
+		width: 100%;
+	}
 `;
 
 const AudioInfo = styled.div`
