@@ -160,7 +160,7 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 						{"embeds" in message
 							? message.embeds.map((embed, index) => (
 									<Fragment key={index}>
-										<MessageEmbed key={index} embed={embed} contextMenuItems={contextMenuItems} />;
+										<MessageEmbed key={index} embed={embed} contextMenuItems={contextMenuItems} />
 									</Fragment>
 							  ))
 							: null}
