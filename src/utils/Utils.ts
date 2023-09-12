@@ -1,5 +1,5 @@
 import * as Icons from "@mdi/js";
-import { APIAttachment } from "@spacebarchat/spacebar-api-types/v9";
+import { APIAttachment, EmbedType } from "@spacebarchat/spacebar-api-types/v9";
 import { ARCHIVE_MIMES, EMBEDDABLE_AUDIO_MIMES, EMBEDDABLE_IMAGE_MIMES, EMBEDDABLE_VIDEO_MIMES } from "./constants";
 
 export const decimalColorToHex = (decimal: number) => {
@@ -14,19 +14,25 @@ export const bytesToSize = (bytes: number) => {
 	return `${Math.round(bytes / Math.pow(1024, i))} ${sizes[i]}`;
 };
 
-export const isAudio = (fileOrAttachment: File | APIAttachment) => {
+export const isImage = (fileOrAttachment: File | APIAttachment) => {
 	const contentType = "type" in fileOrAttachment ? fileOrAttachment.type : fileOrAttachment.content_type;
-	return contentType?.startsWith("audio/");
+	return (
+		contentType?.startsWith("image/") ||
+		("content_type" in fileOrAttachment && fileOrAttachment.content_type === EmbedType.Image)
+	);
 };
 
 export const isVideo = (fileOrAttachment: File | APIAttachment) => {
 	const contentType = "type" in fileOrAttachment ? fileOrAttachment.type : fileOrAttachment.content_type;
-	return contentType?.startsWith("video/");
+	return (
+		contentType?.startsWith("video/") ||
+		("content_type" in fileOrAttachment && fileOrAttachment.content_type === EmbedType.Video)
+	);
 };
 
-export const isImage = (fileOrAttachment: File | APIAttachment) => {
+export const isAudio = (fileOrAttachment: File | APIAttachment) => {
 	const contentType = "type" in fileOrAttachment ? fileOrAttachment.type : fileOrAttachment.content_type;
-	return contentType?.startsWith("image/");
+	return contentType?.startsWith("audio/");
 };
 
 export const isArchive = (fileOrAttachment: File | APIAttachment) => {
@@ -37,31 +43,27 @@ export const isArchive = (fileOrAttachment: File | APIAttachment) => {
 type IconsType = keyof typeof Icons;
 // returns the icon for a file based on its mimetype
 export const getFileIcon = (fileOrAttachment: File | APIAttachment): IconsType => {
-	const contentType = "type" in fileOrAttachment ? fileOrAttachment.type : fileOrAttachment.content_type;
-	const name = "name" in fileOrAttachment ? fileOrAttachment.name : fileOrAttachment.filename;
-
-	const isImage = contentType?.startsWith("image/");
-	const isVideo = contentType?.startsWith("video/");
-	const isAudio = contentType?.startsWith("audio/");
-	// check if the file is an archive based on its extension
-	const isArchive = ARCHIVE_MIMES.includes(name.split(".").pop() || "");
-
-	if (isImage) return "mdiFileImage";
-	if (isVideo) return "mdiFileVideo";
-	if (isAudio) return "mdiFileMusic";
-	if (isArchive) return "mdiFolderZip";
+	if (isImage(fileOrAttachment)) return "mdiFileImage";
+	if (isVideo(fileOrAttachment)) return "mdiFileVideo";
+	if (isAudio(fileOrAttachment)) return "mdiFileMusic";
+	if (isArchive(fileOrAttachment)) return "mdiFolderZip";
 	return "mdiFile";
 };
 
 export const isFileEmbeddable = (fileOrAttachment: File | APIAttachment) => {
 	const contentType = "type" in fileOrAttachment ? fileOrAttachment.type : fileOrAttachment.content_type;
+
+	const image =
+		contentType === EmbedType.Image ||
+		EMBEDDABLE_IMAGE_MIMES.includes(contentType?.toLowerCase().split("/").pop() || "");
+	const video =
+		contentType === EmbedType.Video ||
+		EMBEDDABLE_VIDEO_MIMES.includes(contentType?.toLowerCase().split("/").pop() || "");
+	const audio = EMBEDDABLE_AUDIO_MIMES.includes(contentType?.toLowerCase().split("/").pop() || "");
 	return (
-		(isImage(fileOrAttachment) &&
-			EMBEDDABLE_IMAGE_MIMES.includes(contentType?.toLowerCase().split("/").pop() || "")) ||
-		(isVideo(fileOrAttachment) &&
-			EMBEDDABLE_VIDEO_MIMES.includes(contentType?.toLowerCase().split("/").pop() || "")) ||
-		(isAudio(fileOrAttachment) &&
-			EMBEDDABLE_AUDIO_MIMES.includes(contentType?.toLowerCase().split("/").pop() || ""))
+		(isImage(fileOrAttachment) && image) ||
+		(isVideo(fileOrAttachment) && video) ||
+		(isAudio(fileOrAttachment) && audio)
 	);
 };
 
