@@ -22,6 +22,7 @@ const Container = styled.div<{ isHeader?: boolean }>`
 	flex-direction: row;
 	position: relative;
 	padding: 2px 12px;
+	margin-top: ${(props) => (props.isHeader ? "20px" : undefined)};
 
 	&:hover {
 		background-color: var(--background-primary-highlight);
@@ -138,6 +139,7 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 	// }, [isSending, isFailed]);
 
 	// handles creating the message content based on the message type
+	// TODO: probably move this to a separate component
 	const renderMessageContent = React.useCallback(() => {
 		switch (message.type) {
 			case MessageType.Default:
@@ -158,7 +160,6 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 						{"embeds" in message
 							? message.embeds.map((embed, index) => (
 									<Fragment key={index}>
-										{" "}
 										<MessageEmbed key={index} embed={embed} contextMenuItems={contextMenuItems} />;
 									</Fragment>
 							  ))

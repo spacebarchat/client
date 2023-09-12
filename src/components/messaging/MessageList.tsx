@@ -1,10 +1,11 @@
 import { observer } from "mobx-react-lite";
-import React, { Fragment } from "react";
+import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PulseLoader from "react-spinners/PulseLoader";
 import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
+import { MessageGroup as MessageGroupType } from "../../stores/MessageStore";
 import Channel from "../../stores/objects/Channel";
 import Guild from "../../stores/objects/Guild";
 import { Permissions } from "../../utils/Permissions";
@@ -35,6 +36,7 @@ function MessageList({ guild, channel }: Props) {
 	const logger = useLogger("MessageList.tsx");
 	const [hasMore, setHasMore] = React.useState(true);
 	const [canView, setCanView] = React.useState(false);
+	const messageGroups = channel.messages.groups;
 
 	// handles the permission check
 	React.useEffect(() => {
@@ -53,30 +55,33 @@ function MessageList({ guild, channel }: Props) {
 		}
 	}, [guild, channel, canView]);
 
-	const fetchMore = async () => {
+	const fetchMore = React.useCallback(() => {
 		if (!channel.messages.count) {
 			return;
 		}
-
 		// get last group
-		const lastGroup = channel.messages.grouped[channel.messages.grouped.length - 1];
+		const lastGroup = messageGroups[messageGroups.length - 1];
 		// ignore queued messages
-		if ("status" in lastGroup) return;
+		if ("status" in lastGroup.messages[0]) return;
 		// get first message in the group to use as before
-		const before = lastGroup[0].id;
+		const before = lastGroup.messages[0].id;
 		logger.debug(`Fetching 50 messages before ${before} for channel ${channel.id}`);
-
 		channel.getMessages(app, false, 50, before).then((r) => {
 			if (r !== 50) setHasMore(false);
 			else setHasMore(true);
 		});
-	};
+	}, [channel, setHasMore]);
+
+	const renderGroup = React.useCallback(
+		(group: MessageGroupType) => <MessageGroup key={group.messages[0].id} group={group} />,
+		[],
+	);
 
 	return (
 		<Container id="scrollable-div">
 			{canView ? (
 				<InfiniteScroll
-					dataLength={channel.messages.grouped.length}
+					dataLength={messageGroups.length}
 					next={fetchMore}
 					style={{
 						display: "flex",
@@ -107,11 +112,7 @@ function MessageList({ guild, channel }: Props) {
 						</EndMessageContainer>
 					}
 				>
-					{channel.messages.grouped.map((group, index) => (
-						<Fragment key={index}>
-							<MessageGroup messages={group} />
-						</Fragment>
-					))}
+					{messageGroups.map((group) => renderGroup(group))}
 				</InfiniteScroll>
 			) : (
 				<div

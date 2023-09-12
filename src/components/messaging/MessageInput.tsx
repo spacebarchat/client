@@ -119,7 +119,7 @@ function MessageInput({ channel }: Props) {
 				const error = e instanceof Error ? e.message : typeof e === "string" ? e : "Unknown error";
 				msg.fail(error);
 			}
-		} else {
+		} else if (shouldFail) {
 			msg.fail("Message queue experiment");
 		}
 	}, [content, attachments, channel, canSendMessage]);
