@@ -62,7 +62,7 @@ function MessageList({ guild, channel }: Props) {
 		// get last group
 		const lastGroup = messageGroups[messageGroups.length - 1];
 		// ignore queued messages
-		if ("status" in lastGroup) return;
+		if ("status" in lastGroup.messages[0]) return;
 		// get first message in the group to use as before
 		const before = lastGroup.messages[0].id;
 		logger.debug(`Fetching 50 messages before ${before} for channel ${channel.id}`);

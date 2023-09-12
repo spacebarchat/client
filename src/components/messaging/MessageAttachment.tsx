@@ -6,6 +6,7 @@ import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import useLogger from "../../hooks/useLogger";
 import { calculateImageRatio, calculateScaledDimensions } from "../../utils/Message";
 import { IContextMenuItem } from "../ContextMenuItem";
+import Video from "../Video";
 import AttachmentPreviewModal from "../modals/AttachmentPreviewModal";
 
 const Attachment = styled.div<{ withPointer?: boolean }>`
@@ -44,15 +45,7 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 		);
 		finalElement = <Image src={url} alt={attachment.filename} width={scaledWidth} height={scaledHeight} />;
 	} else if (attachment.content_type?.startsWith("video")) {
-		{
-			/* TODO: poster thumbnail */
-		}
-		finalElement = (
-			<video playsInline controls preload="metadata" height={200}>
-				{/* TODO: the server doesn't return height and width yet for videos */}
-				<source src={url} type={attachment.content_type} />
-			</video>
-		);
+		finalElement = <Video attachment={attachment} />;
 	} else {
 		logger.warn(`Unknown attachment type: ${attachment.content_type}`);
 	}
