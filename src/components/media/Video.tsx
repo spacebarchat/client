@@ -2,7 +2,7 @@ import { APIAttachment } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import { PuffLoader } from "react-spinners";
 import styled from "styled-components";
-import { calculateImageRatio, calculateScaledDimensions } from "../utils/Message";
+import { calculateImageRatio, calculateScaledDimensions } from "../../utils/Message";
 
 const Container = styled.div`
 	display: flex;
@@ -10,7 +10,7 @@ const Container = styled.div`
 	align-items: center;
 	min-height: 300px;
 	min-width: 300px;
-	background-color: var(--background-primary);
+	background-color: var(--background-secondary);
 	border-radius: 10px;
 `;
 
@@ -57,7 +57,7 @@ function Video({ attachment }: Props) {
 
 			{!isErrored && (
 				<video
-					style={isLoading ? { display: "none" } : {}}
+					style={isLoading ? { display: "none" } : { borderRadius: "5px" }}
 					playsInline
 					controls
 					preload="metadata"

@@ -5,13 +5,16 @@ import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import useLogger from "../../hooks/useLogger";
 import { calculateImageRatio, calculateScaledDimensions } from "../../utils/Message";
+import { getFileDetails } from "../../utils/Utils";
 import { IContextMenuItem } from "../ContextMenuItem";
-import Video from "../Video";
+import Audio from "../media/Audio";
+import Video from "../media/Video";
 import AttachmentPreviewModal from "../modals/AttachmentPreviewModal";
 
 const Attachment = styled.div<{ withPointer?: boolean }>`
 	cursor: ${(props) => (props.withPointer ? "pointer" : "default")};
 	width: min-content;
+	padding: 2px 0;
 `;
 
 const Image = styled.img`
@@ -33,8 +36,9 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 
 	const url = attachment.proxy_url && attachment.proxy_url.length > 0 ? attachment.proxy_url : attachment.url;
 
+	const details = getFileDetails(attachment);
 	let finalElement: JSX.Element = <></>;
-	if (attachment.content_type?.startsWith("image")) {
+	if (details.isImage && details.isEmbeddable) {
 		const ratio = calculateImageRatio(attachment.width!, attachment.height!, maxWidth, maxHeight);
 		const { scaledWidth, scaledHeight } = calculateScaledDimensions(
 			attachment.width!,
@@ -44,10 +48,10 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 			maxHeight,
 		);
 		finalElement = <Image src={url} alt={attachment.filename} width={scaledWidth} height={scaledHeight} />;
-	} else if (attachment.content_type?.startsWith("video")) {
+	} else if (details.isVideo && details.isEmbeddable) {
 		finalElement = <Video attachment={attachment} />;
-	} else if (attachment.content_type?.startsWith("audio")) {
-		finalElement = <audio src={url} controls />;
+	} else if (details.isAudio && details.isEmbeddable) {
+		finalElement = <Audio attachment={attachment} />;
 	} else {
 		logger.warn(`Unknown attachment type: ${attachment.content_type}`);
 	}
