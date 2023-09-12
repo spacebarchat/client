@@ -8,7 +8,7 @@ import type { QueuedMessageData } from "./objects/QueuedMessage";
 import QueuedMessage, { QueuedMessageStatus } from "./objects/QueuedMessage";
 
 export default class MessageQueue {
-	@observable private readonly messages: IObservableArray<QueuedMessage>;
+	@observable readonly messages: IObservableArray<QueuedMessage>;
 
 	constructor(private readonly app: AppStore) {
 		this.messages = observable.array([]);
