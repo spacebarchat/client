@@ -46,6 +46,8 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 		finalElement = <Image src={url} alt={attachment.filename} width={scaledWidth} height={scaledHeight} />;
 	} else if (attachment.content_type?.startsWith("video")) {
 		finalElement = <Video attachment={attachment} />;
+	} else if (attachment.content_type?.startsWith("audio")) {
+		finalElement = <audio src={url} controls />;
 	} else {
 		logger.warn(`Unknown attachment type: ${attachment.content_type}`);
 	}
