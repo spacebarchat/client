@@ -61,6 +61,10 @@ function MessageList({ guild, channel }: Props) {
 		}
 		// get last group
 		const lastGroup = messageGroups[messageGroups.length - 1];
+		if (!lastGroup) {
+			logger.warn("No last group found, aborting fetchMore");
+			return;
+		}
 		// ignore queued messages
 		if ("status" in lastGroup.messages[0]) return;
 		// get first message in the group to use as before
@@ -70,7 +74,7 @@ function MessageList({ guild, channel }: Props) {
 			if (r !== 50) setHasMore(false);
 			else setHasMore(true);
 		});
-	}, [channel, setHasMore]);
+	}, [channel, messageGroups, setHasMore]);
 
 	const renderGroup = React.useCallback(
 		(group: MessageGroupType) => <MessageGroup key={group.messages[0].id} group={group} />,
