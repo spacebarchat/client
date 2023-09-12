@@ -11,6 +11,7 @@ const font: ThemeFont["font"] = {
 		bold: 700,
 		black: 900,
 	},
+	family: "Roboto, Arial, Helvetica, sans-serif",
 };
 
 export type ThemeVariables =
@@ -68,6 +69,7 @@ export type ThemeFont = {
 			bold?: number;
 			black?: number;
 		};
+		family: string;
 	};
 };
 

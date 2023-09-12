@@ -1,5 +1,5 @@
 import { APIUser, MessageType } from "@spacebarchat/spacebar-api-types/v9";
-import { action, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import AppStore from "../AppStore";
 import MessageBase from "./MessageBase";
 
@@ -22,8 +22,8 @@ export default class QueuedMessage extends MessageBase {
 	channel: string;
 	files?: File[];
 	@observable progress = 0;
-	status: QueuedMessageStatus;
-	error?: string;
+	@observable status: QueuedMessageStatus;
+	@observable error?: string;
 	abortCallback?: () => void;
 
 	constructor(app: AppStore, data: QueuedMessageData) {
@@ -32,6 +32,8 @@ export default class QueuedMessage extends MessageBase {
 		this.channel = data.channel;
 		this.files = data.files;
 		this.status = QueuedMessageStatus.SENDING;
+
+		makeObservable(this);
 	}
 
 	@action
@@ -39,6 +41,7 @@ export default class QueuedMessage extends MessageBase {
 		this.progress = Math.round((e.loaded / e.total) * 100);
 	}
 
+	@action
 	setAbortCallback(cb: () => void) {
 		this.abortCallback = cb;
 	}
@@ -47,5 +50,14 @@ export default class QueuedMessage extends MessageBase {
 		if (this.abortCallback) {
 			this.abortCallback();
 		}
+	}
+
+	@action
+	/**
+	 * Mark this message as failed.
+	 */
+	fail(error: string) {
+		this.error = error;
+		this.status = QueuedMessageStatus.FAILED;
 	}
 }

@@ -6,7 +6,6 @@ import type {
 	APIReadState,
 	APIUser,
 	APIWebhook,
-	GatewayTypingStartDispatchData,
 	GatewayVoiceState,
 	RESTGetAPIChannelMessagesQuery,
 	RESTGetAPIChannelMessagesResult,
@@ -15,12 +14,15 @@ import type {
 	Snowflake as SnowflakeType,
 } from "@spacebarchat/spacebar-api-types/v9";
 import { ChannelType, Routes } from "@spacebarchat/spacebar-api-types/v9";
-import { ObservableMap, action, computed, makeObservable, observable, runInAction } from "mobx";
+import { ObservableMap, action, computed, makeObservable, observable } from "mobx";
 import Logger from "../../utils/Logger";
+import type { PermissionResolvable } from "../../utils/Permissions";
+import { Permissions } from "../../utils/Permissions";
 import { APIError } from "../../utils/interfaces/api";
 import AppStore from "../AppStore";
 import MessageStore from "../MessageStore";
 import QueuedMessage from "./QueuedMessage";
+import User from "./User";
 
 export default class Channel {
 	private readonly logger: Logger = new Logger("Channel");
@@ -55,13 +57,13 @@ export default class Channel {
 	@observable flags: number;
 	@observable defaultThreadRateLimitPerUser: number;
 	@observable channelIcon?: keyof typeof Icons;
-	@observable typingCache: ObservableMap<SnowflakeType, GatewayTypingStartDispatchData>;
-	@observable isTyping = false;
-	private hasFetchedMessages = false;
+	@observable typingIds: ObservableMap<SnowflakeType, (...args: unknown[]) => void>;
+	@observable typing: number | null = null;
+	private hasFetchedInitialMessages = false;
 
 	constructor(app: AppStore, channel: APIChannel) {
 		this.app = app;
-		this.typingCache = new ObservableMap();
+		this.typingIds = new ObservableMap();
 
 		this.id = channel.id;
 		this.createdAt = new Date(channel.created_at);
@@ -158,9 +160,7 @@ export default class Channel {
 		around?: SnowflakeType,
 	): Promise<number> {
 		return new Promise((resolve, reject) => {
-			if (isInitial && this.hasFetchedMessages) {
-				return;
-			}
+			if (isInitial && this.hasFetchedInitialMessages) return;
 
 			let opts: RESTGetAPIChannelMessagesQuery = {
 				limit: limit || 50,
@@ -176,8 +176,8 @@ export default class Channel {
 				opts = { ...opts, around };
 			}
 
-			this.hasFetchedMessages = true;
-			this.logger.info(`Fetching messags for ${this.id}`);
+			this.hasFetchedInitialMessages = true;
+			this.logger.info(`Fetching initial messages for ${this.id}`);
 			app.rest
 				.get<RESTGetAPIChannelMessagesResult | APIError>(Routes.channelMessages(this.id), opts)
 				.then((res) => {
@@ -217,39 +217,6 @@ export default class Channel {
 		);
 	}
 
-	@action
-	async sendTyping() {
-		this.isTyping = true;
-		await this.app.rest.post<void, void>(Routes.channelTyping(this.id));
-
-		// expire after 10 seconds
-		setTimeout(() => {
-			runInAction(() => {
-				this.isTyping = false;
-			});
-		}, 10000); // TODO: make this configurable?
-	}
-
-	@action
-	handleTyping(data: GatewayTypingStartDispatchData) {
-		this.typingCache.set(data.user_id, data);
-
-		// expire after 10 seconds
-		setTimeout(() => {
-			runInAction(() => {
-				this.typingCache.delete(data.user_id);
-			});
-		}, 10000); // TODO: make this configurable?
-	}
-
-	canSendMessage(content: string, attachments: File[]) {
-		if (!attachments.length && (!content || !content.trim() || !content.replace(/\r?\n|\r/g, ""))) {
-			return false;
-		}
-
-		return true;
-	}
-
 	@computed
 	get isTextChannel() {
 		return (
@@ -269,9 +236,35 @@ export default class Channel {
 	}
 
 	@computed
-	get typingUsers(): APIUser[] {
-		return Array.from(this.typingCache.values())
-			.map((x) => x.member!.user!)
+	get typingUsers(): User[] {
+		return Array.from(this.typingIds.keys())
+			.map((x) => this.app.users.get(x) as User)
 			.filter((x) => x && x.id !== this.app.account!.id);
+	}
+
+	hasPermission(permission: PermissionResolvable) {
+		const permissions = Permissions.getPermission(
+			this.app.account!.id,
+			this.guildId ? this.app.guilds.get(this.guildId) : undefined,
+			this,
+		);
+		return permissions.has(permission);
+	}
+
+	@action
+	async startTyping() {
+		if (this.typing && this.typing > Date.now()) return;
+
+		this.logger.debug("Client user has started typing");
+		this.typing = Date.now() + 10_000;
+		await this.app.rest.post(Routes.channelTyping(this.id));
+	}
+
+	@action
+	stopTyping(force?: boolean) {
+		if (force || this.typing) {
+			this.logger.debug("Client user has stopped typing");
+			this.typing = null;
+		}
 	}
 }

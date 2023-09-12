@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import styled from "styled-components";
 import { BannerContext } from "../contexts/BannerContext";
+import useLogger from "../hooks/useLogger";
 import Icon from "./Icon";
 import IconButton from "./IconButton";
 
@@ -17,6 +18,7 @@ const CloseWrapper = styled(IconButton)`
 `;
 
 function Banner() {
+	const logger = useLogger("Banner");
 	const bannerContext = React.useContext(BannerContext);
 
 	return (
@@ -45,7 +47,7 @@ function Banner() {
 					animate="show"
 					exit="hide"
 					onAnimationComplete={() => {
-						console.log("animation complete");
+						logger.debug("animation complete");
 					}}
 					style={bannerContext.content.style}
 				>

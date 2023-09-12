@@ -1,18 +1,17 @@
-import { APIAttachment, APIEmbed, MessageType } from "@spacebarchat/spacebar-api-types/v9";
+import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { Fragment } from "react";
 import Moment from "react-moment";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
-import { useAppStore } from "../../stores/AppStore";
 import { MessageLike } from "../../stores/objects/Message";
 import { calendarStrings } from "../../utils/i18n";
 import Avatar from "../Avatar";
 import { Link } from "../Link";
 import { IContextMenuItem } from "./../ContextMenuItem";
-import AttachmentUploadProgress from "./AttachmentUploadProgress";
 import MessageAttachment from "./MessageAttachment";
 import MessageEmbed from "./MessageEmbed";
+import AttachmentUploadProgress from "./attachments/AttachmentUploadProgress";
 
 const MessageListItem = styled.li`
 	list-style: none;
@@ -98,8 +97,6 @@ interface Props {
  * Component for rendering a single message
  */
 function Message({ message, isHeader, isSending, isFailed }: Props) {
-	const app = useAppStore();
-
 	const contextMenu = React.useContext(ContextMenuContext);
 	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
 		{
@@ -112,17 +109,6 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 			},
 		},
 	]);
-
-	const renderAttachment = React.useCallback(
-		(attachment: APIAttachment) => {
-			return <MessageAttachment attachment={attachment} contextMenuItems={contextMenuItems} />;
-		},
-		[contextMenuItems],
-	);
-
-	const renderEmbed = React.useCallback((embed: APIEmbed) => {
-		return <MessageEmbed embed={embed} contextMenuItems={contextMenuItems} />;
-	}, []);
 
 	// construct the context menu options
 	// React.useEffect(() => {
@@ -159,9 +145,24 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 					<MessageContent sending={isSending} failed={isFailed}>
 						{message.content ? <Linkify>{message.content}</Linkify> : null}
 						{"attachments" in message
-							? message.attachments.map((attachment) => renderAttachment(attachment))
+							? message.attachments.map((attachment, index) => (
+									<Fragment key={index}>
+										<MessageAttachment
+											key={index}
+											attachment={attachment}
+											contextMenuItems={contextMenuItems}
+										/>
+									</Fragment>
+							  ))
 							: null}
-						{"embeds" in message ? message.embeds.map((embed) => renderEmbed(embed)) : null}
+						{"embeds" in message
+							? message.embeds.map((embed, index) => (
+									<Fragment key={index}>
+										{" "}
+										<MessageEmbed key={index} embed={embed} contextMenuItems={contextMenuItems} />;
+									</Fragment>
+							  ))
+							: null}
 					</MessageContent>
 				);
 			case MessageType.UserJoin: {
@@ -194,7 +195,7 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 					</div>
 				);
 		}
-	}, [message, isSending, isFailed, renderAttachment, renderEmbed]);
+	}, [message, isSending, isFailed]);
 
 	return (
 		<MessageListItem>
@@ -237,9 +238,7 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 					{renderMessageContent()}
 
 					{"files" in message && message.files?.length !== 0 && (
-						<div>
-							<AttachmentUploadProgress message={message} />
-						</div>
+						<AttachmentUploadProgress message={message} />
 					)}
 				</MessageContentContainer>
 			</Container>

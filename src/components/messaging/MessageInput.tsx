@@ -1,81 +1,48 @@
+import Channel from "../../stores/objects/Channel";
+
+import { ChannelType, MessageType, RESTPostAPIChannelMessageJSONBody } from "@spacebarchat/spacebar-api-types/v9";
+import { observer } from "mobx-react-lite";
+import React from "react";
 import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
-import Channel from "../../stores/objects/Channel";
-
-import { MessageType, RESTPostAPIChannelMessageJSONBody } from "@spacebarchat/spacebar-api-types/v9";
-import { observer } from "mobx-react-lite";
-import React, { useMemo } from "react";
-import { Descendant, Node, createEditor } from "slate";
-import { withHistory } from "slate-history";
-import { Editable, Slate, withReact } from "slate-react";
 import Guild from "../../stores/objects/Guild";
-import { Permissions } from "../../utils/Permissions";
 import Snowflake from "../../utils/Snowflake";
-import { HorizontalDivider } from "../Divider";
-import Icon from "../Icon";
-import IconButton from "../IconButton";
-import AttachmentUploadList from "./AttachmentUploadList";
-import TypingStatus from "./TypingStatus";
+import { debounce } from "../../utils/debounce";
+import { isTouchscreenDevice } from "../../utils/isTouchscreenDevice";
+import MessageTextArea from "./MessageTextArea";
+import AttachmentUpload from "./attachments/AttachmentUpload";
+import AttachmentUploadList from "./attachments/AttachmentUploadPreview";
 
 const Container = styled.div`
-	margin-top: -8px;
-	padding-left: 16px;
-	padding-right: 16px;
-	flex-shrink: 0;
-	z-index: 1;
+	padding: 0 16px;
+	margin-bottom: 25px;
 `;
 
-const InnerContainer = styled.div`
+const InnerWrapper = styled.div`
 	background-color: var(--background-primary);
-	margin-bottom: 24px;
-	width: 100%;
-	border-radius: 8px;
+	padding: 0 16px;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
 `;
 
-const UploadActionWrapper = styled.div`
+const InnerInnerWrapper = styled.div`
 	display: flex;
-	flex: 1;
+	flex-direction: row;
+`;
+
+const UploadWrapper = styled.div`
+	flex: 0 0 auto;
+	position: sticky;
+`;
+
+const ButtonWrapper = styled.div`
+	height: 45px;
+	display: flex;
+	justify-content: center;
 	align-items: center;
-	padding: 0 12px;
 `;
-
-const StyledEditable = styled(Editable)<{ $canSendMessages?: boolean; $canUpload?: boolean }>`
-	width: 100%;
-	outline: none;
-	word-break: break-word;
-	padding: 12px 16px 12px ${({ $canUpload }) => ($canUpload ? "0" : "16px")};
-	overflow-y: auto;
-	max-height: 50vh;
-	cursor: ${({ $canSendMessages }) => (!$canSendMessages ? "not-allowed" : "text")};
-`;
-
-const CustomIcon = styled(Icon)`
-	color: var(--text-secondary);
-
-	&:hover {
-		color: var(--text);
-	}
-`;
-
-const AttachmentsList = styled.ul`
-	display: flex;
-	gap: 8px;
-	padding: 10px;
-	overflow-x: auto;
-	list-style: none;
-`;
-
-const initialEditorValue: Descendant[] = [
-	{
-		type: "paragraph",
-		children: [
-			{
-				text: "",
-			},
-		],
-	},
-];
 
 interface Props {
 	channel: Channel;
@@ -85,204 +52,152 @@ interface Props {
 /**
  * Component for sending messages
  */
-function MessageInput(props: Props) {
+function MessageInput({ channel }: Props) {
 	const app = useAppStore();
 	const logger = useLogger("MessageInput");
-	const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 	const [content, setContent] = React.useState("");
-	const [canSendMessages, setCanSendMessages] = React.useState(true);
-	const [canUpload, setCanUpload] = React.useState(true);
-	const uploadRef = React.useRef<HTMLInputElement>(null);
 	const [attachments, setAttachments] = React.useState<File[]>([]);
 
-	editor.insertData = (data) => {
-		const text = data.getData("text/plain");
-		const { files } = data;
+	/**
+	 * Debounced stopTyping
+	 */
+	const debouncedStopTyping = React.useCallback(
+		debounce(() => channel.stopTyping(), 10_000),
+		[channel],
+	);
 
-		if (files && files.length > 0) {
-			const newAttachments = [...attachments, ...files];
-			setAttachments(newAttachments);
-		} else {
-			editor.insertText(text);
+	/**
+	 * @returns Whether or not a message can be sent given the current state
+	 */
+	const canSendMessage = React.useCallback(() => {
+		if (!attachments.length && (!content || !content.trim() || !content.replace(/\r?\n|\r/g, ""))) {
+			return false;
 		}
+
+		return true;
+	}, [attachments, content]);
+
+	const sendMessage = React.useCallback(async () => {
+		channel.stopTyping();
+		const shouldFail = app.experiments.isTreatmentEnabled("message_queue", 2);
+		const shouldSend = !app.experiments.isTreatmentEnabled("message_queue", 1);
+
+		if (!canSendMessage() && !shouldFail) return;
+
+		const contentCopy = content;
+		const attachmentsCopy = attachments;
+
+		setContent("");
+		setAttachments([]);
+
+		const nonce = Snowflake.generate();
+		const msg = app.queue.add({
+			id: nonce,
+			content: contentCopy,
+			files: attachmentsCopy,
+			author: app.account!.raw,
+			channel: channel.id,
+			timestamp: new Date().toISOString(),
+			type: MessageType.Default,
+		});
+
+		if (shouldSend) {
+			try {
+				let body: RESTPostAPIChannelMessageJSONBody | FormData;
+				if (attachmentsCopy.length > 0) {
+					const data = new FormData();
+					data.append("payload_json", JSON.stringify({ content, nonce }));
+					attachmentsCopy.forEach((file, index) => {
+						data.append(`files[${index}]`, file);
+					});
+					body = data;
+				} else {
+					body = { content, nonce };
+				}
+				await channel.sendMessage(body, msg);
+			} catch (e) {
+				const error = e instanceof Error ? e.message : typeof e === "string" ? e : "Unknown error";
+				msg.fail(error);
+			}
+		} else {
+			msg.fail("Message queue experiment");
+		}
+	}, [content, attachments, channel, canSendMessage]);
+
+	const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+		if (e.ctrlKey && e.key === "Enter") {
+			e.preventDefault();
+			return sendMessage();
+		}
+
+		// TODO: handle editing last message
+
+		if (!e.shiftKey && e.key === "Enter" && !isTouchscreenDevice) {
+			e.preventDefault();
+			return sendMessage();
+		}
+
+		if (e.key === "Escape") {
+			if (attachments.length > 0) {
+				setAttachments([]);
+			}
+		}
+
+		debouncedStopTyping(true);
 	};
 
-	React.useEffect(() => {
-		const permission = Permissions.getPermission(app.account!.id, props.guild, props.channel);
-		setCanSendMessages(permission.has("SEND_MESSAGES"));
-		setCanUpload(permission.has("ATTACH_FILES"));
-	}, [props.channel, props.guild]);
-
-	const serialize = React.useCallback((value: Descendant[]) => {
-		return (
-			value
-				// Return the string content of each paragraph in the value's children.
-				.map((n) => Node.string(n))
-				// Join them all with line breaks denoting paragraphs.
-				.join("\n")
-		);
-	}, []);
-
-	const onKeyDown = React.useCallback(
-		(e: React.KeyboardEvent<HTMLDivElement>) => {
-			if (e.key === "Enter" && !e.shiftKey) {
-				if (!props.channel) {
-					logger.warn("No channel selected, cannot send message");
-					return;
-				}
-
-				e.preventDefault();
-				const shouldFail = app.experiments.isTreatmentEnabled("message_queue", 2);
-				const shouldSend = !app.experiments.isTreatmentEnabled("message_queue", 1);
-
-				const canSend = props.channel.canSendMessage(content, attachments);
-				if (!canSend && !shouldFail) return;
-
-				const nonce = Snowflake.generate();
-				const msg = app.queue.add({
-					id: nonce,
-					content,
-					channel: props.channel.id,
-					files: attachments,
-					timestamp: new Date().toISOString(),
-					type: MessageType.Default,
-					author: app.account!.raw,
-				});
-
-				if (shouldSend) {
-					let body: RESTPostAPIChannelMessageJSONBody | FormData;
-					if (attachments.length > 0) {
-						const data = new FormData();
-						data.append("payload_json", JSON.stringify({ content, nonce }));
-						attachments.forEach((file, index) => {
-							data.append(`files[${index}]`, file);
-						});
-						body = data;
-					} else {
-						body = { content, nonce };
-					}
-					props.channel.sendMessage(body, msg).catch((error) => {
-						if (error) app.queue.error(nonce, error as string);
-					});
-				}
-
-				setContent("");
-				setAttachments([]);
-
-				// reset slate editor
-				const point = { path: [0, 0], offset: 0 };
-				editor.selection = { anchor: point, focus: point };
-				editor.history = { redos: [], undos: [] };
-				editor.children = initialEditorValue;
-			}
-		},
-		[props.channel, content, attachments],
-	);
-
-	const onChange = React.useCallback((value: Descendant[]) => {
-		const isAstChange = editor.operations.some((op) => "set_selection" !== op.type);
-		if (isAstChange) {
-			setContent(serialize(value));
-
-			// send typing event
-			if (!props.channel.isTyping) {
-				logger.debug("Sending typing event");
-				props.channel.sendTyping();
-			}
-		}
-	}, []);
-
-	const handleFileUpload = React.useCallback(() => {
-		if (!props.channel) {
-			logger.warn("[HandleFileUpload] Invalid Channel");
-			return;
-		}
-		uploadRef.current?.click();
-	}, [props.channel]);
-
-	const onChangeFile = React.useCallback(
-		(e: React.ChangeEvent<HTMLInputElement>) => {
-			if (!e.target.files) return;
-			const files = Array.from(e.target.files);
-			const newAttachments = [...attachments, ...files];
-			setAttachments(newAttachments);
-		},
-		[attachments],
-	);
-
-	const removeAttachment = React.useCallback(
-		(index: number) => {
-			const newAttachments = [...attachments];
-			newAttachments.splice(index, 1);
-			setAttachments(newAttachments);
-		},
-		[attachments],
-	);
+	const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+		setContent(e.target.value);
+		channel.startTyping();
+	};
 
 	return (
 		<Container>
-			<InnerContainer>
-				<div
-					style={{
-						borderRadius: "8px",
+			<InnerWrapper>
+				<AttachmentUploadList
+					attachments={attachments}
+					remove={(index) => {
+						if (attachments.length === 0) return;
+						if (attachments.length === 1) setAttachments([]);
+						else setAttachments(attachments.filter((_, i) => i !== index));
 					}}
-				>
-					{attachments.length > 0 && (
-						<>
-							<AttachmentsList>
-								{attachments.map((file, index) => (
-									<AttachmentUploadList
-										key={index}
-										file={file}
-										remove={() => removeAttachment(index)}
-									/>
-								))}
-							</AttachmentsList>
-							<HorizontalDivider nomargin />
-						</>
-					)}
-					<div
-						style={{
-							display: "flex",
-							flex: 1,
-							position: "relative",
-						}}
-					>
-						{canUpload && (
-							<UploadActionWrapper>
-								<input
-									type="file"
-									ref={uploadRef}
-									style={{ display: "none" }}
-									onChange={onChangeFile}
-									multiple={true}
-									disabled={!canSendMessages || !canUpload}
-								/>
-								<IconButton onClick={handleFileUpload} disabled={!canSendMessages || !canUpload}>
-									<CustomIcon icon="mdiPlusCircle" size="24px" />
-								</IconButton>
-							</UploadActionWrapper>
-						)}
-						<Slate editor={editor} initialValue={initialEditorValue} onChange={onChange}>
-							<StyledEditable
-								$canSendMessages={canSendMessages}
-								$canUpload={canUpload}
-								onKeyDown={onKeyDown}
-								value={content}
-								placeholder={
-									canSendMessages
-										? `Message ${props.channel?.name}`
-										: "You do not have permission to send messages in this channel."
-								}
-								aria-label="Message input"
-								readOnly={!canSendMessages}
-							/>
-						</Slate>
-					</div>
-				</div>
+				/>
 
-				<TypingStatus channel={props.channel} />
-			</InnerContainer>
+				<InnerInnerWrapper>
+					<UploadWrapper>
+						{channel.hasPermission("ATTACH_FILES") && channel.hasPermission("SEND_MESSAGES") && (
+							<AttachmentUpload
+								append={(files) => {
+									if (files.length === 0) return;
+									setAttachments((prev) => [...prev, ...files]);
+								}}
+							/>
+						)}
+					</UploadWrapper>
+					<MessageTextArea
+						id="messageinput"
+						// maxLength={4000} // TODO: this should come from the server
+						value={content}
+						placeholder={
+							channel.hasPermission("SEND_MESSAGES")
+								? `Message ${
+										channel.type === ChannelType.DM
+											? channel.recipients?.[0].username
+											: "#" + channel.name
+								  }`
+								: "You do not have permission to send messages in this channel."
+						}
+						disabled={!channel.hasPermission("SEND_MESSAGES")}
+						onChange={onChange}
+						onKeyDown={onKeyDown}
+					/>
+					<ButtonWrapper>
+						{/* <IconButton>
+						<Icon icon="mdiStickerEmoji" size="24px" color="var(--text)" />
+					</IconButton> */}
+					</ButtonWrapper>
+				</InnerInnerWrapper>
+			</InnerWrapper>
 		</Container>
 	);
 }

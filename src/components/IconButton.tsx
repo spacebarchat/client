@@ -7,15 +7,11 @@ interface Props {
 }
 
 export default styled.button<Props>`
-	display: flex;
-	align-items: center;
-	justify-content: center;
 	position: relative;
 	margin: 0;
 	padding: 0;
 	width: 32px;
 	height: 32px;
-	border-radius: 4px;
 	cursor: pointer;
 	outline: none;
 	opacity: ${(props) => (props.disabled ? 0.5 : 1)};

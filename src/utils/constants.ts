@@ -28,3 +28,9 @@ export const USER_JOIN_MESSAGES = [
 	"Good to see you, {author}.",
 	"Yay you made it, {author}!",
 ];
+
+// TODO: this should come from the server
+export const MAX_UPLOAD_SIZE = 1024 * 1024 * 1024; // 1GB, taken from spacebar server default
+export const EMBEDDABLE_VIDEO_MIMES = ["webm", "ogg", "mp4"]; // list of the mimetypes that can be used in a video element
+export const EMBEDDABLE_IMAGE_MIMES = ["png", "jpg", "jpeg", "gif", "webp"]; // list of mimetypes that can be used in an image element
+export const ARCHIVE_MIMES = ["zip", "tar", "tar.gz", "tar.xz", "tar.bz2", "rar", "7z"]; // list of mimetypes to associate with archives

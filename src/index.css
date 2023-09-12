@@ -5,14 +5,15 @@ h4,
 h5,
 h6,
 p,
-span {
+span,
+textarea {
 	padding: 0;
 	margin: 0;
 }
 
 body {
 	margin: 0;
-	font-family: "Roboto", Arial, Helvetica, sans-serif;
+	font-family: var(--font-family);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	overflow: hidden;

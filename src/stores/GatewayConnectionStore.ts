@@ -31,6 +31,7 @@ import {
 } from "@spacebarchat/spacebar-api-types/v9";
 import { action, makeObservable, observable, runInAction } from "mobx";
 import Logger from "../utils/Logger";
+import { debounce } from "../utils/debounce";
 import AppStore from "./AppStore";
 
 const GATEWAY_VERSION = "9";
@@ -635,6 +636,17 @@ export default class GatewayConnectionStore {
 			return;
 		}
 
-		channel.handleTyping(data);
+		const stop = debounce(() => {
+			this.logger.debug(`[TypingStart] ${data.user_id} has stopped typing in ${channel.id}`);
+			runInAction(() => channel.typingIds.delete(data.user_id));
+		}, 12_000); // little bit of extra delay to allow clients to send continuation typing events
+
+		if (!channel.typingIds.has(data.user_id)) {
+			runInAction(() => channel.typingIds.set(data.user_id, stop));
+			stop();
+		} else {
+			this.logger.debug(`[TypingStart] ${data.user_id} is still typing in ${channel.id}`);
+			channel.typingIds.get(data.user_id)?.();
+		}
 	};
 }

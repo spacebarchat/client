@@ -16,5 +16,6 @@ export default styled(({ className, ...props }: MuiTooltipProps) => (
 		fontSize: "14px",
 		padding: "8px 12px",
 		overflow: "hidden",
+		textOverflow: "ellipsis",
 	},
 }));

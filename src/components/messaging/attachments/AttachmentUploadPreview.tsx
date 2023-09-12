@@ -1,9 +1,20 @@
-import React from "react";
+import { observer } from "mobx-react-lite";
+import React, { Fragment } from "react";
 import styled from "styled-components";
-import Icon from "../Icon";
-import IconButton from "../IconButton";
+import { bytesToSize, getFileDetails, getFileIcon } from "../../../utils/Utils";
+import { HorizontalDivider } from "../../Divider";
+import Icon from "../../Icon";
+import IconButton from "../../IconButton";
+const Container = styled.ul`
+	display: flex;
+	gap: 8px;
+	padding: 10px;
+	overflow-x: auto;
+	list-style: none;
+	margin: 0;
+`;
 
-const Container = styled.li`
+const FileContainer = styled.li`
 	flex-direction: column;
 	position: relative;
 	display: inline-flex;
@@ -64,35 +75,41 @@ const FileDetails = styled.div`
 	margin-top: auto;
 `;
 
-const FileNameWrapper = styled.div`
+const FileName = styled.div`
 	margin-top: 8px;
 	overflow: hidden;
 	white-space: nowrap;
 	font-size: 16px;
 	font-weight: var(--font-weight-regular);
+	text-overflow: ellipsis;
 `;
 
-interface Props {
+const FileSize = styled.div`
+	margin-top: 8px;
+	overflow: hidden;
+	white-space: nowrap;
+	font-size: 14px;
+	font-weight: var(--font-weight-regular);
+`;
+
+interface FileProps {
 	file: File;
 	remove: () => void;
 }
 
-function AttachmentUploadList({ file, remove }: Props) {
+function File({ file, remove }: FileProps) {
 	const generatePreviewElement = React.useCallback(() => {
 		const previewUrl = URL.createObjectURL(file);
-		if (file.type.startsWith("image")) return <Image src={previewUrl} />;
-		else if (file.type.startsWith("video"))
-			return <Video preload="metadata" aria-hidden="true" src={previewUrl}></Video>;
-		else
-			return (
-				<div>
-					<Icon size="48px" icon="mdiFile" />
-				</div>
-			);
+		const fileDetails = getFileDetails(file);
+		if (fileDetails.isEmbeddable) {
+			if (fileDetails.isVideo) return <Video preload="metadata" aria-hidden="true" src={previewUrl}></Video>;
+			if (fileDetails.isImage) return <Image src={previewUrl} />;
+		}
+		return <Icon size={5} icon={getFileIcon(file)} />;
 	}, [file]);
 
 	return (
-		<Container>
+		<FileContainer>
 			<InnerWrapper>
 				<MediaContainer>{generatePreviewElement()}</MediaContainer>
 				<ActionsContainer>
@@ -103,11 +120,40 @@ function AttachmentUploadList({ file, remove }: Props) {
 					</ActionBarWrapper>
 				</ActionsContainer>
 				<FileDetails>
-					<FileNameWrapper>{file.name}</FileNameWrapper>
+					<FileName>{file.name}</FileName>
+					<FileSize>{bytesToSize(file.size)}</FileSize>
 				</FileDetails>
 			</InnerWrapper>
-		</Container>
+		</FileContainer>
 	);
 }
 
-export default AttachmentUploadList;
+interface Props {
+	attachments: File[];
+	remove: (index: number) => void;
+}
+
+function AttachmentUploadList({ attachments, remove }: Props) {
+	if (attachments.length === 0) return null;
+
+	return (
+		<div
+			style={{
+				display: "flex",
+				flexDirection: "column",
+			}}
+		>
+			<Container>
+				{attachments.map((file, index) => (
+					<Fragment key={index}>
+						<File file={file} remove={() => remove(index)} />
+					</Fragment>
+				))}
+			</Container>
+
+			<HorizontalDivider />
+		</div>
+	);
+}
+
+export default observer(AttachmentUploadList);
