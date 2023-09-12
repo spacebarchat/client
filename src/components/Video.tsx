@@ -20,8 +20,9 @@ interface Props {
 
 function Video({ attachment }: Props) {
 	const ref = React.useRef<HTMLVideoElement>(null);
-	const [isLoading, setIsLoading] = React.useState(true);
+	const [isLoading, setLoading] = React.useState(true);
 	const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
+	const [isErrored, setErrored] = React.useState(false);
 
 	const url = attachment.proxy_url && attachment.proxy_url.length > 0 ? attachment.proxy_url : attachment.url;
 
@@ -32,34 +33,43 @@ function Video({ attachment }: Props) {
 		const ratio = calculateImageRatio(width, height, 300, 300);
 		const scaledDimensions = calculateScaledDimensions(width, height, ratio, 300, 300);
 		setDimensions({ width: scaledDimensions.scaledWidth, height: scaledDimensions.scaledHeight });
+		setLoading(false);
 	};
 
-	const onLoadedData = () => {
-		setIsLoading(false);
+	const onError = () => {
+		setErrored(true);
 	};
 
 	// TODO: poster
 	// TODO: the server doesn't return height and width yet for videos
 	return (
 		<>
-			{isLoading && (
+			{isLoading && !isErrored && (
 				<Container>
 					<PuffLoader size={"42px"} color="var(--primary)" />
 				</Container>
 			)}
-			<video
-				style={isLoading ? { display: "none" } : {}}
-				playsInline
-				controls
-				preload="metadata"
-				width={dimensions.width}
-				height={dimensions.height}
-				ref={ref}
-				onLoadedMetadata={onLoadedMetadata}
-				onLoadedData={onLoadedData}
-			>
-				<source src={url} type={attachment.content_type} />
-			</video>
+			{isErrored && (
+				<Container>
+					<p>Failed to load video</p>
+				</Container>
+			)}
+
+			{!isErrored && (
+				<video
+					style={isLoading ? { display: "none" } : {}}
+					playsInline
+					controls
+					preload="metadata"
+					width={dimensions.width}
+					height={dimensions.height}
+					ref={ref}
+					onLoadedMetadata={onLoadedMetadata}
+					onError={onError}
+				>
+					<source src={url} type={attachment.content_type} />
+				</video>
+			)}
 		</>
 	);
 }
