@@ -3115,8 +3115,8 @@ checksum = "9d0e916b1148c8e263850e1ebcbd046f333e0683c724876bb0da63ea4373dc8a"
 
 [[package]]
 name = "tauri"
-version = "2.0.0-alpha.12"
-source = "git+https://github.com/tauri-apps/tauri.git?branch=fix/windows-custom-protocol-url#b4ce5bdb20a617ab2738bf17656ad68cbb3cf4c8"
+version = "2.0.0-alpha.14"
+source = "git+https://github.com/tauri-apps/tauri.git#9a2b2f49a5e1748ca4e095118e663ef025c5b87d"
 dependencies = [
  "anyhow",
  "bytes",
@@ -3146,11 +3146,11 @@ dependencies = [
  "serialize-to-javascript",
  "state",
  "swift-rs",
- "tauri-build 2.0.0-alpha.8 (git+https://github.com/tauri-apps/tauri.git?branch=fix/windows-custom-protocol-url)",
+ "tauri-build 2.0.0-alpha.8 (git+https://github.com/tauri-apps/tauri.git)",
  "tauri-macros",
  "tauri-runtime",
  "tauri-runtime-wry",
- "tauri-utils 2.0.0-alpha.7 (git+https://github.com/tauri-apps/tauri.git?branch=fix/windows-custom-protocol-url)",
+ "tauri-utils 2.0.0-alpha.7 (git+https://github.com/tauri-apps/tauri.git)",
  "thiserror",
  "tokio",
  "tray-icon",
@@ -3184,7 +3184,7 @@ dependencies = [
 [[package]]
 name = "tauri-build"
 version = "2.0.0-alpha.8"
-source = "git+https://github.com/tauri-apps/tauri.git?branch=fix/windows-custom-protocol-url#b4ce5bdb20a617ab2738bf17656ad68cbb3cf4c8"
+source = "git+https://github.com/tauri-apps/tauri.git#9a2b2f49a5e1748ca4e095118e663ef025c5b87d"
 dependencies = [
  "anyhow",
  "cargo_toml",
@@ -3195,7 +3195,7 @@ dependencies = [
  "serde",
  "serde_json",
  "swift-rs",
- "tauri-utils 2.0.0-alpha.7 (git+https://github.com/tauri-apps/tauri.git?branch=fix/windows-custom-protocol-url)",
+ "tauri-utils 2.0.0-alpha.7 (git+https://github.com/tauri-apps/tauri.git)",
  "tauri-winres",
  "walkdir",
 ]
@@ -3203,7 +3203,7 @@ dependencies = [
 [[package]]
 name = "tauri-codegen"
 version = "2.0.0-alpha.7"
-source = "git+https://github.com/tauri-apps/tauri.git?branch=fix/windows-custom-protocol-url#b4ce5bdb20a617ab2738bf17656ad68cbb3cf4c8"
+source = "git+https://github.com/tauri-apps/tauri.git#9a2b2f49a5e1748ca4e095118e663ef025c5b87d"
 dependencies = [
  "base64",
  "brotli",
@@ -3217,7 +3217,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2",
- "tauri-utils 2.0.0-alpha.7 (git+https://github.com/tauri-apps/tauri.git?branch=fix/windows-custom-protocol-url)",
+ "tauri-utils 2.0.0-alpha.7 (git+https://github.com/tauri-apps/tauri.git)",
  "thiserror",
  "time",
  "url",
@@ -3228,20 +3228,20 @@ dependencies = [
 [[package]]
 name = "tauri-macros"
 version = "2.0.0-alpha.7"
-source = "git+https://github.com/tauri-apps/tauri.git?branch=fix/windows-custom-protocol-url#b4ce5bdb20a617ab2738bf17656ad68cbb3cf4c8"
+source = "git+https://github.com/tauri-apps/tauri.git#9a2b2f49a5e1748ca4e095118e663ef025c5b87d"
 dependencies = [
  "heck",
  "proc-macro2",
  "quote",
  "syn 1.0.109",
  "tauri-codegen",
- "tauri-utils 2.0.0-alpha.7 (git+https://github.com/tauri-apps/tauri.git?branch=fix/windows-custom-protocol-url)",
+ "tauri-utils 2.0.0-alpha.7 (git+https://github.com/tauri-apps/tauri.git)",
 ]
 
 [[package]]
 name = "tauri-runtime"
 version = "1.0.0-alpha.1"
-source = "git+https://github.com/tauri-apps/tauri.git?branch=fix/windows-custom-protocol-url#b4ce5bdb20a617ab2738bf17656ad68cbb3cf4c8"
+source = "git+https://github.com/tauri-apps/tauri.git#9a2b2f49a5e1748ca4e095118e663ef025c5b87d"
 dependencies = [
  "gtk",
  "http",
@@ -3250,7 +3250,7 @@ dependencies = [
  "raw-window-handle",
  "serde",
  "serde_json",
- "tauri-utils 2.0.0-alpha.7 (git+https://github.com/tauri-apps/tauri.git?branch=fix/windows-custom-protocol-url)",
+ "tauri-utils 2.0.0-alpha.7 (git+https://github.com/tauri-apps/tauri.git)",
  "thiserror",
  "url",
  "uuid",
@@ -3259,8 +3259,8 @@ dependencies = [
 
 [[package]]
 name = "tauri-runtime-wry"
-version = "1.0.0-alpha.1"
-source = "git+https://github.com/tauri-apps/tauri.git?branch=fix/windows-custom-protocol-url#b4ce5bdb20a617ab2738bf17656ad68cbb3cf4c8"
+version = "1.0.0-alpha.2"
+source = "git+https://github.com/tauri-apps/tauri.git#9a2b2f49a5e1748ca4e095118e663ef025c5b87d"
 dependencies = [
  "cocoa 0.24.1",
  "gtk",
@@ -3270,7 +3270,7 @@ dependencies = [
  "rand 0.8.5",
  "raw-window-handle",
  "tauri-runtime",
- "tauri-utils 2.0.0-alpha.7 (git+https://github.com/tauri-apps/tauri.git?branch=fix/windows-custom-protocol-url)",
+ "tauri-utils 2.0.0-alpha.7 (git+https://github.com/tauri-apps/tauri.git)",
  "uuid",
  "webkit2gtk",
  "webview2-com",
@@ -3309,7 +3309,7 @@ dependencies = [
 [[package]]
 name = "tauri-utils"
 version = "2.0.0-alpha.7"
-source = "git+https://github.com/tauri-apps/tauri.git?branch=fix/windows-custom-protocol-url#b4ce5bdb20a617ab2738bf17656ad68cbb3cf4c8"
+source = "git+https://github.com/tauri-apps/tauri.git#9a2b2f49a5e1748ca4e095118e663ef025c5b87d"
 dependencies = [
  "brotli",
  "ctor",
@@ -4179,9 +4179,9 @@ dependencies = [
 
 [[package]]
 name = "wry"
-version = "0.32.0"
+version = "0.33.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "41fc00d1511c9ff5b600a6c6bde254eb39b9fcc5c0369b71a8efd5ff807bf937"
+checksum = "bf906b43b8042615c85a978dceb4d4b72214d27b850b54abc3edeb7c5a67abab"
 dependencies = [
  "base64",
  "block",

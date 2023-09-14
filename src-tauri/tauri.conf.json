@@ -26,24 +26,7 @@
 		"security": {
 			"csp": null
 		},
-		"windows": [
-			{
-				"fullscreen": false,
-				"resizable": true,
-				"title": "Spacebar",
-				"maximized": true,
-				"visible": false,
-				"label": "main"
-			},
-			{
-				"width": 400,
-				"height": 200,
-				"decorations": false,
-				"center": true,
-				"url": "splashscreen.html",
-				"label": "splashscreen"
-			}
-		]
+		"windows": []
 	},
 	"plugins": {
 		"shell": {
