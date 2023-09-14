@@ -15,24 +15,28 @@ interface EmbedProps {
 	contextMenuItems: IContextMenuItem[];
 }
 
-const Container = styled.div<{ $color?: string }>`
+const Container = styled.div`
+	max-width: fit-content;
+	background-color: var(--background-secondary);
+`;
+
+const Wrapper = styled.div<{ $color?: string }>`
 	max-width: 430px;
 	justify-self: start;
 	border-left-width: 4px;
 	border-left-style: solid;
 	border-left-color: ${(props) => props.$color ?? "var(--background-tertiary)"};
-	background: var(--background-secondary);
 	display: grid;
 	box-sizing: border-box;
 	border-radius: 4px;
 `;
 
-const Wrapper = styled.div`
+const EmbedWrapper = styled.div<{ isArticle?: boolean }>`
 	max-width: 500px;
 	overflow: hidden;
 	padding: 8px 16px 16px 12px;
 	display: grid;
-	grid-template-columns: auto;
+	grid-template-columns: ${(props) => (props.isArticle ? "min-content" : "auto")};
 	grid-template-rows: auto;
 `;
 
@@ -238,19 +242,21 @@ export default function MessageEmbed({ embed, contextMenuItems }: EmbedProps) {
 	else null;
 
 	return (
-		<Container $color={embed.color ? decimalColorToHex(embed.color) : undefined}>
-			<Wrapper>
-				{embed.provider && <EmbedProvider>{embed.provider.name}</EmbedProvider>}
-				{author && <EmbedAuthor>{author}</EmbedAuthor>}
-				{title && <EmbedTitle>{title}</EmbedTitle>}
-				{descriptionTrimmed && !isYoutubeVideo && <EmbedDescription>{descriptionTrimmed}</EmbedDescription>}
-				{thumbnail}
-				{embed.footer && (
-					<EmbedFooter>
-						{embed.footer.icon_url && <EmbedFooterImage src={embed.footer.icon_url} />}
-						<EmbedFooterText>{embed.footer.text}</EmbedFooterText>
-					</EmbedFooter>
-				)}
+		<Container>
+			<Wrapper $color={embed.color ? decimalColorToHex(embed.color) : undefined}>
+				<EmbedWrapper isArticle={embed.type === EmbedType.Article}>
+					{embed.provider && <EmbedProvider>{embed.provider.name}</EmbedProvider>}
+					{author && <EmbedAuthor>{author}</EmbedAuthor>}
+					{title && <EmbedTitle>{title}</EmbedTitle>}
+					{descriptionTrimmed && !isYoutubeVideo && <EmbedDescription>{descriptionTrimmed}</EmbedDescription>}
+					{thumbnail}
+					{embed.footer && (
+						<EmbedFooter>
+							{embed.footer.icon_url && <EmbedFooterImage src={embed.footer.icon_url} />}
+							<EmbedFooterText>{embed.footer.text}</EmbedFooterText>
+						</EmbedFooter>
+					)}
+				</EmbedWrapper>
 			</Wrapper>
 		</Container>
 	);
