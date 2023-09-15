@@ -24,7 +24,7 @@
 			],
 			"publisher": "Spacebar",
 			"category": "SocialNetworking",
-			"shortDescription": "A ree, opensource self-hostable discord-compatible chat, voice and video platform.",
+			"shortDescription": "A free, opensource self-hostable discord-compatible chat, voice and video platform.",
 			"windows": {
 				"nsis": {
 					"license": "../LICENSE",
