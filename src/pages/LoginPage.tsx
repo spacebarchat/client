@@ -216,7 +216,15 @@ function LoginPage() {
 	}
 
 	if (mfaData) {
-		return <MFA {...mfaData} />;
+		return (
+			<MFA
+				{...mfaData}
+				close={() => {
+					setMfaData(undefined);
+					resetCaptcha();
+				}}
+			/>
+		);
 	}
 
 	return (

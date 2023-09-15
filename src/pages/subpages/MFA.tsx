@@ -34,7 +34,11 @@ type FormValues = {
 	code: string;
 };
 
-function MFA(props: IAPILoginResponseMFARequired) {
+interface Props extends IAPILoginResponseMFARequired {
+	close: () => void;
+}
+
+function MFA(props: Props) {
 	const app = useAppStore();
 	const logger = useLogger("MFA");
 	const navigate = useNavigate();
@@ -142,7 +146,7 @@ function MFA(props: IAPILoginResponseMFARequired) {
 						Recieve auth code from SMS
 					</Link> */}
 
-						<Link onClick={() => navigate("/login", { replace: true })} type="button">
+						<Link onClick={() => props.close()} type="button">
 							Go Back to Login
 						</Link>
 					</FormContainer>
