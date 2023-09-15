@@ -100,7 +100,7 @@ export default defineConfig(async () => ({
 				main: resolve(__dirname, "index.html"),
 			},
 			output: {
-				dir: "dist",
+				dir: "build",
 				chunkFileNames: "[hash:20].js",
 			},
 		},
