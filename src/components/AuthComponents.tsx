@@ -23,6 +23,7 @@ export const AuthContainer = styled(Container)`
 	@media (max-width: 480px) {
 		width: 100%;
 		height: 100%;
+		justify-content: center;
 	}
 
 	@media (min-width: 480px) {
@@ -51,6 +52,7 @@ export const SubHeader = styled.h2<{ noBranding?: boolean }>`
 
 export const FormContainer = styled.form`
 	width: 100%;
+	margin-top: 40px;
 `;
 
 export const InputContainer = styled.h1<{ marginBottom: boolean }>`

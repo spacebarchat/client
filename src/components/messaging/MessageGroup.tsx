@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
-import { MessageGroup } from "../../stores/MessageStore";
+import { MessageGroup as MessageGroupType } from "../../stores/MessageStore";
 import { QueuedMessageStatus } from "../../stores/objects/QueuedMessage";
 import Message from "./Message";
 
 interface Props {
-	group: MessageGroup;
+	group: MessageGroupType;
 }
 
 /**

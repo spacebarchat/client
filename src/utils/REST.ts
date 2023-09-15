@@ -118,14 +118,18 @@ export default class REST {
 				body: body ? JSON.stringify(body) : undefined,
 			})
 				.then(async (res) => {
-					// resolve with json if content type is json
+					// handle json if content type is json
 					if (res.headers.get("content-type")?.includes("application/json")) {
-						return resolve(await res.json());
+						const data = await res.json();
+						if (res.ok) return resolve(data);
+						else return reject(data);
 					}
 
-					// if theres content, resolve with text
+					// if theres content, handle text
 					if (res.headers.get("content-length") !== "0") {
-						return resolve((await res.text()) as U);
+						const data = await res.text();
+						if (res.ok) return resolve(data as U);
+						else return reject(data as U);
 					}
 
 					if (res.ok) return resolve(res.status as U);

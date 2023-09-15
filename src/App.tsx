@@ -65,7 +65,7 @@ function App() {
 				element: <OfflineBanner />,
 			});
 		else bannerContext.close();
-	}, [app.isNetworkConnected]);
+	}, [app.isNetworkConnected, bannerContext]);
 
 	return (
 		<Loader>

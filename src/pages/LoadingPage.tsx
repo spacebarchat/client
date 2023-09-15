@@ -15,8 +15,13 @@ const Wrapper = styled.div`
 `;
 
 const SpacebarLogo = styled(SpacebarLogoBlue)`
-	height: 120px;
+	width: 80vw;
+	height: min-content;
 	margin-bottom: 32px;
+
+	@media (min-width: 768px) {
+		width: 40vw;
+	}
 `;
 
 function LoadingPage() {

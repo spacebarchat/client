@@ -77,3 +77,6 @@ export const getFileDetails = (fileOrAttachment: File | APIAttachment) => {
 		isArchive: isArchive(fileOrAttachment),
 	};
 };
+
+// @ts-ignore
+export const isTauri = !!window.__TAURI__;
