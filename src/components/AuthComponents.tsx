@@ -52,6 +52,7 @@ export const SubHeader = styled.h2<{ noBranding?: boolean }>`
 
 export const FormContainer = styled.form`
 	width: 100%;
+	margin-top: 40px;
 `;
 
 export const InputContainer = styled.h1<{ marginBottom: boolean }>`
