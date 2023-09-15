@@ -12,7 +12,6 @@ jobs:
         platform: [macos-latest, ubuntu-latest, windows-latest]
 
     runs-on: ${{ matrix.platform }}
-    if: github.ref == 'refs/heads/dev/tauri'
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
