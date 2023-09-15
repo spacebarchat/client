@@ -14,7 +14,12 @@ import { AnimatedModalProps } from "./ModalRenderer";
 
 function SettingsModal(props: AnimatedModalProps) {
 	const app = useAppStore();
-	const { closeModal } = useModals();
+	const { closeModal, closeAllModals } = useModals();
+
+	const logout = () => {
+		app.logout();
+		closeAllModals();
+	};
 
 	return (
 		<Modal full {...props}>
@@ -22,7 +27,7 @@ function SettingsModal(props: AnimatedModalProps) {
 				<ModalFullSidebarContent>
 					Sidebar
 					<div>
-						<Button variant="danger" onClick={() => app.logout()}>
+						<Button variant="danger" onClick={logout}>
 							Logout
 						</Button>
 					</div>
