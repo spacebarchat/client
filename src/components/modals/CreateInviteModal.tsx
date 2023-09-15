@@ -1,8 +1,8 @@
 import { useModals } from "@mattjennings/react-modal-stack";
 import { APIInvite, Routes } from "@spacebarchat/spacebar-api-types/v9";
+import dayjs from "dayjs";
 import React from "react";
 import { useForm } from "react-hook-form";
-import Moment from "react-moment";
 import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
@@ -346,9 +346,7 @@ function CreateInviteModal(props: InviteModalProps) {
 							}}
 						>
 							{inviteExpiresAt ? (
-								<>
-									This invite will expire <Moment fromNow>{inviteExpiresAt}</Moment>
-								</>
+								<>This invite will expire {dayjs(inviteExpiresAt).calendar()}</>
 							) : (
 								"Invite will never expire."
 							)}

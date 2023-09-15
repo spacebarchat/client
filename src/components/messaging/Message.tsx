@@ -1,11 +1,10 @@
 import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
+import dayjs from "dayjs";
 import { observer } from "mobx-react-lite";
 import React, { Fragment } from "react";
-import Moment from "react-moment";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { MessageLike } from "../../stores/objects/Message";
-import { calendarStrings } from "../../utils/i18n";
 import Avatar from "../Avatar";
 import { Link } from "../Link";
 import { IContextMenuItem } from "./../ContextMenuItem";
@@ -229,10 +228,7 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 					{isHeader && (
 						<MessageHeader>
 							<MessageAuthor>{message.author.username}</MessageAuthor>
-
-							<MessageTimestamp>
-								<Moment calendar={calendarStrings} date={new Date(message.timestamp)} />
-							</MessageTimestamp>
+							<MessageTimestamp>{dayjs(message.timestamp).calendar()}</MessageTimestamp>
 						</MessageHeader>
 					)}
 
