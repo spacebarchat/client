@@ -15,14 +15,14 @@ jobs:
     if: github.ref == 'refs/heads/dev/tauri'
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 19
           cache: "pnpm"
-      - uses: pnpm/action-setup@v2
-        with:
-          version: latest
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
       - name: Install Dependencies (Ubuntu only)
