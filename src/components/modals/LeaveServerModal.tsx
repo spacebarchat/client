@@ -60,7 +60,7 @@ function LeaveServerModal(props: Props & AnimatedModalProps) {
 		app.rest.delete(Routes.userGuild(props.guild.id)).finally(() => {
 			closeModal();
 			// navigate to @me
-			navigate("channels/@me");
+			navigate("/channels/@me");
 		});
 	};
 
