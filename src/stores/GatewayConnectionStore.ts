@@ -68,10 +68,12 @@ export default class GatewayConnectionStore {
 	 */
 	@action
 	async connect(url: string) {
-		const newUrl = new URL(url);
-		newUrl.searchParams.append("v", GATEWAY_VERSION);
-		newUrl.searchParams.append("encoding", GATEWAY_ENCODING);
-		this.url = newUrl.href;
+		if (!this.url) {
+			const newUrl = new URL(url);
+			newUrl.searchParams.append("v", GATEWAY_VERSION);
+			newUrl.searchParams.append("encoding", GATEWAY_ENCODING);
+			this.url = newUrl.href;
+		}
 		this.logger.debug(`[Connect] ${this.url}`);
 		this.connectionStartTime = Date.now();
 		this.socket = new WebSocket(this.url);
