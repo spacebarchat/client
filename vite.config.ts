@@ -5,6 +5,9 @@ import { readFileSync } from "fs";
 import { internalIpV4 } from "internal-ip";
 import { resolve } from "path";
 import { defineConfig } from "vite";
+import { chunkSplitPlugin } from "vite-plugin-chunk-split";
+import cleanPlugin from "vite-plugin-clean";
+import progress from "vite-plugin-progress";
 import svgr from "vite-plugin-svgr";
 
 function getGitRevision() {
@@ -48,6 +51,14 @@ export default defineConfig(async () => ({
 	plugins: [
 		react(),
 		svgr(),
+		chunkSplitPlugin({
+			strategy: "unbundle",
+			customSplitting: {
+				"react-vendor": ["react", "react-dom", "react-router-dom"],
+			},
+		}),
+		progress(),
+		cleanPlugin(),
 		replace({
 			__GIT_REVISION__: getGitRevision(),
 			__GIT_BRANCH__: getGitBranch(),
@@ -89,7 +100,7 @@ export default defineConfig(async () => ({
 				main: resolve(__dirname, "index.html"),
 			},
 			output: {
-				dir: "build",
+				dir: "dist",
 				chunkFileNames: "[hash:20].js",
 			},
 		},
