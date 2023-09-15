@@ -1,5 +1,5 @@
 [package]
-name = "app"
+name = "spacebar"
 version = "0.1.0"
 description = "Spacebar Client"
 authors = ["Puyodead1"]
@@ -18,7 +18,8 @@ tauri-build = { version = "2.0.0-alpha", features = [] }
 
 [dependencies]
 # tauri = { version = "2.0.0-alpha", features = [] }
-tauri = { git = "https://github.com/tauri-apps/tauri.git", branch = "dev", features = [] }
+tauri = { git = "https://github.com/tauri-apps/tauri.git", branch = "dev", features = [
+] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 
