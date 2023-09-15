@@ -78,5 +78,5 @@ export const getFileDetails = (fileOrAttachment: File | APIAttachment) => {
 	};
 };
 
-// @ts-expect-error - tauri is not defined
+// @ts-ignore
 export const isTauri = !!window.__TAURI__;

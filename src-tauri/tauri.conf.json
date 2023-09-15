@@ -1,7 +1,7 @@
 {
 	"build": {
-		"beforeDevCommand": "npm run dev",
-		"beforeBuildCommand": "npm run build",
+		"beforeDevCommand": "pnpm run dev",
+		"beforeBuildCommand": "pnpm run build",
 		"devPath": "http://localhost:1420",
 		"distDir": "../build",
 		"withGlobalTauri": false
@@ -31,6 +31,13 @@
 					"sidebarImage": "./icons/sidebar.bmp",
 					"installerIcon": "./icons/icon.ico"
 				}
+			},
+			"updater": {
+				"active": false,
+				"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDQxRkQwNTY1NzBEOTMyMTUKUldRVk10bHdaUVg5UWVoVm9JeDg4UEs1TkpMT3FKdzc3Y29CN2NZNk9vRE9sanJCUERqT09HVVYK",
+				"windows": {
+					"installMode": "passive"
+				}
 			}
 		},
 		"security": {
@@ -41,6 +48,9 @@
 	"plugins": {
 		"shell": {
 			"open": true
+		},
+		"updater": {
+			"endpoints": ["https://update.spacebar.chat/updates/{{target}}/{{arch}}"]
 		}
 	}
 }

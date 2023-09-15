@@ -1,4 +1,3 @@
-import { esbuildCommonjs } from "@originjs/vite-plugin-commonjs";
 import replace from "@rollup/plugin-replace";
 import react from "@vitejs/plugin-react";
 import { readFileSync } from "fs";
@@ -49,16 +48,13 @@ const mobile = !!/android|ios/.exec(process.env.TAURI_PLATFORM);
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
 	plugins: [
+		cleanPlugin(),
 		react(),
 		svgr(),
 		chunkSplitPlugin({
 			strategy: "unbundle",
-			customSplitting: {
-				"react-vendor": ["react", "react-dom", "react-router-dom"],
-			},
 		}),
 		progress(),
-		cleanPlugin(),
 		replace({
 			__GIT_REVISION__: getGitRevision(),
 			__GIT_BRANCH__: getGitBranch(),
@@ -85,23 +81,21 @@ export default defineConfig(async () => ({
 			: undefined,
 		strictPort: true,
 	},
-	optimizeDeps: {
-		esbuildOptions: {
-			plugins: [esbuildCommonjs(["react-moment"])],
-		},
-	},
+
 	// 3. to make use of `TAURI_DEBUG` and other env variables
 	// https://tauri.studio/v1/api/config#buildconfig.beforedevcommand
 	envPrefix: ["VITE_", "TAURI_"],
 	build: {
+		outDir: "build",
 		sourcemap: true,
 		rollupOptions: {
 			input: {
 				main: resolve(__dirname, "index.html"),
 			},
 			output: {
-				dir: "build",
-				chunkFileNames: "[hash:20].js",
+				entryFileNames: "asset/[hash:20].js",
+				chunkFileNames: "asset/[hash:20].js",
+				assetFileNames: "asset/[hash:20].[ext]",
 			},
 		},
 	},
