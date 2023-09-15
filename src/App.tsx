@@ -6,7 +6,6 @@ import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFound";
 import RegistrationPage from "./pages/RegistrationPage";
 
-import { invoke } from "@tauri-apps/api";
 import { reaction } from "mobx";
 import Loader from "./components/Loader";
 import OfflineBanner from "./components/banners/OfflineBanner";
@@ -19,7 +18,6 @@ import SwipeTest from "./pages/SwipeTest";
 import ChannelPage from "./pages/subpages/ChannelPage";
 import { useAppStore } from "./stores/AppStore";
 import { Globals } from "./utils/Globals";
-import { isTauri } from "./utils/Utils";
 
 function App() {
 	const app = useAppStore();
@@ -56,7 +54,6 @@ function App() {
 
 		logger.debug("Loading complete");
 		app.setAppLoading(false);
-		if (isTauri) invoke("close_splashscreen");
 
 		return dispose;
 	}, []);
@@ -68,7 +65,7 @@ function App() {
 				element: <OfflineBanner />,
 			});
 		else bannerContext.close();
-	}, [app.isNetworkConnected]);
+	}, [app.isNetworkConnected, bannerContext]);
 
 	return (
 		<Loader>
