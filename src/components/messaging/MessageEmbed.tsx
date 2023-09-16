@@ -31,12 +31,12 @@ const Wrapper = styled.div<{ $color?: string }>`
 	border-radius: 4px;
 `;
 
-const EmbedWrapper = styled.div<{ isArticle?: boolean }>`
+const EmbedWrapper = styled.div`
 	max-width: 500px;
 	overflow: hidden;
 	padding: 8px 16px 16px 12px;
 	display: grid;
-	grid-template-columns: ${(props) => (props.isArticle ? "min-content" : "auto")};
+	grid-template-columns: auto;
 	grid-template-rows: auto;
 `;
 
@@ -244,7 +244,7 @@ export default function MessageEmbed({ embed, contextMenuItems }: EmbedProps) {
 	return (
 		<Container>
 			<Wrapper $color={embed.color ? decimalColorToHex(embed.color) : undefined}>
-				<EmbedWrapper isArticle={embed.type === EmbedType.Article}>
+				<EmbedWrapper>
 					{embed.provider && <EmbedProvider>{embed.provider.name}</EmbedProvider>}
 					{author && <EmbedAuthor>{author}</EmbedAuthor>}
 					{title && <EmbedTitle>{title}</EmbedTitle>}
