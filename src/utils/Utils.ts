@@ -80,3 +80,7 @@ export const getFileDetails = (fileOrAttachment: File | APIAttachment) => {
 
 // @ts-ignore
 export const isTauri = !!window.__TAURI__;
+
+export const clamp = (num: number, min: number, max: number) => {
+	return Math.min(Math.max(num, min), max);
+};

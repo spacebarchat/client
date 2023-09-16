@@ -158,24 +158,52 @@ export const ModalFooter = styled.div`
 export const ModalFullSidebar = styled.div`
 	display: flex;
 	justify-content: flex-end;
-	flex: 1 0 11.35%;
+	flex: 1 0 15%;
 	z-index: 1;
-	background-color: var(--background-secondary);
 	padding: 10px;
 `;
 
+export const ModalFullSidebarContainer = styled.div`
+	overflow: hidden scroll;
+	flex: 1 0 auto;
+	flex-direction: row;
+	display: flex;
+	justify-content: flex-end;
+	background-color: var(--background-secondary);
+`;
+
 export const ModalFullSidebarContent = styled.div`
+	width: 200px;
+	padding: 50px 0;
 	display: flex;
 	flex-direction: column;
 `;
 
-export const ModalFullContent = styled.div`
-	position: relative;
+export const ModalFullContentContainer = styled.div`
 	display: flex;
-	flex: 1 1 42.3%;
+	flex: 1 1 800px;
 	align-items: flex-start;
+`;
+
+export const ModalFullContentWrapper = styled.div`
+	flex: 1;
+	height: 100%;
+`;
+
+export const ModalFullContentContainerContentWrapper = styled.div`
+	overflow: hidden scroll;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
 	background-color: var(--background-primary);
-	padding: 10px;
+`;
+
+export const ModalFullContent = styled.div`
+	padding: 50px;
+	flex: 1 1 auto;
+	max-width: 70%;
+	min-width: 50%;
+	min-height: 100%;
 `;
 
 interface ModalProps extends StackedModalProps {

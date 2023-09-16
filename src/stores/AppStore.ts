@@ -1,8 +1,10 @@
 import type { APIUser } from "@spacebarchat/spacebar-api-types/v9";
-import { action, computed, makeAutoObservable, observable } from "mobx";
+import { invoke } from "@tauri-apps/api";
+import { action, computed, makeAutoObservable, observable, reaction } from "mobx";
 import secureLocalStorage from "react-secure-storage";
 import Logger from "../utils/Logger";
 import REST from "../utils/REST";
+import { clamp, isTauri } from "../utils/Utils";
 import AccountStore from "./AccountStore";
 import ChannelStore from "./ChannelStore";
 import ExperimentsStore from "./ExperimentsStore";
@@ -41,12 +43,20 @@ export default class AppStore {
 	@observable experiments = new ExperimentsStore();
 	@observable presences = new PresenceStore(this);
 	@observable queue = new MessageQueue(this);
+	@observable zoom = 1;
 
 	constructor() {
 		makeAutoObservable(this);
 
 		window.addEventListener("online", () => this.setNetworkConnected(true));
 		window.addEventListener("offline", () => this.setNetworkConnected(false));
+
+		reaction(
+			() => this.zoom,
+			(zoom) => {
+				if (isTauri) invoke("set_zoom", { factor: zoom });
+			},
+		);
 	}
 
 	@action
@@ -99,6 +109,11 @@ export default class AppStore {
 	@action
 	setNetworkConnected(value: boolean) {
 		this.isNetworkConnected = value;
+	}
+
+	@action
+	setZoom(value: number) {
+		this.zoom = clamp(value, 0.5, 2);
 	}
 
 	@computed

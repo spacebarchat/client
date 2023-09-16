@@ -52,3 +52,8 @@ code {
 	background-clip: padding-box;
 	border-radius: 8px;
 }
+
+input[type="range"]::-moz-range-track {
+	padding: 0 10px;
+	background: repeating-linear-gradient(to right, #ccc, #ccc 10%, #000 10%, #000 11%, #ccc 11%, #ccc 20%);
+}
