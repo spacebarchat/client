@@ -1,22 +1,18 @@
 #[cfg(desktop)]
 use tauri::Manager;
 
-#[cfg(desktop)]
 #[tauri::command]
 async fn close_splashscreen(window: tauri::Window) {
-    // Close splashscreen
-    if let Some(splashscreen) = window.get_window("splashscreen") {
-        splashscreen.close().unwrap();
+    #[cfg(desktop)]
+    {
+        // Close splashscreen
+        if let Some(splashscreen) = window.get_window("splashscreen") {
+            splashscreen.close().unwrap();
+        }
+
+        // Show main window
+        window.get_window("main").unwrap().show().unwrap();
     }
-
-    // Show main window
-    window.get_window("main").unwrap().show().unwrap();
-}
-
-#[cfg(mobile)]
-#[tauri::command]
-async fn close_splashscreen() {
-    // just a dummy function for mobile
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
