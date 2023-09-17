@@ -142,6 +142,13 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 						</div>
 					)}
 					{parseMessageContent(message.content)}
+					{"edited_timestamp" in message && message.edited_timestamp && (
+						<MessageTimestamp date={message.edited_timestamp}>
+							<span style={{ color: "var(--text-secondary)", fontSize: "12px", paddingLeft: "5px" }}>
+								(edited)
+							</span>
+						</MessageTimestamp>
+					)}
 					{"attachments" in message
 						? message.attachments.map((attachment, index) => (
 								<Fragment key={index}>

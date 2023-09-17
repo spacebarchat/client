@@ -11,10 +11,15 @@ const Container = styled.div`
 	user-select: none;
 `;
 
-function MessageTimestamp({ date }: { date: string | number | Date | dayjs.Dayjs }) {
+interface Props {
+	date: string | number | Date | dayjs.Dayjs;
+	children?: React.ReactElement;
+}
+
+function MessageTimestamp({ date, children }: Props) {
 	return (
 		<Tooltip title={dayjs(date).format("dddd, MMMM MM, h:mm A")} placement="top">
-			<Container>{dayjs(date).calendar(undefined, calendarStrings)}</Container>
+			{children ? children : <Container>{dayjs(date).calendar(undefined, calendarStrings)}</Container>}
 		</Tooltip>
 	);
 }
