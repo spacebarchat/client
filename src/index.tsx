@@ -23,9 +23,10 @@ import { BannerContextProvider } from "./contexts/BannerContext";
 import { ContextMenuContextProvider } from "./contexts/ContextMenuContext";
 import Theme from "./contexts/Theme";
 import "./index.css";
+import { calendarStrings } from "./utils/i18n";
 
 dayjs.extend(relativeTime);
-dayjs.extend(calendar);
+dayjs.extend(calendar, calendarStrings);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<BrowserRouter>

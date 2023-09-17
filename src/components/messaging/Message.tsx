@@ -1,7 +1,7 @@
 import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
-import dayjs from "dayjs";
 import { observer } from "mobx-react-lite";
 import React, { Fragment } from "react";
+import reactStringReplace from "react-string-replace";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { MessageLike } from "../../stores/objects/Message";
@@ -9,7 +9,10 @@ import Avatar from "../Avatar";
 import { Link } from "../Link";
 import { IContextMenuItem } from "./../ContextMenuItem";
 import MessageAttachment from "./MessageAttachment";
+import MessageBase from "./MessageBase";
 import MessageEmbed from "./MessageEmbed";
+import MessageTimestamp from "./MessageTimestamp";
+import SystemMessage from "./SystemMessage";
 import AttachmentUploadProgress from "./attachments/AttachmentUploadProgress";
 
 const MessageListItem = styled.li`
@@ -37,18 +40,12 @@ const MessageHeader = styled.div`
 	display: flex;
 	flex: 1;
 	flex-direction: row;
+	align-items: center;
 `;
 
 const MessageAuthor = styled.div`
 	font-size: 16px;
 	font-weight: var(--font-weight-medium);
-`;
-
-const MessageTimestamp = styled.div`
-	font-size: 14px;
-	font-weight: var(--font-weight-regular);
-	margin-left: 10px;
-	color: var(--text-secondary);
 `;
 
 const MessageContent = styled.div<{ sending?: boolean; failed?: boolean }>`
@@ -60,31 +57,22 @@ const MessageContent = styled.div<{ sending?: boolean; failed?: boolean }>`
 	color: ${(props) => (props.failed ? "var(--error)" : undefined)};
 `;
 
-// converts URLs in a string to html links
-const Linkify = ({ children }: { children: string }) => {
-	const urlPattern = /\bhttps?:\/\/\S+\b\/?/g;
-	const matches = children.match(urlPattern);
-	if (!matches) return <>{children}</>;
+const MessageHeaderWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+`;
 
-	const elements = [];
-	let lastIndex = 0;
+function parseMessageContent(content?: string | null) {
+	if (!content) return null;
+	// replace links with Link components
+	const replacedText = reactStringReplace(content, /(https?:\/\/\S+)/g, (match, i) => (
+		<Link key={match + i} href={match} target="_blank" rel="noreferrer">
+			{match}
+		</Link>
+	));
 
-	for (const match of matches) {
-		const matchIndex = children.indexOf(match, lastIndex);
-		if (matchIndex > lastIndex) elements.push(children.substring(lastIndex, matchIndex));
-
-		elements.push(
-			<Link key={matchIndex} href={match} target="_blank" rel="noreferrer">
-				{match}
-			</Link>,
-		);
-		lastIndex = matchIndex + match.length;
-	}
-
-	if (lastIndex < children.length) elements.push(children.substring(lastIndex));
-
-	return <>{elements}</>;
-};
+	return replacedText;
+}
 
 interface Props {
 	message: MessageLike;
@@ -110,90 +98,99 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 		},
 	]);
 
-	// construct the context menu options
-	// React.useEffect(() => {
-	// 	// if the message is queued, we don't need a context menu
-	// 	if (isSending) {
-	// 		return;
-	// 	}
-
-	// 	// add delete/resend option if the current user is the message author
-	// 	// if (author?.id === domain.account?.id) {
-	// 	//   items.push({
-	// 	// 	label: failed ? 'Resend Message' : 'Delete Message',
-	// 	// 	onPress: () => {
-	// 	// 	  // TODO: implement
-	// 	// 	  console.debug(
-	// 	// 		failed ? 'should resend message' : 'should delete message',
-	// 	// 	  );
-	// 	// 	},
-	// 	// 	color: theme.colors.palette.red40,
-	// 	// 	iconProps: {
-	// 	// 	  name: failed ? 'reload' : 'delete',
-	// 	// 	},
-	// 	//   });
-	// 	// }
-
-	// 	// setContextMenuOptions(items);
-	// }, [isSending, isFailed]);
-
-	// handles creating the message content based on the message type
-	// TODO: probably move this to a separate component
-	const renderMessageContent = React.useCallback(() => {
-		switch (message.type) {
-			case MessageType.Default:
-				return (
-					<MessageContent sending={isSending} failed={isFailed}>
-						{message.content ? <Linkify>{message.content}</Linkify> : null}
-						{"attachments" in message
-							? message.attachments.map((attachment, index) => (
-									<Fragment key={index}>
-										<MessageAttachment
-											key={index}
-											attachment={attachment}
-											contextMenuItems={contextMenuItems}
-										/>
-									</Fragment>
-							  ))
-							: null}
-						{"embeds" in message
-							? message.embeds.map((embed, index) => (
-									<Fragment key={index}>
-										<MessageEmbed key={index} embed={embed} contextMenuItems={contextMenuItems} />
-									</Fragment>
-							  ))
-							: null}
-					</MessageContent>
-				);
-			case MessageType.UserJoin: {
-				// TODO: render only the join message and timestamp, will require a bit of refactoring
-				const msg = message.getJoinMessage();
-				const split = msg.split("{author}");
-				return (
-					<MessageContent
+	const withMessageHeader = React.useCallback(
+		(children: React.ReactNode, showHeader = false) => (
+			<MessageHeaderWrapper>
+				{showHeader && (
+					<Avatar
+						key={message.author.id}
+						user={message.author}
+						size={40}
 						style={{
-							color: "var(--text-secondary)",
-							fontWeight: "var(--font-weight-regular)",
-							fontSize: "16px",
+							marginRight: 10,
+							backgroundColor: "transparent",
 						}}
-					>
-						{split[0]}
-						<Link color="var(--text)" style={{ fontWeight: "var(--font-weight-medium)" }}>
-							{message.author.username}
-						</Link>
-						{split[1]}
-					</MessageContent>
-				);
-			}
-			default:
-				return (
-					<div>
+					/>
+				)}
+
+				<MessageContentContainer isHeader={showHeader}>
+					{showHeader && (
+						<MessageHeader>
+							<MessageAuthor>{message.author.username}</MessageAuthor>
+							<MessageTimestamp date={message.timestamp} />
+						</MessageHeader>
+					)}
+
+					{children}
+
+					{"files" in message && message.files?.length !== 0 && (
+						<AttachmentUploadProgress message={message} />
+					)}
+				</MessageContentContainer>
+			</MessageHeaderWrapper>
+		),
+		[message, contextMenuItems],
+	);
+
+	const constructDefaultMessage = React.useCallback(
+		() =>
+			withMessageHeader(
+				<MessageContent sending={isSending} failed={isFailed}>
+					{message.type !== MessageType.Default && (
 						<div style={{ color: "var(--text-secondary)", fontSize: "12px" }}>
 							MessageType({MessageType[message.type]})
 						</div>
-						{message.content}
-					</div>
-				);
+					)}
+					{parseMessageContent(message.content)}
+					{"attachments" in message
+						? message.attachments.map((attachment, index) => (
+								<Fragment key={index}>
+									<MessageAttachment
+										key={index}
+										attachment={attachment}
+										contextMenuItems={contextMenuItems}
+									/>
+								</Fragment>
+						  ))
+						: null}
+					{"embeds" in message
+						? message.embeds.map((embed, index) => (
+								<Fragment key={index}>
+									<MessageEmbed key={index} embed={embed} contextMenuItems={contextMenuItems} />
+								</Fragment>
+						  ))
+						: null}
+				</MessageContent>,
+				isHeader,
+			),
+		[message, isHeader],
+	);
+
+	const constructJoinMessage = React.useCallback(() => {
+		const joinMessage = message.getJoinMessage();
+		return (
+			<SystemMessage
+				message={message}
+				iconProps={{ icon: "mdiArrowRight", size: "16px", color: "var(--success)" }}
+			>
+				{reactStringReplace(joinMessage, "{author}", (_, i) => (
+					<Link color="var(--text)" style={{ fontWeight: "var(--font-weight-medium)" }} key={i}>
+						{message.author.username}
+					</Link>
+				))}
+			</SystemMessage>
+		);
+	}, [message]);
+
+	// handles creating the message content based on the message type
+	const renderMessageContent = React.useCallback(() => {
+		switch (message.type) {
+			case MessageType.Default:
+				return constructDefaultMessage();
+			case MessageType.UserJoin:
+				return constructJoinMessage();
+			default:
+				return constructDefaultMessage();
 		}
 	}, [message, isSending, isFailed]);
 
@@ -212,32 +209,7 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 					});
 				}}
 			>
-				{isHeader && (
-					<Avatar
-						key={message.author.id}
-						user={message.author}
-						size={40}
-						style={{
-							marginRight: 10,
-							backgroundColor: "transparent",
-						}}
-					/>
-				)}
-
-				<MessageContentContainer isHeader={isHeader}>
-					{isHeader && (
-						<MessageHeader>
-							<MessageAuthor>{message.author.username}</MessageAuthor>
-							<MessageTimestamp>{dayjs(message.timestamp).calendar()}</MessageTimestamp>
-						</MessageHeader>
-					)}
-
-					{renderMessageContent()}
-
-					{"files" in message && message.files?.length !== 0 && (
-						<AttachmentUploadProgress message={message} />
-					)}
-				</MessageContentContainer>
+				<MessageBase>{renderMessageContent()}</MessageBase>
 			</Container>
 		</MessageListItem>
 	);

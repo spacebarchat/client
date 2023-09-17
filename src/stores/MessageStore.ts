@@ -1,4 +1,4 @@
-import type { APIMessage } from "@spacebarchat/spacebar-api-types/v9";
+import { MessageType, type APIMessage } from "@spacebarchat/spacebar-api-types/v9";
 import type { IObservableArray } from "mobx";
 import { action, computed, makeObservable, observable } from "mobx";
 import useLogger from "../hooks/useLogger";
@@ -89,6 +89,8 @@ export default class MessageStore {
 				if (
 					lastMessage &&
 					lastMessage.author.id === message.author.id &&
+					lastMessage.type === message.type &&
+					message.type === MessageType.Default &&
 					message.timestamp.getTime() - lastMessage.timestamp.getTime() <= 10 * 60 * 1000
 				) {
 					// add to last group
