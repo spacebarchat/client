@@ -11,10 +11,18 @@ import { Permissions } from "../utils/Permissions";
 import REST from "../utils/REST";
 import Container from "./Container";
 import { IContextMenuItem } from "./ContextMenuItem";
-import GuildSidebarListItem from "./GuildSidebarListItem";
 import SidebarPill, { PillType } from "./SidebarPill";
 import Tooltip from "./Tooltip";
 import CreateInviteModal from "./modals/CreateInviteModal";
+
+export const GuildSidebarListItem = styled.li`
+	position: relative;
+	margin: 0 0 8px;
+	display: flex;
+	justify-content: center;
+	width: 72px;
+	cursor: pointer;
+`;
 
 const Wrapper = styled(Container)<{ active?: boolean; hasImage?: boolean }>`
 	display: flex;

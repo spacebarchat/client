@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 import Guild from "../stores/objects/Guild";
-import GuildItem from "./GuildItem";
-import GuildSidebarListItem from "./GuildSidebarListItem";
+import GuildItem, { GuildSidebarListItem } from "./GuildItem";
 import SidebarAction from "./SidebarAction";
 import AddServerModal from "./modals/AddServerModal";
 

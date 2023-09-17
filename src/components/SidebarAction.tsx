@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Container from "./Container";
-import GuildSidebarListItem from "./GuildSidebarListItem";
+import { GuildSidebarListItem } from "./GuildItem";
 import Icon, { IconProps } from "./Icon";
 import SidebarPill, { PillType } from "./SidebarPill";
 import Tooltip from "./Tooltip";
