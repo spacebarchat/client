@@ -63,21 +63,19 @@ export default class GuildMemberListStore {
 								data: [],
 							});
 						} else {
-							// try to get the existing member
-							if (item.member.user?.id) {
-								const member = this.guild.members.get(item.member.user.id);
-								if (member) {
-									listData[listData.length - 1].data.push({
-										member,
-										index: item.member.index,
-									});
-									return;
-								}
+							const member = this.guild.members.get(item.member.id);
+							if (member) {
+								listData[listData.length - 1].data.push({
+									member,
+									index: item.member.index,
+								});
+							} else {
+								const member = this.guild.members.add(item.member);
+								listData[listData.length - 1].data.push({
+									member: member!,
+									index: item.member.index,
+								});
 							}
-							listData[listData.length - 1].data.push({
-								member: new GuildMember(this.app, this.guild, item.member),
-								index: item.member.index,
-							});
 						}
 					}
 

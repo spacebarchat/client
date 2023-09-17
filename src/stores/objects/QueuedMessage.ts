@@ -10,7 +10,7 @@ export enum QueuedMessageStatus {
 
 export type QueuedMessageData = {
 	id: string;
-	channel: string;
+	channel_id: string;
 	content: string;
 	files?: File[];
 	timestamp: string;
@@ -19,7 +19,7 @@ export type QueuedMessageData = {
 };
 
 export default class QueuedMessage extends MessageBase {
-	channel: string;
+	channel_id: string;
 	files?: File[];
 	@observable progress = 0;
 	@observable status: QueuedMessageStatus;
@@ -29,7 +29,7 @@ export default class QueuedMessage extends MessageBase {
 	constructor(app: AppStore, data: QueuedMessageData) {
 		super(app, data);
 		this.id = data.id;
-		this.channel = data.channel;
+		this.channel_id = data.channel_id;
 		this.files = data.files;
 		this.status = QueuedMessageStatus.SENDING;
 

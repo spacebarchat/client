@@ -198,8 +198,9 @@ export default class Message extends MessageBase {
 	 * It can be used to estimate the relative position of the message in a thread in company with `total_message_sent` on parent thread
 	 */
 	position?: number;
+	guild_id?: Snowflake;
 
-	constructor(app: AppStore, data: APIMessage) {
+	constructor(app: AppStore, data: APIMessage & { guild_id?: Snowflake }) {
 		super(app, data);
 
 		this.id = data.id;
@@ -232,6 +233,9 @@ export default class Message extends MessageBase {
 		this.sticker_items = data.sticker_items;
 		this.stickers = data.stickers;
 		this.position = data.position;
+		if (data.guild_id) {
+			this.guild_id = data.guild_id;
+		}
 
 		makeObservable(this);
 	}

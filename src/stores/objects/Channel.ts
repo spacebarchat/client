@@ -267,4 +267,10 @@ export default class Channel {
 			this.typing = null;
 		}
 	}
+
+	@computed
+	get guild() {
+		if (!this.guildId) return undefined;
+		return this.app.guilds.get(this.guildId);
+	}
 }

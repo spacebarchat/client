@@ -9,6 +9,7 @@ import Avatar from "../Avatar";
 import { Link } from "../Link";
 import { IContextMenuItem } from "./../ContextMenuItem";
 import MessageAttachment from "./MessageAttachment";
+import MessageAuthor from "./MessageAuthor";
 import MessageBase from "./MessageBase";
 import MessageEmbed from "./MessageEmbed";
 import MessageTimestamp from "./MessageTimestamp";
@@ -41,11 +42,6 @@ const MessageHeader = styled.div`
 	flex: 1;
 	flex-direction: row;
 	align-items: center;
-`;
-
-const MessageAuthor = styled.div`
-	font-size: 16px;
-	font-weight: var(--font-weight-medium);
 `;
 
 const MessageContent = styled.div<{ sending?: boolean; failed?: boolean }>`
@@ -116,7 +112,7 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 				<MessageContentContainer isHeader={showHeader}>
 					{showHeader && (
 						<MessageHeader>
-							<MessageAuthor>{message.author.username}</MessageAuthor>
+							<MessageAuthor message={message} />
 							<MessageTimestamp date={message.timestamp} />
 						</MessageHeader>
 					)}

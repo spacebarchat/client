@@ -26,7 +26,10 @@ export default class GuildMemberStore {
 		if (this.members.has(member.user.id)) {
 			return;
 		}
-		this.members.set(member.user.id, new GuildMember(this.app, this.guild, member));
+		const m = new GuildMember(this.app, this.guild, member);
+		this.members.set(member.user.id, m);
+		console.log(`added member ${m.user?.username}`);
+		return m;
 	}
 
 	@action
