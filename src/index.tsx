@@ -17,6 +17,7 @@ import calendar from "dayjs/plugin/calendar";
 import relativeTime from "dayjs/plugin/relativeTime";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import { ErrorBoundaryContext } from "react-use-error-boundary";
 import App from "./App";
 import ModalRenderer from "./components/modals/ModalRenderer";
 import { BannerContextProvider } from "./contexts/BannerContext";
@@ -29,14 +30,16 @@ dayjs.extend(relativeTime);
 dayjs.extend(calendar, calendarStrings);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-	<BrowserRouter>
-		<ModalStack renderModals={ModalRenderer}>
-			<ContextMenuContextProvider>
-				<BannerContextProvider>
-					<App />
-				</BannerContextProvider>
-			</ContextMenuContextProvider>
-			<Theme />
-		</ModalStack>
-	</BrowserRouter>,
+	<ErrorBoundaryContext>
+		<BrowserRouter>
+			<ModalStack renderModals={ModalRenderer}>
+				<ContextMenuContextProvider>
+					<BannerContextProvider>
+						<App />
+					</BannerContextProvider>
+				</ContextMenuContextProvider>
+				<Theme />
+			</ModalStack>
+		</BrowserRouter>
+	</ErrorBoundaryContext>,
 );

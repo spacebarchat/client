@@ -6,6 +6,7 @@ import Banner from "../../components/Banner";
 import ChannelSidebar from "../../components/ChannelSidebar";
 import ContainerComponent from "../../components/Container";
 import ContextMenu from "../../components/ContextMenu";
+import ErrorBoundary from "../../components/ErrorBoundary";
 import GuildSidebar from "../../components/GuildSidebar";
 import Chat from "../../components/messaging/Chat";
 import { BannerContext } from "../../contexts/BannerContext";
@@ -43,7 +44,9 @@ function ChannelPage() {
 				{contextMenu.visible && <ContextMenu {...contextMenu} />}
 				<GuildSidebar guildId={guildId!} />
 				<ChannelSidebar channel={channel} guild={guild} channelId={channelId} guildId={guildId} />
-				<Chat channel={channel} guild={guild} channelId={channelId} guildId={guildId} />
+				<ErrorBoundary section="component">
+					<Chat channel={channel} guild={guild} channelId={channelId} guildId={guildId} />
+				</ErrorBoundary>
 			</Wrapper>
 		</Container>
 	);

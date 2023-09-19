@@ -110,9 +110,6 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
-  react-error-boundary:
-    specifier: ^3.1.4
-    version: 3.1.4(react@18.2.0)
   react-hook-form:
     specifier: ^7.46.1
     version: 7.46.1(react@18.2.0)
@@ -137,6 +134,9 @@ dependencies:
   react-string-replace:
     specifier: ^1.1.1
     version: 1.1.1
+  react-use-error-boundary:
+    specifier: ^3.0.0
+    version: 3.0.0(react@18.2.0)
   reoverlay:
     specifier: ^1.0.3
     version: 1.0.3(react-dom@18.2.0)(react@18.2.0)
@@ -10524,16 +10524,6 @@ packages:
       scheduler: 0.23.0
     dev: false
 
-  /react-error-boundary@3.1.4(react@18.2.0):
-    resolution: {integrity: sha512-uM9uPzZJTF6wRQORmSrvOIgt4lJ9MC1sNgEOj2XGsDTRE4kmpWxg7ENK9EWNKJRMAOY9z0MuF4yIfl6gp4sotA==}
-    engines: {node: '>=10', npm: '>=6'}
-    peerDependencies:
-      react: '>=16.13.1'
-    dependencies:
-      '@babel/runtime': 7.21.5
-      react: 18.2.0
-    dev: false
-
   /react-error-overlay@6.0.11:
     resolution: {integrity: sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==}
     dev: true
@@ -10749,6 +10739,14 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /react-use-error-boundary@3.0.0(react@18.2.0):
+    resolution: {integrity: sha512-5urkfyU3ZzInEMSHe1gxtDzlQAHs0krTt0V6h8H2L5nXhDKq3OYXnCs9lGHDkEkYvLmsphw8ap5g8uYfvrkJng==}
+    peerDependencies:
+      react: '>= 16.8'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react@18.2.0:

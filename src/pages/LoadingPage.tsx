@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import { Suspense } from "react";
 import PulseLoader from "react-spinners/PulseLoader";
 import styled from "styled-components";
 import { ReactComponent as SpacebarLogoBlue } from "../assets/images/logo/Logo-Blue.svg";
@@ -50,3 +51,7 @@ function LoadingPage() {
 }
 
 export default observer(LoadingPage);
+
+export const LoadingSuspense = ({ children }: { children: React.ReactNode }) => (
+	<Suspense fallback={<LoadingPage />}>{children}</Suspense>
+);
