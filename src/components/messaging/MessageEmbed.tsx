@@ -4,6 +4,7 @@ import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
 import { decimalColorToHex } from "../../utils/Utils";
 import { IContextMenuItem } from "../ContextMenuItem";
+import Link from "../Link";
 import MessageAttachment from "./MessageAttachment";
 
 // TODO: move these to a constants file/configurable
@@ -224,9 +225,9 @@ export default function MessageEmbed({ embed, contextMenuItems }: EmbedProps) {
 	if (titleTrimmed) {
 		if (embed.url)
 			title = (
-				<EmbedTitleLink href={embed.url} rel="noreferrer noopener" target="_blank">
+				<Link href={embed.url} rel="noreferrer noopener" target="_blank">
 					{titleTrimmed}
-				</EmbedTitleLink>
+				</Link>
 			);
 		else title = titleTrimmed;
 	} else title = null;
@@ -235,9 +236,9 @@ export default function MessageEmbed({ embed, contextMenuItems }: EmbedProps) {
 	if (embed.author)
 		if (embed.author.url)
 			author = (
-				<EmbedAuthorLink href={embed.author.url} rel="noreferrer noopener" target="_blank">
+				<Link href={embed.author.url} rel="noreferrer noopener" target="_blank">
 					{embed.author.name}
-				</EmbedAuthorLink>
+				</Link>
 			);
 		else author = <EmbedAuthorText>{embed.author.name}</EmbedAuthorText>;
 	else null;

@@ -2,7 +2,7 @@ import { APIAttachment } from "@spacebarchat/spacebar-api-types/v9";
 import styled from "styled-components";
 import { bytesToSize } from "../../utils/Utils";
 import Icon from "../Icon";
-import { Link } from "../Link";
+import Link from "../Link";
 
 const Container = styled.div`
 	margin-top: 10px;

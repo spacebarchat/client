@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { MessageLike } from "../../stores/objects/Message";
 import Avatar from "../Avatar";
-import { Link } from "../Link";
+import Link from "../Link";
 import { IContextMenuItem } from "./../ContextMenuItem";
 import MessageAttachment from "./MessageAttachment";
 import MessageAuthor from "./MessageAuthor";
@@ -203,6 +203,7 @@ function Message({ message, isHeader, isSending, isFailed }: Props) {
 				isHeader={isHeader}
 				onContextMenu={(e) => {
 					e.preventDefault();
+					e.stopPropagation();
 					contextMenu.open({
 						position: {
 							x: e.pageX,

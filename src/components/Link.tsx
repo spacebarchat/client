@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Link = styled.a<{ color?: string }>`
+export const LinkElement = styled.a<{ color?: string }>`
 	// remove the default underline
 	text-decoration: none;
 	// set the color to the primary color
@@ -11,8 +11,21 @@ export const Link = styled.a<{ color?: string }>`
 	&:visited {
 		color: ${(props) => props.color || "var(--primary-light)"};
 	}
+
 	// when hovered, add underline
 	&:hover {
 		text-decoration: underline;
 	}
 `;
+
+export default function Link(props: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
+	return (
+		<LinkElement
+			onContextMenu={(e) => {
+				// allow the default context menu to open
+				e.stopPropagation();
+			}}
+			{...props}
+		/>
+	);
+}

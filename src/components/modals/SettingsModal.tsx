@@ -4,6 +4,7 @@ import { useAppStore } from "../../stores/AppStore";
 import { GIT_BRANCH, GIT_REVISION, REPO_URL } from "../../utils/revison";
 import Button from "../Button";
 import Icon from "../Icon";
+import Link from "../Link";
 import {
 	Modal,
 	ModalCloseWrapper,
@@ -65,17 +66,17 @@ function SettingsModal(props: AnimatedModalProps) {
 
 							<div>
 								<span>Client Version: </span>
-								<a href={`${REPO_URL}/commit/${GIT_REVISION}`} target="_blank" rel="noreferrer">
+								<Link href={`${REPO_URL}/commit/${GIT_REVISION}`} target="_blank" rel="noreferrer">
 									{GIT_REVISION.substring(0, 7)}
-								</a>
+								</Link>
 								{` `}
-								<a
+								<Link
 									href={GIT_BRANCH !== "DETACHED" ? `${REPO_URL}/tree/${GIT_BRANCH}` : undefined}
 									target="_blank"
 									rel="noreferrer"
 								>
 									({GIT_BRANCH})
-								</a>
+								</Link>
 							</div>
 						</ModalFullContent>
 					</ModalFullContentContainerContentWrapper>
