@@ -18,6 +18,7 @@ interface EmbedProps {
 const Container = styled.div`
 	max-width: fit-content;
 	background-color: var(--background-secondary);
+	margin-top: 5px;
 `;
 
 const Wrapper = styled.div<{ $color?: string }>`
