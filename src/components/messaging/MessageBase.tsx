@@ -70,6 +70,7 @@ export const MessageContent = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	padding-right: 48px;
+	word-wrap: anywhere;
 `;
 
 export const DetailBase = styled.div`

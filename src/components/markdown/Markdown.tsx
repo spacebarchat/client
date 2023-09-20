@@ -1,4 +1,5 @@
 import { Suspense, lazy } from "react";
+import { withErrorBoundary } from "react-use-error-boundary";
 
 const Renderer = lazy(() => import("./RemarkRenderer"));
 
@@ -6,7 +7,7 @@ export interface MarkdownProps {
 	content: string;
 }
 
-export default function Markdown(props: MarkdownProps) {
+function Markdown(props: MarkdownProps) {
 	if (!props.content) return null;
 
 	return (
@@ -15,3 +16,5 @@ export default function Markdown(props: MarkdownProps) {
 		</Suspense>
 	);
 }
+
+export default withErrorBoundary(Markdown);

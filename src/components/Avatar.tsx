@@ -9,6 +9,11 @@ const Wrapper = styled(Container)<{ size: number }>`
 	height: ${(props) => props.size}px;
 	border-radius: 50%;
 	position: relative;
+
+	&:hover {
+		text-decoration: underline;
+		cursor: pointer;
+	}
 `;
 
 interface Props {

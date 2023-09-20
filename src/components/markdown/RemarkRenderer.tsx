@@ -1,121 +1,28 @@
-// adapted from Revite
-// https://github.com/revoltchat/revite/blob/fe63c6633f32b54aa1989cb34627e72bb3377efd/src/components/markdown/RemarkRenderer.tsx
-
 import React from "react";
-import * as prod from "react/jsx-runtime";
-import rehypePrism from "rehype-prism";
-import rehypeReact from "rehype-react";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from "remark-gfm";
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
 import styled from "styled-components";
-import { unified } from "unified";
 import Link from "../Link";
 import { MarkdownProps } from "./Markdown";
-import RenderCodeblock from "./plugins/Codeblock";
-import "./prism";
 
-/**
- * Null element
- */
-const Null: React.FC = () => null;
+const Container = styled.div`
+	// remove the excessive left padding in lists
+	ul,
+	ol {
+		padding: 0 0 0 15px;
+	}
 
-/**
- * Custom Markdown components
- */
-const components = {
-	// emoji: RenderEmoji,
-	// mention: RenderMention,
-	// spoiler: RenderSpoiler,
-	// channel: RenderChannel,
-	a: Link,
-	p: styled.p`
-		margin: 0;
-
-		> code {
-			padding: 1px 4px;
-			flex-shrink: 0;
-		}
-	`,
-	h1: styled.h1`
-		margin: 0.2em 0;
-	`,
-	h2: styled.h2`
-		margin: 0.2em 0;
-	`,
-	h3: styled.h3`
-		margin: 0.2em 0;
-	`,
-	h4: styled.h4`
-		margin: 0.2em 0;
-	`,
-	h5: styled.h5`
-		margin: 0.2em 0;
-	`,
-	h6: styled.h6`
-		margin: 0.2em 0;
-	`,
-	pre: RenderCodeblock,
-	code: styled.code`
-		color: var(--text);
-		background: var(--background-secondary);
-
-		font-size: 90%;
-		font-family: var(--font-family-code);
-
-		border-radius: 4px;
-		box-decoration-break: clone;
-	`,
-	table: styled.table`
-		border-collapse: collapse;
-
-		th,
-		td {
-			padding: 6px;
-			border: 1px solid var(--background-teritary);
-		}
-	`,
-	ul: styled.ul`
-		list-style-position: inside;
-		padding: 0;
-		margin: 0.2em 0;
-	`,
-	ol: styled.ol`
-		list-style-position: inside;
-		padding: 0;
-		margin: 0.2em 0;
-	`,
-
-	blockquote: styled.blockquote`
+	blockquote {
 		margin: 2px 0;
-		padding: 2px 0;
-		background: red;
+		padding: 5px;
+		background-color: var(--background-secondary);
+		width: fit-content;
 		border-radius: 4px;
-		border-inline-start: 4px solid var(--background-teritary);
-
-		> * {
-			margin: 0 8px;
-		}
-	`,
-	// Block image elements
-	img: Null,
-	// Catch literally everything else just in case
-	video: Null,
-	figure: Null,
-	picture: Null,
-	source: Null,
-	audio: Null,
-	script: Null,
-	style: Null,
-};
-
-const render = unified()
-	.use(remarkParse)
-	.use(remarkGfm)
-	.use(remarkRehype)
-	.use(rehypePrism)
-	// @ts-expect-error typescript doesn't like this
-	.use(rehypeReact, { Fragment: prod.Fragment, jsx: prod.jsx, jsxs: prod.jsxs, components });
+		border-inline-start: 4px solid var(--background-tertiary);
+	}
+`;
 
 /**
  * Regex for matching execessive recursion of blockquotes and lists
@@ -176,11 +83,42 @@ function sanitize(content: string) {
 export default React.memo(({ content }: MarkdownProps) => {
 	const sanitizedContent = React.useMemo(() => sanitize(content), [content]);
 
-	const [parsedContent, setParsedContent] = React.useState<React.ReactElement>(null!);
-
-	React.useEffect(() => {
-		render.process(sanitizedContent).then((file) => setParsedContent(file.result));
-	}, [sanitizedContent]);
-
-	return parsedContent;
+	return (
+		<Container>
+			<ReactMarkdown
+				remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
+				children={sanitizedContent}
+				// @ts-expect-error idk what is going on here, but this is correct
+				components={{
+					code({ node, inline, className, children, ...props }) {
+						const match = /language-(\w+)/.exec(className || "");
+						return !inline && match ? (
+							<SyntaxHighlighter
+								children={String(children).replace(/\n$/, "")}
+								language={match[1]}
+								// @ts-expect-error oh fk off typescript, dark is ok for you but not dracula? ok
+								style={dracula}
+								PreTag="section" // parent tag
+								{...props}
+							/>
+						) : (
+							<code className={className} {...props}>
+								{children}
+							</code>
+						);
+					},
+					a({ node, href, children, ...props }) {
+						return (
+							<Link href={href} target="_blank" rel="noopener noreferrer" {...props}>
+								{children}
+							</Link>
+						);
+					},
+					blockquote({ node, children }) {
+						return <blockquote>{children}</blockquote>;
+					},
+				}}
+			/>
+		</Container>
+	);
 });
