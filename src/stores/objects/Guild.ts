@@ -103,7 +103,6 @@ export default class Guild {
 		this.roles.addAll(data.roles);
 		// FIXME: hack to prevent errors after guild creation where channels is undefined
 		if (data.channels) {
-			console.log(data.channels);
 			this.channels.addAll(data.channels);
 		}
 

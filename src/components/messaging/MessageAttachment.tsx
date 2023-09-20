@@ -23,7 +23,7 @@ const Image = styled.img`
 
 interface AttachmentProps {
 	attachment: APIAttachment;
-	contextMenuItems: IContextMenuItem[];
+	contextMenuItems?: IContextMenuItem[];
 	maxWidth?: number;
 	maxHeight?: number;
 }
@@ -70,7 +70,7 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 						y: e.pageY,
 					},
 					items: [
-						...contextMenuItems,
+						...(contextMenuItems ?? []),
 						{
 							label: "Copy Attachment URL",
 							onClick: () => {

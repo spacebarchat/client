@@ -1,36 +1,82 @@
-import React from "react";
+import * as Icons from "@mdi/js";
+import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
+import { observer } from "mobx-react-lite";
+import ReactMarkdown from "react-markdown";
+import reactStringReplace from "react-string-replace";
 import styled from "styled-components";
 import { MessageLike } from "../../stores/objects/Message";
-import Icon, { IconProps } from "../Icon";
-import MessageTimestamp from "./MessageTimestamp";
+import Icon from "../Icon";
+import MessageBase, { MessageDetails, MessageInfo } from "./MessageBase";
 
-const Container = styled.div`
+const SystemContent = styled.div`
 	display: flex;
+	padding: 2px 0;
+	flex-wrap: wrap;
+	align-items: center;
 	flex-direction: row;
+	font-size: 16px;
+	color: var(--text-secondary);
+`;
+
+const SystemUser = styled.span`
+	color: var(--text);
+	cursor: pointer;
+	font-weight: var(--font-weight-medium);
+
+	&:hover {
+		text-decoration: underline;
+	}
 `;
 
 interface Props {
 	message: MessageLike;
-	children: React.ReactNode;
-	iconProps?: IconProps;
+	highlight?: boolean;
 }
 
-function SystemMessage({ message, children, iconProps }: Props) {
+const ICONS: Partial<Record<MessageType, { icon: keyof typeof Icons; color?: string }>> = {
+	[MessageType.UserJoin]: {
+		icon: "mdiArrowRight",
+		color: "var(--success)",
+	},
+};
+
+function SystemMessage({ message, highlight }: Props) {
+	const icon = ICONS[message.type] ?? {
+		icon: "mdiInformation",
+	};
+
+	let children;
+	switch (message.type) {
+		case MessageType.UserJoin: {
+			const joinMessage = message.getJoinMessage();
+			children = (
+				<div>
+					{reactStringReplace(joinMessage, "{author}", (_, i) => (
+						<SystemUser key={i}>{message.author.username}</SystemUser>
+					))}
+				</div>
+			);
+
+			break;
+		}
+		case MessageType.Default:
+			children = <ReactMarkdown children={message.content} />;
+			break;
+		default:
+			// children = <span>Unimplemented system message type '{MessageType[message.type]}'</span>;
+			children = <ReactMarkdown children={message.content} />;
+			break;
+	}
+
 	return (
-		<Container>
-			<div style={{ margin: "0 10px", display: "flex" }}>{iconProps && <Icon {...iconProps} />}</div>
-			<div
-				style={{
-					color: "var(--text-secondary)",
-					fontWeight: "var(--font-weight-regular)",
-					fontSize: "16px",
-				}}
-			>
-				{children}
-			</div>
-			<MessageTimestamp date={message.timestamp} />
-		</Container>
+		<MessageBase header>
+			<MessageInfo click={false}>
+				<Icon icon={icon.icon} size="16px" color={icon.color ?? "var(--text-secondary)"} />
+			</MessageInfo>
+			<SystemContent>{children}</SystemContent>
+			<MessageDetails message={message} position="top" />
+		</MessageBase>
 	);
 }
 
-export default SystemMessage;
+export default observer(SystemMessage);

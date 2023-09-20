@@ -28,7 +28,6 @@ export default class GuildMemberStore {
 		}
 		const m = new GuildMember(this.app, this.guild, member);
 		this.members.set(member.user.id, m);
-		console.log(`added member ${m.user?.username}`);
 		return m;
 	}
 

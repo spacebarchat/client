@@ -12,6 +12,7 @@ const font: ThemeFont["font"] = {
 		black: 900,
 	},
 	family: "Roboto, Arial, Helvetica, sans-serif",
+	familyCode: '"Roboto Mono", monospace',
 };
 
 export type ThemeVariables =
@@ -70,6 +71,7 @@ export type ThemeFont = {
 			black?: number;
 		};
 		family: string;
+		familyCode: string;
 	};
 };
 

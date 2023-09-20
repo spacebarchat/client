@@ -90,7 +90,7 @@ function MessageList({ guild, channel }: Props) {
 					style={{
 						display: "flex",
 						flexDirection: "column-reverse",
-						marginBottom: "30px",
+						marginBottom: 30,
 					}} // to put endMessage and loader to the top.
 					hasMore={hasMore}
 					inverse={true}
@@ -100,7 +100,7 @@ function MessageList({ guild, channel }: Props) {
 								display: "flex",
 								justifyContent: "center",
 								alignContent: "center",
-								marginBottom: "30px",
+								marginBottom: 30,
 							}}
 							color="var(--primary)"
 						/>
@@ -121,8 +121,8 @@ function MessageList({ guild, channel }: Props) {
 			) : (
 				<div
 					style={{
-						marginBottom: "30px",
-						paddingLeft: "20px",
+						marginBottom: 30,
+						paddingLeft: 20,
 						color: "var(--text-secondary)",
 					}}
 				>
