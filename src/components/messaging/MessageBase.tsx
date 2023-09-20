@@ -19,7 +19,7 @@ export default styled.div<Props>`
 	${(props) => props.header && "margin-top: 20px;"}
 	${(props) => props.failed && "color: var(--error);"}
 	${(props) => props.sending && "opacity: 0.5;"}
-	${(props) => props.mention && "background-color: var(--mention);"}
+	${(props) => props.mention && "background-color: hsl(var(--warning-light-hsl)/0.1);"}
 
 	.message-details {
 		display: flex;
@@ -32,7 +32,8 @@ export default styled.div<Props>`
 	}
 
 	&:hover {
-		background-color: var(--background-primary-highlight);
+		background-color: ${(props) =>
+			props.mention ? "hsl(var(--warning-light-hsl)/0.08);" : "var(--background-primary-highlight);"};
 
 		time,
 		.edited {
