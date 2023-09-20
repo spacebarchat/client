@@ -9,10 +9,11 @@ import { MarkdownProps } from "./Markdown";
 import style from "./style";
 
 const Container = styled.div`
-	// remove the excessive left padding in lists
+	// remove the excessive left padding, and margin in lists
 	ul,
 	ol {
 		padding: 0 0 0 15px;
+		margin: 0;
 	}
 
 	blockquote {
@@ -30,6 +31,10 @@ const Container = styled.div`
 		border-radius: 4px;
 		font-size: 80%;
 		font-family: var(--font-family-code);
+	}
+
+	code {
+		font-size: 85%;
 	}
 `;
 
