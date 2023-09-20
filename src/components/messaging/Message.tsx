@@ -3,7 +3,7 @@ import { memo } from "react";
 import { MessageLike } from "../../stores/objects/Message";
 import { QueuedMessageStatus } from "../../stores/objects/QueuedMessage";
 import Avatar from "../Avatar";
-import Markdown from "../markdown/RemarkRenderer";
+import Markdown from "../markdown/MarkdownRenderer";
 import MessageAttachment from "./MessageAttachment";
 import MessageAuthor from "./MessageAuthor";
 import MessageBase, { MessageContent, MessageDetails, MessageInfo } from "./MessageBase";

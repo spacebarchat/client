@@ -1,11 +1,12 @@
 import React from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from "remark-gfm";
 import styled from "styled-components";
+import CodeBlock from "../Codeblock";
 import Link from "../Link";
 import { MarkdownProps } from "./Markdown";
+import style from "./style";
 
 const Container = styled.div`
 	// remove the excessive left padding in lists
@@ -21,6 +22,14 @@ const Container = styled.div`
 		width: fit-content;
 		border-radius: 4px;
 		border-inline-start: 4px solid var(--background-tertiary);
+	}
+
+	code.inline {
+		background-color: var(--background-secondary);
+		padding: 2px 4px;
+		border-radius: 4px;
+		font-size: 80%;
+		font-family: var(--font-family-code);
 	}
 `;
 
@@ -92,17 +101,18 @@ export default React.memo(({ content }: MarkdownProps) => {
 				components={{
 					code({ node, inline, className, children, ...props }) {
 						const match = /language-(\w+)/.exec(className || "");
-						return !inline && match ? (
-							<SyntaxHighlighter
-								children={String(children).replace(/\n$/, "")}
-								language={match[1]}
-								// @ts-expect-error oh fk off typescript, dark is ok for you but not dracula? ok
-								style={dracula}
-								PreTag="section" // parent tag
-								{...props}
-							/>
+						return !inline ? (
+							<CodeBlock>
+								<SyntaxHighlighter
+									children={String(children).replace(/\n$/, "")}
+									language={match ? match[1] : undefined}
+									// @ts-expect-error types are broken
+									style={style}
+									{...props}
+								/>
+							</CodeBlock>
 						) : (
-							<code className={className} {...props}>
+							<code className="inline" {...props}>
 								{children}
 							</code>
 						);

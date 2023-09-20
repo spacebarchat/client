@@ -3,38 +3,26 @@
 
 import React from "react";
 import styled from "styled-components";
-import Tooltip from "../../Tooltip";
-
-/**
- * Base codeblock styles
- */
-const Base = styled.pre`
-	padding: 1em;
-	overflow-x: scroll;
-	background: var(--background-secondary);
-	border-radius: 4px;
-`;
+import Tooltip from "./Tooltip";
 
 /**
  * Copy codeblock contents button styles
  */
-const Lang = styled.div`
-	width: fit-content;
+const Copy = styled.a`
 	position: absolute;
-	right: 60px;
+	top: 10px;
+	right: 10px;
 
-	a {
-		color: var(--text);
-		cursor: pointer;
-		padding: 2px 6px;
-		font-weight: 600;
-		user-select: none;
-		display: inline-block;
-		background: var(--background-tertiary);
+	color: var(--text);
+	cursor: pointer;
+	padding: 2px 6px;
+	font-weight: 600;
+	user-select: none;
+	display: inline-block;
+	background: var(--background-tertiary);
 
-		font-size: 10px;
-		text-transform: uppercase;
-	}
+	font-size: 10px;
+	text-transform: uppercase;
 `;
 
 interface Props {
@@ -46,7 +34,7 @@ interface Props {
  * Render a codeblock with copy text button
  */
 
-function RenderCodeblock(props: Props) {
+function CodeBlock(props: Props) {
 	const ref = React.useRef<HTMLPreElement>(null);
 
 	let text = "Copy";
@@ -60,15 +48,18 @@ function RenderCodeblock(props: Props) {
 	}, [ref]);
 
 	return (
-		<Base ref={ref}>
-			<Lang>
-				<Tooltip title="Copy to Clipboard" placement="top">
-					<a onClick={onCopy}>{text}</a>
-				</Tooltip>
-			</Lang>
+		<pre
+			ref={ref}
+			style={{
+				position: "relative",
+			}}
+		>
+			<Tooltip title="Copy to Clipboard" placement="top">
+				<Copy onClick={onCopy}>{text}</Copy>
+			</Tooltip>
 			{props.children}
-		</Base>
+		</pre>
 	);
 }
 
-export default RenderCodeblock;
+export default CodeBlock;
