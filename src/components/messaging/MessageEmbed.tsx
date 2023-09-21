@@ -92,57 +92,65 @@ function MessageEmbed({ embed }: Props) {
 			}}
 		>
 			<div>
-				{embed.type !== EmbedType.Rich && embed.provider && (
-					<span className={styles.embedProvider}>{embed.provider.name}</span>
-				)}
+				<div style={{ display: "flex" }}>
+					<div>
+						{embed.type !== EmbedType.Rich && embed.provider && (
+							<span className={styles.embedProvider}>{embed.provider.name}</span>
+						)}
 
-				{embed.author && (
-					<div className={styles.embedAuthor}>
-						{embed.author.icon_url && (
-							<img
-								loading="lazy"
-								className={styles.embedAuthorIcon}
-								src={embed.author.icon_url}
-								draggable={false}
-								onError={(e) => (e.currentTarget.style.display = "none")}
-							/>
+						{embed.author && (
+							<div className={styles.embedAuthor}>
+								{embed.author.icon_url && (
+									<img
+										loading="lazy"
+										className={styles.embedAuthorIcon}
+										src={embed.author.icon_url}
+										draggable={false}
+										onError={(e) => (e.currentTarget.style.display = "none")}
+									/>
+								)}
+								{embed.author.url ? (
+									<a
+										href={embed.url}
+										target={"_blank"}
+										className={classNames(styles.embedAuthorName, styles.embedAuthorNameLink)}
+									>
+										{embed.author.name}
+									</a>
+								) : (
+									<span className={styles.embedAuthorName}>{embed.author.name}</span>
+								)}
+							</div>
 						)}
-						{embed.author.url ? (
-							<a
-								href={embed.url}
-								target={"_blank"}
-								className={classNames(styles.embedAuthorName, styles.embedAuthorNameLink)}
-							>
-								{embed.author.name}
-							</a>
-						) : (
-							<span className={styles.embedAuthorName}>{embed.author.name}</span>
+
+						{embed.title && (
+							<>
+								{embed.url ? (
+									<a
+										href={embed.url}
+										target={"_blank"}
+										className={classNames(styles.embedTitle, styles.embedTitleLink)}
+									>
+										{embed.title}
+									</a>
+								) : (
+									<span className={styles.embedTitle}>{embed.title}</span>
+								)}
+							</>
 						)}
+
+						{embed.description && <div className={styles.embedDescription}>{embed.description}</div>}
 					</div>
-				)}
 
-				{embed.title && (
-					<>
-						{embed.url ? (
-							<a
-								href={embed.url}
-								target={"_blank"}
-								className={classNames(styles.embedTitle, styles.embedTitleLink)}
-							>
-								{embed.title}
-							</a>
-						) : (
-							<span className={styles.embedTitle}>{embed.title}</span>
-						)}
-					</>
-				)}
+					{/* FIXME: broken with wide images */}
+					{(!largeMedia || embed.type === EmbedType.Rich) && embed.thumbnail && (
+						<EmbedMedia embed={embed} height={100} thumbnail />
+					)}
+				</div>
 
-				{embed.description && <div className={styles.embedDescription}>{embed.description}</div>}
-
-				{largeMedia && <EmbedMedia embed={embed} height={height} />}
+				{/* FIXME: broken with wide images */}
+				{(largeMedia || embed.type === EmbedType.Rich) && <EmbedMedia embed={embed} height={height} />}
 			</div>
-
-			{!largeMedia && embed.thumbnail && <EmbedMedia embed={embed} height={100} />}
 		</div>
 	);
 }

@@ -8,9 +8,10 @@ interface Props {
 	embed: APIEmbed;
 	width?: number;
 	height: number;
+	thumbnail?: boolean;
 }
 
-function EmbedMedia({ embed, width, height }: Props) {
+function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 	switch (embed.provider?.name) {
 		case "YouTube": {
 			if (!embed.video?.url) return null;
@@ -87,7 +88,7 @@ function EmbedMedia({ embed, width, height }: Props) {
 			);
 		}
 		default: {
-			if (embed.video) {
+			if (embed.video && !thumbnail) {
 				const url = embed.video.url;
 				return (
 					<video
@@ -100,7 +101,7 @@ function EmbedMedia({ embed, width, height }: Props) {
 						muted={embed.type === EmbedType.GIFV ? true : undefined}
 					/>
 				);
-			} else if (embed.image) {
+			} else if (embed.image && !thumbnail) {
 				const url = embed.image.url;
 				return (
 					<img
