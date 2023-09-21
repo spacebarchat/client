@@ -54,7 +54,7 @@
 		"react-use-error-boundary": "^3.0.0",
 		"remark-gfm": "^3.0.1",
 		"reoverlay": "^1.0.3",
-		"styled-components": "^5.3.10",
+		"styled-components": "^5.3.11",
 		"use-resize-observer": "^9.1.0"
 	},
 	"devDependencies": {
@@ -74,8 +74,8 @@
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-react-refresh": "^0.4.3",
 		"internal-ip": "^7.0.0",
-		"typescript": "^5.0.2",
-		"vite": "^4.4.5",
+		"typescript": "^5.2.2",
+		"vite": "^4.4.9",
 		"vite-plugin-chunk-split": "^0.4.7",
 		"vite-plugin-clean": "^1.0.0",
 		"vite-plugin-html": "^3.2.0",

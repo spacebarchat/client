@@ -12,12 +12,6 @@ const Actions = styled.div`
 	display: flex;
 	gap: 5px;
 
-	span {
-		font-size: 12px;
-		background: var(--background-tertiary);
-		padding: 2px 6px;
-	}
-
 	a {
 		color: var(--text);
 		cursor: pointer;
@@ -63,7 +57,6 @@ function CodeBlock(props: Props) {
 			}}
 		>
 			<Actions>
-				{props.lang && <span>{props.lang ?? "N/A"}</span>}
 				<Tooltip title="Copy to Clipboard" placement="top">
 					<a onClick={onCopy}>{text}</a>
 				</Tooltip>

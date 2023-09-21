@@ -36,6 +36,18 @@ const Container = styled.div`
 	code {
 		font-size: 85%;
 	}
+
+	.syntaxHighlighter {
+		// remove excessive left "padding" in line numbers
+		.linenumber {
+			min-width: 0 !important;
+		}
+
+		// append vertical pipe to line numbers
+		.linenumber::after {
+			content: " |";
+		}
+	}
 `;
 
 /**
@@ -102,19 +114,21 @@ export default React.memo(({ content }: MarkdownProps) => {
 			<ReactMarkdown
 				remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
 				children={sanitizedContent}
-				// @ts-expect-error idk what is going on here, but this is correct
+				// @ts-expect-error type issue
 				components={{
 					code({ node, inline, className, children, ...props }) {
 						const match = /language-(\w+)/.exec(className || "");
 						return !inline ? (
 							<CodeBlock lang={match ? match[1] : undefined}>
 								<SyntaxHighlighter
+									className="syntaxHighlighter"
 									children={String(children).replace(/\n$/, "")}
 									language={match ? match[1] : undefined}
-									// @ts-expect-error types are broken
+									// @ts-expect-error type issue
 									style={style}
-									showLineNumbers
-									{...props}
+									showLineNumbers={true}
+									showInlineLineNumbers={true}
+									PreTag="div"
 								/>
 							</CodeBlock>
 						) : (
