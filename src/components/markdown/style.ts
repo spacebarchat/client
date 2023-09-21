@@ -41,11 +41,13 @@ export default {
 		overflow: "auto",
 		borderRadius: "0.3em",
 		background: "#1e1e1e",
+		border: "1px solid #121212",
 	},
 	':not(pre) > code[class*="language-"]': {
 		background: "#1e1e1e",
 		padding: ".1em",
 		borderRadius: ".3em",
+		border: "1px solid #121212",
 	},
 	comment: {
 		color: "#6a9955",
