@@ -7,8 +7,6 @@ import Tooltip from "../Tooltip";
 
 interface Props {
 	header?: boolean;
-	failed?: boolean;
-	sending?: boolean;
 	mention?: boolean;
 }
 
@@ -17,8 +15,6 @@ export default styled.div<Props>`
 	overflow: none;
 	flex-direction: row;
 	${(props) => props.header && "margin-top: 20px;"}
-	${(props) => props.failed && "color: var(--error);"}
-	${(props) => props.sending && "opacity: 0.5;"}
 	${(props) => props.mention && "background-color: hsl(var(--warning-light-hsl)/0.1);"}
 
 	.message-details {
@@ -42,7 +38,7 @@ export default styled.div<Props>`
 	}
 `;
 
-export const MessageInfo = styled.div<{ click: boolean }>`
+export const MessageInfo = styled.div`
 	width: 62px;
 	display: flex;
 	flex-shrink: 0;
@@ -72,6 +68,11 @@ export const MessageContent = styled.div`
 	justify-content: center;
 	padding-right: 48px;
 	word-wrap: anywhere;
+`;
+
+export const MessageContentText = styled.div<{ sending?: boolean; failed?: boolean }>`
+	${(props) => props.sending && "opacity: 0.5;"}
+	${(props) => props.failed && "color: var(--error);"}
 `;
 
 export const DetailBase = styled.div`

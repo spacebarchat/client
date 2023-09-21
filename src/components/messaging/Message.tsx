@@ -6,7 +6,7 @@ import Avatar from "../Avatar";
 import Markdown from "../markdown/MarkdownRenderer";
 import MessageAttachment from "./MessageAttachment";
 import MessageAuthor from "./MessageAuthor";
-import MessageBase, { MessageContent, MessageDetails, MessageInfo } from "./MessageBase";
+import MessageBase, { MessageContent, MessageContentText, MessageDetails, MessageInfo } from "./MessageBase";
 import MessageEmbed from "./MessageEmbed";
 import AttachmentUploadProgress from "./attachments/AttachmentUploadProgress";
 
@@ -17,12 +17,8 @@ interface Props {
 
 function Message({ message, header }: Props) {
 	return (
-		<MessageBase
-			header={header}
-			sending={"status" in message && message.status === QueuedMessageStatus.SENDING}
-			failed={"status" in message && message.status === QueuedMessageStatus.FAILED}
-		>
-			<MessageInfo click={typeof header !== "undefined"}>
+		<MessageBase header={header}>
+			<MessageInfo>
 				{header ? (
 					<Avatar key={message.author.id} user={message.author} size={40} />
 				) : (
@@ -36,7 +32,13 @@ function Message({ message, header }: Props) {
 						<MessageDetails message={message} position="top" />
 					</span>
 				)}
-				{message.content && <Markdown content={message.content} />}
+				<MessageContentText
+					sending={"status" in message && message.status === QueuedMessageStatus.SENDING}
+					failed={"status" in message && message.status === QueuedMessageStatus.FAILED}
+				>
+					{message.content && <Markdown content={message.content} />}
+				</MessageContentText>
+
 				{"attachments" in message &&
 					message.attachments.map((attachment, index) => (
 						<MessageAttachment key={index} attachment={attachment} />
