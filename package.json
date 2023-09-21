@@ -29,6 +29,7 @@
 		"@testing-library/jest-dom": "^5.17.0",
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^13.5.0",
+		"classnames": "^2.3.2",
 		"dayjs": "^1.11.9",
 		"framer-motion": "^10.16.4",
 		"missing-native-js-functions": "^1.4.3",
@@ -54,7 +55,8 @@
 		"remark-gfm": "^3.0.1",
 		"reoverlay": "^1.0.3",
 		"styled-components": "^5.3.10",
-		"unist-util-visit": "^5.0.0"
+		"unist-util-visit": "^5.0.0",
+		"use-resize-observer": "^9.1.0"
 	},
 	"devDependencies": {
 		"@craco/craco": "^7.1.0",

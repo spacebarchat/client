@@ -7,6 +7,7 @@ import Markdown from "../markdown/MarkdownRenderer";
 import MessageAttachment from "./MessageAttachment";
 import MessageAuthor from "./MessageAuthor";
 import MessageBase, { MessageContent, MessageDetails, MessageInfo } from "./MessageBase";
+import MessageEmbed from "./MessageEmbed";
 import AttachmentUploadProgress from "./attachments/AttachmentUploadProgress";
 
 interface Props {
@@ -40,9 +41,8 @@ function Message({ message, header }: Props) {
 					message.attachments.map((attachment, index) => (
 						<MessageAttachment key={index} attachment={attachment} />
 					))}
-				{/* {message.embeds?.map((embed, index) => (
-                            <MessageEmbed key={index} embed={embed} />
-                        ))} */}
+				{"embeds" in message &&
+					message.embeds?.map((embed, index) => <MessageEmbed key={index} embed={embed} />)}
 				{"files" in message && message.files?.length !== 0 && <AttachmentUploadProgress message={message} />}
 			</MessageContent>
 		</MessageBase>
