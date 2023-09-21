@@ -107,12 +107,13 @@ export default React.memo(({ content }: MarkdownProps) => {
 					code({ node, inline, className, children, ...props }) {
 						const match = /language-(\w+)/.exec(className || "");
 						return !inline ? (
-							<CodeBlock>
+							<CodeBlock lang={match ? match[1] : undefined}>
 								<SyntaxHighlighter
 									children={String(children).replace(/\n$/, "")}
 									language={match ? match[1] : undefined}
 									// @ts-expect-error types are broken
 									style={style}
+									showLineNumbers
 									{...props}
 								/>
 							</CodeBlock>

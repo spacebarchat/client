@@ -5,28 +5,36 @@ import React from "react";
 import styled from "styled-components";
 import Tooltip from "./Tooltip";
 
-/**
- * Copy codeblock contents button styles
- */
-const Copy = styled.a`
+const Actions = styled.div`
 	position: absolute;
 	top: 10px;
 	right: 10px;
+	display: flex;
+	gap: 5px;
 
-	color: var(--text);
-	cursor: pointer;
-	padding: 2px 6px;
-	font-weight: 600;
-	user-select: none;
-	display: inline-block;
-	background: var(--background-tertiary);
+	span {
+		font-size: 12px;
+		background: var(--background-tertiary);
+		padding: 2px 6px;
+	}
 
-	font-size: 10px;
-	text-transform: uppercase;
+	a {
+		color: var(--text);
+		cursor: pointer;
+		padding: 2px 6px;
+		font-weight: 600;
+		user-select: none;
+		display: inline-block;
+		background: var(--background-tertiary);
+
+		font-size: 10px;
+		text-transform: uppercase;
+	}
 `;
 
 interface Props {
 	class?: string;
+	lang?: string;
 	children: React.ReactNode;
 }
 
@@ -54,9 +62,12 @@ function CodeBlock(props: Props) {
 				position: "relative",
 			}}
 		>
-			<Tooltip title="Copy to Clipboard" placement="top">
-				<Copy onClick={onCopy}>{text}</Copy>
-			</Tooltip>
+			<Actions>
+				{props.lang && <span>{props.lang ?? "N/A"}</span>}
+				<Tooltip title="Copy to Clipboard" placement="top">
+					<a onClick={onCopy}>{text}</a>
+				</Tooltip>
+			</Actions>
 			{props.children}
 		</pre>
 	);
