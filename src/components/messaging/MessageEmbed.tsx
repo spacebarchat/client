@@ -162,20 +162,18 @@ function MessageEmbed({ embed }: Props) {
 						)}
 					</div>
 
-					<div>
-						{/* FIXME: broken with wide images */}
-						{(!largeMedia || embed.type === EmbedType.Rich) && embed.thumbnail && (
+					{(!largeMedia || embed.type === EmbedType.Rich) && embed.thumbnail && (
+						<div>
 							<EmbedMedia embed={embed} width={80} thumbnail />
-						)}
-					</div>
-				</div>
-
-				<div>
-					{/* FIXME: broken with wide images */}
-					{(largeMedia || embed.type === EmbedType.Rich) && (
-						<EmbedMedia embed={embed} height={height} width={width} />
+						</div>
 					)}
 				</div>
+
+				{(largeMedia || embed.type === EmbedType.Rich) && (
+					<div>
+						<EmbedMedia embed={embed} height={height} width={width} />
+					</div>
+				)}
 
 				{embed.footer && (
 					<div className={styles.embedFooter}>

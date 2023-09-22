@@ -15,7 +15,7 @@ iframe {
 	width: 100%;
 }
 
-.image {
+.embedImage {
 	cursor: pointer;
 }
 
@@ -155,6 +155,10 @@ iframe {
 .embedFieldValue {
 	font-weight: var(--font-weight-regular);
 	color: var(--text-secondary);
+}
+
+.embedThumbnail {
+	margin-left: 16px;
 }
 
 img.image {

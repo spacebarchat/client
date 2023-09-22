@@ -90,9 +90,10 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 		default: {
 			if (embed.video && !thumbnail) {
 				const url = embed.video.url;
+
 				return (
 					<video
-						className={styles.image}
+						className={styles.embedImage}
 						style={{ width, height }}
 						src={url}
 						loop={embed.type === EmbedType.GIFV}
@@ -103,9 +104,10 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 				);
 			} else if (embed.image && !thumbnail) {
 				const url = embed.image.url;
+
 				return (
 					<img
-						className={styles.image}
+						className={styles.embedImage}
 						src={url}
 						loading="lazy"
 						style={{ width: "100%", height: "100%" }}
@@ -117,9 +119,10 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 				);
 			} else if (embed.thumbnail) {
 				const url = embed.thumbnail.url;
+
 				return (
 					<img
-						className={styles.image}
+						className={thumbnail ? styles.embedThumbnail : styles.embedImage}
 						src={url}
 						loading="lazy"
 						style={{ width, height }}
