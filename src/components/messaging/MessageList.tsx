@@ -83,7 +83,9 @@ function MessageList({ guild, channel }: Props) {
 	}, [channel, messageGroups, setHasMore]);
 
 	const renderGroup = React.useCallback(
-		(group: MessageGroupType) => <MessageGroup key={group.messages[0].id} group={group} />,
+		(group: MessageGroupType) => (
+			<MessageGroup key={`messageGroup-${group.messages[group.messages.length - 1].id}`} group={group} />
+		),
 		[],
 	);
 
