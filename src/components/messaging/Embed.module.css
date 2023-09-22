@@ -2,6 +2,13 @@
 	margin: 0.2em 0;
 }
 
+.embedGap {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: 10px;
+}
+
 iframe {
 	border: none;
 	border-radius: 4px;

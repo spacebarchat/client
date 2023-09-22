@@ -92,9 +92,9 @@ function MessageEmbed({ embed }: Props) {
 				maxWidth: width + CONTAINER_PADDING,
 			}}
 		>
-			<div style={{ flex: 1, display: "flex", gap: 10, flexDirection: "column" }}>
-				<div>
-					<div>
+			<div className={styles.embedGap}>
+				<div style={{ display: "flex" }}>
+					<div className={styles.embedGap}>
 						{embed.type !== EmbedType.Rich && embed.provider && (
 							<span className={styles.embedProvider}>{embed.provider.name}</span>
 						)}
