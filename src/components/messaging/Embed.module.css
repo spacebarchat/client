@@ -77,6 +77,7 @@
 			font-weight: var(--font-weight-medium);
 			color: var(--text);
 			width: fit-content;
+			text-decoration: none;
 		}
 
 		.embedTitleLink {
@@ -97,8 +98,54 @@
 			width: fit-content;
 		}
 
-		.footer {
+		.embedFooter {
+			display: flex;
+			align-items: center;
+			width: fit-content;
+		}
+
+		.embedFooterIcon {
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			margin-right: 10px;
+			object-fit: contain;
+		}
+
+		.embedFooterText {
 			font-size: 12px;
+			font-weight: var(--font-weight-medium);
+			color: var(--text);
+			display: inline-block;
+			width: fit-content;
+		}
+
+		.embedFooterSeperator {
+			font-weight: var(--font-weight-medium);
+			display: inline-block;
+			margin: 0 5px;
+		}
+
+		.embedFields {
+			/* grid */
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			grid-template-rows: auto;
+			grid-gap: 10px;
+		}
+
+		.embedField {
+			font-size: 14px;
+		}
+
+		.embedFieldName {
+			font-weight: var(--font-weight-medium);
+			margin-bottom: 2px;
+		}
+
+		.embedFieldValue {
+			font-weight: var(--font-weight-regular);
+			color: var(--text-secondary);
 		}
 
 		img.image {

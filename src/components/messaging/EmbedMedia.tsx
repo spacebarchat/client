@@ -7,7 +7,7 @@ import styles from "./Embed.module.css";
 interface Props {
 	embed: APIEmbed;
 	width?: number;
-	height: number;
+	height?: number;
 	thumbnail?: boolean;
 }
 

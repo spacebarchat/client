@@ -11,9 +11,10 @@ import { MESSAGE_AREA_PADDING, MessageAreaWidthContext } from "./MessageList";
 
 const MAX_EMBED_WIDTH = 400;
 const MAX_EMBED_HEIGHT = 640;
+const THUMBNAIL_MAX_WIDTH = 80;
 const CONTAINER_PADDING = 24;
 const MAX_PREVIEW_SIZE = 150;
-const EMBEDDABLE_PROVIDERS = ["Spotify", "Bandcamp"];
+const EMBEDDABLE_PROVIDERS = ["Spotify" /*, "Bandcamp"*/];
 
 interface Props {
 	embed: APIEmbed;
@@ -93,7 +94,7 @@ function MessageEmbed({ embed }: Props) {
 		>
 			<div>
 				<div style={{ display: "flex" }}>
-					<div>
+					<div style={{ flex: 1, display: "flex", gap: 10, flexDirection: "column" }}>
 						{embed.type !== EmbedType.Rich && embed.provider && (
 							<span className={styles.embedProvider}>{embed.provider.name}</span>
 						)}
@@ -140,16 +141,64 @@ function MessageEmbed({ embed }: Props) {
 						)}
 
 						{embed.description && <div className={styles.embedDescription}>{embed.description}</div>}
+
+						{embed.fields && (
+							<div className={styles.embedFields}>
+								{embed.fields.map((field, i) => (
+									<div
+										key={i}
+										className={styles.embedField}
+										style={{
+											// inline = 1/7 for first, 7/14 for second
+											// non-inline = 1/14
+											gridColumn: field.inline ? (i % 2 === 0 ? "1 / 7" : "7 / 13") : "1 / 13",
+										}}
+									>
+										<div className={styles.embedFieldName}>{field.name}</div>
+										<div className={styles.embedFieldValue}>{field.value}</div>
+									</div>
+								))}
+							</div>
+						)}
 					</div>
 
+					<div>
+						{/* FIXME: broken with wide images */}
+						{(!largeMedia || embed.type === EmbedType.Rich) && embed.thumbnail && (
+							<EmbedMedia embed={embed} width={80} thumbnail />
+						)}
+					</div>
+				</div>
+
+				<div>
 					{/* FIXME: broken with wide images */}
-					{(!largeMedia || embed.type === EmbedType.Rich) && embed.thumbnail && (
-						<EmbedMedia embed={embed} height={100} thumbnail />
+					{(largeMedia || embed.type === EmbedType.Rich) && (
+						<EmbedMedia embed={embed} height={height} width={width} />
 					)}
 				</div>
 
-				{/* FIXME: broken with wide images */}
-				{(largeMedia || embed.type === EmbedType.Rich) && <EmbedMedia embed={embed} height={height} />}
+				{embed.footer && (
+					<div className={styles.embedFooter}>
+						{embed.footer.icon_url && (
+							<img
+								loading="lazy"
+								className={styles.embedFooterIcon}
+								src={embed.footer.icon_url}
+								draggable={false}
+								onError={(e) => (e.currentTarget.style.display = "none")}
+							/>
+						)}
+						<span className={styles.embedFooterText}>
+							{embed.footer.text}
+							{embed.timestamp && (
+								<>
+									<span className={styles.embedFooterSeperator}>•</span>
+									{new Date(embed.timestamp).toLocaleString(undefined)}
+								</>
+							)}
+						</span>
+					</div>
+				)}
 			</div>
 		</div>
 	);
