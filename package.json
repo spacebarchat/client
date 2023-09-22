@@ -32,6 +32,7 @@
 		"classnames": "^2.3.2",
 		"dayjs": "^1.11.9",
 		"framer-motion": "^10.16.4",
+		"marked-react": "^2.0.0",
 		"missing-native-js-functions": "^1.4.3",
 		"mobx": "^6.10.2",
 		"mobx-react-lite": "^3.4.3",

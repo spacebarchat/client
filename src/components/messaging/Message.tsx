@@ -1,8 +1,10 @@
 import { observer } from "mobx-react-lite";
-import { memo } from "react";
+import React, { memo } from "react";
+import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { MessageLike } from "../../stores/objects/Message";
 import { QueuedMessageStatus } from "../../stores/objects/QueuedMessage";
 import Avatar from "../Avatar";
+import { IContextMenuItem } from "../ContextMenuItem";
 import Markdown from "../markdown/MarkdownRenderer";
 import MessageAttachment from "./MessageAttachment";
 import MessageAuthor from "./MessageAuthor";
@@ -16,8 +18,34 @@ interface Props {
 }
 
 function Message({ message, header }: Props) {
+	const contextMenu = React.useContext(ContextMenuContext);
+	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
+		{
+			label: "Copy Message ID",
+			onClick: () => {
+				navigator.clipboard.writeText(message.id);
+			},
+			iconProps: {
+				icon: "mdiIdentifier",
+			},
+		},
+	]);
+
 	return (
-		<MessageBase header={header}>
+		<MessageBase
+			header={header}
+			onContextMenu={(e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				contextMenu.open({
+					position: {
+						x: e.pageX,
+						y: e.pageY,
+					},
+					items: contextMenuItems,
+				});
+			}}
+		>
 			<MessageInfo>
 				{header ? (
 					<Avatar key={message.author.id} user={message.author} size={40} />

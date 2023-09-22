@@ -1,12 +1,13 @@
+import { FormattingPatterns } from "@spacebarchat/spacebar-api-types/v9";
+import Marked, { ReactRenderer } from "marked-react";
 import React from "react";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import remarkGfm from "remark-gfm";
+import { materialDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import styled from "styled-components";
 import CodeBlock from "../Codeblock";
 import Link from "../Link";
+import Spoiler from "../Spoiler";
 import { MarkdownProps } from "./Markdown";
-import style from "./style";
 
 const Container = styled.div`
 	// remove the excessive left padding, and margin in lists
@@ -106,49 +107,47 @@ function sanitize(content: string) {
 	);
 }
 
+const customRenderer: Partial<ReactRenderer> = {
+	code: (content: string, lang: string) => (
+		<CodeBlock lang={lang}>
+			<SyntaxHighlighter
+				className="syntaxHighlighter"
+				children={content}
+				language={lang}
+				style={materialDark}
+				showLineNumbers={true}
+				showInlineLineNumbers={true}
+				PreTag="div"
+			/>
+		</CodeBlock>
+	),
+	codespan: (content: string) => <code className="inline">{content}</code>,
+	link: (href, text) => <Link href={href}>{text}</Link>,
+	text: (text: string) => {
+		const spoilerRe = /\|\|([\s\S]+?)\|\|/g;
+
+		if (spoilerRe.test(text)) {
+			// get content inside spoiler tags
+			const spoilerContent = text.match(spoilerRe)![0].slice(2, -2);
+			return <Spoiler content={spoilerContent} />;
+		}
+
+		if (FormattingPatterns.Timestamp.test(text)) {
+			return "timestamp baaaaby";
+		}
+
+		return text;
+	},
+};
+
 export default React.memo(({ content }: MarkdownProps) => {
 	const sanitizedContent = React.useMemo(() => sanitize(content), [content]);
 
 	return (
 		<Container>
-			<ReactMarkdown
-				remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
-				children={sanitizedContent}
-				// @ts-expect-error type issue
-				components={{
-					code({ node, inline, className, children, ...props }) {
-						const match = /language-(\w+)/.exec(className || "");
-						return !inline ? (
-							<CodeBlock lang={match ? match[1] : undefined}>
-								<SyntaxHighlighter
-									className="syntaxHighlighter"
-									children={String(children).replace(/\n$/, "")}
-									language={match ? match[1] : undefined}
-									// @ts-expect-error type issue
-									style={style}
-									showLineNumbers={true}
-									showInlineLineNumbers={true}
-									PreTag="div"
-								/>
-							</CodeBlock>
-						) : (
-							<code className="inline" {...props}>
-								{children}
-							</code>
-						);
-					},
-					a({ node, href, children, ...props }) {
-						return (
-							<Link href={href} target="_blank" rel="noopener noreferrer" {...props}>
-								{children}
-							</Link>
-						);
-					},
-					blockquote({ node, children }) {
-						return <blockquote>{children}</blockquote>;
-					},
-				}}
-			/>
+			<Marked breaks gfm openLinksInNewTab renderer={customRenderer}>
+				{sanitizedContent}
+			</Marked>
 		</Container>
 	);
 });
