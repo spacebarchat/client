@@ -94,13 +94,16 @@ export const MessageDetails = observer(({ message, position }: { message: Messag
 		if (message instanceof Message && message.edited_timestamp) {
 			return (
 				<div className="messageTimestampWrapper">
-					<Tooltip title={dayjs(message.timestamp).format("dddd, MMMM MM, h:mm A")}>
+					<Tooltip title={dayjs(message.timestamp).format("dddd, MMMM MM, h:mm A")} placement="top">
 						<time className="copyTime" dateTime={message.edited_timestamp.toISOString()}>
 							{dayjs(message.edited_timestamp).format("h:mm A")}
 						</time>
 					</Tooltip>
 					<span className="edited">
-						<Tooltip title={dayjs(message.edited_timestamp).format("dddd, MMMM MM, h:mm A")}>
+						<Tooltip
+							title={dayjs(message.edited_timestamp).format("dddd, MMMM MM, h:mm A")}
+							placement="top"
+						>
 							<span>(edited)</span>
 						</Tooltip>
 					</span>

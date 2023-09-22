@@ -9,12 +9,12 @@ const Container = styled.div`
 	transition: background-color 0.1s ease;
 
 	&:hover {
-		background-color: hsl(var(--background-tertiary-hsl) / 0.5);
+		background-color: hsl(var(--background-tertiary-hsl) / 0.3);
 		cursor: pointer;
 	}
 
 	&.visible {
-		background-color: hsl(var(--background-tertiary-hsl) / 0.5);
+		background-color: hsl(var(--background-tertiary-hsl) / 0.3);
 		cursor: pointer;
 
 		// target child span
@@ -30,17 +30,17 @@ const Text = styled.span`
 `;
 
 interface Props {
-	content: string;
+	children: React.ReactNode;
 }
 
-function Spoiler({ content }: Props) {
+function Spoiler({ children }: Props) {
 	const [shown, setShown] = React.useState(false);
 
 	const show = () => setShown(true);
 
 	return (
 		<Container className={shown ? "visible" : undefined}>
-			<Text onClick={show}>{content}</Text>
+			<Text onClick={show}>{children}</Text>
 		</Container>
 	);
 }

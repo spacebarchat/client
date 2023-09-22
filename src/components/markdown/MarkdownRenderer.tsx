@@ -8,6 +8,7 @@ import CodeBlock from "../Codeblock";
 import Link from "../Link";
 import Spoiler from "../Spoiler";
 import { MarkdownProps } from "./Markdown";
+import Timestamp from "./Timestamp";
 
 const Container = styled.div`
 	// remove the excessive left padding, and margin in lists
@@ -129,11 +130,13 @@ const customRenderer: Partial<ReactRenderer> = {
 		if (spoilerRe.test(text)) {
 			// get content inside spoiler tags
 			const spoilerContent = text.match(spoilerRe)![0].slice(2, -2);
-			return <Spoiler content={spoilerContent} />;
+			return <Spoiler children={spoilerContent} />;
 		}
 
-		if (FormattingPatterns.Timestamp.test(text)) {
-			return "timestamp baaaaby";
+		const match = text.match(FormattingPatterns.Timestamp);
+		if (match) {
+			const { timestamp, style } = match.groups || {};
+			return <Timestamp timestamp={timestamp} style={style} />;
 		}
 
 		return text;
