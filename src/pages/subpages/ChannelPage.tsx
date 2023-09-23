@@ -33,7 +33,6 @@ function ChannelPage() {
 	const { guildId, channelId } = useParams<{ guildId: string; channelId: string }>();
 
 	React.useEffect(() => {
-		console.log(guildId, channelId);
 		if (guildId && channelId) {
 			app.setActiveGuildId(guildId);
 			app.setActiveChannelId(channelId);
