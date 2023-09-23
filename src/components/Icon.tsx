@@ -2,8 +2,10 @@ import * as Icons from "@mdi/js";
 import { Icon as MdiIcon } from "@mdi/react";
 import { IconProps as IconBaseProps } from "@mdi/react/dist/IconProps";
 
+export type IconType = keyof typeof Icons;
+
 export interface IconProps extends Omit<IconBaseProps, "path"> {
-	icon: keyof typeof Icons;
+	icon: IconType;
 }
 
 function Icon(props: IconProps) {

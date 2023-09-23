@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Container = styled.div`
+const Container = styled.span`
 	background-color: hsl(var(--background-tertiary-hsl));
 	padding: 0 5px;
 	border-radius: 4px;

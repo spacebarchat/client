@@ -1,6 +1,7 @@
 import { FormattingPatterns } from "@spacebarchat/spacebar-api-types/v9";
 import Marked, { ReactRenderer } from "marked-react";
 import React from "react";
+import reactStringReplace from "react-string-replace";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import styled from "styled-components";
@@ -8,6 +9,7 @@ import CodeBlock from "../Codeblock";
 import Link from "../Link";
 import Spoiler from "../Spoiler";
 import { MarkdownProps } from "./Markdown";
+import Mention from "./Mention";
 import Timestamp from "./Timestamp";
 
 const Container = styled.div`
@@ -125,21 +127,39 @@ const customRenderer: Partial<ReactRenderer> = {
 	codespan: (content: string) => <code className="inline">{content}</code>,
 	link: (href, text) => <Link href={href}>{text}</Link>,
 	text: (text: string) => {
-		const spoilerRe = /\|\|([\s\S]+?)\|\|/g;
+		let replaced: string | React.ReactNode[] = text;
+		const SpoilerRegex = /\|\|(?<content>[\s\S]+?)\|\|/;
 
-		if (spoilerRe.test(text)) {
-			// get content inside spoiler tags
-			const spoilerContent = text.match(spoilerRe)![0].slice(2, -2);
-			return <Spoiler children={spoilerContent} />;
-		}
+		// replace the spoiler with the spoiler component
+		replaced = reactStringReplace(text, SpoilerRegex, (match, i) => {
+			return <Spoiler key={i} children={match} />;
+		});
 
-		const match = text.match(FormattingPatterns.Timestamp);
-		if (match) {
-			const { timestamp, style } = match.groups || {};
-			return <Timestamp timestamp={timestamp} style={style} />;
-		}
+		replaced = reactStringReplace(replaced, FormattingPatterns.DefaultStyledTimestamp, (match, i) => (
+			<Timestamp key={i} timestamp={match} />
+		));
 
-		return text;
+		replaced = reactStringReplace(replaced, /<t:-?(\d{1,13}:[tTdDfFR])>/, (match, i) => {
+			const parts = match.split(":");
+			const timestamp = parts[0];
+			const style = parts[1];
+
+			return <Timestamp key={i} timestamp={timestamp} style={style} />;
+		});
+
+		replaced = reactStringReplace(replaced, FormattingPatterns.Channel, (match, i) => (
+			<Mention key={i} type="channel" id={match} />
+		));
+
+		replaced = reactStringReplace(replaced, FormattingPatterns.User, (match, i) => (
+			<Mention key={i} type="user" id={match} />
+		));
+
+		replaced = reactStringReplace(replaced, FormattingPatterns.Role, (match, i) => (
+			<Mention key={i} type="role" id={match} />
+		));
+
+		return replaced;
 	},
 };
 

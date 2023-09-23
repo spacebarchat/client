@@ -12,7 +12,7 @@ const Container = styled.div`
 
 interface Props {
 	timestamp: string;
-	style: string;
+	style?: string;
 }
 
 function Timestamp({ timestamp, style }: Props) {
