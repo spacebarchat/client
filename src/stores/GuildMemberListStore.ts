@@ -56,7 +56,7 @@ export default class GuildMemberListStore {
 
 					for (const item of items) {
 						if ("group" in item) {
-							const role = this.guild.roles.get(item.group.id);
+							const role = this.app.roles.get(item.group.id);
 
 							listData.push({
 								title: `${(role?.name ?? item.group.id).toUpperCase()}`,

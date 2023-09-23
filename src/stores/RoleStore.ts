@@ -24,6 +24,10 @@ export default class RoleStore {
 		roles.forEach((role) => this.add(role));
 	}
 
+	getAll() {
+		return Array.from(this.roles.values());
+	}
+
 	@action
 	remove(id: Snowflake) {
 		this.roles.delete(id);

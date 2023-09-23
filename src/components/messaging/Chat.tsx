@@ -75,19 +75,19 @@ function Content(props: Props2) {
 /**
  * Main component for rendering channel messages
  */
-function Chat({ channel, guild, guildId }: Props) {
+function Chat() {
 	const app = useAppStore();
 	const logger = useLogger("Messages");
 
 	React.useEffect(() => {
-		if (!channel || !guild) return;
+		if (!app.activeChannel || !app.activeGuild || app.activeChannelId === "@me") return;
 
 		runInAction(() => {
-			app.gateway.onChannelOpen(guild.id, channel.id);
+			app.gateway.onChannelOpen(app.activeGuildId!, app.activeChannelId!);
 		});
-	}, [channel, guild]);
+	}, [app.activeChannel, app.activeGuild]);
 
-	if (guildId && guildId === "@me") {
+	if (app.activeGuildId && app.activeGuildId === "@me") {
 		return (
 			<WrapperTwo>
 				<span>Home Section Placeholder</span>
@@ -95,7 +95,7 @@ function Chat({ channel, guild, guildId }: Props) {
 		);
 	}
 
-	if (!guild || !channel) {
+	if (!app.activeGuild || !app.activeChannel) {
 		return (
 			<WrapperTwo>
 				<span
@@ -113,8 +113,8 @@ function Chat({ channel, guild, guildId }: Props) {
 
 	return (
 		<WrapperTwo>
-			<ChatHeader channel={channel} />
-			<Content channel={channel} guild={guild} />
+			<ChatHeader channel={app.activeChannel} />
+			<Content channel={app.activeChannel} guild={app.activeGuild} />
 		</WrapperTwo>
 	);
 }

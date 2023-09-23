@@ -1,17 +1,21 @@
-import type { APIUser } from "@spacebarchat/spacebar-api-types/v9";
+import type { APIUser, Snowflake } from "@spacebarchat/spacebar-api-types/v9";
 import { action, computed, makeAutoObservable, observable } from "mobx";
 import secureLocalStorage from "react-secure-storage";
 import Logger from "../utils/Logger";
 import REST from "../utils/REST";
 import AccountStore from "./AccountStore";
+import ChannelStore from "./ChannelStore";
 import ExperimentsStore from "./ExperimentsStore";
 import GatewayConnectionStore from "./GatewayConnectionStore";
 import GuildStore from "./GuildStore";
 import MessageQueue from "./MessageQueue";
 import PresenceStore from "./PresenceStore";
 import PrivateChannelStore from "./PrivateChannelStore";
+import RoleStore from "./RoleStore";
 import ThemeStore from "./ThemeStore";
 import UserStore from "./UserStore";
+import Channel from "./objects/Channel";
+import Guild from "./objects/Guild";
 
 // dev thing to force toggle branding on auth pages for testing.
 export const AUTH_NO_BRANDING = false;
@@ -33,13 +37,18 @@ export default class AppStore {
 	@observable account: AccountStore | null = null;
 	@observable gateway = new GatewayConnectionStore(this);
 	@observable guilds = new GuildStore(this);
-	// @observable channels = new ChannelStore(this);
+	@observable roles = new RoleStore(this);
+	@observable channels = new ChannelStore(this);
 	@observable users = new UserStore();
 	@observable privateChannels = new PrivateChannelStore(this);
 	@observable rest = new REST(this);
 	@observable experiments = new ExperimentsStore();
 	@observable presences = new PresenceStore(this);
 	@observable queue = new MessageQueue(this);
+	@observable activeGuild: Guild | null = null;
+	@observable activeGuildId: Snowflake | null | "@me" = "@me";
+	@observable activeChannel: Channel | null = null;
+	@observable activeChannelId: string | null = null;
 
 	constructor() {
 		makeAutoObservable(this);
@@ -106,6 +115,22 @@ export default class AppStore {
 	 */
 	get isReady() {
 		return !this.isAppLoading && this.isGatewayReady && this.isNetworkConnected;
+	}
+
+	@action
+	setActiveGuildId(id: Snowflake | null | "@me") {
+		this.activeGuildId = id;
+
+		// try to resolve the guild
+		this.activeGuild = (id ? this.guilds.get(id) : null) ?? null;
+	}
+
+	@action
+	setActiveChannelId(id: string | null) {
+		this.activeChannelId = id;
+
+		// try to resolve the channel
+		this.activeChannel = (id ? this.channels.get(id) : null) ?? null;
 	}
 }
 

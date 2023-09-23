@@ -21,11 +21,10 @@ export function EmptyChannelList() {
 }
 
 interface Props {
-	channelId?: string;
 	guild: Guild;
 }
 
-function ChannelList({ channelId, guild }: Props) {
+function ChannelList({ guild }: Props) {
 	const app = useAppStore();
 
 	const renderChannelListItem = React.useCallback(
@@ -33,7 +32,7 @@ function ChannelList({ channelId, guild }: Props) {
 			const permission = Permissions.getPermission(app.account!.id, guild, channel);
 			if (!permission.has("VIEW_CHANNEL")) return null;
 
-			const active = channelId === channel.id;
+			const active = app.activeChannelId === channel.id;
 			const isCategory = channel.type === ChannelType.GuildCategory;
 			return (
 				<ChannelListItem
@@ -45,10 +44,10 @@ function ChannelList({ channelId, guild }: Props) {
 				/>
 			);
 		},
-		[app.account, channelId, guild],
+		[app.account, app.activeChannelId, guild],
 	);
 
-	return <List>{guild.channels.mapped.map((channel) => renderChannelListItem(channel))}</List>;
+	return <List>{guild.channelsMapped.map((channel) => renderChannelListItem(channel))}</List>;
 }
 
 export default observer(ChannelList);

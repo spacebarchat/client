@@ -82,7 +82,7 @@ function GuildItem({ guild, active }: Props) {
 	]);
 
 	const doNavigate = () => {
-		const channel = guild.channels.mapped.find((x) => {
+		const channel = guild.channelsMapped.find((x) => {
 			const permission = Permissions.getPermission(app.account!.id, guild, x);
 			return permission.has("VIEW_CHANNEL") && x.type !== ChannelType.GuildCategory;
 		});

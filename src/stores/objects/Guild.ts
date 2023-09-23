@@ -1,15 +1,16 @@
 import type { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
-import type {
-	APIGuild,
-	GatewayGuild,
-	GatewayGuildMemberListUpdateDispatchData,
+import {
+	ChannelType,
+	type APIChannel,
+	type APIGuild,
+	type GatewayGuild,
+	type GatewayGuildMemberListUpdateDispatchData,
 } from "@spacebarchat/spacebar-api-types/v9";
-import { action, computed, makeObservable, observable } from "mobx";
+import { ObservableSet, action, computed, makeObservable, observable } from "mobx";
 import AppStore from "../AppStore";
-import ChannelStore from "../ChannelStore";
 import GuildMemberListStore from "../GuildMemberListStore";
 import GuildMemberStore from "../GuildMemberStore";
-import RoleStore from "../RoleStore";
+import Channel from "./Channel";
 
 export default class Guild {
 	private readonly app: AppStore;
@@ -19,13 +20,13 @@ export default class Guild {
 	@observable threads: unknown[];
 	@observable stickers: unknown[]; // TODO:
 	@observable stageInstances: unknown[]; // TODO:
-	@observable roles: RoleStore;
+	@observable roles_: ObservableSet<Snowflake>;
 	@observable memberCount: number;
 	@observable lazy: boolean;
 	@observable large: boolean;
 	@observable guildScheduledEvents: unknown[]; // TODO:
 	@observable emojis: unknown[]; // TODO:
-	@observable channels: ChannelStore;
+	@observable channels_: ObservableSet<Snowflake>;
 	@observable name: string;
 	@observable description: string | null = null;
 	@observable icon: string | null = null;
@@ -58,8 +59,8 @@ export default class Guild {
 
 	constructor(app: AppStore, data: GatewayGuild) {
 		this.app = app;
-		this.roles = new RoleStore(app);
-		this.channels = new ChannelStore(app);
+		this.roles_ = new ObservableSet();
+		this.channels_ = new ObservableSet();
 		this.members = new GuildMemberStore(app, this);
 
 		this.id = data.id;
@@ -100,11 +101,11 @@ export default class Guild {
 		this.nsfwLevel = data.properties.nsfw_level;
 		this.hubType = data.properties.hub_type;
 
-		this.roles.addAll(data.roles);
-		// FIXME: hack to prevent errors after guild creation where channels is undefined
-		if (data.channels) {
-			this.channels.addAll(data.channels);
-		}
+		app.roles.addAll(data.roles);
+		app.channels.addAll(data.channels);
+
+		data.roles.forEach((role) => this.roles_.add(role.id));
+		data.channels?.forEach((channel) => this.channels_.add(channel.id));
 
 		makeObservable(this);
 	}
@@ -139,5 +140,66 @@ export default class Guild {
 			.split(" ")
 			.map((word) => word.substring(0, 1))
 			.join("");
+	}
+
+	@computed
+	get channels() {
+		return this.app.channels.getAll().filter((channel) => this.channels_.has(channel.id));
+	}
+
+	@computed
+	get roles() {
+		return this.app.roles.getAll().filter((role) => this.roles_.has(role.id));
+	}
+
+	@action
+	addChannel(data: APIChannel) {
+		this.channels_.add(data.id);
+		this.app.channels.add(data);
+	}
+
+	@action
+	removeChannel(id: Snowflake) {
+		this.channels_.delete(id);
+		this.app.channels.remove(id);
+	}
+
+	@computed
+	get channelsMapped(): Channel[] {
+		const channels = this.channels;
+
+		const result: {
+			id: string;
+			children: Channel[];
+			category: Channel | null;
+		}[] = [];
+
+		const categories = this.app.channels.sortPosition(channels.filter((x) => x.type === ChannelType.GuildCategory));
+		const categorizedChannels = channels.filter((x) => x.type !== ChannelType.GuildCategory && x.parentId !== null);
+		const uncategorizedChannels = this.app.channels.sortPosition(
+			channels.filter((x) => x.type !== ChannelType.GuildCategory && x.parentId === null),
+		);
+
+		// for each category, add an object containing the category and its children
+		categories.forEach((category) => {
+			result.push({
+				id: category.id,
+				children: this.app.channels.sortPosition(categorizedChannels.filter((x) => x.parentId === category.id)),
+				category: category,
+			});
+		});
+
+		// add an object containing the remaining uncategorized channels
+		result.push({
+			id: "root",
+			children: uncategorizedChannels,
+			category: null,
+		});
+
+		// flatten down to a single array where the category is the first element followed by its children
+		return result
+			.map((x) => [x.category, ...x.children])
+			.flat()
+			.filter((x) => x !== null) as Channel[];
 	}
 }

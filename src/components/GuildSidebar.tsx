@@ -29,11 +29,7 @@ const Divider = styled.div`
 	background-color: var(--text-disabled);
 `;
 
-interface Props {
-	guildId: string;
-}
-
-function GuildSidebar({ guildId }: Props) {
+function GuildSidebar() {
 	const app = useAppStore();
 	const { openModal } = useModals();
 	const navigate = useNavigate();
@@ -53,13 +49,13 @@ function GuildSidebar({ guildId }: Props) {
 				}}
 				action={() => navigate("/channels/@me")}
 				margin={false}
-				active={guildId === "@me"}
+				active={app.activeGuildId === "@me"}
 			/>
 			<GuildSidebarListItem>
 				<Divider key="divider" />
 			</GuildSidebarListItem>
 			<div aria-label="Servers">
-				{app.guilds.getAll().map((guild) => renderGuildItem(guild, guild.id === guildId))}
+				{app.guilds.getAll().map((guild) => renderGuildItem(guild, guild.id === app.activeGuildId))}
 			</div>
 
 			<SidebarAction

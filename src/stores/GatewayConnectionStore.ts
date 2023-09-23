@@ -559,7 +559,7 @@ export default class GatewayConnectionStore {
 			this.logger.warn(`[ChannelCreate] Guild ${data.guild_id} not found for channel ${data.id}`);
 			return;
 		}
-		guild.channels.add(data);
+		guild.addChannel(data);
 	};
 
 	private onChannelDelete = (data: GatewayChannelDeleteDispatchData) => {
@@ -573,7 +573,7 @@ export default class GatewayConnectionStore {
 			this.logger.warn(`[ChannelDelete] Guild ${data.guild_id} not found for channel ${data.id}`);
 			return;
 		}
-		guild.channels.remove(data.id);
+		guild.removeChannel(data.id);
 	};
 
 	private onMessageCreate = (data: GatewayMessageCreateDispatchData) => {
@@ -582,7 +582,7 @@ export default class GatewayConnectionStore {
 			this.logger.warn(`[MessageCreate] Guild ${data.guild_id} not found for channel ${data.id}`);
 			return;
 		}
-		const channel = guild.channels.get(data.channel_id);
+		const channel = this.app.channels.get(data.channel_id);
 		if (!channel) {
 			this.logger.warn(`[MessageCreate] Channel ${data.channel_id} not found for message ${data.id}`);
 			return;
@@ -598,7 +598,7 @@ export default class GatewayConnectionStore {
 			this.logger.warn(`[MessageUpdate] Guild ${data.guild_id} not found for channel ${data.id}`);
 			return;
 		}
-		const channel = guild.channels.get(data.channel_id);
+		const channel = this.app.channels.get(data.channel_id);
 		if (!channel) {
 			this.logger.warn(`[MessageUpdate] Channel ${data.channel_id} not found for message ${data.id}`);
 			return;
@@ -613,7 +613,7 @@ export default class GatewayConnectionStore {
 			this.logger.warn(`[MessageDelete] Guild ${data.guild_id} not found for channel ${data.id}`);
 			return;
 		}
-		const channel = guild.channels.get(data.channel_id);
+		const channel = this.app.channels.get(data.channel_id);
 		if (!channel) {
 			this.logger.warn(`[MessageDelete] Channel ${data.channel_id} not found for message ${data.id}`);
 			return;
@@ -632,7 +632,7 @@ export default class GatewayConnectionStore {
 			this.logger.warn(`[TypingStart] Guild ${data.guild_id} not found for channel ${data.channel_id}`);
 			return;
 		}
-		const channel = guild.channels.get(data.channel_id);
+		const channel = this.app.channels.get(data.channel_id);
 		if (!channel) {
 			this.logger.warn(`[TypingStart] Channel ${data.channel_id} not found`);
 			return;

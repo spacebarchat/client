@@ -30,22 +30,25 @@ function ChannelPage() {
 	const contextMenu = React.useContext(ContextMenuContext);
 	const bannerContext = React.useContext(BannerContext);
 
-	const { guildId, channelId } = useParams<{
-		guildId: string;
-		channelId: string;
-	}>();
-	const guild = app.guilds.get(guildId!);
-	const channel = guild?.channels.get(channelId!);
+	const { guildId, channelId } = useParams<{ guildId: string; channelId: string }>();
+
+	React.useEffect(() => {
+		console.log(guildId, channelId);
+		if (guildId && channelId) {
+			app.setActiveGuildId(guildId);
+			app.setActiveChannelId(channelId);
+		}
+	}, [guildId, channelId]);
 
 	return (
 		<Container>
 			<Banner />
 			<Wrapper>
 				{contextMenu.visible && <ContextMenu {...contextMenu} />}
-				<GuildSidebar guildId={guildId!} />
-				<ChannelSidebar channel={channel} guild={guild} channelId={channelId} guildId={guildId} />
+				<GuildSidebar />
+				<ChannelSidebar />
 				<ErrorBoundary section="component">
-					<Chat channel={channel} guild={guild} channelId={channelId} guildId={guildId} />
+					<Chat />
 				</ErrorBoundary>
 			</Wrapper>
 		</Container>
