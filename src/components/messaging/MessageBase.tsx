@@ -73,6 +73,7 @@ export const MessageContent = styled.div`
 export const MessageContentText = styled.div<{ sending?: boolean; failed?: boolean }>`
 	${(props) => props.sending && "opacity: 0.5;"}
 	${(props) => props.failed && "color: var(--error);"}
+	margin: 2px 0;
 `;
 
 export const DetailBase = styled.div`
