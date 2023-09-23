@@ -33,6 +33,7 @@ function MessageAuthor({ message }: Props) {
 				if (role.position > prev.position) return role;
 				return prev;
 			}, member.roles[0]);
+			if (highestRole?.color === "#000000") return; // TODO: why the fk do we use black as the default color???
 			setColor(highestRole?.color);
 		}
 	}, [message]);
