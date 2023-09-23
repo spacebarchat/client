@@ -126,6 +126,14 @@ const customRenderer: Partial<ReactRenderer> = {
 	),
 	codespan: (content: string) => <code className="inline">{content}</code>,
 	link: (href, text) => <Link href={href}>{text}</Link>,
+	// prevent renderer from wrapping everything in a <p> tag
+	paragraph: (content: React.ReactNode[]) => {
+		if (content.length === 1 && Array.isArray(content[0]) && typeof content[0][0] === "string") {
+			return <p>{content}</p>;
+		}
+
+		return <>{content}</>;
+	},
 	text: (text: string) => {
 		let replaced: string | React.ReactNode[] = text;
 		const SpoilerRegex = /\|\|(?<content>[\s\S]+?)\|\|/;
