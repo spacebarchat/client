@@ -4,7 +4,6 @@ import React, { ComponentType } from "react";
 import styled from "styled-components";
 import { ContextMenuContext } from "../contexts/ContextMenuContext";
 import { useAppStore } from "../stores/AppStore";
-import Guild from "../stores/objects/Guild";
 import { IContextMenuItem } from "./ContextMenuItem";
 import Icon from "./Icon";
 import { SectionHeader } from "./SectionHeader";
@@ -27,12 +26,7 @@ const HeaderText = styled.header`
 	text-overflow: ellipsis;
 `;
 
-interface Props {
-	guild?: Guild;
-	guildId?: string;
-}
-
-function ChannelHeader({ guild, guildId }: Props) {
+function ChannelHeader() {
 	const app = useAppStore();
 	const contextMenu = React.useContext(ContextMenuContext);
 	const { openModal } = useModals();
@@ -40,14 +34,14 @@ function ChannelHeader({ guild, guildId }: Props) {
 	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([]);
 
 	React.useEffect(() => {
-		if (guild && guild.ownerId !== app.account?.id) {
+		if (app.activeGuild && app.activeGuild.ownerId !== app.account?.id) {
 			setContextMenuItems([
 				{
 					label: "Leave Server",
 					color: "var(--danger)",
 					onClick: async () => {
 						openModal(LeaveServerModal as ComponentType<StackedModalProps>, {
-							guild: guild!,
+							guild: app.activeGuild,
 						});
 					},
 					iconProps: {
@@ -63,7 +57,7 @@ function ChannelHeader({ guild, guildId }: Props) {
 		} else {
 			setContextMenuItems([]);
 		}
-	}, [guild]);
+	}, [app.activeGuild]);
 
 	function openMenu(e: React.MouseEvent<HTMLDivElement>) {
 		e.stopPropagation();
@@ -89,7 +83,7 @@ function ChannelHeader({ guild, guildId }: Props) {
 		});
 	}
 
-	if (guildId === "@me") {
+	if (app.activeGuildId === "@me") {
 		return (
 			<Wrapper
 				style={{
@@ -103,11 +97,12 @@ function ChannelHeader({ guild, guildId }: Props) {
 			</Wrapper>
 		);
 	}
-	if (!guild) return null;
+
+	if (!app.activeGuild) return null;
 
 	return (
 		<Wrapper onClick={openMenu}>
-			<HeaderText>{guild.name}</HeaderText>
+			<HeaderText>{app.activeGuild.name}</HeaderText>
 			<Icon icon="mdiChevronDown" size="20px" color="var(--text)" />
 		</Wrapper>
 	);
