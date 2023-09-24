@@ -69,7 +69,7 @@ function SidebarAction(props: Props) {
 					active={props.active}
 					useGreenColorScheme={props.useGreenColorScheme}
 				>
-					{props.image && <img {...props.image} />}
+					{props.image && <img {...props.image} loading="lazy" />}
 					{props.icon && (
 						<Icon
 							{...props.icon}

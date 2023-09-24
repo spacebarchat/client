@@ -31,6 +31,7 @@ function Avatar(props: Props) {
 				src={props.user?.avatarUrl ?? app.account?.avatarUrl}
 				width={props.size ?? 32}
 				height={props.size ?? 32}
+				loading="eager"
 			/>
 		</Wrapper>
 	);

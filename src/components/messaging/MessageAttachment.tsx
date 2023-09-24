@@ -47,7 +47,9 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 			maxWidth,
 			maxHeight,
 		);
-		finalElement = <Image src={url} alt={attachment.filename} width={scaledWidth} height={scaledHeight} />;
+		finalElement = (
+			<Image src={url} alt={attachment.filename} width={scaledWidth} height={scaledHeight} loading="lazy" />
+		);
 	} else if (details.isVideo && details.isEmbeddable) {
 		finalElement = <Video attachment={attachment} />;
 	} else if (details.isAudio && details.isEmbeddable) {

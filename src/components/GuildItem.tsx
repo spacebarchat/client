@@ -123,6 +123,7 @@ function GuildItem({ guild, active }: Props) {
 							src={REST.makeCDNUrl(CDNRoutes.guildIcon(guild.id, guild?.icon, ImageFormat.PNG))}
 							width={48}
 							height={48}
+							loading="lazy"
 						/>
 					) : (
 						<span
