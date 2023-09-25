@@ -12,10 +12,10 @@ function ChannelList() {
 	const app = useAppStore();
 
 	if (!app.activeGuild || !app.activeChannel) return null;
-	const { channelsSorted } = app.activeGuild;
+	const { channels } = app.activeGuild;
 
 	const rowRenderer = ({ index, key, style }: ListRowProps) => {
-		const item = channelsSorted[index];
+		const item = channels[index];
 
 		const active = app.activeChannelId === item.id;
 		const isCategory = item.type === ChannelType.GuildCategory;
@@ -38,9 +38,9 @@ function ChannelList() {
 					<List
 						height={height}
 						overscanRowCount={2}
-						rowCount={channelsSorted.length}
+						rowCount={channels.length}
 						rowHeight={({ index }) => {
-							const item = channelsSorted[index];
+							const item = channels[index];
 							if (item.type === ChannelType.GuildCategory) {
 								return 44;
 							}

@@ -1,6 +1,5 @@
 import type { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
 import {
-	ChannelType,
 	type APIChannel,
 	type APIGuild,
 	type GatewayGuild,
@@ -10,7 +9,6 @@ import { ObservableSet, action, computed, makeObservable, observable } from "mob
 import AppStore from "../AppStore";
 import GuildMemberListStore from "../GuildMemberListStore";
 import GuildMemberStore from "../GuildMemberStore";
-import Channel from "./Channel";
 
 export default class Guild {
 	private readonly app: AppStore;
@@ -148,42 +146,6 @@ export default class Guild {
 			.getAll()
 			.filter((channel) => this.channels_.has(channel.id))
 			.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
-	}
-
-	@computed
-	get channelsSorted() {
-		const channels = this.channels;
-		const categoryChannels = channels.filter((channel) => channel.type === ChannelType.GuildCategory);
-		const nonCatChannels = channels.filter((channel) => channel.type !== ChannelType.GuildCategory);
-
-		const categories: { id: Snowflake; parent: Channel; children: Channel[] }[] = [];
-		const uncategorized: Channel[] = [];
-
-		for (const channel of categoryChannels) {
-			categories.push({
-				id: channel.id,
-				parent: channel,
-				children: [],
-			});
-		}
-
-		for (const channel of nonCatChannels) {
-			if (channel.parentId) {
-				const category = categories.find((category) => category.id === channel.parentId);
-				if (category) {
-					category.children.push(channel);
-				}
-			} else {
-				uncategorized.push(channel);
-			}
-		}
-
-		const a = categories.map((x) => {
-			// return an array of parent, and children flattened
-			return [x.parent, ...x.children.sort((a, b) => (a.position ?? 0) - (b.position ?? 0))];
-		});
-
-		return [...a.flat(), ...uncategorized.sort((a, b) => (a.position ?? 0) - (b.position ?? 0))];
 	}
 
 	@computed
