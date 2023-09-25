@@ -70,7 +70,7 @@ function SystemMessage({ message, highlight }: Props) {
 
 	return (
 		<MessageBase header>
-			<MessageInfo click={false}>
+			<MessageInfo>
 				<Icon icon={icon.icon} size="16px" color={icon.color ?? "var(--text-secondary)"} />
 			</MessageInfo>
 			<SystemContent>{children}</SystemContent>

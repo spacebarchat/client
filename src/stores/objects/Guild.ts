@@ -144,7 +144,46 @@ export default class Guild {
 
 	@computed
 	get channels() {
-		return this.app.channels.getAll().filter((channel) => this.channels_.has(channel.id));
+		return this.app.channels
+			.getAll()
+			.filter((channel) => this.channels_.has(channel.id))
+			.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
+	}
+
+	@computed
+	get channelsSorted() {
+		const channels = this.channels;
+		const categoryChannels = channels.filter((channel) => channel.type === ChannelType.GuildCategory);
+		const nonCatChannels = channels.filter((channel) => channel.type !== ChannelType.GuildCategory);
+
+		const categories: { id: Snowflake; parent: Channel; children: Channel[] }[] = [];
+		const uncategorized: Channel[] = [];
+
+		for (const channel of categoryChannels) {
+			categories.push({
+				id: channel.id,
+				parent: channel,
+				children: [],
+			});
+		}
+
+		for (const channel of nonCatChannels) {
+			if (channel.parentId) {
+				const category = categories.find((category) => category.id === channel.parentId);
+				if (category) {
+					category.children.push(channel);
+				}
+			} else {
+				uncategorized.push(channel);
+			}
+		}
+
+		const a = categories.map((x) => {
+			// return an array of parent, and children flattened
+			return [x.parent, ...x.children.sort((a, b) => (a.position ?? 0) - (b.position ?? 0))];
+		});
+
+		return [...a.flat(), ...uncategorized.sort((a, b) => (a.position ?? 0) - (b.position ?? 0))];
 	}
 
 	@computed
@@ -154,52 +193,13 @@ export default class Guild {
 
 	@action
 	addChannel(data: APIChannel) {
-		this.channels_.add(data.id);
 		this.app.channels.add(data);
+		this.channels_.add(data.id);
 	}
 
 	@action
 	removeChannel(id: Snowflake) {
-		this.channels_.delete(id);
 		this.app.channels.remove(id);
-	}
-
-	@computed
-	get channelsMapped(): Channel[] {
-		const channels = this.channels;
-
-		const result: {
-			id: string;
-			children: Channel[];
-			category: Channel | null;
-		}[] = [];
-
-		const categories = this.app.channels.sortPosition(channels.filter((x) => x.type === ChannelType.GuildCategory));
-		const categorizedChannels = channels.filter((x) => x.type !== ChannelType.GuildCategory && x.parentId !== null);
-		const uncategorizedChannels = this.app.channels.sortPosition(
-			channels.filter((x) => x.type !== ChannelType.GuildCategory && x.parentId === null),
-		);
-
-		// for each category, add an object containing the category and its children
-		categories.forEach((category) => {
-			result.push({
-				id: category.id,
-				children: this.app.channels.sortPosition(categorizedChannels.filter((x) => x.parentId === category.id)),
-				category: category,
-			});
-		});
-
-		// add an object containing the remaining uncategorized channels
-		result.push({
-			id: "root",
-			children: uncategorizedChannels,
-			category: null,
-		});
-
-		// flatten down to a single array where the category is the first element followed by its children
-		return result
-			.map((x) => [x.category, ...x.children])
-			.flat()
-			.filter((x) => x !== null) as Channel[];
+		this.channels_.delete(id);
 	}
 }

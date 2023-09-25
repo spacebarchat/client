@@ -24,7 +24,7 @@ function ChannelSidebar() {
 		<Wrapper>
 			{/* TODO: replace with dm search if no guild */}
 			<ChannelHeader />
-			{app.activeGuild ? <ChannelList guild={app.activeGuild} /> : <EmptyChannelList />}
+			{app.activeGuild ? <ChannelList /> : <EmptyChannelList />}
 			<UserPanel />
 		</Wrapper>
 	);

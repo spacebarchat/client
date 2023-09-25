@@ -4,12 +4,11 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ContextMenuContext } from "../contexts/ContextMenuContext";
 import Channel from "../stores/objects/Channel";
-import Guild from "../stores/objects/Guild";
 import { IContextMenuItem } from "./ContextMenuItem";
 import Icon from "./Icon";
 import CreateInviteModal from "./modals/CreateInviteModal";
 
-const ListItem = styled.li<{ isCategory?: boolean }>`
+const ListItem = styled.div<{ isCategory?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};
 	cursor: pointer;
 `;
@@ -36,13 +35,12 @@ const Text = styled.span<{ isCategory?: boolean }>`
 `;
 
 interface Props {
-	guild: Guild;
 	channel: Channel;
 	isCategory: boolean;
 	active: boolean;
 }
 
-function ChannelListItem({ guild, channel, isCategory, active }: Props) {
+function ChannelListItem({ channel, isCategory, active }: Props) {
 	const navigate = useNavigate();
 
 	const { openModal } = useModals();
@@ -63,7 +61,7 @@ function ChannelListItem({ guild, channel, isCategory, active }: Props) {
 			index: 0,
 			label: "Create Channel Invite",
 			onClick: () => {
-				openModal(CreateInviteModal, { guild_id: guild.id, channel_id: channel.id });
+				openModal(CreateInviteModal, { guild_id: channel.guildId!, channel_id: channel.id });
 			},
 			iconProps: {
 				icon: "mdiAccountPlus",
@@ -79,7 +77,7 @@ function ChannelListItem({ guild, channel, isCategory, active }: Props) {
 				// prevent navigating to non-text channels
 				if (!channel.isTextChannel) return;
 
-				navigate(`/channels/${guild.id}/${channel.id}`);
+				navigate(`/channels/${channel.guildId}/${channel.id}`);
 			}}
 			onContextMenu={(e) => {
 				e.preventDefault();

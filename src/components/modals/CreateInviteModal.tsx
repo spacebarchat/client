@@ -131,7 +131,7 @@ function CreateInviteModal(props: InviteModalProps) {
 	const [inviteExpiresAt, setInviteExpiresAt] = React.useState<Date | null>(null);
 
 	const guild = app.guilds.get(props.guild_id);
-	const channel = props.channel_id ? guild?.channels.get(props.channel_id) : guild?.channels.getAll()[0];
+	const channel = props.channel_id ? guild?.channels.find((x) => x.id === props.channel_id) : guild?.channels[0];
 
 	if (!guild || !channel) {
 		closeModal();
