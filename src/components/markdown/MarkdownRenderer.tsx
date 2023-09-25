@@ -125,7 +125,11 @@ const customRenderer: Partial<ReactRenderer> = {
 		</CodeBlock>
 	),
 	codespan: (content: string) => <code className="inline">{content}</code>,
-	link: (href, text) => <Link href={href}>{text}</Link>,
+	link: (href, text) => (
+		<Link href={href} target="_blank" rel="noreferrer noopener">
+			{text}
+		</Link>
+	),
 	// prevent renderer from wrapping everything in a <p> tag
 	paragraph: (content: React.ReactNode[]) => {
 		if (
