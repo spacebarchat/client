@@ -54,6 +54,7 @@ export type ThemeVariables =
 	| "warningLight"
 	| "warningDark"
 	| "warningContrastText"
+	| "interactive"
 	| "scrollbarTrack"
 	| "scrollbarThumb";
 
@@ -123,6 +124,7 @@ export const ThemePresets: Record<string, Theme> = {
 		warningContrastText: "",
 		scrollbarTrack: "",
 		scrollbarThumb: "",
+		interactive: "",
 		font: font,
 	},
 	dark: {
@@ -165,6 +167,7 @@ export const ThemePresets: Record<string, Theme> = {
 		warningContrastText: "#040404",
 		scrollbarTrack: "#232323",
 		scrollbarThumb: "#171717",
+		interactive: "#424242",
 		font: font,
 	},
 };

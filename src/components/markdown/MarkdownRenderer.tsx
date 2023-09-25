@@ -22,11 +22,11 @@ const Container = styled.div`
 
 	blockquote {
 		margin: 2px 0;
-		padding: 5px;
-		background-color: var(--background-secondary);
+		padding: 5px 15px;
+		background-color: transparent;
 		width: fit-content;
 		border-radius: 4px;
-		border-inline-start: 4px solid var(--background-tertiary);
+		border-inline-start: 4px solid var(--interactive);
 	}
 
 	code.inline {
