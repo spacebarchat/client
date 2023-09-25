@@ -1,11 +1,17 @@
 import { ChannelType } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import { AutoSizer, List, ListRowProps } from "react-virtualized";
+import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 import ChannelListItem from "./ChannelListItem";
 
+const Container = styled.div`
+	display: flex;
+	flex: 1;
+`;
+
 export function EmptyChannelList() {
-	return <div></div>;
+	return <Container></Container>;
 }
 
 function ChannelList() {
@@ -27,12 +33,7 @@ function ChannelList() {
 	};
 
 	return (
-		<div
-			style={{
-				flex: "1 0 auto",
-				display: "flex",
-			}}
-		>
+		<Container>
 			<AutoSizer>
 				{({ width, height }) => (
 					<List
@@ -51,7 +52,7 @@ function ChannelList() {
 					/>
 				)}
 			</AutoSizer>
-		</div>
+		</Container>
 	);
 }
 
