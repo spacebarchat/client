@@ -121,13 +121,13 @@ export const MessageDetails = observer(({ message, position }: { message: Messag
 
 	return (
 		<DetailBase>
-			<Tooltip title={dayjs(message.timestamp).format("dddd, MMMM MM, h:mm A")}>
+			<Tooltip title={dayjs(message.timestamp).format("dddd, MMMM MM, h:mm A")} placement="top">
 				<time className="copyTime" dateTime={message.timestamp.toISOString()}>
 					{dayjs(message.timestamp).calendar(undefined, calendarStrings)}
 				</time>
 			</Tooltip>
 			{message instanceof Message && message.edited_timestamp && (
-				<Tooltip title={dayjs(message.edited_timestamp).format("dddd, MMMM MM, h:mm A")}>
+				<Tooltip title={dayjs(message.edited_timestamp).format("dddd, MMMM MM, h:mm A")} placement="top">
 					<span className="edited">(edited)</span>
 				</Tooltip>
 			)}
