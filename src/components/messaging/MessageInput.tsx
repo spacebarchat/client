@@ -93,6 +93,8 @@ function MessageInput({ channel }: Props) {
 
 		setContent("");
 		setAttachments([]);
+		// stop typing
+		debouncedStopTyping(true);
 
 		const nonce = Snowflake.generate();
 		const msg = app.queue.add({
