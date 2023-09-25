@@ -15,12 +15,10 @@ import SidebarPill, { PillType } from "./SidebarPill";
 import Tooltip from "./Tooltip";
 import CreateInviteModal from "./modals/CreateInviteModal";
 
-export const GuildSidebarListItem = styled.li`
+export const GuildSidebarListItem = styled.div`
 	position: relative;
-	margin: 0 0 8px;
 	display: flex;
 	justify-content: center;
-	width: 72px;
 	cursor: pointer;
 `;
 
@@ -81,6 +79,13 @@ function GuildItem({ guild, active }: Props) {
 		},
 	]);
 
+	React.useEffect(() => {
+		if (app.activeChannelId && app.activeGuildId === guild.id) return setPillType("active");
+		else if (isHovered) return setPillType("hover");
+		// TODO: unread
+		else return setPillType("none");
+	}, [app.activeGuildId, isHovered]);
+
 	const doNavigate = () => {
 		const channel = guild.channels.find((x) => {
 			const permission = Permissions.getPermission(app.account!.id, guild, x);
@@ -88,13 +93,6 @@ function GuildItem({ guild, active }: Props) {
 		});
 		navigate(`/channels/${guild.id}${channel ? `/${channel.id}` : ""}`);
 	};
-
-	React.useEffect(() => {
-		if (active) return setPillType("active");
-		else if (isHovered) return setPillType("hover");
-		// TODO: unread
-		else return setPillType("none");
-	}, [active, isHovered]);
 
 	return (
 		<GuildSidebarListItem

@@ -1,6 +1,6 @@
 import type { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
 import type { APIRole } from "@spacebarchat/spacebar-api-types/v9";
-import { action, makeObservable, observable, ObservableMap } from "mobx";
+import { action, computed, makeObservable, observable, ObservableMap } from "mobx";
 import AppStore from "./AppStore";
 import Role from "./objects/Role";
 
@@ -24,7 +24,8 @@ export default class RoleStore {
 		roles.forEach((role) => this.add(role));
 	}
 
-	getAll() {
+	@computed
+	get all() {
 		return Array.from(this.roles.values());
 	}
 

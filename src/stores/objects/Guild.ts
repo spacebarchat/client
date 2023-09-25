@@ -142,15 +142,14 @@ export default class Guild {
 
 	@computed
 	get channels() {
-		return this.app.channels
-			.getAll()
+		return this.app.channels.all
 			.filter((channel) => this.channels_.has(channel.id))
 			.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
 	}
 
 	@computed
 	get roles() {
-		return this.app.roles.getAll().filter((role) => this.roles_.has(role.id));
+		return this.app.roles.all.filter((role) => this.roles_.has(role.id));
 	}
 
 	@action

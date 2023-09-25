@@ -35,7 +35,7 @@ export default class GuildStore {
 	}
 
 	@computed
-	getAll() {
+	get all() {
 		return Array.from(this.guilds.values());
 	}
 

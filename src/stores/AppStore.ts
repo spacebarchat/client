@@ -46,9 +46,9 @@ export default class AppStore {
 	@observable presences = new PresenceStore(this);
 	@observable queue = new MessageQueue(this);
 	@observable activeGuild: Guild | null = null;
-	@observable activeGuildId: Snowflake | null | "@me" = "@me";
+	@observable activeGuildId: Snowflake | undefined | "@me" = "@me";
 	@observable activeChannel: Channel | null = null;
-	@observable activeChannelId: string | null = null;
+	@observable activeChannelId: string | undefined = undefined;
 
 	constructor() {
 		makeAutoObservable(this);
@@ -118,7 +118,7 @@ export default class AppStore {
 	}
 
 	@action
-	setActiveGuildId(id: Snowflake | null | "@me") {
+	setActiveGuildId(id: Snowflake | undefined | "@me") {
 		this.activeGuildId = id;
 
 		// try to resolve the guild
@@ -126,7 +126,7 @@ export default class AppStore {
 	}
 
 	@action
-	setActiveChannelId(id: string | null) {
+	setActiveChannelId(id: string | undefined) {
 		this.activeChannelId = id;
 
 		// try to resolve the channel

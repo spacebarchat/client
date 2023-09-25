@@ -25,7 +25,8 @@ export default class ChannelStore {
 		return this.channels.get(id);
 	}
 
-	getAll() {
+	@computed
+	get all() {
 		return Array.from(this.channels.values());
 	}
 
