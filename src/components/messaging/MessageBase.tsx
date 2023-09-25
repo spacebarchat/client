@@ -14,7 +14,7 @@ export default styled.div<Props>`
 	display: flex;
 	overflow: none;
 	flex-direction: row;
-	align-items: center;
+	${(props) => !props.header && "align-items: center;"}
 	${(props) => props.header && "margin-top: 20px;"}
 	${(props) => props.mention && "background-color: hsl(var(--warning-light-hsl)/0.1);"}
 
