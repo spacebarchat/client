@@ -19,6 +19,8 @@ import SwipeTest from "./pages/SwipeTest";
 import ChannelPage from "./pages/subpages/ChannelPage";
 import { useAppStore } from "./stores/AppStore";
 import { Globals } from "./utils/Globals";
+// @ts-expect-error no types
+import FPSStats from "react-fps-stats";
 
 function App() {
 	const app = useAppStore();
@@ -70,6 +72,7 @@ function App() {
 
 	return (
 		<ErrorBoundary section="app">
+			{app.fpsShown && <FPSStats />}
 			<Loader>
 				<Routes>
 					<Route index path="/" element={<AuthenticationGuard component={AppPage} />} />

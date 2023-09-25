@@ -31,6 +31,7 @@ export default class AppStore {
 	@observable isNetworkConnected = true;
 	@observable tokenLoaded = false;
 	@observable token: string | null = null;
+	@observable fpsShown: boolean = process.env.NODE_ENV === "development";
 
 	// stores
 	@observable theme: ThemeStore = new ThemeStore();
@@ -131,6 +132,11 @@ export default class AppStore {
 
 		// try to resolve the channel
 		this.activeChannel = (id ? this.channels.get(id) : null) ?? null;
+	}
+
+	@action
+	setFpsShown(value: boolean) {
+		this.fpsShown = value;
 	}
 }
 

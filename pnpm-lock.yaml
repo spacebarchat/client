@@ -119,6 +119,9 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
+  react-fps-stats:
+    specifier: ^0.3.1
+    version: 0.3.1(prop-types@15.8.1)(react@18.2.0)
   react-hook-form:
     specifier: ^7.46.1
     version: 7.46.1(react@18.2.0)
@@ -11232,6 +11235,16 @@ packages:
   /react-error-overlay@6.0.11:
     resolution: {integrity: sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==}
     dev: true
+
+  /react-fps-stats@0.3.1(prop-types@15.8.1)(react@18.2.0):
+    resolution: {integrity: sha512-SwjJd8eK6XQseXF0DjOv0PotfzSkIm9yhqsggEaJHhPgKq0P7QcL5xuLy/UlOFGjFbRMHRp1w8b8wJfoWNR3uA==}
+    peerDependencies:
+      prop-types: ^15.6.2
+      react: '>=16'
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
 
   /react-hook-form@7.46.1(react@18.2.0):
     resolution: {integrity: sha512-0GfI31LRTBd5tqbXMGXT1Rdsv3rnvy0FjEk8Gn9/4tp6+s77T7DPZuGEpBRXOauL+NhyGT5iaXzdIM2R6F/E+w==}

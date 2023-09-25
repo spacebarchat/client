@@ -1,4 +1,5 @@
 import { useModals } from "@mattjennings/react-modal-stack";
+import { FormControlLabel, FormGroup, Switch } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { useAppStore } from "../../stores/AppStore";
 import { GIT_BRANCH, GIT_REVISION, REPO_URL } from "../../utils/revison";
@@ -78,6 +79,18 @@ function SettingsModal(props: AnimatedModalProps) {
 									({GIT_BRANCH})
 								</Link>
 							</div>
+
+							<FormGroup>
+								<FormControlLabel
+									control={
+										<Switch
+											checked={app.fpsShown}
+											onChange={(e) => app.setFpsShown(e.target.checked)}
+										/>
+									}
+									label="Show FPS Graph"
+								/>
+							</FormGroup>
 						</ModalFullContent>
 					</ModalFullContentContainerContentWrapper>
 				</ModalFullContentWrapper>
