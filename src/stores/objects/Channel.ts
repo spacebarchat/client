@@ -176,7 +176,6 @@ export default class Channel {
 				opts = { ...opts, around };
 			}
 
-			this.hasFetchedInitialMessages = true;
 			this.logger.info(`Fetching initial messages for ${this.id}`);
 			app.rest
 				.get<RESTGetAPIChannelMessagesResult | APIError>(Routes.channelMessages(this.id), opts)
@@ -193,6 +192,7 @@ export default class Channel {
 						//   return aTimestamp.getTime() - bTimestamp.getTime();
 						// })
 					);
+					this.hasFetchedInitialMessages = true;
 					resolve(res.length);
 				})
 				.catch((err) => {
