@@ -95,9 +95,6 @@ export default class GatewayConnectionStore {
 	}
 
 	startReconnect() {
-		if (this.reconnectTimeout === 0) this.reconnectTimeout = RECONNECT_TIMEOUT;
-		else this.reconnectTimeout += RECONNECT_TIMEOUT;
-
 		setTimeout(() => {
 			this.logger.debug("Starting reconnect...");
 			this.connect(this.url!);
@@ -310,8 +307,13 @@ export default class GatewayConnectionStore {
 		// dont reconnect on "going away"
 		if (code === 1001) return;
 
+		if (this.reconnectTimeout === 0) this.reconnectTimeout = RECONNECT_TIMEOUT;
+		else this.reconnectTimeout += RECONNECT_TIMEOUT;
+
 		this.logger.debug(
-			`Websocket closed with code ${code}; Will reconnect in ${(RECONNECT_TIMEOUT / 1000).toFixed(2)} seconds.`,
+			`Websocket closed with code ${code}; Will reconnect in ${(this.reconnectTimeout / 1000).toFixed(
+				2,
+			)} seconds.`,
 		);
 
 		this.startReconnect();
