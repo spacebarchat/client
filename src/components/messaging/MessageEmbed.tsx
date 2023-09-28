@@ -29,7 +29,6 @@ function MessageEmbed({ embed }: Props) {
 
 		const limitingHeight = Math.min(MAX_EMBED_HEIGHT, h);
 
-		console.log(limitingWidth, limitingHeight);
 		// Calculate smallest possible WxH.
 		const width = Math.min(limitingWidth, limitingHeight * (w / h));
 
