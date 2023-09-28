@@ -58,7 +58,6 @@ function Video({ attachment }: Props) {
 			{!isErrored && (
 				<video
 					style={isLoading ? { display: "none" } : { borderRadius: "5px" }}
-					playsInline
 					controls
 					preload="metadata"
 					width={dimensions.width}

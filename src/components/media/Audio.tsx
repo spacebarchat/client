@@ -62,7 +62,9 @@ function Audio({ attachment }: Props) {
 					<AudioSize>{bytesToSize(attachment.size)}</AudioSize>
 				</AudioMetadata>
 			</AudioInfo>
-			<audio style={{ width: "100%", borderRadius: "3px" }} playsInline controls preload="metadata" src={url} />
+			<audio style={{ width: "100%", borderRadius: "3px" }} playsInline controls preload="metadata">
+				<source src={url} />
+			</audio>
 		</Container>
 	);
 }

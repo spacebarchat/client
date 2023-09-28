@@ -21,13 +21,15 @@ interface Props {
 }
 
 function MessageEmbed({ embed }: Props) {
-	const maxWidth = Math.min(React.useContext(MessageAreaWidthContext) - MESSAGE_AREA_PADDING, MAX_EMBED_WIDTH);
+	const c = React.useContext(MessageAreaWidthContext);
+	const maxWidth = Math.min(c - MESSAGE_AREA_PADDING, MAX_EMBED_WIDTH);
 
 	function calculateSize(w: number, h: number): { width: number; height: number } {
-		const limitingWidth = Math.min(maxWidth, w);
+		const limitingWidth = Math.min(w, maxWidth);
 
 		const limitingHeight = Math.min(MAX_EMBED_HEIGHT, h);
 
+		console.log(limitingWidth, limitingHeight);
 		// Calculate smallest possible WxH.
 		const width = Math.min(limitingWidth, limitingHeight * (w / h));
 
@@ -171,7 +173,7 @@ function MessageEmbed({ embed }: Props) {
 
 				{(largeMedia || embed.type === EmbedType.Rich) && (
 					<div>
-						<EmbedMedia embed={embed} height={height} width={width} />
+						<EmbedMedia embed={embed} width={width} />
 					</div>
 				)}
 
