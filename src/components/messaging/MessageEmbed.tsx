@@ -1,263 +1,206 @@
-import { APIAttachment, APIEmbed, EmbedType } from "@spacebarchat/spacebar-api-types/v9";
-import { ReactNode } from "react";
-import styled from "styled-components";
-import useLogger from "../../hooks/useLogger";
+// adapted from Revite
+// https://github.com/revoltchat/revite/blob/master/src/components/common/messaging/embed/Embed.tsx
+
+import { APIEmbed, EmbedType } from "@spacebarchat/spacebar-api-types/v9";
+import classNames from "classnames";
+import React from "react";
 import { decimalColorToHex } from "../../utils/Utils";
-import { IContextMenuItem } from "../ContextMenuItem";
-import MessageAttachment from "./MessageAttachment";
+import styles from "./Embed.module.css";
+import EmbedMedia from "./EmbedMedia";
+import { MESSAGE_AREA_PADDING, MessageAreaWidthContext } from "./MessageList";
 
-// TODO: move these to a constants file/configurable
-const DESCRIPTION_MAX_CHARS = 345;
-const TITLE_MAX_CHARS = 67;
+const MAX_EMBED_WIDTH = 400;
+const MAX_EMBED_HEIGHT = 640;
+const THUMBNAIL_MAX_WIDTH = 80;
+const CONTAINER_PADDING = 24;
+const MAX_PREVIEW_SIZE = 150;
+const EMBEDDABLE_PROVIDERS = ["Spotify" /*, "Bandcamp"*/];
 
-interface EmbedProps {
+interface Props {
 	embed: APIEmbed;
-	contextMenuItems: IContextMenuItem[];
 }
 
-const Container = styled.div`
-	max-width: fit-content;
-	background-color: var(--background-secondary);
-`;
+function MessageEmbed({ embed }: Props) {
+	const c = React.useContext(MessageAreaWidthContext);
+	const maxWidth = Math.min(c - MESSAGE_AREA_PADDING, MAX_EMBED_WIDTH);
 
-const Wrapper = styled.div<{ $color?: string }>`
-	max-width: 430px;
-	justify-self: start;
-	border-left-width: 4px;
-	border-left-style: solid;
-	border-left-color: ${(props) => props.$color ?? "var(--background-tertiary)"};
-	display: grid;
-	box-sizing: border-box;
-	border-radius: 4px;
-`;
+	function calculateSize(w: number, h: number): { width: number; height: number } {
+		const limitingWidth = Math.min(w, maxWidth);
 
-const EmbedWrapper = styled.div`
-	max-width: 500px;
-	overflow: hidden;
-	padding: 8px 16px 16px 12px;
-	display: grid;
-	grid-template-columns: auto;
-	grid-template-rows: auto;
-`;
+		const limitingHeight = Math.min(MAX_EMBED_HEIGHT, h);
 
-const EmbedProvider = styled.div`
-	font-size: 12px;
-	font-weight: var(--font-weight-regular);
-	grid-column: 1/1;
-	margin-top: 10px;
-`;
+		// Calculate smallest possible WxH.
+		const width = Math.min(limitingWidth, limitingHeight * (w / h));
 
-const EmbedAuthor = styled.div`
-	display: flex;
-	align-items: center;
-	grid-column: 1/1;
-	margin-top: 10px;
-`;
+		const height = Math.min(limitingHeight, limitingWidth * (h / w));
 
-const EmbedAuthorText = styled.div`
-	font-size: 14px;
-	font-weight: var(--font-weight-medium);
-`;
-
-const EmbedAuthorLink = styled.a`
-	font-size: 14px;
-	font-weight: var(--font-weight-medium);
-	text-decoration: none;
-	&:hover {
-		text-decoration: underline;
+		return { width, height };
 	}
-`;
 
-const EmbedTitle = styled.div`
-	font-size: 16px;
-	font-weight: var(--font-weight-regular);
-	grid-column: 1/1;
-	margin-top: 10px;
-`;
+	// Determine special embed size.
+	let mw, mh;
+	const largeMedia =
+		embed.provider?.name === "GitHub" ||
+		embed.provider?.name === "Streamable" ||
+		embed.type === EmbedType.Video ||
+		embed.type === EmbedType.GIFV ||
+		embed.type === EmbedType.Image;
 
-const EmbedTitleLink = styled.a`
-	color: var(--text-link);
-	text-decoration: none;
-	&:hover {
-		text-decoration: underline;
+	if (embed.image) {
+		mw = embed.image?.width ?? MAX_EMBED_WIDTH;
+		mh = embed.image?.height ?? 0;
+	} else if (embed.thumbnail) {
+		mw = embed.thumbnail.width ?? MAX_EMBED_WIDTH;
+		mh = embed.thumbnail.height ?? 0;
+	} else {
+		switch (embed.provider?.name) {
+			case "YouTube":
+			case "Bandcamp": {
+				mw = embed.video?.width ?? 1280;
+				mh = embed.video?.height ?? 720;
+				break;
+			}
+			case "Twitch":
+			case "Lightspeed":
+			case "Streamable": {
+				mw = 1280;
+				mh = 720;
+				break;
+			}
+			default: {
+				mw = MAX_EMBED_WIDTH;
+				mh = 1;
+			}
+		}
 	}
-`;
 
-const EmbedDescription = styled.div`
-	font-size: 14px;
-	font-weight: var(--font-weight-regular);
-	grid-column: 1/1;
-	margin-top: 10px;
-`;
-
-const EmbedImage = styled.div`
-	margin-top: 10px;
-	grid-column: 1/1;
-	border-radius: 4px;
-`;
-
-const EmbedImageContainer = styled.div`
-	flex-flow: row nowrap;
-	width: 100%;
-	height: 100%;
-	display: flex;
-`;
-
-const EmbedImageWrapper = styled.div`
-	max-width: 100%;
-	width: 100%;
-	overflow: hidden;
-	border-radius: 4px;
-`;
-
-const EmbedThumbnail = styled.div`
-	grid-row: 1/8;
-	grid-column: 2/2;
-	margin-left: 15px;
-	margin-top: 10px;
-	justify-self: end;
-`;
-
-const EmbedFooter = styled.div`
-	display: flex;
-	align-items: center;
-	grid-row: auto/auto;
-	grid-column: 1/1;
-	margin-top: 10px;
-`;
-
-const EmbedFooterImage = styled.img`
-	margin-right: 10px;
-	width: 20px;
-	height: 20px;
-	border-radius: 50%;
-`;
-
-const EmbedFooterText = styled.span`
-	font-size: 12px;
-	font-weight: var(--font-weight-regular);
-`;
-
-const YoutubeEmbed = styled.iframe`
-	outline: none;
-	border: none;
-	margin-top: 10px;
-	border-radius: 4px;
-`;
-
-const WrapImageContent = ({ children }: { children: ReactNode }) => {
-	return (
-		<EmbedImageContainer>
-			<EmbedImageWrapper>{children}</EmbedImageWrapper>
-		</EmbedImageContainer>
-	);
-};
-
-const createEmbedAttachment = (embed: APIEmbed, contextMenuItems: IContextMenuItem[], isYoutubeVideo = false) => {
-	const image = embed.thumbnail ?? embed.image;
-	if (!image) return null;
-
-	const url = new URL(embed.url!);
-
-	const fakeAttachment: APIAttachment = {
-		id: embed.url as string,
-		filename: url.pathname.split("/").reverse()[0],
-		size: -1,
-		width: image.width,
-		height: image.height,
-		proxy_url: image.proxy_url!,
-		url: image.url,
-		content_type: "image",
-	};
-
-	const props = {
-		contextMenuItems,
-		attachment: fakeAttachment,
-	};
-
-	if (isYoutubeVideo) return createYoutubeEmbed(embed);
-
-	if (embed.type === EmbedType.Link)
+	const { width, height } = calculateSize(mw, mh);
+	if (embed.type === EmbedType.GIFV || EMBEDDABLE_PROVIDERS.includes(embed.provider?.name ?? "")) {
 		return (
-			<EmbedThumbnail>
-				<WrapImageContent>
-					<MessageAttachment {...props} maxWidth={70} />
-				</WrapImageContent>
-			</EmbedThumbnail>
+			<EmbedMedia
+				embed={embed}
+				width={height * ((embed.image?.width ?? 0) / (embed.image?.height ?? 0))}
+				height={height}
+			/>
 		);
-	return (
-		<EmbedImage>
-			<WrapImageContent>
-				<MessageAttachment {...props} />
-			</WrapImageContent>
-		</EmbedImage>
-	);
-};
-
-const createYoutubeEmbed = (embed: APIEmbed) => {
-	return <YoutubeEmbed width={400} height={225} src={embed.video!.url} />;
-};
-
-export default function MessageEmbed({ embed, contextMenuItems }: EmbedProps) {
-	const logger = useLogger("MessageEmbed");
-
-	// seems like the server sometimes sends thumbnails with 0 width and height, and no urls
-	const isYoutubeVideo = embed.type == EmbedType.Video && embed.provider?.name == "YouTube";
-	const thumbnail = createEmbedAttachment(embed, contextMenuItems, isYoutubeVideo);
-
-	if (embed.type == EmbedType.Image) return thumbnail;
-
-	const titleTrimmed = embed.title
-		? embed.title?.length > TITLE_MAX_CHARS
-			? embed.title.substring(0, TITLE_MAX_CHARS) + "..."
-			: embed.title
-		: undefined;
-
-	const descriptionTrimmed = embed.description
-		? embed.description.length > DESCRIPTION_MAX_CHARS
-			? embed.description?.substring(0, DESCRIPTION_MAX_CHARS) + "..."
-			: embed.description
-		: undefined;
-
-	let title;
-	if (titleTrimmed) {
-		if (embed.url)
-			title = (
-				<EmbedTitleLink href={embed.url} rel="noreferrer noopener" target="_blank">
-					{titleTrimmed}
-				</EmbedTitleLink>
-			);
-		else title = titleTrimmed;
-	} else title = null;
-
-	let author;
-	if (embed.author)
-		if (embed.author.url)
-			author = (
-				<EmbedAuthorLink href={embed.author.url} rel="noreferrer noopener" target="_blank">
-					{embed.author.name}
-				</EmbedAuthorLink>
-			);
-		else author = <EmbedAuthorText>{embed.author.name}</EmbedAuthorText>;
-	else null;
+	}
 
 	return (
-		<Container>
-			<Wrapper $color={embed.color ? decimalColorToHex(embed.color) : undefined}>
-				<EmbedWrapper>
-					{embed.provider && <EmbedProvider>{embed.provider.name}</EmbedProvider>}
-					{author && <EmbedAuthor>{author}</EmbedAuthor>}
-					{title && <EmbedTitle>{title}</EmbedTitle>}
-					{descriptionTrimmed && !isYoutubeVideo && <EmbedDescription>{descriptionTrimmed}</EmbedDescription>}
-					{thumbnail}
-					{embed.footer && (
-						<EmbedFooter>
-							{embed.footer.icon_url && <EmbedFooterImage src={embed.footer.icon_url} />}
-							<EmbedFooterText>{embed.footer.text}</EmbedFooterText>
-						</EmbedFooter>
+		<div
+			className={classNames(styles.embed, styles.website)}
+			style={{
+				borderInlineStartColor: embed.color ? decimalColorToHex(embed.color) : "var(--background-tertiary)",
+				maxWidth: width + CONTAINER_PADDING,
+			}}
+		>
+			<div className={styles.embedGap}>
+				<div style={{ display: "flex" }}>
+					<div className={styles.embedGap}>
+						{embed.type !== EmbedType.Rich && embed.provider && (
+							<span className={styles.embedProvider}>{embed.provider.name}</span>
+						)}
+
+						{embed.author && (
+							<div className={styles.embedAuthor}>
+								{embed.author.icon_url && (
+									<img
+										loading="lazy"
+										className={styles.embedAuthorIcon}
+										src={embed.author.icon_url}
+										draggable={false}
+										onError={(e) => (e.currentTarget.style.display = "none")}
+									/>
+								)}
+								{embed.author.url ? (
+									<a
+										href={embed.url}
+										target={"_blank"}
+										className={classNames(styles.embedAuthorName, styles.embedAuthorNameLink)}
+									>
+										{embed.author.name}
+									</a>
+								) : (
+									<span className={styles.embedAuthorName}>{embed.author.name}</span>
+								)}
+							</div>
+						)}
+
+						{embed.title && (
+							<>
+								{embed.url ? (
+									<a
+										href={embed.url}
+										target={"_blank"}
+										className={classNames(styles.embedTitle, styles.embedTitleLink)}
+									>
+										{embed.title}
+									</a>
+								) : (
+									<span className={styles.embedTitle}>{embed.title}</span>
+								)}
+							</>
+						)}
+
+						{embed.description && <div className={styles.embedDescription}>{embed.description}</div>}
+
+						{embed.fields && (
+							<div className={styles.embedFields}>
+								{embed.fields.map((field, i) => (
+									<div
+										key={i}
+										className={styles.embedField}
+										style={{
+											// inline = 1/7 for first, 7/14 for second
+											// non-inline = 1/14
+											gridColumn: field.inline ? (i % 2 === 0 ? "1 / 7" : "7 / 13") : "1 / 13",
+										}}
+									>
+										<div className={styles.embedFieldName}>{field.name}</div>
+										<div className={styles.embedFieldValue}>{field.value}</div>
+									</div>
+								))}
+							</div>
+						)}
+					</div>
+
+					{(!largeMedia || embed.type === EmbedType.Rich) && embed.thumbnail && (
+						<div>
+							<EmbedMedia embed={embed} width={80} thumbnail />
+						</div>
 					)}
-				</EmbedWrapper>
-			</Wrapper>
-		</Container>
+				</div>
+
+				{(largeMedia || embed.type === EmbedType.Rich) && (
+					<div>
+						<EmbedMedia embed={embed} width={width} />
+					</div>
+				)}
+
+				{embed.footer && (
+					<div className={styles.embedFooter}>
+						{embed.footer.icon_url && (
+							<img
+								loading="lazy"
+								className={styles.embedFooterIcon}
+								src={embed.footer.icon_url}
+								draggable={false}
+								onError={(e) => (e.currentTarget.style.display = "none")}
+							/>
+						)}
+						<span className={styles.embedFooterText}>
+							{embed.footer.text}
+							{embed.timestamp && (
+								<>
+									<span className={styles.embedFooterSeperator}>•</span>
+									{new Date(embed.timestamp).toLocaleString(undefined)}
+								</>
+							)}
+						</span>
+					</div>
+				)}
+			</div>
+		</div>
 	);
 }
+
+export default MessageEmbed;

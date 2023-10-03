@@ -8,12 +8,12 @@ import { calculateImageRatio, calculateScaledDimensions } from "../../utils/Mess
 import { getFileDetails } from "../../utils/Utils";
 import { IContextMenuItem } from "../ContextMenuItem";
 import Audio from "../media/Audio";
+import File from "../media/File";
 import Video from "../media/Video";
 import AttachmentPreviewModal from "../modals/AttachmentPreviewModal";
 
 const Attachment = styled.div<{ withPointer?: boolean }>`
 	cursor: ${(props) => (props.withPointer ? "pointer" : "default")};
-	width: fit-content;
 	padding: 2px 0;
 `;
 
@@ -23,7 +23,7 @@ const Image = styled.img`
 
 interface AttachmentProps {
 	attachment: APIAttachment;
-	contextMenuItems: IContextMenuItem[];
+	contextMenuItems?: IContextMenuItem[];
 	maxWidth?: number;
 	maxHeight?: number;
 }
@@ -47,13 +47,15 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 			maxWidth,
 			maxHeight,
 		);
-		finalElement = <Image src={url} alt={attachment.filename} width={scaledWidth} height={scaledHeight} />;
+		finalElement = (
+			<Image src={url} alt={attachment.filename} width={scaledWidth} height={scaledHeight} loading="lazy" />
+		);
 	} else if (details.isVideo && details.isEmbeddable) {
 		finalElement = <Video attachment={attachment} />;
 	} else if (details.isAudio && details.isEmbeddable) {
 		finalElement = <Audio attachment={attachment} />;
 	} else {
-		logger.warn(`Unknown attachment type: ${attachment.content_type}`);
+		finalElement = <File attachment={attachment} />;
 	}
 
 	return (
@@ -70,7 +72,7 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 						y: e.pageY,
 					},
 					items: [
-						...contextMenuItems,
+						...(contextMenuItems ?? []),
 						{
 							label: "Copy Attachment URL",
 							onClick: () => {

@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { createGlobalStyle } from "styled-components";
 import { useAppStore } from "../stores/AppStore";
+import { rgbToHsl } from "../utils/Utils";
 
 const font: ThemeFont["font"] = {
 	weight: {
@@ -12,6 +13,7 @@ const font: ThemeFont["font"] = {
 		black: 900,
 	},
 	family: "Roboto, Arial, Helvetica, sans-serif",
+	familyCode: '"Roboto Mono", monospace',
 };
 
 export type ThemeVariables =
@@ -52,6 +54,7 @@ export type ThemeVariables =
 	| "warningLight"
 	| "warningDark"
 	| "warningContrastText"
+	| "interactive"
 	| "scrollbarTrack"
 	| "scrollbarThumb";
 
@@ -70,6 +73,7 @@ export type ThemeFont = {
 			black?: number;
 		};
 		family: string;
+		familyCode: string;
 	};
 };
 
@@ -120,6 +124,7 @@ export const ThemePresets: Record<string, Theme> = {
 		warningContrastText: "",
 		scrollbarTrack: "",
 		scrollbarThumb: "",
+		interactive: "",
 		font: font,
 	},
 	dark: {
@@ -162,6 +167,7 @@ export const ThemePresets: Record<string, Theme> = {
 		warningContrastText: "#040404",
 		scrollbarTrack: "#232323",
 		scrollbarThumb: "#171717",
+		interactive: "#424242",
 		font: font,
 	},
 };
@@ -201,7 +207,9 @@ export const generateVariables = (theme: Theme) => {
 				const r = parseInt(colour.substring(1, 3), 16);
 				const g = parseInt(colour.substring(3, 5), 16);
 				const b = parseInt(colour.substring(5, 7), 16);
-				return `--${toDashed(key)}: ${theme[key]}; --${toDashed(key)}-rgb: rgb(${r}, ${g}, ${b});`;
+				return `--${toDashed(key)}: ${theme[key]}; --${toDashed(key)}-rgb: rgb(${r}, ${g}, ${b}); --${toDashed(
+					key,
+				)}-hsl: ${rgbToHsl(r, g, b)};`;
 			} catch {
 				if (typeof theme[key] === "object") {
 					return objectToCSSVariables(theme[key], key);

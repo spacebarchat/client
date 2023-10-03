@@ -1,7 +1,8 @@
+import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import { MessageGroup as MessageGroupType } from "../../stores/MessageStore";
-import { QueuedMessageStatus } from "../../stores/objects/QueuedMessage";
 import Message from "./Message";
+import SystemMessage from "./SystemMessage";
 
 interface Props {
 	group: MessageGroupType;
@@ -12,18 +13,13 @@ interface Props {
  */
 function MessageGroup({ group }: Props) {
 	const { messages } = group;
+
 	return (
 		<>
 			{messages.map((message, index) => {
-				return (
-					<Message
-						key={message.id}
-						message={message}
-						isHeader={index === messages.length - 1}
-						isSending={"status" in message && message.status === QueuedMessageStatus.SENDING}
-						isFailed={"status" in message && message.status === QueuedMessageStatus.FAILED}
-					/>
-				);
+				if (message.type === MessageType.Default || message.type === MessageType.Reply) {
+					return <Message key={message.id} message={message} header={index === messages.length - 1} />;
+				} else return <SystemMessage key={message.id} message={message} />;
 			})}
 		</>
 	);

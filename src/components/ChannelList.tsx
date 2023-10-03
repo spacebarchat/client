@@ -1,54 +1,59 @@
 import { ChannelType } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import { AutoSizer, List, ListRowProps } from "react-virtualized";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
-import Channel from "../stores/objects/Channel";
-import Guild from "../stores/objects/Guild";
-import { Permissions } from "../utils/Permissions";
 import ChannelListItem from "./ChannelListItem";
 
-const List = styled.div`
+const Container = styled.div`
 	display: flex;
-	flex: 1 1 auto;
-	flex-direction: column;
-	list-style: none;
-	margin: 0;
+	flex: 1;
 `;
 
 export function EmptyChannelList() {
-	return <List></List>;
+	return <Container></Container>;
 }
 
-interface Props {
-	channelId?: string;
-	guild: Guild;
-}
-
-function ChannelList({ channelId, guild }: Props) {
+function ChannelList() {
 	const app = useAppStore();
 
-	const renderChannelListItem = React.useCallback(
-		(channel: Channel) => {
-			const permission = Permissions.getPermission(app.account!.id, guild, channel);
-			if (!permission.has("VIEW_CHANNEL")) return null;
+	if (!app.activeGuild || !app.activeChannel) return null;
+	const { channels } = app.activeGuild;
 
-			const active = channelId === channel.id;
-			const isCategory = channel.type === ChannelType.GuildCategory;
-			return (
-				<ChannelListItem
-					key={channel.id}
-					guild={guild}
-					channel={channel}
-					isCategory={isCategory}
-					active={active}
-				/>
-			);
-		},
-		[app.account, channelId, guild],
+	const rowRenderer = ({ index, key, style }: ListRowProps) => {
+		const item = channels[index];
+
+		const active = app.activeChannelId === item.id;
+		const isCategory = item.type === ChannelType.GuildCategory;
+		return (
+			<div style={style}>
+				<ChannelListItem key={key} isCategory={isCategory} active={active} channel={item} />
+			</div>
+		);
+	};
+
+	return (
+		<Container>
+			<AutoSizer>
+				{({ width, height }) => (
+					<List
+						height={height}
+						overscanRowCount={2}
+						rowCount={channels.length}
+						rowHeight={({ index }) => {
+							const item = channels[index];
+							if (item.type === ChannelType.GuildCategory) {
+								return 44;
+							}
+							return 33;
+						}}
+						rowRenderer={rowRenderer}
+						width={width}
+					/>
+				)}
+			</AutoSizer>
+		</Container>
 	);
-
-	return <List>{guild.channels.mapped.map((channel) => renderChannelListItem(channel))}</List>;
 }
 
 export default observer(ChannelList);

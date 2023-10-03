@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
-import Channel from "../stores/objects/Channel";
-import Guild from "../stores/objects/Guild";
+import { useAppStore } from "../stores/AppStore";
 import ChannelHeader from "./ChannelHeader";
 import ChannelList, { EmptyChannelList } from "./ChannelList";
 import Container from "./Container";
@@ -18,19 +17,14 @@ const Wrapper = styled(Container)`
 	}
 `;
 
-interface Props {
-	channel?: Channel;
-	guild?: Guild;
-	guildId?: string;
-	channelId?: string;
-}
+function ChannelSidebar() {
+	const app = useAppStore();
 
-function ChannelSidebar({ guild, channelId, guildId }: Props) {
 	return (
 		<Wrapper>
 			{/* TODO: replace with dm search if no guild */}
-			<ChannelHeader guild={guild} guildId={guildId} />
-			{guild ? <ChannelList channelId={channelId} guild={guild} /> : <EmptyChannelList />}
+			<ChannelHeader />
+			{app.activeGuild ? <ChannelList /> : <EmptyChannelList />}
 			<UserPanel />
 		</Wrapper>
 	);

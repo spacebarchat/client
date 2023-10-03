@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
+import { Fragment } from "react";
 import { PulseLoader } from "react-spinners";
 import styled from "styled-components";
-import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 
 const Container = styled.div`
@@ -41,8 +41,6 @@ interface Props {
 }
 
 function TypingIndicator({ channel }: Props) {
-	const app = useAppStore();
-
 	if (channel.typingUsers.length > 0) {
 		channel.typingUsers.sort((a, b) => a.username.toUpperCase().localeCompare(b.username.toUpperCase()));
 
@@ -50,18 +48,24 @@ function TypingIndicator({ channel }: Props) {
 		if (channel.typingUsers.length >= 5) {
 			text = <TypingText>Several people are typing...</TypingText>;
 		} else if (channel.typingUsers.length > 1) {
-			const userlist = channel.typingUsers.map((x) => <Bold>{x.username}</Bold>);
+			const userlist = channel.typingUsers.map((x) => x.username);
 			const user = userlist.pop();
 
 			text = (
 				<TypingText>
-					{userlist.join(", ")} and <Bold>{user}</Bold> are typing...
+					{userlist.map((x, i) => (
+						<Fragment key={i}>
+							<Bold>{x}</Bold>
+							{i !== userlist.length - 1 ? ", " : ""}
+						</Fragment>
+					))}{" "}
+					and <Bold>{user}</Bold> are typing...
 				</TypingText>
 			);
 		} else {
 			text = (
 				<TypingText>
-					<Bold>{channel.typingUsers[0].username} is typing...</Bold>
+					<Bold>{channel.typingUsers[0].username}</Bold> is typing...
 				</TypingText>
 			);
 		}

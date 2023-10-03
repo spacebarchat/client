@@ -21,7 +21,7 @@ export default class UserStore {
 	}
 
 	@computed
-	getAll() {
+	get all() {
 		return Array.from(this.users.values());
 	}
 

@@ -1,4 +1,5 @@
 import { Navigate } from "react-router-dom";
+import { LoadingSuspense } from "../../pages/LoadingPage";
 import { useAppStore } from "../../stores/AppStore";
 
 interface Props {
@@ -13,5 +14,9 @@ export const AuthenticationGuard = ({ component }: Props) => {
 	}
 
 	const Component = component;
-	return <Component />;
+	return (
+		<LoadingSuspense>
+			<Component />
+		</LoadingSuspense>
+	);
 };

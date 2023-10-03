@@ -95,9 +95,6 @@ export default class GatewayConnectionStore {
 	}
 
 	startReconnect() {
-		if (this.reconnectTimeout === 0) this.reconnectTimeout = RECONNECT_TIMEOUT;
-		else this.reconnectTimeout += RECONNECT_TIMEOUT;
-
 		setTimeout(() => {
 			this.logger.debug("Starting reconnect...");
 			this.connect(this.url!);
@@ -310,8 +307,13 @@ export default class GatewayConnectionStore {
 		// dont reconnect on "going away"
 		if (code === 1001) return;
 
+		if (this.reconnectTimeout === 0) this.reconnectTimeout = RECONNECT_TIMEOUT;
+		else this.reconnectTimeout += RECONNECT_TIMEOUT;
+
 		this.logger.debug(
-			`Websocket closed with code ${code}; Will reconnect in ${(RECONNECT_TIMEOUT / 1000).toFixed(2)} seconds.`,
+			`Websocket closed with code ${code}; Will reconnect in ${(this.reconnectTimeout / 1000).toFixed(
+				2,
+			)} seconds.`,
 		);
 
 		this.startReconnect();
@@ -559,7 +561,7 @@ export default class GatewayConnectionStore {
 			this.logger.warn(`[ChannelCreate] Guild ${data.guild_id} not found for channel ${data.id}`);
 			return;
 		}
-		guild.channels.add(data);
+		guild.addChannel(data);
 	};
 
 	private onChannelDelete = (data: GatewayChannelDeleteDispatchData) => {
@@ -573,7 +575,7 @@ export default class GatewayConnectionStore {
 			this.logger.warn(`[ChannelDelete] Guild ${data.guild_id} not found for channel ${data.id}`);
 			return;
 		}
-		guild.channels.remove(data.id);
+		guild.removeChannel(data.id);
 	};
 
 	private onMessageCreate = (data: GatewayMessageCreateDispatchData) => {
@@ -582,7 +584,7 @@ export default class GatewayConnectionStore {
 			this.logger.warn(`[MessageCreate] Guild ${data.guild_id} not found for channel ${data.id}`);
 			return;
 		}
-		const channel = guild.channels.get(data.channel_id);
+		const channel = this.app.channels.get(data.channel_id);
 		if (!channel) {
 			this.logger.warn(`[MessageCreate] Channel ${data.channel_id} not found for message ${data.id}`);
 			return;
@@ -598,7 +600,7 @@ export default class GatewayConnectionStore {
 			this.logger.warn(`[MessageUpdate] Guild ${data.guild_id} not found for channel ${data.id}`);
 			return;
 		}
-		const channel = guild.channels.get(data.channel_id);
+		const channel = this.app.channels.get(data.channel_id);
 		if (!channel) {
 			this.logger.warn(`[MessageUpdate] Channel ${data.channel_id} not found for message ${data.id}`);
 			return;
@@ -613,7 +615,7 @@ export default class GatewayConnectionStore {
 			this.logger.warn(`[MessageDelete] Guild ${data.guild_id} not found for channel ${data.id}`);
 			return;
 		}
-		const channel = guild.channels.get(data.channel_id);
+		const channel = this.app.channels.get(data.channel_id);
 		if (!channel) {
 			this.logger.warn(`[MessageDelete] Channel ${data.channel_id} not found for message ${data.id}`);
 			return;
@@ -632,7 +634,7 @@ export default class GatewayConnectionStore {
 			this.logger.warn(`[TypingStart] Guild ${data.guild_id} not found for channel ${data.channel_id}`);
 			return;
 		}
-		const channel = guild.channels.get(data.channel_id);
+		const channel = this.app.channels.get(data.channel_id);
 		if (!channel) {
 			this.logger.warn(`[TypingStart] Channel ${data.channel_id} not found`);
 			return;

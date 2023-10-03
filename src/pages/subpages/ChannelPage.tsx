@@ -6,6 +6,7 @@ import Banner from "../../components/Banner";
 import ChannelSidebar from "../../components/ChannelSidebar";
 import ContainerComponent from "../../components/Container";
 import ContextMenu from "../../components/ContextMenu";
+import ErrorBoundary from "../../components/ErrorBoundary";
 import GuildSidebar from "../../components/GuildSidebar";
 import Chat from "../../components/messaging/Chat";
 import { BannerContext } from "../../contexts/BannerContext";
@@ -29,21 +30,23 @@ function ChannelPage() {
 	const contextMenu = React.useContext(ContextMenuContext);
 	const bannerContext = React.useContext(BannerContext);
 
-	const { guildId, channelId } = useParams<{
-		guildId: string;
-		channelId: string;
-	}>();
-	const guild = app.guilds.get(guildId!);
-	const channel = guild?.channels.get(channelId!);
+	const { guildId, channelId } = useParams<{ guildId: string; channelId: string }>();
+
+	React.useEffect(() => {
+		app.setActiveGuildId(guildId);
+		app.setActiveChannelId(channelId);
+	}, [guildId, channelId]);
 
 	return (
 		<Container>
 			<Banner />
 			<Wrapper>
 				{contextMenu.visible && <ContextMenu {...contextMenu} />}
-				<GuildSidebar guildId={guildId!} />
-				<ChannelSidebar channel={channel} guild={guild} channelId={channelId} guildId={guildId} />
-				<Chat channel={channel} guild={guild} channelId={channelId} guildId={guildId} />
+				<GuildSidebar />
+				<ChannelSidebar />
+				<ErrorBoundary section="component">
+					<Chat />
+				</ErrorBoundary>
 			</Wrapper>
 		</Container>
 	);

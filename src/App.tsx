@@ -7,6 +7,7 @@ import NotFoundPage from "./pages/NotFound";
 import RegistrationPage from "./pages/RegistrationPage";
 
 import { reaction } from "mobx";
+import ErrorBoundary from "./components/ErrorBoundary";
 import Loader from "./components/Loader";
 import OfflineBanner from "./components/banners/OfflineBanner";
 import { UnauthenticatedGuard } from "./components/guards/UnauthenticatedGuard";
@@ -18,6 +19,8 @@ import SwipeTest from "./pages/SwipeTest";
 import ChannelPage from "./pages/subpages/ChannelPage";
 import { useAppStore } from "./stores/AppStore";
 import { Globals } from "./utils/Globals";
+// @ts-expect-error no types
+import FPSStats from "react-fps-stats";
 
 function App() {
 	const app = useAppStore();
@@ -68,21 +71,24 @@ function App() {
 	}, [app.isNetworkConnected, bannerContext]);
 
 	return (
-		<Loader>
-			<Routes>
-				<Route index path="/" element={<AuthenticationGuard component={AppPage} />} />
-				<Route path="/app" element={<AuthenticationGuard component={AppPage} />} />
-				<Route
-					path="/channels/:guildId/:channelId?"
-					element={<AuthenticationGuard component={ChannelPage} />}
-				/>
-				<Route path="/login" element={<UnauthenticatedGuard component={LoginPage} />} />
-				<Route path="/register" element={<UnauthenticatedGuard component={RegistrationPage} />} />
-				<Route path="/logout" element={<AuthenticationGuard component={LogoutPage} />} />
-				<Route path="/swipe" element={<SwipeTest />} />
-				<Route path="*" element={<NotFoundPage />} />
-			</Routes>
-		</Loader>
+		<ErrorBoundary section="app">
+			{app.fpsShown && <FPSStats />}
+			<Loader>
+				<Routes>
+					<Route index path="/" element={<AuthenticationGuard component={AppPage} />} />
+					<Route path="/app" element={<AuthenticationGuard component={AppPage} />} />
+					<Route
+						path="/channels/:guildId/:channelId?"
+						element={<AuthenticationGuard component={ChannelPage} />}
+					/>
+					<Route path="/login" element={<UnauthenticatedGuard component={LoginPage} />} />
+					<Route path="/register" element={<UnauthenticatedGuard component={RegistrationPage} />} />
+					<Route path="/logout" element={<AuthenticationGuard component={LogoutPage} />} />
+					<Route path="/swipe" element={<SwipeTest />} />
+					<Route path="*" element={<NotFoundPage />} />
+				</Routes>
+			</Loader>
+		</ErrorBoundary>
 	);
 }
 

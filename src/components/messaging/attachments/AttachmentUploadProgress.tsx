@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 import { useAppStore } from "../../../stores/AppStore";
 import QueuedMessage from "../../../stores/objects/QueuedMessage";
+import { bytesToSize } from "../../../utils/Utils";
 import Icon from "../../Icon";
 import IconButton from "../../IconButton";
 
@@ -22,6 +23,10 @@ const Wrapper = styled.div`
 	flex: 1;
 	white-space: nowrap;
 	overflow: hidden;
+
+	.muted {
+		color: var(--text-secondary);
+	}
 `;
 
 const Progress = styled.progress`
@@ -43,11 +48,24 @@ interface Props {
 
 function AttachmentUploadProgress({ message }: Props) {
 	const app = useAppStore();
+	const totalSize = message.files!.reduce((p, f) => p + f.size, 0);
 
 	return (
 		<Container>
 			<Wrapper>
-				<div>{message.files!.length === 1 ? message.files![0].name : `${message.files!.length} files`}</div>
+				<div
+					style={{
+						gap: "5px",
+						display: "flex",
+					}}
+				>
+					<span>Uploading</span>
+					<span>
+						{message.files!.length === 1 ? message.files![0].name : `${message.files!.length} files`}
+					</span>
+					<span className="muted">-</span>
+					<span className="muted">{bytesToSize(totalSize)}</span>
+				</div>
 				<Progress value={message.progress} max={100} />
 			</Wrapper>
 			<IconButton

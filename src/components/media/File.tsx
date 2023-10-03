@@ -23,19 +23,19 @@ const Container = styled.div`
 	}
 `;
 
-const AudioInfo = styled.div`
+const FileInfo = styled.div`
 	display: flex;
 `;
 
-const AudioMetadata = styled.div`
+const FileMetadata = styled.div`
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	align-self: center;
-	flex-direction: column;
+	color: var(--text-link);
 `;
 
-const AudioSize = styled.div`
+const FileSize = styled.div`
 	color: var(--text-secondary);
 	font-size: 12px;
 	opacity: 0.8;
@@ -48,25 +48,22 @@ interface Props {
 	attachment: APIAttachment;
 }
 
-function Audio({ attachment }: Props) {
+function File({ attachment }: Props) {
 	const url = attachment.proxy_url && attachment.proxy_url.length > 0 ? attachment.proxy_url : attachment.url;
 
 	return (
 		<Container>
-			<AudioInfo>
-				<Icon icon="mdiFileMusic" size={2} />
-				<AudioMetadata>
+			<FileInfo>
+				<Icon icon="mdiFile" size={2} />
+				<FileMetadata>
 					<Link href={url} target="_blank" rel="noreferer noopener" color="var(--text-link)">
 						{attachment.filename}
 					</Link>
-					<AudioSize>{bytesToSize(attachment.size)}</AudioSize>
-				</AudioMetadata>
-			</AudioInfo>
-			<audio style={{ width: "100%", borderRadius: "3px" }} playsInline controls preload="metadata">
-				<source src={url} />
-			</audio>
+					<FileSize>{bytesToSize(attachment.size)}</FileSize>
+				</FileMetadata>
+			</FileInfo>
 		</Container>
 	);
 }
 
-export default Audio;
+export default File;

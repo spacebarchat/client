@@ -11,10 +11,16 @@ import { Permissions } from "../utils/Permissions";
 import REST from "../utils/REST";
 import Container from "./Container";
 import { IContextMenuItem } from "./ContextMenuItem";
-import GuildSidebarListItem from "./GuildSidebarListItem";
 import SidebarPill, { PillType } from "./SidebarPill";
 import Tooltip from "./Tooltip";
 import CreateInviteModal from "./modals/CreateInviteModal";
+
+export const GuildSidebarListItem = styled.div`
+	position: relative;
+	display: flex;
+	justify-content: center;
+	cursor: pointer;
+`;
 
 const Wrapper = styled(Container)<{ active?: boolean; hasImage?: boolean }>`
 	display: flex;
@@ -73,20 +79,20 @@ function GuildItem({ guild, active }: Props) {
 		},
 	]);
 
+	React.useEffect(() => {
+		if (app.activeChannelId && app.activeGuildId === guild.id) return setPillType("active");
+		else if (isHovered) return setPillType("hover");
+		// TODO: unread
+		else return setPillType("none");
+	}, [app.activeGuildId, isHovered]);
+
 	const doNavigate = () => {
-		const channel = guild.channels.mapped.find((x) => {
+		const channel = guild.channels.find((x) => {
 			const permission = Permissions.getPermission(app.account!.id, guild, x);
 			return permission.has("VIEW_CHANNEL") && x.type !== ChannelType.GuildCategory;
 		});
 		navigate(`/channels/${guild.id}${channel ? `/${channel.id}` : ""}`);
 	};
-
-	React.useEffect(() => {
-		if (active) return setPillType("active");
-		else if (isHovered) return setPillType("hover");
-		// TODO: unread
-		else return setPillType("none");
-	}, [active, isHovered]);
 
 	return (
 		<GuildSidebarListItem
@@ -115,6 +121,7 @@ function GuildItem({ guild, active }: Props) {
 							src={REST.makeCDNUrl(CDNRoutes.guildIcon(guild.id, guild?.icon, ImageFormat.PNG))}
 							width={48}
 							height={48}
+							loading="lazy"
 						/>
 					) : (
 						<span

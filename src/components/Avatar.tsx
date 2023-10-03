@@ -9,6 +9,11 @@ const Wrapper = styled(Container)<{ size: number }>`
 	height: ${(props) => props.size}px;
 	border-radius: 50%;
 	position: relative;
+
+	&:hover {
+		text-decoration: underline;
+		cursor: pointer;
+	}
 `;
 
 interface Props {
@@ -26,6 +31,7 @@ function Avatar(props: Props) {
 				src={props.user?.avatarUrl ?? app.account?.avatarUrl}
 				width={props.size ?? 32}
 				height={props.size ?? 32}
+				loading="eager"
 			/>
 		</Wrapper>
 	);

@@ -26,7 +26,7 @@ export default class PrivateChannelStore {
 	}
 
 	@computed
-	getAll() {
+	get all() {
 		return Array.from(this.channels.values());
 	}
 

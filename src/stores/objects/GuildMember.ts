@@ -32,7 +32,7 @@ export default class GuildMember {
 		this.user = data.user;
 		this.nick = data.nick;
 		this.avatar = data.avatar;
-		this.roles = data.roles.map((role) => guild.roles.get(role)).filter(Boolean) as Role[];
+		this.roles = data.roles.map((role) => app.roles.get(role)).filter(Boolean) as Role[];
 		this.joined_at = data.joined_at;
 		this.premium_since = data.premium_since;
 		this.deaf = data.deaf;

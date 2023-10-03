@@ -3,6 +3,7 @@ import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PulseLoader from "react-spinners/PulseLoader";
 import styled from "styled-components";
+import useResizeObserver from "use-resize-observer";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import { MessageGroup as MessageGroupType } from "../../stores/MessageStore";
@@ -11,6 +12,9 @@ import Guild from "../../stores/objects/Guild";
 import { Permissions } from "../../utils/Permissions";
 import { HorizontalDivider } from "../Divider";
 import MessageGroup from "./MessageGroup";
+
+export const MessageAreaWidthContext = React.createContext(0);
+export const MESSAGE_AREA_PADDING = 82;
 
 const Container = styled.div`
 	flex: 1 1 auto;
@@ -37,6 +41,8 @@ function MessageList({ guild, channel }: Props) {
 	const [hasMore, setHasMore] = React.useState(true);
 	const [canView, setCanView] = React.useState(false);
 	const messageGroups = channel.messages.groups;
+	const ref = React.useRef<HTMLDivElement>(null);
+	const { width } = useResizeObserver<HTMLDivElement>({ ref });
 
 	// handles the permission check
 	React.useEffect(() => {
@@ -77,59 +83,63 @@ function MessageList({ guild, channel }: Props) {
 	}, [channel, messageGroups, setHasMore]);
 
 	const renderGroup = React.useCallback(
-		(group: MessageGroupType) => <MessageGroup key={group.messages[0].id} group={group} />,
+		(group: MessageGroupType) => (
+			<MessageGroup key={`messageGroup-${group.messages[group.messages.length - 1].id}`} group={group} />
+		),
 		[],
 	);
 
 	return (
-		<Container id="scrollable-div">
-			{canView ? (
-				<InfiniteScroll
-					dataLength={messageGroups.length}
-					next={fetchMore}
-					style={{
-						display: "flex",
-						flexDirection: "column-reverse",
-						marginBottom: "30px",
-					}} // to put endMessage and loader to the top.
-					hasMore={hasMore}
-					inverse={true}
-					loader={
-						<PulseLoader
-							style={{
-								display: "flex",
-								justifyContent: "center",
-								alignContent: "center",
-								marginBottom: "30px",
-							}}
-							color="var(--primary)"
-						/>
-					}
-					scrollableTarget="scrollable-div"
-					endMessage={
-						<EndMessageContainer>
-							<h1 style={{ fontWeight: 700, margin: "8px 0" }}>Welcome to #{channel.name}!</h1>
-							<p style={{ color: "var(--text-secondary)" }}>
-								This is the start of the #{channel.name} channel.
-							</p>
-							<HorizontalDivider />
-						</EndMessageContainer>
-					}
-				>
-					{messageGroups.map((group) => renderGroup(group))}
-				</InfiniteScroll>
-			) : (
-				<div
-					style={{
-						marginBottom: "30px",
-						paddingLeft: "20px",
-						color: "var(--text-secondary)",
-					}}
-				>
-					You do not have permission to read the history of this channel.
-				</div>
-			)}
-		</Container>
+		<MessageAreaWidthContext.Provider value={(width ?? 0) - MESSAGE_AREA_PADDING}>
+			<Container id="scrollable-div" ref={ref}>
+				{canView ? (
+					<InfiniteScroll
+						dataLength={messageGroups.length}
+						next={fetchMore}
+						style={{
+							display: "flex",
+							flexDirection: "column-reverse",
+							marginBottom: 30,
+						}} // to put endMessage and loader to the top.
+						hasMore={hasMore}
+						inverse={true}
+						loader={
+							<PulseLoader
+								style={{
+									display: "flex",
+									justifyContent: "center",
+									alignContent: "center",
+									marginBottom: 30,
+								}}
+								color="var(--primary)"
+							/>
+						}
+						scrollableTarget="scrollable-div"
+						endMessage={
+							<EndMessageContainer>
+								<h1 style={{ fontWeight: 700, margin: "8px 0" }}>Welcome to #{channel.name}!</h1>
+								<p style={{ color: "var(--text-secondary)" }}>
+									This is the start of the #{channel.name} channel.
+								</p>
+								<HorizontalDivider />
+							</EndMessageContainer>
+						}
+					>
+						{messageGroups.map((group) => renderGroup(group))}
+					</InfiniteScroll>
+				) : (
+					<div
+						style={{
+							marginBottom: 30,
+							paddingLeft: 20,
+							color: "var(--text-secondary)",
+						}}
+					>
+						You do not have permission to read the history of this channel.
+					</div>
+				)}
+			</Container>
+		</MessageAreaWidthContext.Provider>
 	);
 }
 

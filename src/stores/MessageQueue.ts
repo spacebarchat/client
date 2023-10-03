@@ -37,7 +37,7 @@ export default class MessageQueue {
 
 	@computed
 	get(channel: Snowflake) {
-		return this.messages.filter((message) => message.channel === channel);
+		return this.messages.filter((message) => message.channel_id === channel);
 	}
 
 	@action

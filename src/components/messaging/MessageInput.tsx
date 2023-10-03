@@ -93,6 +93,8 @@ function MessageInput({ channel }: Props) {
 
 		setContent("");
 		setAttachments([]);
+		// stop typing
+		debouncedStopTyping(true);
 
 		const nonce = Snowflake.generate();
 		const msg = app.queue.add({
@@ -100,7 +102,7 @@ function MessageInput({ channel }: Props) {
 			content: contentCopy,
 			files: attachmentsCopy,
 			author: app.account!.raw,
-			channel: channel.id,
+			channel_id: channel.id,
 			timestamp: new Date().toISOString(),
 			type: MessageType.Default,
 		});
