@@ -1,8 +1,9 @@
 import replace from "@rollup/plugin-replace";
 import react from "@vitejs/plugin-react";
-import { readFileSync } from "fs";
+import fs, { readFileSync } from "fs";
 import { internalIpV4 } from "internal-ip";
-import { resolve } from "path";
+import path, { resolve } from "path";
+import type { Plugin } from "vite";
 import { defineConfig } from "vite";
 import { chunkSplitPlugin } from "vite-plugin-chunk-split";
 import cleanPlugin from "vite-plugin-clean";
@@ -49,6 +50,7 @@ const mobile = !!/android|ios/.exec(process.env.TAURI_PLATFORM);
 export default defineConfig(async () => ({
 	plugins: [
 		cleanPlugin(),
+		reactVirtualized(),
 		react(),
 		svgr(),
 		chunkSplitPlugin({
@@ -100,3 +102,30 @@ export default defineConfig(async () => ({
 		},
 	},
 }));
+
+const WRONG_CODE = `import { bpfrpt_proptype_WindowScroller } from "../WindowScroller.js";`;
+export function reactVirtualized(): Plugin {
+	return {
+		name: "flat:react-virtualized",
+		// Note: we cannot use the `transform` hook here
+		//       because libraries are pre-bundled in vite directly,
+		//       plugins aren't able to hack that step currently.
+		//       so instead we manually edit the file in node_modules.
+		//       all we need is to find the timing before pre-bundling.
+		configResolved() {
+			const file = path.join(
+				"node_modules",
+				"react-virtualized",
+				"dist",
+				"es",
+				"WindowScroller",
+				"utils",
+				"onScroll.js",
+			);
+
+			const code = fs.readFileSync(file, "utf-8");
+			const modified = code.replace(WRONG_CODE, "");
+			fs.writeFileSync(file, modified);
+		},
+	};
+}
