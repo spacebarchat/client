@@ -62,7 +62,7 @@
 	},
 	"devDependencies": {
 		"@craco/craco": "^7.1.0",
-		"@tauri-apps/cli": "2.0.0-alpha.14",
+		"@tauri-apps/cli": "2.0.0-alpha.16",
 		"@types/jest": "^27.5.2",
 		"@types/loadable__component": "^5.13.5",
 		"@types/node": "^16.18.50",
