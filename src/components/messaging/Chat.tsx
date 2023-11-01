@@ -6,7 +6,7 @@ import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 import Guild from "../../stores/objects/Guild";
-import MemberList from "../MemberList";
+import MemberList from "../memberlist/MemberList";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageList from "./MessageList";
