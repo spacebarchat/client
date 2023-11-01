@@ -2,9 +2,9 @@ import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 import ChannelHeader from "./ChannelHeader";
+import ChannelList, { EmptyChannelList } from "./ChannelList/ChannelList";
 import Container from "./Container";
 import UserPanel from "./UserPanel";
-import ChannelList, { EmptyChannelList } from "./channellist/ChannelList";
 
 const Wrapper = styled(Container)`
 	display: flex;
