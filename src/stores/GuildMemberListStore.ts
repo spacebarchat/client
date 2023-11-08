@@ -18,7 +18,7 @@ export default class GuildMemberListStore {
 	@observable groups: GatewayGuildMemberListUpdateGroup[] = [];
 	@observable member_count: number;
 	@observable online_count: number;
-	@observable list: (string | GuildMember)[] = [];
+	@observable list: { name: string; items: GuildMember[] }[] = [];
 
 	constructor(app: AppStore, guild: Guild, data: GatewayGuildMemberListUpdateDispatchData) {
 		this.app = app;
@@ -98,9 +98,24 @@ export default class GuildMemberListStore {
 					//   ...i.data.sort((a, b) => a.index - b.index).map(i => i.member),
 					// ]);
 
-					this.list = listData.flatMap((i) => [
-						i.title,
-						...i.data
+					// this.list = listData.flatMap((i) => [
+					// 	i.title,
+					// 	...i.data
+					// 		.sort((a, b) => {
+					// 			const ua = a.member.user?.username;
+					// 			const ub = b.member.user?.username;
+					// 			if (ua && ub) {
+					// 				return ua.toLowerCase() > ub.toLowerCase() ? 1 : -1;
+					// 			}
+
+					// 			return 0;
+					// 		})
+					// 		.map((i) => i.member),
+					// ]);
+
+					this.list = listData.map((i) => ({
+						name: i.title,
+						items: i.data
 							.sort((a, b) => {
 								const ua = a.member.user?.username;
 								const ub = b.member.user?.username;
@@ -111,7 +126,7 @@ export default class GuildMemberListStore {
 								return 0;
 							})
 							.map((i) => i.member),
-					]);
+					}));
 
 					break;
 				}
