@@ -95,18 +95,7 @@ function GuildItem({ guild, active }: Props) {
 	};
 
 	return (
-		<GuildSidebarListItem
-			onContextMenu={(e) => {
-				e.preventDefault();
-				contextMenu.open({
-					position: {
-						x: e.pageX,
-						y: e.pageY,
-					},
-					items: contextMenuItems,
-				});
-			}}
-		>
+		<GuildSidebarListItem onContextMenu={(e) => contextMenu.open2(e, contextMenuItems)}>
 			<SidebarPill type={pillType} />
 			<Tooltip title={guild.name} placement="right">
 				<Wrapper

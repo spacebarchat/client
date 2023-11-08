@@ -4,6 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import useLogger from "../../hooks/useLogger";
+import ContextMenus from "../../utils/ContextMenus";
 import { calculateImageRatio, calculateScaledDimensions } from "../../utils/Message";
 import { getFileDetails } from "../../utils/Utils";
 import { IContextMenuItem } from "../ContextMenuItem";
@@ -62,29 +63,9 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 		<Attachment
 			withPointer={attachment.content_type?.startsWith("image")}
 			key={attachment.id}
-			onContextMenu={(e) => {
-				// prevent propagation to the message container
-				e.stopPropagation();
-				e.preventDefault();
-				contextMenu.open({
-					position: {
-						x: e.pageX,
-						y: e.pageY,
-					},
-					items: [
-						...(contextMenuItems ?? []),
-						{
-							label: "Copy Attachment URL",
-							onClick: () => {
-								navigator.clipboard.writeText(attachment.url);
-							},
-							iconProps: {
-								icon: "mdiLink",
-							},
-						} as IContextMenuItem,
-					],
-				});
-			}}
+			onContextMenu={(e) =>
+				contextMenu.open2(e, [...(contextMenuItems ?? []), ContextMenus.MessageAttachment(attachment)])
+			}
 			onClick={() => {
 				if (!attachment.content_type?.startsWith("image")) return;
 				openModal(AttachmentPreviewModal, { attachment });

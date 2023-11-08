@@ -3,6 +3,7 @@ import React, { memo } from "react";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { MessageLike } from "../../stores/objects/Message";
 import { QueuedMessageStatus } from "../../stores/objects/QueuedMessage";
+import ContextMenus from "../../utils/ContextMenus";
 import Avatar from "../Avatar";
 import { IContextMenuItem } from "../ContextMenuItem";
 import Markdown from "../markdown/MarkdownRenderer";
@@ -19,33 +20,10 @@ interface Props {
 
 function Message({ message, header }: Props) {
 	const contextMenu = React.useContext(ContextMenuContext);
-	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
-		{
-			label: "Copy Message ID",
-			onClick: () => {
-				navigator.clipboard.writeText(message.id);
-			},
-			iconProps: {
-				icon: "mdiIdentifier",
-			},
-		},
-	]);
+	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([ContextMenus.Message(message)]);
 
 	return (
-		<MessageBase
-			header={header}
-			onContextMenu={(e) => {
-				e.preventDefault();
-				e.stopPropagation();
-				contextMenu.open({
-					position: {
-						x: e.pageX,
-						y: e.pageY,
-					},
-					items: contextMenuItems,
-				});
-			}}
-		>
+		<MessageBase header={header} onContextMenu={(e) => contextMenu.open2(e, contextMenuItems)}>
 			<MessageInfo>
 				{header ? (
 					<Avatar key={message.author.id} user={message.author} size={40} />

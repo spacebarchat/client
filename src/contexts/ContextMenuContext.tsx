@@ -20,8 +20,17 @@ const useValue = () => {
 		setVisible(true);
 	};
 
+	const open2 = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, items: IContextMenuItem[]) => {
+		e.preventDefault();
+		e.stopPropagation();
+		setPosition({ x: e.pageX, y: e.pageY });
+		setItems(items);
+		setVisible(true);
+	};
+
 	return {
 		open,
+		open2,
 		close: () => setVisible(false),
 		visible,
 		position,

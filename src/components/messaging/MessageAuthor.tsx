@@ -1,8 +1,10 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import styled from "styled-components";
+import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { useAppStore } from "../../stores/AppStore";
 import { MessageLike } from "../../stores/objects/Message";
+import ContextMenus from "../../utils/ContextMenus";
 
 const Container = styled.div`
 	font-size: 16px;
@@ -21,6 +23,7 @@ interface Props {
 
 function MessageAuthor({ message }: Props) {
 	const app = useAppStore();
+	const contextMenu = React.useContext(ContextMenuContext);
 	const [color, setColor] = React.useState<string | undefined>(undefined);
 
 	React.useEffect(() => {
@@ -43,6 +46,7 @@ function MessageAuthor({ message }: Props) {
 			style={{
 				color,
 			}}
+			onContextMenu={(e) => contextMenu.open2(e, [ContextMenus.User(message.author)])}
 		>
 			{message.author.username}
 		</Container>

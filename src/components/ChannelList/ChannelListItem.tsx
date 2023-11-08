@@ -79,16 +79,7 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 
 				navigate(`/channels/${channel.guildId}/${channel.id}`);
 			}}
-			onContextMenu={(e) => {
-				e.preventDefault();
-				contextMenu.open({
-					position: {
-						x: e.pageX,
-						y: e.pageY,
-					},
-					items: contextMenuItems,
-				});
-			}}
+			onContextMenu={(e) => contextMenu.open2(e, contextMenuItems)}
 		>
 			<Wrapper isCategory={isCategory} active={active}>
 				{channel.channelIcon && (

@@ -1,7 +1,10 @@
 import { observer } from "mobx-react-lite";
+import React from "react";
 import styled from "styled-components";
+import { ContextMenuContext } from "../contexts/ContextMenuContext";
 import { useAppStore } from "../stores/AppStore";
 import User from "../stores/objects/User";
+import ContextMenus from "../utils/ContextMenus";
 import Container from "./Container";
 
 const Wrapper = styled(Container)<{ size: number }>`
@@ -24,15 +27,17 @@ interface Props {
 
 function Avatar(props: Props) {
 	const app = useAppStore();
+	const contextMenu = React.useContext(ContextMenuContext);
+	const user = props.user ?? app.account;
+	if (!user) return null;
 
 	return (
-		<Wrapper size={props.size ?? 32} style={props.style}>
-			<img
-				src={props.user?.avatarUrl ?? app.account?.avatarUrl}
-				width={props.size ?? 32}
-				height={props.size ?? 32}
-				loading="eager"
-			/>
+		<Wrapper
+			size={props.size ?? 32}
+			style={props.style}
+			onContextMenu={(e) => contextMenu.open2(e, [ContextMenus.User(user)])}
+		>
+			<img src={user.avatarUrl} width={props.size ?? 32} height={props.size ?? 32} loading="eager" />
 		</Wrapper>
 	);
 }
