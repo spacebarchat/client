@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Icon from "./Icon";
 
 const Container = styled.div`
 	padding: 24px 8px 0 16px;
@@ -11,6 +12,9 @@ const Title = styled.span`
 	color: var(--text-secondary);
 	user-select: none;
 	cursor: pointer;
+
+	display: flex;
+	align-items: center;
 `;
 
 const Wrapper = styled.div<{ open?: boolean }>`
@@ -40,7 +44,10 @@ function ListSection(props: Props) {
 
 	return (
 		<Container>
-			<Title onClick={toggle}>{props.name}</Title>
+			<Title onClick={toggle}>
+				<Icon icon={open ? "mdiChevronRight" : "mdiChevronDown"} size={"16px"} />
+				{props.name}
+			</Title>
 			<Wrapper open={open}>
 				{props.items.map((item) => (
 					<Item>{item}</Item>
