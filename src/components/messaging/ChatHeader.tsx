@@ -60,12 +60,27 @@ const ChannelTopicText = styled.div`
 
 const ActionItemsWrapper = styled.div`
 	display: flex;
-	margin-right: 15%;
+	flex-direction: row-reverse;
+	// margin-right: 15%;
 
 	// remove the temporary padding that moves it over the chat area on smaller screens where the member list is hidden
 	@media (max-width: 1050px) {
 		margin-right: auto;
 	}
+`;
+
+const DummySearch = styled.div`
+	display: flex;
+	flex: 0 0 208px;
+
+	align-items: center;
+	border-radius: 4px;
+	background-color: var(--background-tertiary);
+	margin-left: 8px; // to match the right padding from the main container
+	padding: 0 8px;
+	user-select: none;
+	// cursor: text;
+	cursor: not-allowed;
 `;
 
 const IconWrapper = styled.div`
@@ -129,15 +144,18 @@ function ChatHeader({ channel }: Props) {
 				{/* Action Items */}
 				<ActionItemsWrapper>
 					{/* <ActionItem icon="mdiPound" ariaLabel="Threads" /> */}
-					<ActionItem icon="mdiBellBadge" tooltip="Notification Settings" ariaLabel="Notification Settings" />
-					<ActionItem icon="mdiPin" tooltip="Pinned Messages" ariaLabel="Pinned Messages" />
+					<DummySearch>
+						<span>Search</span>
+					</DummySearch>
+					<ActionItem icon="mdiInbox" tooltip="Inbox" ariaLabel="Inbox" />
 					<ActionItem
 						icon="mdiAccountMultiple"
 						tooltip="Toggle Member List"
 						ariaLabel="Toggle Member List"
 						active
 					/>
-					<ActionItem icon="mdiInbox" tooltip="Inbox" ariaLabel="Inbox" />
+					<ActionItem icon="mdiPin" tooltip="Pinned Messages" ariaLabel="Pinned Messages" />
+					<ActionItem icon="mdiBellBadge" tooltip="Notification Settings" ariaLabel="Notification Settings" />
 				</ActionItemsWrapper>
 			</Wrapper>
 		</Container>
