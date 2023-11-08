@@ -89,7 +89,7 @@
 	"homepage": "https://spacebar.chat",
 	"license": "AGPL-3.0-only",
 	"name": "spacebar-client",
-	"packageManager": "pnpm@8.9.2",
+	"packageManager": "pnpm@8.10.2",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/spacebarchat/client.git"
