@@ -44,7 +44,6 @@ function MemberList() {
 				if (app.activeGuild && app.activeChannel) {
 					const { memberLists } = app.activeGuild;
 					const listId = app.activeChannel.listId;
-					console.debug(`List ID for channel ${app.activeChannel.id} is ${listId}`);
 					const store = memberLists.get(listId);
 					setList(store ? store.list : null);
 				} else {
