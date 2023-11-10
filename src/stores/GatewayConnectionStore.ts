@@ -473,44 +473,24 @@ export default class GatewayConnectionStore {
 	};
 
 	public onChannelOpen = (guildId: Snowflake, channelId: Snowflake) => {
-		let payload: GatewayLazyRequestData;
+		const guildChannels = this.lazyRequestChannels.get(guildId) ?? [];
 
-		const guildChannels = this.lazyRequestChannels.get(guildId);
+		if (guildChannels.includes(channelId)) return;
+		const payload: GatewayLazyRequestData = {
+			guild_id: guildId,
+			activities: true,
+			threads: true,
+			typing: true,
+			channels: {
+				[channelId]: [[0, 99]],
+			},
+		};
+		this.lazyRequestChannels.set(guildId, [channelId]);
 
-		if (!guildChannels) {
-			payload = {
-				guild_id: guildId,
-				activities: true,
-				threads: true,
-				typing: true,
-				channels: {
-					[channelId]: [[0, 99]],
-				},
-			};
-			this.lazyRequestChannels.set(guildId, [channelId]);
-
-			this.sendJson({
-				op: GatewayOpcodes.LazyRequest,
-				d: payload,
-			} as GatewayLazyRequest);
-		} else {
-			if (guildChannels.includes(channelId)) {
-				return;
-			}
-
-			const d: Record<string, [number, number][]> = {};
-			guildChannels.forEach((x) => (d[x] = [[0, 99]]));
-			payload = {
-				guild_id: guildId,
-				channels: d,
-			};
-			guildChannels.push(channelId);
-
-			this.sendJson({
-				op: GatewayOpcodes.LazyRequest,
-				d: payload,
-			} as GatewayLazyRequest);
-		}
+		this.sendJson({
+			op: GatewayOpcodes.LazyRequest,
+			d: payload,
+		} as GatewayLazyRequest);
 	};
 
 	// Start dispatch handlers

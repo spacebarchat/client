@@ -5,7 +5,7 @@ import {
 	type GatewayGuild,
 	type GatewayGuildMemberListUpdateDispatchData,
 } from "@spacebarchat/spacebar-api-types/v9";
-import { ObservableSet, action, computed, makeObservable, observable } from "mobx";
+import { ObservableMap, ObservableSet, action, computed, makeObservable, observable } from "mobx";
 import AppStore from "../AppStore";
 import GuildMemberListStore from "../GuildMemberListStore";
 import GuildMemberStore from "../GuildMemberStore";
@@ -53,7 +53,7 @@ export default class Guild {
 	@observable nsfwLevel: number;
 	@observable hubType: number | null = null;
 	@observable members: GuildMemberStore;
-	@observable private memberListStore: GuildMemberListStore | null = null;
+	@observable memberLists: ObservableMap<string, GuildMemberListStore> = new ObservableMap();
 
 	constructor(app: AppStore, data: GatewayGuild) {
 		this.app = app;
@@ -120,16 +120,16 @@ export default class Guild {
 
 	@action
 	updateMemberList(data: GatewayGuildMemberListUpdateDispatchData) {
-		if (this.memberListStore) {
-			this.memberListStore.update(data);
+		const store = this.memberLists.get(data.id);
+		if (store) {
+			store.update(data);
 		} else {
-			this.memberListStore = new GuildMemberListStore(this.app, this, data);
+			this.memberLists.set(data.id, new GuildMemberListStore(this.app, this, data));
 		}
 	}
 
-	@computed
-	get memberList() {
-		return this.memberListStore?.list ?? [];
+	getMemberList(id: string): GuildMemberListStore | undefined {
+		return this.memberLists.get(id);
 	}
 
 	@computed

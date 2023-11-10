@@ -101,6 +101,9 @@ dependencies:
   mobx-react-lite:
     specifier: ^3.4.3
     version: 3.4.3(mobx@6.10.2)(react-dom@18.2.0)(react@18.2.0)
+  murmurhash-js:
+    specifier: ^1.0.0
+    version: 1.0.0
   prismjs:
     specifier: ^1.29.0
     version: 1.29.0
@@ -184,6 +187,9 @@ devDependencies:
   '@types/loadable__component':
     specifier: ^5.13.5
     version: 5.13.5
+  '@types/murmurhash-js':
+    specifier: ^1.0.6
+    version: 1.0.6
   '@types/node':
     specifier: ^16.18.50
     version: 16.18.57
@@ -3714,6 +3720,10 @@ packages:
   /@types/ms@0.7.32:
     resolution: {integrity: sha512-xPSg0jm4mqgEkNhowKgZFBNtwoEwF6gJ4Dhww+GFpm3IgtNseHQZ5IqdNwnquZEoANxyDAKDRAdVo4Z72VvD/g==}
     dev: false
+
+  /@types/murmurhash-js@1.0.6:
+    resolution: {integrity: sha512-P2RRwRpevEKO0FrK5xNjxBywg0Br24tEv8K2+iWg56PtcCUNGAkaaOWKBQiUpofA8H/gmgdHXrcvSgp2uXCVAQ==}
+    dev: true
 
   /@types/node@10.17.60:
     resolution: {integrity: sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw==}

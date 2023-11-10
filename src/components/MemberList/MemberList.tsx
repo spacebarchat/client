@@ -1,6 +1,9 @@
+import { autorun } from "mobx";
 import { observer } from "mobx-react-lite";
+import React from "react";
 import styled from "styled-components";
 import { useAppStore } from "../../stores/AppStore";
+import GuildMemberListStore from "../../stores/GuildMemberListStore";
 import ListSection from "../ListSection";
 
 const Container = styled.div`
@@ -33,38 +36,37 @@ const List = styled.ul`
 
 function MemberList() {
 	const app = useAppStore();
+	const [list, setList] = React.useState<null | GuildMemberListStore["list"]>(null);
 
-	if (!app.activeGuild || !app.activeChannel) return null;
-	const { memberList } = app.activeGuild;
+	React.useEffect(
+		() =>
+			autorun(() => {
+				if (app.activeGuild && app.activeChannel) {
+					const { memberLists } = app.activeGuild;
+					const listId = app.activeChannel.listId;
+					console.debug(`List ID for channel ${app.activeChannel.id} is ${listId}`);
+					const store = memberLists.get(listId);
+					setList(store ? store.list : null);
+				} else {
+					setList(null);
+				}
+			}),
+		[],
+	);
 
 	return (
 		<Container>
-			{/* <AutoSizer>
-				{({ width, height }) => (
-					<List
-						height={height}
-						overscanRowCount={2}
-						rowCount={memberList.length}
-						rowHeight={({ index }) => {
-							// const item = channels[index];
-							// if (item.type === ChannelType.GuildCategory) {
-							// 	return 44;
-							// }
-							return 33;
-						}}
-						rowRenderer={rowRenderer}
-						width={width}
-					/>
-				)}
-			</AutoSizer> */}
-
 			<List>
-				{memberList.map((category) => (
-					<ListSection
-						name={category.name}
-						items={category.items.map((x) => x.nick ?? x.user?.username).filter((x) => x) as string[]}
-					/>
-				))}
+				{list
+					? list.map((category) => (
+							<ListSection
+								name={category.name}
+								items={
+									category.items.map((x) => x.nick ?? x.user?.username).filter((x) => x) as string[]
+								}
+							/>
+					  ))
+					: null}
 			</List>
 		</Container>
 	);

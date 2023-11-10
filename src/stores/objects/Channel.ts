@@ -15,6 +15,7 @@ import type {
 } from "@spacebarchat/spacebar-api-types/v9";
 import { ChannelType, Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { ObservableMap, action, computed, makeObservable, observable } from "mobx";
+import murmur from "murmurhash-js/murmurhash3_gc";
 import Logger from "../../utils/Logger";
 import type { PermissionResolvable } from "../../utils/Permissions";
 import { Permissions } from "../../utils/Permissions";
@@ -41,7 +42,7 @@ export default class Channel {
 	@observable lastPinTimestamp?: number;
 	@observable defaultAutoArchiveDuration?: number;
 	@observable position?: number;
-	@observable permissionOverwrites?: APIOverwrite[];
+	@observable permissionOverwrites: APIOverwrite[];
 	@observable videoQualityMode?: number;
 	@observable bitrate?: number;
 	@observable userLimit?: number;
@@ -78,7 +79,7 @@ export default class Channel {
 		this.lastPinTimestamp = channel.last_pin_timestamp;
 		this.defaultAutoArchiveDuration = channel.default_auto_archive_duration;
 		this.position = channel.position;
-		this.permissionOverwrites = channel.permission_overwrites;
+		this.permissionOverwrites = channel.permission_overwrites ?? [];
 		this.videoQualityMode = channel.video_quality_mode;
 		this.bitrate = channel.bitrate;
 		this.userLimit = channel.user_limit;
@@ -272,5 +273,24 @@ export default class Channel {
 	get guild() {
 		if (!this.guildId) return undefined;
 		return this.app.guilds.get(this.guildId);
+	}
+
+	@computed
+	get listId() {
+		let listId = "everyone";
+		const perms: string[] = [];
+
+		for (const overwrite of this.permissionOverwrites) {
+			const { id, allow, deny } = overwrite;
+
+			if (allow.toBigInt() & Permissions.FLAGS.VIEW_CHANNEL) perms.push(`allow:${id}`);
+			else if (deny.toBigInt() & Permissions.FLAGS.VIEW_CHANNEL) perms.push(`deny:${id}`);
+		}
+
+		if (perms.length) {
+			listId = murmur(perms.sort().join(",")).toString();
+		}
+
+		return listId;
 	}
 }
