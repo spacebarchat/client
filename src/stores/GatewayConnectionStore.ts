@@ -469,6 +469,7 @@ export default class GatewayConnectionStore {
 			}
 		}
 
+		this.reconnectTimeout = 0;
 		this.app.setGatewayReady(true);
 	};
 
@@ -478,9 +479,9 @@ export default class GatewayConnectionStore {
 		if (guildChannels.includes(channelId)) return;
 		const payload: GatewayLazyRequestData = {
 			guild_id: guildId,
-			activities: true,
-			threads: true,
-			typing: true,
+			// activities: true,
+			// threads: true,
+			// typing: true,
 			channels: {
 				[channelId]: [[0, 99]],
 			},

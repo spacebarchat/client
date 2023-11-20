@@ -57,8 +57,9 @@ function MemberList() {
 		<Container>
 			<List>
 				{list
-					? list.map((category) => (
+					? list.map((category, i) => (
 							<ListSection
+								key={i}
 								name={category.name}
 								items={
 									category.items.map((x) => x.nick ?? x.user?.username).filter((x) => x) as string[]
