@@ -60,4 +60,8 @@ export default class QueuedMessage extends MessageBase {
 		this.error = error;
 		this.status = QueuedMessageStatus.FAILED;
 	}
+
+	delete() {
+		//
+	}
 }

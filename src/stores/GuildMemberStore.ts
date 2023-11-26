@@ -1,6 +1,6 @@
 import type { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
 import type { APIGuildMember } from "@spacebarchat/spacebar-api-types/v9";
-import { action, makeObservable, observable, ObservableMap } from "mobx";
+import { action, computed, makeObservable, observable, ObservableMap } from "mobx";
 import AppStore from "./AppStore";
 import Guild from "./objects/Guild";
 import GuildMember from "./objects/GuildMember";
@@ -63,5 +63,12 @@ export default class GuildMemberStore {
 
 	get size() {
 		return this.members.size;
+	}
+
+	@computed
+	get me() {
+		const meId = this.app.account?.id;
+		if (!meId) return null;
+		return this.members.get(meId);
 	}
 }

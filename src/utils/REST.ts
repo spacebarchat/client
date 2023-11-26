@@ -1,7 +1,3 @@
-// import {Globals} from '../constants/Globals';
-// import useLogger from '../hooks/useLogger';
-// import {DomainStore} from '../stores/DomainStore';
-
 import AppStore from "../stores/AppStore";
 import QueuedMessage from "../stores/objects/QueuedMessage";
 import { Globals } from "./Globals";
@@ -190,7 +186,7 @@ export default class REST {
 	): Promise<void> {
 		return new Promise((resolve, reject) => {
 			const url = REST.makeAPIUrl(path, queryParams);
-			// this.logger.debug(`DELETE ${url}`);
+			this.logger.debug(`DELETE ${url}`);
 			return (
 				fetch(url, {
 					method: "DELETE",

@@ -64,7 +64,7 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 			withPointer={attachment.content_type?.startsWith("image")}
 			key={attachment.id}
 			onContextMenu={(e) =>
-				contextMenu.open2(e, [...(contextMenuItems ?? []), ContextMenus.MessageAttachment(attachment)])
+				contextMenu.open2(e, [...(contextMenuItems ?? []), ...ContextMenus.MessageAttachment(attachment)])
 			}
 			onClick={() => {
 				if (!attachment.content_type?.startsWith("image")) return;

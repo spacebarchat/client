@@ -35,7 +35,7 @@ function Avatar(props: Props) {
 		<Wrapper
 			size={props.size ?? 32}
 			style={props.style}
-			onContextMenu={(e) => contextMenu.open2(e, [ContextMenus.User(user)])}
+			onContextMenu={(e) => contextMenu.open2(e, [...ContextMenus.User(user)])}
 		>
 			<img src={user.avatarUrl} width={props.size ?? 32} height={props.size ?? 32} loading="eager" />
 		</Wrapper>

@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { memo } from "react";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
+import { useAppStore } from "../../stores/AppStore";
 import { MessageLike } from "../../stores/objects/Message";
 import { QueuedMessageStatus } from "../../stores/objects/QueuedMessage";
 import ContextMenus from "../../utils/ContextMenus";
@@ -19,8 +20,11 @@ interface Props {
 }
 
 function Message({ message, header }: Props) {
+	const app = useAppStore();
 	const contextMenu = React.useContext(ContextMenuContext);
-	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([ContextMenus.Message(message)]);
+	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
+		...ContextMenus.Message(app, message, app.account),
+	]);
 
 	return (
 		<MessageBase header={header} onContextMenu={(e) => contextMenu.open2(e, contextMenuItems)}>

@@ -1,22 +1,23 @@
-import type {
-	APIActionRowComponent,
-	APIApplication,
-	APIAttachment,
-	APIChannel,
-	APIChannelMention,
-	APIEmbed,
-	APIMessage,
-	APIMessageActionRowComponent,
-	APIMessageActivity,
-	APIMessageInteraction,
-	APIMessageReference,
-	APIReaction,
-	APIRole,
-	APISticker,
-	APIStickerItem,
-	APIUser,
-	MessageFlags,
-	Snowflake,
+import {
+	Routes,
+	type APIActionRowComponent,
+	type APIApplication,
+	type APIAttachment,
+	type APIChannel,
+	type APIChannelMention,
+	type APIEmbed,
+	type APIMessage,
+	type APIMessageActionRowComponent,
+	type APIMessageActivity,
+	type APIMessageInteraction,
+	type APIMessageReference,
+	type APIReaction,
+	type APIRole,
+	type APISticker,
+	type APIStickerItem,
+	type APIUser,
+	type MessageFlags,
+	type Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
 import { action, makeObservable, observable } from "mobx";
 import AppStore from "../AppStore";
@@ -246,5 +247,9 @@ export default class Message extends MessageBase {
 
 		this.timestamp = new Date(message.timestamp);
 		this.edited_timestamp = message.edited_timestamp ? new Date(message.edited_timestamp) : null;
+	}
+
+	async delete() {
+		await this.app.rest.delete(Routes.channelMessage(this.channel_id, this.id));
 	}
 }

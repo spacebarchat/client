@@ -46,7 +46,7 @@ function MessageAuthor({ message }: Props) {
 			style={{
 				color,
 			}}
-			onContextMenu={(e) => contextMenu.open2(e, [ContextMenus.User(message.author)])}
+			onContextMenu={(e) => contextMenu.open2(e, [...ContextMenus.User(message.author)])}
 		>
 			{message.author.username}
 		</Container>
