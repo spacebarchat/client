@@ -50,9 +50,13 @@ export default class AppStore {
 	@observable activeGuildId: Snowflake | undefined | "@me" = "@me";
 	@observable activeChannel: Channel | null = null;
 	@observable activeChannelId: string | undefined = undefined;
+	@observable memberListVisible: boolean = true;
 
 	constructor() {
 		makeAutoObservable(this);
+
+		// bind this in toggleMemberList
+		this.toggleMemberList = this.toggleMemberList.bind(this);
 
 		window.addEventListener("online", () => this.setNetworkConnected(true));
 		window.addEventListener("offline", () => this.setNetworkConnected(false));
@@ -137,6 +141,11 @@ export default class AppStore {
 	@action
 	setFpsShown(value: boolean) {
 		this.fpsShown = value;
+	}
+
+	@action
+	toggleMemberList() {
+		this.memberListVisible = !this.memberListVisible;
 	}
 }
 
