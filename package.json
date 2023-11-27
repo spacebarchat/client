@@ -15,7 +15,7 @@
 		"@mui/material": "^5.14.9",
 		"@originjs/vite-plugin-commonjs": "^1.0.3",
 		"@rollup/plugin-replace": "^5.0.2",
-		"@spacebarchat/spacebar-api-types": "0.37.49",
+		"@spacebarchat/spacebar-api-types": "0.37.50",
 		"@tauri-apps/api": "2.0.0-alpha.8",
 		"@tauri-apps/plugin-authenticator": "2.0.0-alpha.1",
 		"@tauri-apps/plugin-autostart": "2.0.0-alpha.1",
