@@ -47,7 +47,7 @@ export default class Channel {
 	@observable bitrate?: number;
 	@observable userLimit?: number;
 	@observable nsfw: boolean;
-	@observable rateLimiTPerUser?: number;
+	@observable rateLimitPerUser?: number;
 	@observable topic?: string;
 	@observable invites?: APIInvite[];
 	@observable retentionPolicyId?: string;
@@ -84,7 +84,7 @@ export default class Channel {
 		this.bitrate = channel.bitrate;
 		this.userLimit = channel.user_limit;
 		this.nsfw = channel.nsfw;
-		this.rateLimiTPerUser = channel.rate_limit_per_user;
+		this.rateLimitPerUser = channel.rate_limit_per_user;
 		this.topic = channel.topic;
 		this.invites = channel.invites;
 		this.retentionPolicyId = channel.retention_policy_id;
