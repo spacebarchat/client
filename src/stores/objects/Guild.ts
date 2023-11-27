@@ -6,6 +6,7 @@ import {
 	type GatewayGuildMemberListUpdateDispatchData,
 } from "@spacebarchat/spacebar-api-types/v9";
 import { ObservableMap, ObservableSet, action, computed, makeObservable, observable } from "mobx";
+import { compareChannels } from "../../utils/Utils";
 import AppStore from "../AppStore";
 import GuildMemberListStore from "../GuildMemberListStore";
 import GuildMemberStore from "../GuildMemberStore";
@@ -142,9 +143,15 @@ export default class Guild {
 
 	@computed
 	get channels() {
-		return this.app.channels.all
-			.filter((channel) => this.channels_.has(channel.id))
-			.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
+		const guildChannels = this.app.channels.all.filter((channel) => this.channels_.has(channel.id));
+		const topLevelChannels = guildChannels.filter((channel) => !channel.parentId);
+		const sortedChannels = topLevelChannels
+			.sort(compareChannels)
+			.flatMap((topLevelChannel) => [
+				topLevelChannel,
+				...guildChannels.filter((channel) => channel.parentId === topLevelChannel.id).sort(compareChannels),
+			]);
+		return sortedChannels;
 	}
 
 	@computed
