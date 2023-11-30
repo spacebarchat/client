@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
@@ -46,6 +47,12 @@ function UserMention({ id }: MentionProps) {
 function ChannelMention({ id }: MentionProps) {
 	const app = useAppStore();
 	const [channel, setChannel] = React.useState<Channel | null>(null);
+	const navigate = useNavigate();
+
+	const click = () => {
+		if (!channel) return;
+		navigate(`/channels/${channel.guildId}/${channel.id}`);
+	};
 
 	React.useEffect(() => {
 		const channel = app.channels.get(id);
@@ -60,7 +67,7 @@ function ChannelMention({ id }: MentionProps) {
 		);
 
 	return (
-		<Container>
+		<Container onClick={click}>
 			<span>#{channel.name}</span>
 		</Container>
 	);
