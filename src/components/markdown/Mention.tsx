@@ -25,6 +25,11 @@ function UserMention({ id }: MentionProps) {
 	const app = useAppStore();
 	const [user, setUser] = React.useState<User | null>(null);
 
+	const click = () => {
+		if (!user) return;
+		// TODO: open user profile modal
+	};
+
 	React.useEffect(() => {
 		const user = app.users.get(id);
 		if (user) setUser(user);
@@ -38,7 +43,7 @@ function UserMention({ id }: MentionProps) {
 		);
 
 	return (
-		<Container>
+		<Container onClick={click}>
 			<span>@{user.username}</span>
 		</Container>
 	);
