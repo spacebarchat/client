@@ -74,7 +74,10 @@ export default class MessageStore {
 
 	@computed get groups(): MessageGroup[] {
 		// Sort messages by timestamp in descending order (most recent first)
-		const sortedMessages: MessageLike[] = [...this.messages, ...this.app.queue.messages.values()]
+		const sortedMessages: MessageLike[] = [
+			...this.messages,
+			...Array.from(this.app.queue.messages.values()).filter((x) => x.channel_id === this.channelId),
+		]
 			.slice()
 			.sort((a, b) => {
 				return b.timestamp.getTime() - a.timestamp.getTime();
