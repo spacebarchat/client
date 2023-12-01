@@ -11,6 +11,7 @@ export enum QueuedMessageStatus {
 export type QueuedMessageData = {
 	id: string;
 	channel_id: string;
+	guild_id?: string;
 	content: string;
 	files?: File[];
 	timestamp: string;
@@ -20,6 +21,7 @@ export type QueuedMessageData = {
 
 export default class QueuedMessage extends MessageBase {
 	channel_id: string;
+	guild_id?: string;
 	files?: File[];
 	@observable progress = 0;
 	@observable status: QueuedMessageStatus;
@@ -30,6 +32,7 @@ export default class QueuedMessage extends MessageBase {
 		super(app, data);
 		this.id = data.id;
 		this.channel_id = data.channel_id;
+		this.guild_id = data.guild_id;
 		this.files = data.files;
 		this.status = QueuedMessageStatus.SENDING;
 

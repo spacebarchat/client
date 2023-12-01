@@ -103,6 +103,7 @@ function MessageInput({ channel }: Props) {
 			files: attachmentsCopy,
 			author: app.account!.raw,
 			channel_id: channel.id,
+			guild_id: channel.guildId,
 			timestamp: new Date().toISOString(),
 			type: MessageType.Default,
 		});
