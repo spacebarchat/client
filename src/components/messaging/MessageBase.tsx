@@ -96,14 +96,14 @@ export const MessageDetails = observer(({ message, position }: { message: Messag
 		if (message instanceof Message && message.edited_timestamp) {
 			return (
 				<div className="messageTimestampWrapper">
-					<Tooltip title={dayjs(message.timestamp).format("dddd, MMMM MM, h:mm A")} placement="top">
+					<Tooltip title={dayjs(message.timestamp).format("dddd, MMMM MM, YYYY h:mm A")} placement="top">
 						<time className="copyTime" dateTime={message.edited_timestamp.toISOString()}>
 							{dayjs(message.edited_timestamp).format("h:mm A")}
 						</time>
 					</Tooltip>
 					<span className="edited">
 						<Tooltip
-							title={dayjs(message.edited_timestamp).format("dddd, MMMM MM, h:mm A")}
+							title={dayjs(message.edited_timestamp).format("dddd, MMMM MM, YYYY h:mm A")}
 							placement="top"
 						>
 							<span>(edited)</span>
@@ -121,13 +121,13 @@ export const MessageDetails = observer(({ message, position }: { message: Messag
 
 	return (
 		<DetailBase>
-			<Tooltip title={dayjs(message.timestamp).format("dddd, MMMM MM, h:mm A")} placement="top">
+			<Tooltip title={dayjs(message.timestamp).format("dddd, MMMM MM, YYYY h:mm A")} placement="top">
 				<time className="copyTime" dateTime={message.timestamp.toISOString()}>
 					{dayjs(message.timestamp).calendar(undefined, calendarStrings)}
 				</time>
 			</Tooltip>
 			{message instanceof Message && message.edited_timestamp && (
-				<Tooltip title={dayjs(message.edited_timestamp).format("dddd, MMMM MM, h:mm A")} placement="top">
+				<Tooltip title={dayjs(message.edited_timestamp).format("dddd, MMMM MM, YYYY h:mm A")} placement="top">
 					<span className="edited">(edited)</span>
 				</Tooltip>
 			)}
