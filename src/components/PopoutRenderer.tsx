@@ -9,7 +9,7 @@ interface Props {
 	position: DOMRect;
 	element: React.ReactNode;
 	isOpen: boolean;
-	placement: "left" | "right" | "top" | "bottom";
+	placement?: "left" | "right" | "top" | "bottom";
 }
 
 function PopoutRenderer({ position, element, placement, close }: Props) {

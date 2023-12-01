@@ -7,7 +7,7 @@ export interface PopoutOpenProps {
 }
 
 const useValue = () => {
-	const [position, setPosition] = React.useState({ x: 0, y: 0 });
+	const [position, setPosition] = React.useState<DOMRect>(new DOMRect(0, 0, 0, 0));
 	const [element, setElement] = React.useState<React.ReactNode>();
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [placement, setPlacement] = React.useState<"left" | "right" | "top" | "bottom">();
