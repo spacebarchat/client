@@ -76,7 +76,7 @@ function UserPanel() {
 		<Section>
 			<Container>
 				<AvatarWrapper>
-					<Avatar />
+					<Avatar popoutPlacement="top" />
 					<Name>
 						<Username>{app.account?.username}</Username>
 						<Subtext>#{app.account?.discriminator}</Subtext>

@@ -39,8 +39,8 @@ dependencies:
     specifier: ^5.0.2
     version: 5.0.2(rollup@2.79.1)
   '@spacebarchat/spacebar-api-types':
-    specifier: 0.37.50
-    version: 0.37.50
+    specifier: 0.37.51
+    version: 0.37.51
   '@tauri-apps/api':
     specifier: 2.0.0-alpha.8
     version: 2.0.0-alpha.8
@@ -3018,8 +3018,8 @@ packages:
       '@sinonjs/commons': 1.8.6
     dev: true
 
-  /@spacebarchat/spacebar-api-types@0.37.50:
-    resolution: {integrity: sha512-x6NJjr4/bcajMuSoGSdh/PUFon2POkmcLk7thqkav6c0fZUJqc+S1fl9Ad7o5Mvodd4wqFyBo1dt+u9FyMIjFQ==}
+  /@spacebarchat/spacebar-api-types@0.37.51:
+    resolution: {integrity: sha512-aHLt4ug9+suizxhswG84p3rIX6kM0LhA1MPu1otQVdEDkzCA1VgnQ3Bp+xob20j+1T7Xb6SyfRXLodFE9yL/JA==}
     dev: false
 
   /@surma/rollup-plugin-off-main-thread@2.2.3:

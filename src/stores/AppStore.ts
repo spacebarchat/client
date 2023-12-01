@@ -57,6 +57,11 @@ export default class AppStore {
 
 		// bind this in toggleMemberList
 		this.toggleMemberList = this.toggleMemberList.bind(this);
+		// bind this in windowToggleFps
+		this.windowToggleFps = this.windowToggleFps.bind(this);
+		// expose windowToggleFps to window
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		(window as any).windowToggleFps = this.windowToggleFps;
 
 		window.addEventListener("online", () => this.setNetworkConnected(true));
 		window.addEventListener("offline", () => this.setNetworkConnected(false));
@@ -146,6 +151,11 @@ export default class AppStore {
 	@action
 	toggleMemberList() {
 		this.memberListVisible = !this.memberListVisible;
+	}
+
+	@action
+	windowToggleFps() {
+		this.setFpsShown(!this.fpsShown);
 	}
 }
 

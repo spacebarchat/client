@@ -1,9 +1,10 @@
 import React from "react";
+import { ContextMenuOpenProps } from "../contexts/ContextMenuContext";
 import Container from "./Container";
 import ContextMenuItem, { IContextMenuItem } from "./ContextMenuItem";
 
 interface Props {
-	open: (props: Props) => void;
+	open: (props: ContextMenuOpenProps) => void;
 	close: () => void;
 	visible: boolean;
 	position: {

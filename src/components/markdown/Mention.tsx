@@ -1,11 +1,13 @@
 import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { PopoutContext } from "../../contexts/PopoutContext";
 import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 import Role from "../../stores/objects/Role";
 import User from "../../stores/objects/User";
 import { hexToRGB, rgbToHsl } from "../../utils/Utils";
+import UserProfilePopout from "../UserProfilePopout";
 
 const Container = styled.span<{ color?: string }>`
 	padding: 0 2px;
@@ -23,11 +25,22 @@ interface MentionProps {
 }
 function UserMention({ id }: MentionProps) {
 	const app = useAppStore();
+	const popoutContext = React.useContext(PopoutContext);
 	const [user, setUser] = React.useState<User | null>(null);
+	const ref = React.useRef<HTMLDivElement>(null);
 
-	const click = () => {
-		if (!user) return;
-		// TODO: open user profile modal
+	const click = (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+
+		if (!user || !ref.current) return;
+
+		const rect = ref.current.getBoundingClientRect();
+
+		popoutContext.open({
+			element: <UserProfilePopout user={user} />,
+			position: rect,
+		});
 	};
 
 	React.useEffect(() => {
@@ -37,13 +50,13 @@ function UserMention({ id }: MentionProps) {
 
 	if (!user)
 		return (
-			<Container>
+			<Container ref={ref}>
 				<span>@{id}</span>
 			</Container>
 		);
 
 	return (
-		<Container onClick={click}>
+		<Container onClick={click} ref={ref}>
 			<span>@{user.username}</span>
 		</Container>
 	);
