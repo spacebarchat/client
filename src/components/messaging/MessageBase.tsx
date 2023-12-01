@@ -119,8 +119,6 @@ export const MessageDetails = observer(({ message, position }: { message: Messag
 		);
 	}
 
-	console.log(message.timestamp.toISOString());
-
 	return (
 		<DetailBase>
 			<Tooltip title={dayjs(message.timestamp).format("dddd, MMMM D, YYYY h:mm A")} placement="top">
