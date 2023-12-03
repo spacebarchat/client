@@ -24,7 +24,7 @@ interface Props {
 	user?: User | AccountStore;
 	size?: number;
 	style?: React.CSSProperties;
-	onClick?: () => void;
+	onClick?: (() => void) | null;
 	popoutPlacement?: "left" | "right" | "top" | "bottom";
 }
 
@@ -37,7 +37,10 @@ function Avatar(props: Props) {
 	const user = props.user ?? app.account;
 	if (!user) return null;
 
-	const openPopout = () => {
+	const openPopout = (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+
 		if (!ref.current) return;
 
 		const rect = ref.current.getBoundingClientRect();
@@ -50,17 +53,10 @@ function Avatar(props: Props) {
 		});
 	};
 
+	const clickProp = props.onClick === null ? {} : { onClick: props.onClick ?? openPopout };
+
 	return (
-		<Wrapper
-			size={props.size ?? 32}
-			style={props.style}
-			onClick={(e) => {
-				e.preventDefault();
-				e.stopPropagation();
-				props.onClick ? props.onClick() : openPopout();
-			}}
-			ref={ref}
-		>
+		<Wrapper size={props.size ?? 32} style={props.style} ref={ref} {...clickProp}>
 			<img src={user.avatarUrl} width={props.size ?? 32} height={props.size ?? 32} loading="eager" />
 		</Wrapper>
 	);

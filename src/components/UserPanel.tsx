@@ -1,10 +1,13 @@
 import { useModals } from "@mattjennings/react-modal-stack";
+import React from "react";
 import styled from "styled-components";
+import { PopoutContext } from "../contexts/PopoutContext";
 import { useAppStore } from "../stores/AppStore";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
 import IconButton from "./IconButton";
 import Tooltip from "./Tooltip";
+import UserProfilePopout from "./UserProfilePopout";
 import SettingsModal from "./modals/SettingsModal";
 
 const Section = styled.section`
@@ -28,6 +31,7 @@ const AvatarWrapper = styled.div`
 	padding-left: 2px;
 	margin-right: 8px;
 	border-radius: 4px;
+	cursor: default;
 
 	&:hover {
 		background-color: var(--background-primary-alt);
@@ -45,6 +49,7 @@ const Username = styled.div`
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	cursor: pointer;
 `;
 
 const Subtext = styled.div`
@@ -53,6 +58,7 @@ const Subtext = styled.div`
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	user-select: none;
 `;
 
 const ActionsWrapper = styled.div`
@@ -66,17 +72,34 @@ const ActionsWrapper = styled.div`
 
 function UserPanel() {
 	const app = useAppStore();
+	const popoutContext = React.useContext(PopoutContext);
 	const { openModal } = useModals();
+	const ref = React.useRef<HTMLDivElement>(null);
 
 	const openSettingsModal = () => {
 		openModal(SettingsModal);
 	};
 
+	const openPopout = (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+
+		if (!ref.current) return;
+		const rect = ref.current.getBoundingClientRect();
+		if (!rect) return;
+
+		popoutContext.open({
+			element: <UserProfilePopout user={app.account!} />,
+			position: rect,
+			placement: "top",
+		});
+	};
+
 	return (
-		<Section>
+		<Section ref={ref}>
 			<Container>
-				<AvatarWrapper>
-					<Avatar popoutPlacement="top" />
+				<AvatarWrapper onClick={openPopout}>
+					<Avatar popoutPlacement="top" onClick={null} />
 					<Name>
 						<Username>{app.account?.username}</Username>
 						<Subtext>#{app.account?.discriminator}</Subtext>

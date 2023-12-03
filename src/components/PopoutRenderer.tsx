@@ -78,7 +78,8 @@ function PopoutRenderer({ position, element, placement, close }: Props) {
 					break;
 				}
 				case "top": {
-					let x = position.left - position.width / 1;
+					// center x
+					let x = position.left - rect.bounds.width / 2 + position.width / 2;
 					let y = position.top - rect.bounds.height - OFFSET;
 					if (x + rect.bounds.width > window.innerWidth) {
 						x = window.innerWidth - rect.bounds.width - OFFSET;

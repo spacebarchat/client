@@ -24,6 +24,7 @@ const HeaderText = styled.header`
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+	user-select: none;
 `;
 
 function ChannelHeader() {
