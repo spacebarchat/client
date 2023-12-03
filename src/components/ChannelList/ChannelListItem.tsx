@@ -6,11 +6,12 @@ import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import Channel from "../../stores/objects/Channel";
 import { IContextMenuItem } from "../ContextMenuItem";
 import Icon from "../Icon";
+import Tooltip from "../Tooltip";
 import CreateInviteModal from "../modals/CreateInviteModal";
 
 const ListItem = styled.div<{ isCategory?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};
-	cursor: pointer;
+	cursor: ${(props) => (props.isCategory ? "not-allowed" : "pointer")};
 `;
 
 const Wrapper = styled.div<{ isCategory?: boolean; active?: boolean }>`
@@ -19,19 +20,17 @@ const Wrapper = styled.div<{ isCategory?: boolean; active?: boolean }>`
 	border-radius: 4px;
 	align-items: center;
 	display: flex;
-	padding: 0 8px;
+	padding: ${(props) => (props.isCategory ? "0 8px 0 8px" : "0 16px")};
 	background-color: ${(props) => (props.active ? "var(--background-primary-alt)" : "transparent")};
-
-	&:hover {
-		background-color: var(--background-primary-alt);
-	}
+	justify-content: space-between;
 `;
 
-const Text = styled.span<{ isCategory?: boolean }>`
+const Text = styled.span<{ isCategory?: boolean; hovered?: boolean }>`
 	font-size: 16px;
 	font-weight: var(--font-weight-regular);
 	white-space: nowrap;
-	color: var(--text-secondary);
+	color: ${(props) => (props.isCategory && props.hovered ? "var(--text)" : "var(--text-secondary)")};
+	user-select: none;
 `;
 
 interface Props {
@@ -68,6 +67,7 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 			},
 		},
 	]);
+	const [hovered, setHovered] = React.useState(false);
 
 	return (
 		<ListItem
@@ -81,18 +81,57 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 			}}
 			onContextMenu={(e) => contextMenu.open2(e, contextMenuItems)}
 		>
-			<Wrapper isCategory={isCategory} active={active}>
-				{channel.channelIcon && (
-					<Icon
-						icon={channel.channelIcon}
-						size="16px"
-						style={{
-							marginRight: "8px",
-						}}
-						color="var(--text-secondary)"
-					/>
+			<Wrapper
+				isCategory={isCategory}
+				active={active}
+				onMouseOver={() => setHovered(true)}
+				onMouseOut={() => setHovered(false)}
+			>
+				<div
+					style={{
+						display: "flex",
+						flexDirection: "row",
+						alignItems: "center",
+					}}
+				>
+					{channel.channelIcon && !isCategory && (
+						<Icon
+							icon={channel.channelIcon}
+							size="16px"
+							style={{
+								marginRight: "8px",
+							}}
+							color="var(--text-secondary)"
+						/>
+					)}
+					{isCategory && (
+						<Icon
+							icon="mdiChevronDown"
+							size="12px"
+							color={hovered ? "var(--text)" : "var(--text-secondary)"}
+							style={{
+								marginRight: "8px",
+							}}
+						/>
+					)}
+					<Text isCategory={isCategory} hovered={hovered}>
+						{channel.name}
+					</Text>
+				</div>
+				{isCategory && (
+					<Tooltip title="Create Channel" placement="top">
+						<span>
+							<Icon
+								icon="mdiPlus"
+								size="18px"
+								style={{
+									marginLeft: "auto",
+								}}
+								color={hovered ? "var(--text)" : "var(--text-secondary)"}
+							/>
+						</span>
+					</Tooltip>
 				)}
-				<Text isCategory={isCategory}>{channel.name}</Text>
 			</Wrapper>
 		</ListItem>
 	);
