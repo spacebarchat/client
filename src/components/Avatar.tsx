@@ -40,7 +40,6 @@ function Avatar(props: Props) {
 	const openPopout = () => {
 		if (!ref.current) return;
 
-		// get top left corner of avatar
 		const rect = ref.current.getBoundingClientRect();
 		if (!rect) return;
 
