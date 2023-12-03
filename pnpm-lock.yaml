@@ -80,6 +80,9 @@ dependencies:
   '@testing-library/user-event':
     specifier: ^13.5.0
     version: 13.5.0(@testing-library/dom@9.3.3)
+  '@types/react-measure':
+    specifier: ^2.0.12
+    version: 2.0.12
   classnames:
     specifier: ^2.3.2
     version: 2.3.2
@@ -137,6 +140,9 @@ dependencies:
   react-markdown:
     specifier: ^8.0.7
     version: 8.0.7(@types/react@18.2.24)(react@18.2.0)
+  react-measure:
+    specifier: ^2.5.2
+    version: 2.5.2(react-dom@18.2.0)(react@18.2.0)
   react-router-dom:
     specifier: ^6.16.0
     version: 6.16.0(react-dom@18.2.0)(react@18.2.0)
@@ -3760,6 +3766,12 @@ packages:
     dependencies:
       '@types/react': 18.2.24
 
+  /@types/react-measure@2.0.12:
+    resolution: {integrity: sha512-Y6V11CH6bU7RhqrIdENPwEUZlPXhfXNGylMNnGwq5TAEs2wDoBA3kSVVM/EQ8u72sz5r9ja+7W8M8PIVcS841Q==}
+    dependencies:
+      '@types/react': 18.2.24
+    dev: false
+
   /@types/react-syntax-highlighter@15.5.7:
     resolution: {integrity: sha512-bo5fEO5toQeyCp0zVHBeggclqf5SQ/Z5blfFmjwO5dkMVGPgmiwZsJh9nu/Bo5L7IHTuGWrja6LxJVE2uB5ZrQ==}
     dependencies:
@@ -7176,6 +7188,10 @@ packages:
       has: 1.0.4
       has-proto: 1.0.1
       has-symbols: 1.0.3
+
+  /get-node-dimensions@1.2.1:
+    resolution: {integrity: sha512-2MSPMu7S1iOTL+BOa6K1S62hB2zUAYNF/lV0gSVlOaacd087lc6nR1H1r0e3B1CerTo+RceOmi1iJW+vp21xcQ==}
+    dev: false
 
   /get-own-enumerable-property-symbols@3.0.2:
     resolution: {integrity: sha512-I0UBV/XOz1XkIJHEUDMZAbzCThU/H8DxmSfmdGcKPnVhu2VfFqr34jr9777IyaTYvxjedWhqVIilEDsCdP5G6g==}
@@ -11010,6 +11026,20 @@ packages:
       - supports-color
     dev: false
 
+  /react-measure@2.5.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-M+rpbTLWJ3FD6FXvYV6YEGvQ5tMayQ3fGrZhRPHrE9bVlBYfDCLuDcgNttYfk8IqfOI03jz6cbpqMRTUclQnaA==}
+    peerDependencies:
+      react: '>0.13.0'
+      react-dom: '>0.13.0'
+    dependencies:
+      '@babel/runtime': 7.23.1
+      get-node-dimensions: 1.2.1
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      resize-observer-polyfill: 1.5.1
+    dev: false
+
   /react-refresh@0.11.0:
     resolution: {integrity: sha512-F27qZr8uUqwhWZboondsPx8tnC3Ct3SxZA3V5WyEvujRyyNv0VYPhoBg1gZ8/MV5tubQp76Trw8lTv9hzRBa+A==}
     engines: {node: '>=0.10.0'}
@@ -11425,6 +11455,10 @@ packages:
   /requires-port@1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
     dev: true
+
+  /resize-observer-polyfill@1.5.1:
+    resolution: {integrity: sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==}
+    dev: false
 
   /resolve-cwd@3.0.0:
     resolution: {integrity: sha512-OrZaX2Mb+rJCpH/6CpSqt9xFVpN++x01XnN2ie9g6P5/3xelLAkXWVADpdz1IHD/KFfEXyE6V0U01OQ3UO2rEg==}
