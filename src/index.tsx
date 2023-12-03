@@ -22,6 +22,7 @@ import App from "./App";
 import ModalRenderer from "./components/modals/ModalRenderer";
 import { BannerContextProvider } from "./contexts/BannerContext";
 import { ContextMenuContextProvider } from "./contexts/ContextMenuContext";
+import { PopoutContextProvider } from "./contexts/PopoutContext";
 import Theme from "./contexts/Theme";
 import "./index.css";
 import { calendarStrings } from "./utils/i18n";
@@ -33,11 +34,13 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<ErrorBoundaryContext>
 		<BrowserRouter>
 			<ModalStack renderModals={ModalRenderer}>
-				<ContextMenuContextProvider>
-					<BannerContextProvider>
-						<App />
-					</BannerContextProvider>
-				</ContextMenuContextProvider>
+				<PopoutContextProvider>
+					<ContextMenuContextProvider>
+						<BannerContextProvider>
+							<App />
+						</BannerContextProvider>
+					</ContextMenuContextProvider>
+				</PopoutContextProvider>
 				<Theme />
 			</ModalStack>
 		</BrowserRouter>

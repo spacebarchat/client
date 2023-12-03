@@ -1,10 +1,13 @@
 import React, { memo } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { PopoutContext } from "../../contexts/PopoutContext";
 import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 import Role from "../../stores/objects/Role";
 import User from "../../stores/objects/User";
 import { hexToRGB, rgbToHsl } from "../../utils/Utils";
+import UserProfilePopout from "../UserProfilePopout";
 
 const Container = styled.span<{ color?: string }>`
 	padding: 0 2px;
@@ -22,7 +25,23 @@ interface MentionProps {
 }
 function UserMention({ id }: MentionProps) {
 	const app = useAppStore();
+	const popoutContext = React.useContext(PopoutContext);
 	const [user, setUser] = React.useState<User | null>(null);
+	const ref = React.useRef<HTMLDivElement>(null);
+
+	const click = (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+
+		if (!user || !ref.current) return;
+
+		const rect = ref.current.getBoundingClientRect();
+
+		popoutContext.open({
+			element: <UserProfilePopout user={user} />,
+			position: rect,
+		});
+	};
 
 	React.useEffect(() => {
 		const user = app.users.get(id);
@@ -31,13 +50,13 @@ function UserMention({ id }: MentionProps) {
 
 	if (!user)
 		return (
-			<Container>
+			<Container ref={ref}>
 				<span>@{id}</span>
 			</Container>
 		);
 
 	return (
-		<Container>
+		<Container onClick={click} ref={ref}>
 			<span>@{user.username}</span>
 		</Container>
 	);
@@ -46,6 +65,12 @@ function UserMention({ id }: MentionProps) {
 function ChannelMention({ id }: MentionProps) {
 	const app = useAppStore();
 	const [channel, setChannel] = React.useState<Channel | null>(null);
+	const navigate = useNavigate();
+
+	const click = () => {
+		if (!channel) return;
+		navigate(`/channels/${channel.guildId}/${channel.id}`);
+	};
 
 	React.useEffect(() => {
 		const channel = app.channels.get(id);
@@ -60,7 +85,7 @@ function ChannelMention({ id }: MentionProps) {
 		);
 
 	return (
-		<Container>
+		<Container onClick={click}>
 			<span>#{channel.name}</span>
 		</Container>
 	);

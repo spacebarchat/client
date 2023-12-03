@@ -63,14 +63,16 @@ function ChatContent({ channel, guild }: Props2) {
 	);
 }
 
-function Content(props: Props2) {
+const Content = observer((props: Props2) => {
+	const { memberListVisible } = useAppStore();
+
 	return (
 		<WrapperOne>
 			<ChatContent {...props} />
-			<MemberList />
+			{memberListVisible && <MemberList />}
 		</WrapperOne>
 	);
-}
+});
 
 /**
  * Main component for rendering channel messages

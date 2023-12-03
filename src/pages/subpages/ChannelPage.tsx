@@ -8,9 +8,11 @@ import ContainerComponent from "../../components/Container";
 import ContextMenu from "../../components/ContextMenu";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import GuildSidebar from "../../components/GuildSidebar";
+import PopoutRenderer from "../../components/PopoutRenderer";
 import Chat from "../../components/messaging/Chat";
 import { BannerContext } from "../../contexts/BannerContext";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
+import { PopoutContext } from "../../contexts/PopoutContext";
 import { useAppStore } from "../../stores/AppStore";
 
 const Container = styled(ContainerComponent)`
@@ -27,7 +29,8 @@ const Wrapper = styled.div`
 
 function ChannelPage() {
 	const app = useAppStore();
-	const contextMenu = React.useContext(ContextMenuContext);
+	const contextMenuContext = React.useContext(ContextMenuContext);
+	const popoutContext = React.useContext(PopoutContext);
 	const bannerContext = React.useContext(BannerContext);
 
 	const { guildId, channelId } = useParams<{ guildId: string; channelId: string }>();
@@ -41,7 +44,8 @@ function ChannelPage() {
 		<Container>
 			<Banner />
 			<Wrapper>
-				{contextMenu.visible && <ContextMenu {...contextMenu} />}
+				{contextMenuContext.visible && <ContextMenu {...contextMenuContext} />}
+				{popoutContext.element && <PopoutRenderer {...popoutContext} />}
 				<GuildSidebar />
 				<ChannelSidebar />
 				<ErrorBoundary section="component">

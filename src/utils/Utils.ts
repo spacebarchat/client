@@ -1,5 +1,6 @@
 import * as Icons from "@mdi/js";
 import { APIAttachment, EmbedType } from "@spacebarchat/spacebar-api-types/v9";
+import Channel from "../stores/objects/Channel";
 import { ARCHIVE_MIMES, EMBEDDABLE_AUDIO_MIMES, EMBEDDABLE_IMAGE_MIMES, EMBEDDABLE_VIDEO_MIMES } from "./constants";
 
 export const decimalColorToHex = (decimal: number) => {
@@ -127,4 +128,8 @@ export function hexToRGB(hex: string) {
 		g: parseInt(m[2], 16),
 		b: parseInt(m[3], 16),
 	};
+}
+
+export function compareChannels(a: Channel, b: Channel): number {
+	return (a.position ?? 0) - (b.position ?? 0);
 }

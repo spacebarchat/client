@@ -1,6 +1,5 @@
 import {
 	APIGuildMember,
-	APIUser,
 	GatewayGuildMemberListUpdateMember,
 	GuildMemberFlags,
 } from "@spacebarchat/spacebar-api-types/v9";
@@ -8,12 +7,13 @@ import { action, observable } from "mobx";
 import AppStore from "../AppStore";
 import Guild from "./Guild";
 import Role from "./Role";
+import User from "./User";
 
 export default class GuildMember {
 	private readonly app: AppStore;
-	private readonly guild: Guild;
+	public readonly guild: Guild;
 
-	@observable user?: APIUser | undefined;
+	@observable user?: User | undefined;
 	@observable nick?: string | null | undefined;
 	@observable avatar?: string | null | undefined;
 	@observable roles: Role[];
@@ -29,7 +29,9 @@ export default class GuildMember {
 		this.app = app;
 		this.guild = guild;
 
-		this.user = data.user;
+		if (data.user) {
+			this.user = new User(data.user);
+		}
 		this.nick = data.nick;
 		this.avatar = data.avatar;
 		this.roles = data.roles.map((role) => app.roles.get(role)).filter(Boolean) as Role[];

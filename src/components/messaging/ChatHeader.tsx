@@ -1,6 +1,8 @@
 import * as Icons from "@mdi/js";
+import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
+import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 import Icon from "../Icon";
 import { SectionHeader } from "../SectionHeader";
@@ -111,19 +113,16 @@ interface ActionItemProps {
 	active?: boolean;
 	ariaLabel?: string;
 	tooltip: string;
+	onClick?: () => void;
 }
 
-function ActionItem({ icon, active, ariaLabel, tooltip }: ActionItemProps) {
+function ActionItem({ icon, active, ariaLabel, tooltip, onClick }: ActionItemProps) {
 	const logger = useLogger("ChatHeader.tsx:ActionItem");
 
 	return (
 		<Tooltip title={tooltip}>
 			<IconWrapper>
-				<IconButton
-					onClick={() => {
-						logger.debug("click");
-					}}
-				>
+				<IconButton onClick={onClick}>
 					<CustomIcon $active={active} icon={icon} size="24px" aria-label={ariaLabel} />
 				</IconButton>
 			</IconWrapper>
@@ -135,6 +134,8 @@ function ActionItem({ icon, active, ariaLabel, tooltip }: ActionItemProps) {
  * Top header for channel messages section
  */
 function ChatHeader({ channel }: Props) {
+	const { memberListVisible, toggleMemberList } = useAppStore();
+
 	return (
 		<Container>
 			<Wrapper>
@@ -152,7 +153,8 @@ function ChatHeader({ channel }: Props) {
 						icon="mdiAccountMultiple"
 						tooltip="Toggle Member List"
 						ariaLabel="Toggle Member List"
-						active
+						active={memberListVisible}
+						onClick={toggleMemberList}
 					/>
 					<ActionItem icon="mdiPin" tooltip="Pinned Messages" ariaLabel="Pinned Messages" />
 					<ActionItem icon="mdiBellBadge" tooltip="Notification Settings" ariaLabel="Notification Settings" />
@@ -162,4 +164,4 @@ function ChatHeader({ channel }: Props) {
 	);
 }
 
-export default ChatHeader;
+export default observer(ChatHeader);
