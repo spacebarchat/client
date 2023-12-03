@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { ContextMenuContext } from "../contexts/ContextMenuContext";
 import { useAppStore } from "../stores/AppStore";
 import { IContextMenuItem } from "./ContextMenuItem";
-import Icon from "./Icon";
+import Icon, { IconProps } from "./Icon";
 import { SectionHeader } from "./SectionHeader";
 import LeaveServerModal from "./modals/LeaveServerModal";
 
@@ -33,6 +33,7 @@ function ChannelHeader() {
 	const { openModal } = useModals();
 
 	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([]);
+	const [icon, setIcon] = React.useState<IconProps["icon"]>("mdiChevronDown");
 
 	React.useEffect(() => {
 		if (app.activeGuild && app.activeGuild.ownerId !== app.account?.id) {
@@ -66,6 +67,7 @@ function ChannelHeader() {
 		if (contextMenu.visible) {
 			// "toggles" the menu
 			contextMenu.close();
+			setIcon("mdiChevronDown");
 			return;
 		}
 
@@ -82,6 +84,8 @@ function ChannelHeader() {
 				boxSizing: "border-box",
 			},
 		});
+
+		setIcon("mdiClose");
 	}
 
 	if (app.activeGuildId === "@me") {
@@ -104,7 +108,7 @@ function ChannelHeader() {
 	return (
 		<Wrapper onClick={openMenu}>
 			<HeaderText>{app.activeGuild.name}</HeaderText>
-			<Icon icon="mdiChevronDown" size="20px" color="var(--text)" />
+			<Icon icon={icon} size="20px" color="var(--text)" />
 		</Wrapper>
 	);
 }
