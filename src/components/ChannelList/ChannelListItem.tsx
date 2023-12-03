@@ -23,6 +23,10 @@ const Wrapper = styled.div<{ isCategory?: boolean; active?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "0 8px 0 8px" : "0 16px")};
 	background-color: ${(props) => (props.active ? "var(--background-primary-alt)" : "transparent")};
 	justify-content: space-between;
+
+	&:hover {
+		background-color: ${(props) => (props.isCategory ? "transparent" : "var(--background-primary-alt)")};
+	}
 `;
 
 const Text = styled.span<{ isCategory?: boolean; hovered?: boolean }>`
