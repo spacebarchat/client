@@ -1,6 +1,4 @@
-import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
@@ -81,13 +79,13 @@ function Chat() {
 	const app = useAppStore();
 	const logger = useLogger("Messages");
 
-	React.useEffect(() => {
-		if (!app.activeChannel || !app.activeGuild || app.activeChannelId === "@me") return;
+	// React.useEffect(() => {
+	// 	if (!app.activeChannel || !app.activeGuild || app.activeChannelId === "@me") return;
 
-		runInAction(() => {
-			app.gateway.onChannelOpen(app.activeGuildId!, app.activeChannelId!);
-		});
-	}, [app.activeChannel, app.activeGuild]);
+	// 	runInAction(() => {
+	// 		app.gateway.onChannelOpen(app.activeGuildId!, app.activeChannelId!);
+	// 	});
+	// }, [app.activeChannel, app.activeGuild]);
 
 	if (app.activeGuildId && app.activeGuildId === "@me") {
 		return (
