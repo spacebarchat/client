@@ -111,10 +111,7 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 						src={url}
 						loading="lazy"
 						style={{ width: "100%", height: "100%" }}
-						onClick={() => {
-							console.log("preview image");
-						}}
-						onMouseDown={(ev) => ev.button === 1 && window.open(url, "_blank")}
+						onClick={() => window.open(url, "_blank")}
 					/>
 				);
 			} else if (embed.thumbnail) {
@@ -126,10 +123,7 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 						src={url}
 						loading="lazy"
 						style={{ width, height }}
-						onClick={() => {
-							console.log("preview image");
-						}}
-						onMouseDown={(ev) => ev.button === 1 && window.open(url, "_blank")}
+						onClick={() => window.open(url, "_blank")}
 					/>
 				);
 			}
