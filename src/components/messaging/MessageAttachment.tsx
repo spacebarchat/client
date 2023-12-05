@@ -6,7 +6,7 @@ import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import useLogger from "../../hooks/useLogger";
 import ContextMenus from "../../utils/ContextMenus";
 import { calculateImageRatio, calculateScaledDimensions } from "../../utils/Message";
-import { getFileDetails } from "../../utils/Utils";
+import { getFileDetails, zoomFit } from "../../utils/Utils";
 import { IContextMenuItem } from "../ContextMenuItem";
 import Audio from "../media/Audio";
 import File from "../media/File";
@@ -68,7 +68,8 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 			}
 			onClick={() => {
 				if (!attachment.content_type?.startsWith("image")) return;
-				openModal(AttachmentPreviewModal, { attachment });
+				const { width, height } = zoomFit(attachment.width!, attachment.height!);
+				openModal(AttachmentPreviewModal, { attachment, width, height });
 			}}
 		>
 			{finalElement}

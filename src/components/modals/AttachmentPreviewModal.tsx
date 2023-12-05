@@ -4,11 +4,13 @@ import { AnimatedModalProps } from "./ModalRenderer";
 
 interface Props extends AnimatedModalProps {
 	attachment: APIAttachment;
+	width?: number;
+	height?: number;
 }
 
 function AttachmentPreviewModal(props: Props) {
-	const width = props.attachment.width ?? 0;
-	const height = props.attachment.height ?? 0;
+	const width = props.width ?? props.attachment.width ?? 0;
+	const height = props.height ?? props.attachment.height ?? 0;
 
 	return (
 		<Modal
@@ -20,14 +22,7 @@ function AttachmentPreviewModal(props: Props) {
 			}}
 			{...props}
 		>
-			<div
-				style={{
-					maxWidth: "100vw",
-					maxHeight: "100vh",
-				}}
-			>
-				<img src={props.attachment.url} width={width} height={height} loading="eager" />
-			</div>
+			<img src={props.attachment.url} width={width} height={height} loading="eager" />
 		</Modal>
 	);
 }

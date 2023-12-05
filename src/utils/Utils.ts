@@ -133,3 +133,27 @@ export function hexToRGB(hex: string) {
 export function compareChannels(a: Channel, b: Channel): number {
 	return (a.position ?? 0) - (b.position ?? 0);
 }
+
+export function doFit(width: number, height: number, maxWidth: number, maxHeight: number, minWidth = 0, minHeight = 0) {
+	if (width !== maxWidth || height !== maxHeight) {
+		const widthScalingFactor = width > maxWidth ? maxWidth / width : 1;
+		width = Math.max(Math.round(width * widthScalingFactor), minWidth);
+		height = Math.max(Math.round(height * widthScalingFactor), minHeight);
+
+		const heightScalingFactor = height > maxHeight ? maxHeight / height : 1;
+		width = Math.max(Math.round(width * heightScalingFactor), minWidth);
+		height = Math.max(Math.round(height * heightScalingFactor), minHeight);
+	}
+
+	return {
+		width,
+		height,
+	};
+}
+
+export function zoomFit(width: number, height: number) {
+	const maxHeight = Math.min(Math.round(0.65 * window.innerHeight), 2e3);
+	const maxWidth = Math.min(Math.round(0.75 * window.innerWidth), 2e3);
+
+	return doFit(width, height, maxWidth, maxHeight);
+}
