@@ -68,4 +68,14 @@ export default class GuildMember {
 			this.app.presences.add(member.presence);
 		}
 	}
+
+	@action
+	async kick(reason?: string) {
+		return this.guild.kickMember(this.user!.id, reason);
+	}
+
+	@action
+	async ban(reason?: string, deleteMessageSeconds?: number) {
+		return this.guild.banMember(this.user!.id, reason, deleteMessageSeconds);
+	}
 }

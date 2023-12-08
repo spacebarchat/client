@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { PopoutContext } from "../../contexts/PopoutContext";
+import { useAppStore } from "../../stores/AppStore";
 import GuildMember from "../../stores/objects/GuildMember";
 import ContextMenus from "../../utils/ContextMenus";
 import { IContextMenuItem } from "../ContextMenuItem";
@@ -38,10 +39,14 @@ interface Props {
 }
 
 function MemberListItem({ item }: Props) {
+	const app = useAppStore();
 	const popoutContext = React.useContext(PopoutContext);
 
 	const contextMenu = React.useContext(ContextMenuContext);
-	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>(ContextMenus.User(item.user!));
+	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
+		...ContextMenus.User(item.user!),
+		...ContextMenus.Member(app.account!, item, item.guild!),
+	]);
 
 	return (
 		<ListItem

@@ -1,5 +1,8 @@
 import type { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
 import {
+	RESTPutAPIGuildBanJSONBody,
+	RESTPutAPIGuildBanResult,
+	Routes,
 	type APIChannel,
 	type APIGuild,
 	type GatewayGuild,
@@ -169,5 +172,34 @@ export default class Guild {
 	removeChannel(id: Snowflake) {
 		this.app.channels.remove(id);
 		this.channels_.delete(id);
+	}
+
+	@action
+	async kickMember(id: Snowflake, reason?: string) {
+		return this.app.rest.delete(
+			Routes.guildMember(this.id, id),
+			{},
+			reason
+				? {
+						"X-Audit-Log-Reason": reason,
+				  }
+				: {},
+		);
+	}
+
+	@action
+	async banMember(id: Snowflake, reason?: string, deleteMessageSeconds?: number) {
+		return this.app.rest.put<RESTPutAPIGuildBanJSONBody, RESTPutAPIGuildBanResult>(
+			Routes.guildBan(this.id, id),
+			{
+				delete_message_seconds: deleteMessageSeconds,
+			},
+			{},
+			reason
+				? {
+						"X-Audit-Log-Reason": reason,
+				  }
+				: {},
+		);
 	}
 }

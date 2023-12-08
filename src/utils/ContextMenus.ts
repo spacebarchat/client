@@ -2,6 +2,8 @@ import { APIAttachment } from "@spacebarchat/spacebar-api-types/v9";
 import { IContextMenuItem } from "../components/ContextMenuItem";
 import AccountStore from "../stores/AccountStore";
 import AppStore from "../stores/AppStore";
+import Guild from "../stores/objects/Guild";
+import GuildMember from "../stores/objects/GuildMember";
 import { MessageLike } from "../stores/objects/Message";
 import User from "../stores/objects/User";
 import { Permissions } from "./Permissions";
@@ -69,5 +71,88 @@ export default {
 				},
 			},
 		];
+	},
+	// TODO: check if target has higher role
+	Member: (me: AccountStore, them: GuildMember, guild?: Guild): IContextMenuItem[] => {
+		const permissions = Permissions.getPermission(me.id, guild);
+
+		const items: IContextMenuItem[] = [];
+
+		if (permissions.has("KICK_MEMBERS")) {
+			items.push({
+				label: `Kick ${them.user!.username}`,
+				onClick: () => {
+					// openModal(KickModal, {
+					// 	member: them,
+					// });
+				},
+				color: "red",
+				hover: {
+					backgroundColor: "red",
+					color: "white",
+				},
+			});
+		}
+
+		if (permissions.has("BAN_MEMBERS")) {
+			items.push({
+				label: `Ban ${them.user!.username}`,
+				onClick: () => {
+					// member.kick()
+					console.log("ban member");
+				},
+				color: "red",
+				hover: {
+					backgroundColor: "red",
+					color: "white",
+				},
+			});
+		}
+
+		return items;
+	},
+	// TODO: check if target has higher role
+	Member2: (app: AppStore, them: User, guildId: string): IContextMenuItem[] => {
+		const me = app.account!;
+		const guild = app.guilds.get(guildId);
+		if (!guild) return [];
+		const member = guild.members.get(them.id);
+		if (!member) return [];
+		const permissions = Permissions.getPermission(me.id, guild);
+
+		const items: IContextMenuItem[] = [];
+
+		if (permissions.has("KICK_MEMBERS")) {
+			items.push({
+				label: `Kick ${them.username}`,
+				onClick: () => {
+					// openModal(KickModal, {
+					// 	member,
+					// });
+				},
+				color: "red",
+				hover: {
+					backgroundColor: "red",
+					color: "white",
+				},
+			});
+		}
+
+		if (permissions.has("BAN_MEMBERS")) {
+			items.push({
+				label: `Ban ${them.username}`,
+				onClick: () => {
+					// member.kick()
+					console.log("ban member");
+				},
+				color: "red",
+				hover: {
+					backgroundColor: "red",
+					color: "white",
+				},
+			});
+		}
+
+		return items;
 	},
 };

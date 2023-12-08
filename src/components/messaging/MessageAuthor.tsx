@@ -62,7 +62,14 @@ function MessageAuthor({ message }: Props) {
 			style={{
 				color,
 			}}
-			onContextMenu={(e) => contextMenu.open2(e, [...ContextMenus.User(message.author)])}
+			onContextMenu={(e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				contextMenu.open2(e, [
+					...ContextMenus.User(message.author),
+					...(message.guild_id ? ContextMenus.Member2(app, message.author, message.guild_id) : []),
+				]);
+			}}
 			onClick={openPopout}
 		>
 			{message.author.username}
