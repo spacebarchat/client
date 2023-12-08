@@ -18,6 +18,7 @@ import {
 	GatewayLazyRequest,
 	GatewayLazyRequestData,
 	GatewayMessageCreateDispatchData,
+	GatewayMessageDeleteBulkDispatchData,
 	GatewayMessageDeleteDispatchData,
 	GatewayMessageUpdateDispatchData,
 	GatewayOpcodes,
@@ -122,6 +123,7 @@ export default class GatewayConnectionStore {
 		this.dispatchHandlers.set(GatewayDispatchEvents.MessageCreate, this.onMessageCreate);
 		this.dispatchHandlers.set(GatewayDispatchEvents.MessageUpdate, this.onMessageUpdate);
 		this.dispatchHandlers.set(GatewayDispatchEvents.MessageDelete, this.onMessageDelete);
+		this.dispatchHandlers.set(GatewayDispatchEvents.MessageDeleteBulk, this.onMessageBulkDelete);
 
 		this.dispatchHandlers.set(GatewayDispatchEvents.PresenceUpdate, this.onPresenceUpdate);
 
@@ -603,6 +605,23 @@ export default class GatewayConnectionStore {
 		}
 
 		channel.messages.remove(data.id);
+	};
+
+	private onMessageBulkDelete = (data: GatewayMessageDeleteBulkDispatchData) => {
+		const guild = this.app.guilds.get(data.guild_id!);
+		if (!guild) {
+			this.logger.warn(`[MessageDeleteBulk] Guild ${data.guild_id} not found.`);
+			return;
+		}
+		const channel = this.app.channels.get(data.channel_id);
+		if (!channel) {
+			this.logger.warn(`[MessageDeleteBulk] Channel ${data.channel_id} not found.`);
+			return;
+		}
+
+		for (const id of data.ids) {
+			channel.messages.remove(id);
+		}
 	};
 
 	private onPresenceUpdate = (data: GatewayPresenceUpdateDispatchData) => {
