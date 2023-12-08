@@ -4,6 +4,7 @@ import {
 	ChannelType,
 	GatewayChannelCreateDispatchData,
 	GatewayChannelDeleteDispatchData,
+	GatewayChannelUpdateDispatchData,
 	GatewayCloseCodes,
 	GatewayDispatchEvents,
 	GatewayDispatchPayload,
@@ -122,6 +123,7 @@ export default class GatewayConnectionStore {
 		this.dispatchHandlers.set(GatewayDispatchEvents.GuildMemberListUpdate, this.onGuildMemberListUpdate);
 
 		this.dispatchHandlers.set(GatewayDispatchEvents.ChannelCreate, this.onChannelCreate);
+		this.dispatchHandlers.set(GatewayDispatchEvents.ChannelUpdate, this.onChannelUpdate);
 		this.dispatchHandlers.set(GatewayDispatchEvents.ChannelDelete, this.onChannelDelete);
 
 		this.dispatchHandlers.set(GatewayDispatchEvents.MessageCreate, this.onMessageCreate);
@@ -569,6 +571,20 @@ export default class GatewayConnectionStore {
 			return;
 		}
 		guild.addChannel(data);
+	};
+
+	private onChannelUpdate = (data: GatewayChannelUpdateDispatchData) => {
+		if (data.type === ChannelType.DM || data.type === ChannelType.GroupDM) {
+			this.app.privateChannels.update(data);
+			return;
+		}
+
+		const guild = this.app.guilds.get(data.guild_id!);
+		if (!guild) {
+			this.logger.warn(`[ChannelUpdate] Guild ${data.guild_id} not found for channel ${data.id}`);
+			return;
+		}
+		guild.updateChannel(data);
 	};
 
 	private onChannelDelete = (data: GatewayChannelDeleteDispatchData) => {

@@ -169,6 +169,11 @@ export default class Guild {
 	}
 
 	@action
+	updateChannel(data: APIChannel) {
+		this.app.channels.update(data);
+	}
+
+	@action
 	removeChannel(id: Snowflake) {
 		this.app.channels.remove(id);
 		this.channels_.delete(id);
