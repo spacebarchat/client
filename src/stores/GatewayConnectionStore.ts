@@ -10,7 +10,9 @@ import {
 	GatewayGuild,
 	GatewayGuildCreateDispatchData,
 	GatewayGuildDeleteDispatchData,
+	GatewayGuildMemberAddDispatchData,
 	GatewayGuildMemberListUpdateDispatchData,
+	GatewayGuildMemberRemoveDispatchData,
 	GatewayGuildModifyDispatchData,
 	GatewayHeartbeat,
 	GatewayHelloData,
@@ -115,6 +117,8 @@ export default class GatewayConnectionStore {
 		this.dispatchHandlers.set(GatewayDispatchEvents.GuildCreate, this.onGuildCreate);
 		this.dispatchHandlers.set(GatewayDispatchEvents.GuildUpdate, this.onGuildUpdate);
 		this.dispatchHandlers.set(GatewayDispatchEvents.GuildDelete, this.onGuildDelete);
+		this.dispatchHandlers.set(GatewayDispatchEvents.GuildMemberAdd, this.onGuildMemberAdd);
+		this.dispatchHandlers.set(GatewayDispatchEvents.GuildMemberRemove, this.onGuildMemberRemove);
 		this.dispatchHandlers.set(GatewayDispatchEvents.GuildMemberListUpdate, this.onGuildMemberListUpdate);
 
 		this.dispatchHandlers.set(GatewayDispatchEvents.ChannelCreate, this.onChannelCreate);
@@ -518,6 +522,26 @@ export default class GatewayConnectionStore {
 		runInAction(() => {
 			this.app.guilds.remove(data.id);
 		});
+	};
+
+	private onGuildMemberAdd = (data: GatewayGuildMemberAddDispatchData) => {
+		this.logger.debug("Received GuildMemberAdd event");
+		const guild = this.app.guilds.get(data.guild_id);
+		if (!guild) {
+			this.logger.warn(`[GuildMemberAdd] Guild ${data.guild_id} not found for member ${data.user?.id}`);
+			return;
+		}
+		guild.members.add(data);
+	};
+
+	private onGuildMemberRemove = (data: GatewayGuildMemberRemoveDispatchData) => {
+		this.logger.debug("Received GuildMemberRemove event");
+		const guild = this.app.guilds.get(data.guild_id);
+		if (!guild) {
+			this.logger.warn(`[GuildMemberRemove] Guild ${data.guild_id} not found for member ${data.user.id}`);
+			return;
+		}
+		guild.members.remove(data.user.id);
 	};
 
 	private onGuildMemberListUpdate = (data: GatewayGuildMemberListUpdateDispatchData) => {
