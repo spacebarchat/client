@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { PopoutContext } from "../../contexts/PopoutContext";
 import GuildMember from "../../stores/objects/GuildMember";
+import ContextMenus from "../../utils/ContextMenus";
+import { IContextMenuItem } from "../ContextMenuItem";
 import UserProfilePopout from "../UserProfilePopout";
 
 const ListItem = styled.div<{ isCategory?: boolean }>`
@@ -37,13 +40,13 @@ interface Props {
 function MemberListItem({ item }: Props) {
 	const popoutContext = React.useContext(PopoutContext);
 
-	// const contextMenu = React.useContext(ContextMenuContext);
-	// const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([]);
+	const contextMenu = React.useContext(ContextMenuContext);
+	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>(ContextMenus.User(item.user!));
 
 	return (
 		<ListItem
 			key={item.user?.id}
-			// onContextMenu={(e) => contextMenu.open2(e, contextMenuItems)}
+			onContextMenu={(e) => contextMenu.open2(e, contextMenuItems)}
 			onClick={(e) => {
 				e.preventDefault();
 				e.stopPropagation();
