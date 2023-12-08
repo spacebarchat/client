@@ -121,7 +121,14 @@ function JoinServerModal(props: AnimatedModalProps) {
 			</ModalHeader>
 
 			<ModelContentContainer>
-				<form>
+				<form
+					onKeyDown={(e) => {
+						if (e.key === "Enter") {
+							e.preventDefault();
+							onSubmit();
+						}
+					}}
+				>
 					<InviteInputContainer>
 						<LabelWrapper error={!!errors.code}>
 							<InputLabel>Invite Link</InputLabel>

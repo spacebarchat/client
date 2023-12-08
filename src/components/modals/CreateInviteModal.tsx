@@ -252,7 +252,14 @@ function CreateInviteModal(props: InviteModalProps) {
 			</ModalHeader>
 
 			<ModelContentContainer>
-				<form>
+				<form
+					onKeyDown={(e) => {
+						if (e.key === "Enter") {
+							e.preventDefault();
+							onSubmit();
+						}
+					}}
+				>
 					<InputContainer>
 						<LabelWrapper error={false}>
 							<InputLabel>Expire after</InputLabel>

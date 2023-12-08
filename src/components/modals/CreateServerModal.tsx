@@ -203,7 +203,14 @@ function CreateServerModal(props: AnimatedModalProps) {
 					</IconContainer>
 				</UploadIcon>
 
-				<form>
+				<form
+					onKeyDown={(e) => {
+						if (e.key === "Enter") {
+							e.preventDefault();
+							onSubmit();
+						}
+					}}
+				>
 					<InputContainer>
 						<LabelWrapper error={!!errors.name}>
 							<InputLabel>Guild Name</InputLabel>
