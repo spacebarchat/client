@@ -210,6 +210,7 @@ export default class Channel {
 				Routes.channelMessages(this.id),
 				data,
 				undefined,
+				undefined,
 				msg,
 			);
 		return this.app.rest.post<RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult>(
