@@ -237,6 +237,22 @@ export default class Channel {
 	}
 
 	@computed
+	get isGuildTextChannel() {
+		return (
+			this.type === ChannelType.GuildText ||
+			this.type === ChannelType.GuildVoice ||
+			this.type === ChannelType.GuildStageVoice ||
+			this.type === ChannelType.GuildForum ||
+			this.type === ChannelType.GuildAnnouncement ||
+			this.type === ChannelType.AnnouncementThread ||
+			this.type === ChannelType.Encrypted ||
+			this.type === ChannelType.EncryptedThread ||
+			this.type === ChannelType.PrivateThread ||
+			this.type === ChannelType.PublicThread
+		);
+	}
+
+	@computed
 	get typingUsers(): User[] {
 		return Array.from(this.typingIds.keys())
 			.map((x) => this.app.users.get(x) as User)

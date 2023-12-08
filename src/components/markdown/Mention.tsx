@@ -69,6 +69,7 @@ function ChannelMention({ id }: MentionProps) {
 
 	const click = () => {
 		if (!channel) return;
+		if (!channel.isGuildTextChannel) return;
 		navigate(`/channels/${channel.guildId}/${channel.id}`);
 	};
 
