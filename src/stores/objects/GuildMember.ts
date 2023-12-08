@@ -3,7 +3,7 @@ import {
 	GatewayGuildMemberListUpdateMember,
 	GuildMemberFlags,
 } from "@spacebarchat/spacebar-api-types/v9";
-import { action, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 import AppStore from "../AppStore";
 import Guild from "./Guild";
 import Role from "./Role";
@@ -47,6 +47,16 @@ export default class GuildMember {
 			// TODO:
 			this.app.presences.add(data.presence);
 		}
+	}
+
+	@computed
+	get roleColor() {
+		const highestRole = this.roles.reduce((prev, role) => {
+			if (role.position > prev.position) return role;
+			return prev;
+		}, this.roles[0]);
+		if (highestRole?.color === "#000000") return; // TODO: why the fk do we use black as the default color???
+		return highestRole?.color;
 	}
 
 	@action
