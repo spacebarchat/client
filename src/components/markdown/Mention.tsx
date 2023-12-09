@@ -125,8 +125,16 @@ function RoleMention({ id }: MentionProps) {
 	);
 }
 
+function CustomMention({ id }: MentionProps) {
+	return (
+		<Container>
+			<span>{id}</span>
+		</Container>
+	);
+}
+
 interface Props {
-	type: "role" | "user" | "channel";
+	type: "role" | "user" | "channel" | "text";
 	id: string;
 }
 
@@ -134,6 +142,7 @@ function Mention({ type, id }: Props) {
 	if (type === "role") return <RoleMention id={id} />;
 	if (type === "user") return <UserMention id={id} />;
 	if (type === "channel") return <ChannelMention id={id} />;
+	if (type === "text") return <CustomMention id={id} />;
 	return null;
 }
 

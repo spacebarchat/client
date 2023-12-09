@@ -176,6 +176,10 @@ const customRenderer: Partial<ReactRenderer> = {
 			<Mention key={i} type="role" id={match} />
 		));
 
+		replaced = reactStringReplace(replaced, /(@everyone|@here)/, (match, i) => (
+			<Mention key={i} type="text" id={match} />
+		));
+
 		return replaced;
 	},
 };
