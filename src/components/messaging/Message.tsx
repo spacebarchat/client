@@ -26,8 +26,20 @@ function Message({ message, header }: Props) {
 		...ContextMenus.Message(app, message, app.account),
 	]);
 
+	const guild = message.guild_id ? app.guilds.get(message.guild_id) : undefined;
+	const isEveryoneMentioned = "mention_everyone" in message && message.mention_everyone;
+	const isUserMentioned = "mentions" in message && message.mentions.some((mention) => mention.id === app.account!.id);
+	const isRoleMentioned =
+		guild &&
+		"mention_roles" in message &&
+		message.mention_roles.some((role) => guild.members.me?.roles.some((role) => role.id === role.id));
+
 	return (
-		<MessageBase header={header} onContextMenu={(e) => contextMenu.open2(e, contextMenuItems)}>
+		<MessageBase
+			header={header}
+			onContextMenu={(e) => contextMenu.open2(e, contextMenuItems)}
+			mention={isEveryoneMentioned || isUserMentioned || isRoleMentioned}
+		>
 			<MessageInfo>
 				{header ? (
 					<Avatar key={message.author.id} user={message.author} size={40} />

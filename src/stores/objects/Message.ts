@@ -213,7 +213,7 @@ export default class Message extends MessageBase {
 		this.tts = data.tts;
 		this.mention_everyone = data.mention_everyone;
 		this.mentions = data.mentions; // TODO: user object?
-		this.mention_roles = data.mention_roles;
+		this.mention_roles = (data.mention_roles as unknown as { id: Snowflake }[]).map((x) => x.id); // FIXME: oh god, who did this in the server smh
 		this.mention_channels = data.mention_channels;
 		this.attachments = data.attachments;
 		this.embeds = data.embeds;
