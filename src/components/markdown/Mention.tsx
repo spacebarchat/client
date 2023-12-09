@@ -9,15 +9,19 @@ import User from "../../stores/objects/User";
 import { hexToRGB, rgbToHsl } from "../../utils/Utils";
 import UserProfilePopout from "../UserProfilePopout";
 
-const Container = styled.span<{ color?: string }>`
+const Container = styled.span<{ color?: string; withHover?: boolean }>`
 	padding: 0 2px;
 	border-radius: 4px;
 	background-color: hsl(${(props) => props.color ?? "var(--primary-hsl)"} / 0.3);
 
-	&:hover {
-		background-color: hsl(${(props) => props.color ?? "var(--primary-hsl)"} / 0.5);
-		cursor: pointer;
-	}
+	${(props) =>
+		props.withHover &&
+		`
+		&:hover {
+			background-color: hsl(${props.color ?? "var(--primary-hsl)"} / 0.5);
+			cursor: pointer;
+		}
+	`}
 `;
 
 interface MentionProps {
@@ -56,7 +60,7 @@ function UserMention({ id }: MentionProps) {
 		);
 
 	return (
-		<Container onClick={click} ref={ref}>
+		<Container onClick={click} ref={ref} withHover>
 			<span>@{user.username}</span>
 		</Container>
 	);
@@ -86,7 +90,7 @@ function ChannelMention({ id }: MentionProps) {
 		);
 
 	return (
-		<Container onClick={click}>
+		<Container onClick={click} withHover>
 			<span>#{channel.name}</span>
 		</Container>
 	);
