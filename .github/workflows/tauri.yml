@@ -33,8 +33,13 @@ jobs:
         run: pnpm i
       - name: Set environment variables
         run: |
-          echo "TAG_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-          echo "TAG_SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+          if [ "${RUNNER_OS}" == "Windows" ]; then
+            echo "TAG_BRANCH=${GITHUB_REF:11}" >> $GITHUB_ENV
+            echo "TAG_SHORT_SHA=${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+          else
+            echo "TAG_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+            echo "TAG_SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+          fi
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
