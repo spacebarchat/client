@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { ReactComponent as SpacebarLogoBlue } from "../assets/images/logo/Spacebar_Icon.svg";
 import useLogger from "../hooks/useLogger";
 import AccountStore from "../stores/AccountStore";
+import GuildMember from "../stores/objects/GuildMember";
+import Presence from "../stores/objects/Presence";
 import User from "../stores/objects/User";
 import Snowflake from "../utils/Snowflake";
 import Avatar from "./Avatar";
@@ -80,7 +82,13 @@ const MemberSinceText = styled.span`
 	font-weight: var(--font-weight-regular);
 `;
 
-function UserProfilePopout({ user }: { user: User | AccountStore }) {
+interface Props {
+	user: User | AccountStore;
+	presence?: Presence;
+	member?: GuildMember;
+}
+
+function UserProfilePopout({ user, presence, member }: Props) {
 	const logger = useLogger("UserProfilePopout");
 	// if (!member.user) {
 	// 	logger.error("member.user is undefined");
@@ -103,6 +111,11 @@ function UserProfilePopout({ user }: { user: User | AccountStore }) {
 						// TODO: open profile modal
 					}}
 					user={user}
+					presence={presence}
+					statusDotStyle={{
+						width: 16,
+						height: 16,
+					}}
 				/>
 			</Top>
 			<Bottom>

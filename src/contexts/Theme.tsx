@@ -56,7 +56,9 @@ export type ThemeVariables =
 	| "warningContrastText"
 	| "interactive"
 	| "scrollbarTrack"
-	| "scrollbarThumb";
+	| "scrollbarThumb"
+	| "statusIdle"
+	| "statusOffline";
 
 export type Overrides = {
 	[variable in ThemeVariables]: string;
@@ -102,13 +104,13 @@ export const ThemePresets: Record<string, Theme> = {
 		inputBackground: "#757575",
 		error: "#e83f36",
 		divider: "#3c3c3c",
-		primary: "",
-		primaryLight: "",
-		primaryDark: "",
-		primaryContrastText: "",
-		secondary: "",
-		secondaryLight: "",
-		secondaryDark: "",
+		primary: "#0185ff",
+		primaryLight: "#339dff",
+		primaryDark: "#005db2",
+		primaryContrastText: "#ffffff",
+		secondary: "#000115",
+		secondaryLight: "#000677",
+		secondaryDark: "#000111",
 		secondaryContrastText: "",
 		danger: "",
 		dangerLight: "",
@@ -125,6 +127,8 @@ export const ThemePresets: Record<string, Theme> = {
 		scrollbarTrack: "",
 		scrollbarThumb: "",
 		interactive: "",
+		statusIdle: "#ff7c01",
+		statusOffline: "#5d5d5d",
 		font: font,
 	},
 	dark: {
@@ -149,9 +153,11 @@ export const ThemePresets: Record<string, Theme> = {
 		primaryLight: "#339dff",
 		primaryDark: "#005db2",
 		primaryContrastText: "#ffffff",
-		secondary: "#ff7c01",
-		secondaryLight: "#ff9633",
-		secondaryDark: "#b25600",
+		secondary: "#000115",
+		secondaryLight: "#000677",
+		secondaryDark: "#000111",
+		// secondary: "#ff7c01",
+		// secondaryLight: "#ff9633",
 		secondaryContrastText: "#040404",
 		danger: "#ff3a3b",
 		dangerLight: "#ff6162",
@@ -168,6 +174,8 @@ export const ThemePresets: Record<string, Theme> = {
 		scrollbarTrack: "#232323",
 		scrollbarThumb: "#171717",
 		interactive: "#424242",
+		statusIdle: "#ff7c01",
+		statusOffline: "#5d5d5d",
 		font: font,
 	},
 };

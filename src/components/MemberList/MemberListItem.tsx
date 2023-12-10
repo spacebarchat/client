@@ -82,7 +82,7 @@ function MemberListItem({ item }: Props) {
 				e.preventDefault();
 				e.stopPropagation();
 				popoutContext.open({
-					element: <UserProfilePopout user={item.user!} />,
+					element: <UserProfilePopout user={item.user!} presence={presence} member={item} />,
 					position: e.currentTarget.getBoundingClientRect(),
 					placement: "right",
 				});
@@ -91,7 +91,7 @@ function MemberListItem({ item }: Props) {
 			<Container>
 				<Wrapper offline={presence?.status === PresenceUpdateStatus.Offline}>
 					<AvatarWrapper>
-						<Avatar user={item.user!} size={32} />
+						<Avatar user={item.user!} size={32} presence={presence} />
 					</AvatarWrapper>
 					<TextWrapper>
 						<Text color={item.roleColor}>{item.nick ?? item.user?.username}</Text>
