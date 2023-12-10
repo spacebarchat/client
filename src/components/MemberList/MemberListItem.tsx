@@ -5,6 +5,7 @@ import { PopoutContext } from "../../contexts/PopoutContext";
 import { useAppStore } from "../../stores/AppStore";
 import GuildMember from "../../stores/objects/GuildMember";
 import ContextMenus from "../../utils/ContextMenus";
+import Avatar from "../Avatar";
 import { IContextMenuItem } from "../ContextMenuItem";
 import UserProfilePopout from "../UserProfilePopout";
 
@@ -13,14 +14,20 @@ const ListItem = styled.div<{ isCategory?: boolean }>`
 	cursor: pointer;
 `;
 
-const Wrapper = styled.div`
-	margin-left: 8px;
-	height: 33px;
-	border-radius: 4px;
-	align-items: center;
-	display: flex;
-	padding: 0 8px;
+const Container = styled.div`
+	max-width: 224px;
 	background-color: transparent;
+	box-sizing: border-box;
+	padding: 1px 0;
+	border-radius: 4px;
+`;
+
+const Wrapper = styled.div`
+	display: flex;
+	align-items: center;
+	border-radius: 4px;
+	height: 42px;
+	padding: 0 8px;
 
 	&:hover {
 		background-color: var(--background-primary-alt);
@@ -32,6 +39,21 @@ const Text = styled.span<{ color?: string }>`
 	font-weight: var(--font-weight-regular);
 	white-space: nowrap;
 	color: ${(props) => props.color ?? "var(--text-secondary)"};
+`;
+
+const TextWrapper = styled.div`
+	min-width: 0;
+	flex: 1;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+`;
+
+const AvatarWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 12px;
 `;
 
 interface Props {
@@ -62,9 +84,16 @@ function MemberListItem({ item }: Props) {
 				});
 			}}
 		>
-			<Wrapper>
-				<Text color={item.roleColor}>{item.nick ?? item.user?.username}</Text>
-			</Wrapper>
+			<Container>
+				<Wrapper>
+					<AvatarWrapper>
+						<Avatar user={item.user!} size={32} />
+					</AvatarWrapper>
+					<TextWrapper>
+						<Text color={item.roleColor}>{item.nick ?? item.user?.username}</Text>
+					</TextWrapper>
+				</Wrapper>
+			</Container>
 		</ListItem>
 	);
 }

@@ -19,13 +19,6 @@ const Container = styled.div`
 	}
 `;
 
-const Wrapper = styled.aside`
-	justify-content: center;
-	min-width: 240px;
-	max-height: 100%;
-	display: flex;
-`;
-
 const List = styled.ul`
 	padding: 0;
 	margin: 0;
@@ -62,9 +55,6 @@ function MemberList() {
 							<ListSection
 								key={i}
 								name={category.name}
-								// items={
-								// 	category.items.map((x) => x.nick ?? x.user?.username).filter((x) => x) as string[]
-								// }
 								items={category.items.map((x) => (
 									<MemberListItem item={x} />
 								))}
