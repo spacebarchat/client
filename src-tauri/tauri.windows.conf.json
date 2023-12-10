@@ -14,7 +14,7 @@
 				"resizable": true,
 				"title": "Spacebar",
 				"maximized": true,
-				"visible": false,
+				"visible": true,
 				"label": "main"
 			}
 		]

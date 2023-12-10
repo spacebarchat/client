@@ -79,8 +79,9 @@ export const getFileDetails = (fileOrAttachment: File | APIAttachment) => {
 	};
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-export const isTauri = !!window.__TAURI__;
+export const isTauri = !!window.__TAURI_INTERNALS__;
 
 export function rgbToHsl(r: number, g: number, b: number) {
 	(r /= 255), (g /= 255), (b /= 255);
