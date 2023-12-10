@@ -87,36 +87,36 @@ export default {
 
 		const items: IContextMenuItem[] = [];
 
-		if (permissions.has("KICK_MEMBERS")) {
-			items.push({
-				label: `Kick ${them.user!.username}`,
-				onClick: () => {
-					// openModal(KickModal, {
-					// 	member: them,
-					// });
-				},
-				color: "red",
-				hover: {
-					backgroundColor: "red",
-					color: "white",
-				},
-			});
-		}
+		// if (permissions.has("KICK_MEMBERS")) {
+		// 	items.push({
+		// 		label: `Kick ${them.user!.username}`,
+		// 		onClick: () => {
+		// 			// openModal(KickModal, {
+		// 			// 	member: them,
+		// 			// });
+		// 		},
+		// 		color: "red",
+		// 		hover: {
+		// 			backgroundColor: "red",
+		// 			color: "white",
+		// 		},
+		// 	});
+		// }
 
-		if (permissions.has("BAN_MEMBERS")) {
-			items.push({
-				label: `Ban ${them.user!.username}`,
-				onClick: () => {
-					// member.kick()
-					console.log("ban member");
-				},
-				color: "red",
-				hover: {
-					backgroundColor: "red",
-					color: "white",
-				},
-			});
-		}
+		// if (permissions.has("BAN_MEMBERS")) {
+		// 	items.push({
+		// 		label: `Ban ${them.user!.username}`,
+		// 		onClick: () => {
+		// 			// member.kick()
+		// 			console.log("ban member");
+		// 		},
+		// 		color: "red",
+		// 		hover: {
+		// 			backgroundColor: "red",
+		// 			color: "white",
+		// 		},
+		// 	});
+		// }
 
 		return items;
 	},
