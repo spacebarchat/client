@@ -1,29 +1,11 @@
-import {
-	GatewayActivity,
-	GatewayGuildMemberListUpdateMember,
-	GatewayPresenceClientStatus,
-	GatewayPresenceUpdate,
-	PresenceUpdateStatus,
-	Snowflake,
-} from "@spacebarchat/spacebar-api-types/v9";
-import { action, makeObservable, observable } from "mobx";
-import { OneKeyFrom } from "../utils/interfaces/common";
+import type { GatewayPresenceUpdateDispatchData, Snowflake } from "@spacebarchat/spacebar-api-types/v9";
+import { ObservableMap, action, computed, makeObservable, observable } from "mobx";
 import AppStore from "./AppStore";
+import Presence from "./objects/Presence";
 
 export default class PresenceStore {
 	private readonly app: AppStore;
-	@observable presences = observable.map<Snowflake, PresenceUpdateStatus>();
-	@observable presencesForGuilds = observable.map<
-		Snowflake,
-		Map<
-			Snowflake,
-			Pick<GatewayPresenceUpdate, "activities" | "client_status" | "status"> & {
-				timestamp: number;
-			}
-		>
-	>();
-	@observable activities = observable.map<Snowflake, GatewayActivity[]>();
-	@observable clientStatuses = observable.map<Snowflake, OneKeyFrom<GatewayPresenceClientStatus>>();
+	@observable presences = observable.map<Snowflake, ObservableMap<Snowflake, Presence>>();
 
 	constructor(app: AppStore) {
 		this.app = app;
@@ -32,50 +14,45 @@ export default class PresenceStore {
 	}
 
 	@action
-	add(presence: GatewayPresenceUpdate | GatewayGuildMemberListUpdateMember["presence"]) {
-		if (presence.status) {
-			this.presences.set(presence.user.id, presence.status);
+	add(data: GatewayPresenceUpdateDispatchData) {
+		if (!this.presences.has(data.guild_id)) {
+			this.presences.set(data.guild_id, observable.map<Snowflake, Presence>());
 		}
 
-		if (presence.activities) {
-			this.activities.set(presence.user.id, presence.activities);
-		}
-
-		if ("client_status" in presence) {
-			this.clientStatuses.set(
-				presence.user.id,
-				presence.client_status as OneKeyFrom<GatewayPresenceClientStatus>,
-			);
-		}
-
-		if ("guild_id" in presence) {
-			const guild = this.presencesForGuilds.get(presence.guild_id);
-			if (guild) {
-				guild.set(presence.user.id, {
-					activities: presence.activities,
-					client_status: presence.client_status,
-					status: presence.status,
-					timestamp: Date.now(),
-				});
-			}
-		}
+		this.presences.get(data.guild_id)?.set(data.user.id, new Presence(this.app, data));
 	}
 
-	// static getStatusColor(status: PresenceUpdateStatus) {
-	//   const theme =
+	@action
+	addAll(data: GatewayPresenceUpdateDispatchData[]) {
+		data.forEach((p) => this.add(p));
+	}
 
-	//   switch (status) {
-	//     case 'online':
-	//       return theme.colors.palette.green80;
-	//     case 'idle':
-	//       return theme.colors.palette.yellow80;
-	//     case 'dnd':
-	//       return theme.colors.palette.red80;
-	//     case 'offline':
-	//     case 'invisible':
-	//       return theme.colors.palette.gray80;
-	//   }
-	// }
+	@computed
+	get all() {
+		return Array.from(this.presences.values());
+	}
+
+	@action
+	remove(id: Snowflake) {
+		this.presences.delete(id);
+	}
+
+	@action
+	update(data: GatewayPresenceUpdateDispatchData) {
+		this.presences.get(data.guild_id)?.get(data.user.id)?.update(data);
+	}
+
+	get(id: Snowflake) {
+		return this.presences.get(id);
+	}
+
+	has(id: Snowflake) {
+		return this.presences.has(id);
+	}
+
+	asList() {
+		return Array.from(this.presences.values());
+	}
 
 	get size() {
 		return this.presences.size;

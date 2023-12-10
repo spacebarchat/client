@@ -2,6 +2,7 @@ import {
 	APIGuildMember,
 	APIMessage,
 	ChannelType,
+	GatewayActivity,
 	GatewayChannelCreateDispatchData,
 	GatewayChannelDeleteDispatchData,
 	GatewayChannelUpdateDispatchData,
@@ -42,10 +43,23 @@ const GATEWAY_VERSION = "9";
 const GATEWAY_ENCODING = "json";
 const RECONNECT_TIMEOUT = 10000; // start at 10 seconds, doubles each time
 
+interface GatewaySession {
+	active: boolean;
+	activities: GatewayActivity[];
+	client_info: {
+		client?: string;
+		os?: string;
+		version?: number;
+	};
+	session_id: string;
+	status: PresenceUpdateStatus;
+}
+
 export default class GatewayConnectionStore {
 	private readonly logger: Logger = new Logger("GatewayConnectionStore");
 	@observable private socket: WebSocket | null = null;
-	@observable private sessionId: string | null = null;
+	@observable public sessionId: string | null = null;
+	@observable public session: GatewaySession | undefined;
 	@observable public readyState: number = WebSocket.CLOSED;
 
 	private app: AppStore;
@@ -67,6 +81,7 @@ export default class GatewayConnectionStore {
 
 		makeObservable(this);
 	}
+
 	/**
 	 * Starts connection to gateway
 	 */
@@ -449,8 +464,9 @@ export default class GatewayConnectionStore {
 	 */
 	private onReady = (data: GatewayReadyDispatchData) => {
 		this.logger.info(`[Ready] took ${Date.now() - this.connectionStartTime!}ms`);
-		const { session_id, guilds, users, user, private_channels } = data;
+		const { session_id, guilds, users, user, private_channels, sessions } = data;
 		this.sessionId = session_id;
+		this.session = (sessions as GatewaySession[]).find((x) => x.session_id === session_id);
 
 		this.app.setUser(user);
 
@@ -665,7 +681,7 @@ export default class GatewayConnectionStore {
 	};
 
 	private onPresenceUpdate = (data: GatewayPresenceUpdateDispatchData) => {
-		this.app.presences.add(data);
+		this.app.presences.update(data);
 	};
 
 	private onTypingStart = (data: GatewayTypingStartDispatchData) => {
