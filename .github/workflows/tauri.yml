@@ -35,8 +35,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: client-v${GITHUB_REF#refs/heads/}_${GITHUB_SHA::7}
-          releaseName: "Spacebar Client v${GITHUB_REF#refs/heads/}_${GITHUB_SHA::7}"
+          tagName: client-${GITHUB_REF#refs/heads/}_${GITHUB_SHA::7}
+          releaseName: "Spacebar Client ${GITHUB_REF#refs/heads/}_${GITHUB_SHA::7}"
           releaseBody: "See the assets to download this version and install."
           releaseDraft: false
           prerelease: true
