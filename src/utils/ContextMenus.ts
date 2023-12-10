@@ -37,6 +37,15 @@ export default {
 					icon: "mdiIdentifier",
 				},
 			},
+			{
+				label: "Copy Raw Text",
+				onClick: () => {
+					navigator.clipboard.writeText(message.content);
+				},
+				iconProps: {
+					icon: "mdiRaw",
+				},
+			},
 		];
 
 		if (canDeleteMessage) {
