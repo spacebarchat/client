@@ -33,19 +33,23 @@ jobs:
         run: pnpm i
       - name: Set environment variables
         run: |
-          if [ "${RUNNER_OS}" == "Windows" ]; then
-            echo "TAG_BRANCH=${GITHUB_REF:11}" >> $GITHUB_ENV
-            echo "TAG_SHORT_SHA=${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            $BRANCH_NAME=$env:GITHUB_REF.Replace('refs/heads/', '')
+            $SHORT_SHA=$(git rev-parse --short HEAD)
+            echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+            echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
           else
-            echo "TAG_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-            echo "TAG_SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+            BRANCH_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $3}')
+            SHORT_SHA=$(git rev-parse --short HEAD)
+            echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+            echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
           fi
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: client-${{ env.TAG_BRANCH }}_${{ env.TAG_SHORT_SHA }}
-          releaseName: "Spacebar Client ${{ env.TAG_BRANCH }}_${{ env.TAG_SHORT_SHA }}"
+          tagName: "client-${{ env.BRANCH_NAME }}_${{ env.SHORT_SHA }}"
+          releaseName: "Spacebar Client ${{ env.BRANCH_NAME }}_${{ env.SHORT_SHA }}"
           releaseBody: "See the assets to download this version and install."
           releaseDraft: false
           prerelease: true
