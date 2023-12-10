@@ -121,7 +121,7 @@ function PopoutRenderer({ position, element, placement, close }: Props) {
 			onBlur={close}
 			style={{
 				position: "absolute",
-				zIndex: 9999,
+				zIndex: 100,
 				...positionStyle,
 			}}
 		>

@@ -1,3 +1,4 @@
+import { CDNRoutes, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import dayjs from "dayjs";
 import styled from "styled-components";
 import { ReactComponent as SpacebarLogoBlue } from "../assets/images/logo/Spacebar_Icon.svg";
@@ -6,6 +7,7 @@ import AccountStore from "../stores/AccountStore";
 import GuildMember from "../stores/objects/GuildMember";
 import Presence from "../stores/objects/Presence";
 import User from "../stores/objects/User";
+import REST from "../utils/REST";
 import Snowflake from "../utils/Snowflake";
 import Avatar from "./Avatar";
 import { HorizontalDivider } from "./Divider";
@@ -16,10 +18,9 @@ const Container = styled.div`
 	border-radius: 4px;
 	display: flex;
 	flex-direction: column;
-	width: 280px;
+	width: 340px;
 	max-height: 600px;
 	overflow: hidden;
-	// heavy shadow
 	box-shadow: 0 0 0 1px rgb(0 0 0 / 15%), 0 4px 8px rgb(0 0 0 / 15%);
 `;
 
@@ -82,22 +83,39 @@ const MemberSinceText = styled.span`
 	font-weight: var(--font-weight-regular);
 `;
 
+const Acronym = styled.div`
+	font-size: 8px;
+	background-image: none;
+	background-color: var(--background-secondary);
+	text-align: center;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;
+
+const AcronymText = styled.div`
+	font-weight: var(--font-weight-bold);
+	overflow: hidden;
+	white-space: nowrap;
+`;
+
 interface Props {
-	user: User | AccountStore;
+	user?: User | AccountStore;
 	presence?: Presence;
 	member?: GuildMember;
 }
 
 function UserProfilePopout({ user, presence, member }: Props) {
 	const logger = useLogger("UserProfilePopout");
-	// if (!member.user) {
-	// 	logger.error("member.user is undefined");
-	// 	return null;
-	// }
-	if (!user) {
-		logger.error("user is undefined");
+	if (!user && !member?.user) {
+		logger.error("neither user, nor a valid member was provided");
 		return null;
 	}
+
+	user = user ?? member!.user!;
 	const id = user.id;
 	const { timestamp: createdAt } = Snowflake.deconstruct(id);
 
@@ -107,8 +125,10 @@ function UserProfilePopout({ user, presence, member }: Props) {
 				<Avatar
 					style={{ margin: "22px 16px" }}
 					size={80}
-					onClick={() => {
+					onClick={(e) => {
 						// TODO: open profile modal
+						e.preventDefault();
+						e.stopPropagation();
 					}}
 					user={user}
 					presence={presence}
@@ -145,39 +165,43 @@ function UserProfilePopout({ user, presence, member }: Props) {
 							</div>
 						</Tooltip>
 						<MemberSinceText>{dayjs(createdAt).format("MMM D, YYYY")}</MemberSinceText>
-						{/* <div
-							style={{
-								height: "4px",
-								width: "4px",
-								borderRadius: "50%",
-								backgroundColor: "var(--text-disabled)",
-							}}
-						/> */}
-
-						{/* <Tooltip title={guild.name} placement="top">
-							{guild.icon ? (
-								<img
-									src={REST.makeCDNUrl(CDNRoutes.guildIcon(guild.id, guild.icon, ImageFormat.PNG))}
-									width={16}
-									height={16}
-									loading="lazy"
+						{member && (
+							<>
+								<div
 									style={{
+										height: "4px",
+										width: "4px",
 										borderRadius: "50%",
+										backgroundColor: "var(--text-disabled)",
 									}}
 								/>
-							) : (
-								<span
-									style={{
-										fontSize: "16px",
-										fontWeight: "bold",
-										cursor: "pointer",
-									}}
-								>
-									{guild.acronym}
-								</span>
-							)}
-						</Tooltip>
-						<MemberSinceText>{dayjs(member.joined_at).format("MMM D, YYYY")}</MemberSinceText> */}
+
+								<Tooltip title={member.guild.name} placement="top">
+									{member.guild.icon ? (
+										<img
+											src={REST.makeCDNUrl(
+												CDNRoutes.guildIcon(
+													member.guild.id,
+													member.guild.icon,
+													ImageFormat.PNG,
+												),
+											)}
+											width={16}
+											height={16}
+											loading="lazy"
+											style={{
+												borderRadius: "50%",
+											}}
+										/>
+									) : (
+										<Acronym>
+											<AcronymText>{member.guild.acronym}</AcronymText>
+										</Acronym>
+									)}
+								</Tooltip>
+								<MemberSinceText>{dayjs(member.joined_at).format("MMM D, YYYY")}</MemberSinceText>
+							</>
+						)}
 					</MemberSinceContainer>
 				</Section>
 			</Bottom>

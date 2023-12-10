@@ -10,7 +10,7 @@ import User from "../stores/objects/User";
 import Container from "./Container";
 import UserProfilePopout from "./UserProfilePopout";
 
-const Wrapper = styled(Container)<{ size: number }>`
+const Wrapper = styled(Container)<{ size: number; hasClick?: boolean }>`
 	width: ${(props) => props.size}px;
 	height: ${(props) => props.size}px;
 	position: relative;
@@ -18,7 +18,7 @@ const Wrapper = styled(Container)<{ size: number }>`
 
 	&:hover {
 		text-decoration: underline;
-		cursor: pointer;
+		cursor: ${(props) => (props.hasClick ? "pointer" : "default")};
 	}
 `;
 
@@ -37,7 +37,7 @@ interface Props {
 	user?: User | AccountStore;
 	size?: number;
 	style?: React.CSSProperties;
-	onClick?: (() => void) | null;
+	onClick?: React.MouseEventHandler<HTMLDivElement> | null;
 	popoutPlacement?: "left" | "right" | "top" | "bottom";
 	presence?: Presence;
 	statusDotStyle?: {
@@ -74,7 +74,7 @@ function Avatar(props: Props) {
 	const clickProp = props.onClick === null ? {} : { onClick: props.onClick ?? openPopout };
 
 	return (
-		<Wrapper size={props.size ?? 32} style={props.style} ref={ref} {...clickProp}>
+		<Wrapper size={props.size ?? 32} style={props.style} ref={ref} hasClick={props.onClick !== null} {...clickProp}>
 			<img
 				style={{
 					borderRadius: "50%",
