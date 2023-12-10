@@ -42,11 +42,6 @@ export default class GuildMember {
 		this.flags = data.flags;
 		this.pending = data.pending;
 		this.communication_disabled_until = data.communication_disabled_until;
-
-		if ("presence" in data) {
-			// TODO:
-			this.app.presences.add(data.presence);
-		}
 	}
 
 	@computed
@@ -62,11 +57,6 @@ export default class GuildMember {
 	@action
 	update(member: APIGuildMember | GatewayGuildMemberListUpdateMember) {
 		Object.assign(this, member);
-
-		if ("presence" in member) {
-			// TODO:
-			this.app.presences.add(member.presence);
-		}
 	}
 
 	@action
