@@ -31,16 +31,15 @@ jobs:
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libsoup-3.0-dev libjavascriptcoregtk-4.1-dev
       - name: Install Frontend Dependencies
         run: pnpm i
-      - name: Set environment variables
-        run: |
-          echo "BRANCH_NAME=${GITHUB_REF_NAME}" >> $GITHUB_ENV
-          echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      - name: Set Short SHA
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: "client-${{ env.BRANCH_NAME }}_${{ env.SHORT_SHA }}"
-          releaseName: "Spacebar Client ${{ env.BRANCH_NAME }}_${{ env.SHORT_SHA }}"
+          tagName: "client-${{ github.github.ref_name }}_${{ steps.vars.outputs.sha_short }}"
+          releaseName: "Spacebar Client ${{ github.github.ref_name }}_${{ steps.vars.outputs.sha_short }}"
           releaseBody: "See the assets to download this version and install."
           releaseDraft: false
           prerelease: true
