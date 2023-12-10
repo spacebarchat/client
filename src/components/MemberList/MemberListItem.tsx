@@ -1,3 +1,4 @@
+import { PresenceUpdateStatus } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
@@ -20,18 +21,19 @@ const Container = styled.div`
 	box-sizing: border-box;
 	padding: 1px 0;
 	border-radius: 4px;
+
+	&:hover {
+		background-color: var(--background-primary-alt);
+	}
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ offline?: boolean }>`
 	display: flex;
 	align-items: center;
 	border-radius: 4px;
 	height: 42px;
 	padding: 0 8px;
-
-	&:hover {
-		background-color: var(--background-primary-alt);
-	}
+	opacity: ${(props) => (props.offline ? 0.5 : 1)};
 `;
 
 const Text = styled.span<{ color?: string }>`
@@ -70,6 +72,8 @@ function MemberListItem({ item }: Props) {
 		...ContextMenus.Member(app.account!, item, item.guild!),
 	]);
 
+	const presence = app.presences.get(item.guild.id)?.get(item.user!.id);
+
 	return (
 		<ListItem
 			key={item.user?.id}
@@ -85,7 +89,7 @@ function MemberListItem({ item }: Props) {
 			}}
 		>
 			<Container>
-				<Wrapper>
+				<Wrapper offline={presence?.status === PresenceUpdateStatus.Offline}>
 					<AvatarWrapper>
 						<Avatar user={item.user!} size={32} />
 					</AvatarWrapper>
