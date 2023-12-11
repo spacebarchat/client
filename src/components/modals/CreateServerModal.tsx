@@ -119,6 +119,7 @@ function CreateServerModal({ ...props }: ModalProps<"create_server">) {
 	return (
 		<Modal
 			{...props}
+			onClose={() => modalController.closeAll()}
 			title="Customize your guild"
 			description="Give your new guild a personality with a name and an icon. You can always change it later."
 			actions={[

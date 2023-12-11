@@ -41,6 +41,7 @@ class ModalController<T extends Modal> {
 		});
 
 		this.close = this.close.bind(this);
+		this.closeAll = this.closeAll.bind(this);
 	}
 
 	/**

@@ -83,6 +83,7 @@ function JoinServerModal({ ...props }: ModalProps<"join_server">) {
 	return (
 		<Modal
 			{...props}
+			onClose={() => modalController.closeAll()}
 			title="Join a Guild"
 			description="Enter an invite below to join an existing guild."
 			actions={[
