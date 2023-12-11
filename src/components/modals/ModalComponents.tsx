@@ -110,6 +110,7 @@ export const ModalHeader = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	text-align: center;
 `;
 
 export const ModalContentContainer = styled.div<Pick<ModalProps, "transparent" | "padding">>`
