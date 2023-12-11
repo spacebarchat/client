@@ -1,10 +1,11 @@
-import { useModals } from "@mattjennings/react-modal-stack";
 import { CDNRoutes, ChannelType, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ContextMenuContext } from "../contexts/ContextMenuContext";
+import { modalController } from "../controllers/modals/ModalController";
+import useLogger from "../hooks/useLogger";
 import { useAppStore } from "../stores/AppStore";
 import Guild from "../stores/objects/Guild";
 import { Permissions } from "../utils/Permissions";
@@ -13,7 +14,6 @@ import Container from "./Container";
 import { IContextMenuItem } from "./ContextMenuItem";
 import SidebarPill, { PillType } from "./SidebarPill";
 import Tooltip from "./Tooltip";
-import CreateInviteModal from "./modals/CreateInviteModal";
 
 export const GuildSidebarListItem = styled.div`
 	position: relative;
@@ -48,9 +48,9 @@ interface Props {
  * List item for use in the guild sidebar
  */
 function GuildItem({ guild, active }: Props) {
+	const logger = useLogger("GuildItem");
 	const app = useAppStore();
 	const navigate = useNavigate();
-	const { openModal } = useModals();
 
 	const [pillType, setPillType] = React.useState<PillType>("none");
 	const [isHovered, setHovered] = React.useState(false);
@@ -71,7 +71,17 @@ function GuildItem({ guild, active }: Props) {
 			index: 0,
 			label: "Create Invite",
 			onClick: () => {
-				openModal(CreateInviteModal, { guild_id: guild.id });
+				// get first channel with view permissions in guild
+				const channel = guild.channels.find((x) => {
+					const permission = Permissions.getPermission(app.account!.id, guild, x);
+					return permission.has("VIEW_CHANNEL") && x.type !== ChannelType.GuildCategory;
+				});
+				if (!channel) return logger.error("No suitable channel found for invite creation");
+
+				modalController.push({
+					type: "create_invite",
+					target: channel,
+				});
 			},
 			iconProps: {
 				icon: "mdiAccountPlus",

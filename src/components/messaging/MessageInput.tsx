@@ -5,6 +5,7 @@ import { ChannelType, MessageType, RESTPostAPIChannelMessageJSONBody } from "@sp
 import { observer } from "mobx-react-lite";
 import React from "react";
 import styled from "styled-components";
+import { modalController } from "../../controllers/modals/ModalController";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import Guild from "../../stores/objects/Guild";
@@ -12,7 +13,6 @@ import Snowflake from "../../utils/Snowflake";
 import { MAX_ATTACHMENTS } from "../../utils/constants";
 import { debounce } from "../../utils/debounce";
 import { isTouchscreenDevice } from "../../utils/isTouchscreenDevice";
-import ErrorModal from "../modals/ErrorModal";
 import MessageTextArea from "./MessageTextArea";
 import AttachmentUpload from "./attachments/AttachmentUpload";
 import AttachmentUploadList from "./attachments/AttachmentUploadPreview";
@@ -161,13 +161,10 @@ function MessageInput({ channel }: Props) {
 	const appendAttachment = (files: File[]) => {
 		if (files.length === 0) return;
 		if (files.length > MAX_ATTACHMENTS || attachments.length + files.length > MAX_ATTACHMENTS) {
-			openModal(ErrorModal, {
+			modalController.push({
+				type: "error",
 				title: "Too many attachments",
-				message: (
-					<div style={{ justifyContent: "center", display: "flex" }}>
-						You can only attach {MAX_ATTACHMENTS} files at once.
-					</div>
-				),
+				error: `You can only attach ${MAX_ATTACHMENTS} files at once.`,
 			});
 			return;
 		}

@@ -331,7 +331,7 @@ function LoginPage() {
 						Forgot your password?
 					</PasswordResetLink> */}
 
-					<SubmitButton variant="primary" type="submit" disabled={loading}>
+					<SubmitButton palette="primary" type="submit" disabled={loading}>
 						Login
 					</SubmitButton>
 

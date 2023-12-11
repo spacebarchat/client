@@ -4,10 +4,10 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { AutoSizer, List, ListRowProps } from "react-virtualized";
 import styled from "styled-components";
+import { modalController } from "../controllers/modals/ModalController";
 import { useAppStore } from "../stores/AppStore";
 import GuildItem, { GuildSidebarListItem } from "./GuildItem";
 import SidebarAction from "./SidebarAction";
-import AddServerModal from "./modals/AddServerModal";
 
 const Container = styled.div`
 	display: flex;
@@ -80,7 +80,9 @@ function GuildSidebar() {
 						color: "var(--success)",
 					}}
 					action={() => {
-						openModal(AddServerModal);
+						modalController.push({
+							type: "add_server",
+						});
 					}}
 					margin={false}
 					disablePill

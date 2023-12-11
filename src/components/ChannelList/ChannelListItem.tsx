@@ -3,11 +3,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
+import { modalController } from "../../controllers/modals/ModalController";
 import Channel from "../../stores/objects/Channel";
 import { IContextMenuItem } from "../ContextMenuItem";
 import Icon from "../Icon";
 import Tooltip from "../Tooltip";
-import CreateInviteModal from "../modals/CreateInviteModal";
 
 const ListItem = styled.div<{ isCategory?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};
@@ -64,7 +64,10 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 			index: 0,
 			label: "Create Channel Invite",
 			onClick: () => {
-				openModal(CreateInviteModal, { guild_id: channel.guildId!, channel_id: channel.id });
+				modalController.push({
+					type: "create_invite",
+					target: channel,
+				});
 			},
 			iconProps: {
 				icon: "mdiAccountPlus",

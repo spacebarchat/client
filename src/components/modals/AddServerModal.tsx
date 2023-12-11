@@ -1,95 +1,40 @@
-import { useModals } from "@mattjennings/react-modal-stack";
 import styled from "styled-components";
-import Icon from "../Icon";
-import CreateServerModal from "./CreateServerModal";
-import JoinServerModal from "./JoinServerModal";
-import {
-	Modal,
-	ModalActionItem,
-	ModalCloseWrapper,
-	ModalHeaderText,
-	ModalSubHeaderText,
-	ModelContentContainer,
-} from "./ModalComponents";
-import { AnimatedModalProps } from "./ModalRenderer";
+import { modalController } from "../../controllers/modals/ModalController";
+import { ModalProps } from "../../controllers/modals/types";
+import Button from "../Button";
+import { Modal } from "./ModalComponents";
 
-export const ModalHeader = styled.div`
-	padding: 16px;
+export const ActionWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 `;
-
-const CreateButton = styled(ModalActionItem)`
-	transition: background-color 0.2s ease-in-out;
-	margin-bottom: 8px;
-	font-size: 16px;
-	font-weight: var(--font-weight-medium);
-
-	&:hover {
-		background-color: var(--primary-light);
-	}
-`;
-
-const JoinButton = styled(ModalActionItem)`
-	transition: background-color 0.2s ease-in-out;
-	margin-bottom: 8px;
-	font-size: 16px;
-	font-weight: var(--font-weight-medium);
-
-	&:hover {
-		background-color: var(--background-secondary-highlight);
-	}
-`;
-
-function AddServerModal(props: AnimatedModalProps) {
-	const { openModal, closeModal } = useModals();
-
+function AddServerModal({ ...props }: ModalProps<"add_server">) {
 	return (
-		<Modal {...props}>
-			<ModalCloseWrapper>
-				<button
-					onClick={closeModal}
-					style={{
-						background: "none",
-						border: "none",
-						outline: "none",
-					}}
-				>
-					<Icon
-						icon="mdiClose"
-						size={1}
-						style={{
-							cursor: "pointer",
-							color: "var(--text)",
-						}}
-					/>
-				</button>
-			</ModalCloseWrapper>
-
-			<ModalHeader>
-				<ModalHeaderText>Add a Guild</ModalHeaderText>
-				<ModalSubHeaderText>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</ModalSubHeaderText>
-			</ModalHeader>
-
-			<ModelContentContainer>
-				<CreateButton
-					variant="filled"
-					size="med"
+		<Modal {...props} title="Add a Guild" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit.">
+			<ActionWrapper>
+				<Button
+					palette="primary"
 					onClick={() => {
-						openModal(CreateServerModal);
+						modalController.push({
+							type: "create_server",
+						});
 					}}
 				>
 					Create a Guild
-				</CreateButton>
+				</Button>
 
-				<JoinButton
-					variant="outlined"
-					size="med"
+				<Button
+					palette="secondary"
 					onClick={() => {
-						openModal(JoinServerModal);
+						modalController.push({
+							type: "join_server",
+						});
 					}}
 				>
 					Join a Guild
-				</JoinButton>
-			</ModelContentContainer>
+				</Button>
+			</ActionWrapper>
 		</Modal>
 	);
 }

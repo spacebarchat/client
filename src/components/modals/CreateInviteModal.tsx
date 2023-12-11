@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import React from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import { ModalProps } from "../../controllers/modals/types";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import { messageFromFieldError } from "../../utils/messageFromFieldError";
@@ -13,15 +14,7 @@ import { TextDivider } from "../Divider";
 import { InputSelect, InputSelectOption } from "../FormComponents";
 import Icon from "../Icon";
 import IconButton from "../IconButton";
-import { InputContainer } from "./CreateServerModal";
-import {
-	Modal,
-	ModalCloseWrapper,
-	ModalHeaderText,
-	ModalSubHeaderText,
-	ModelContentContainer,
-} from "./ModalComponents";
-import { AnimatedModalProps } from "./ModalRenderer";
+import { InputContainer, Modal } from "./ModalComponents";
 
 const EXPIRE_OPTIONS = [
 	{
@@ -89,24 +82,11 @@ const MAX_USES_OPTIONS = [
 	},
 ];
 
-const Mention = styled.span`
-	padding: 0 2px;
-`;
-
-const ModalHeader = styled.div`
-	padding: 24px 24px 0;
-`;
-
 const InputWrapper = styled.div`
 	width: 100%;
 	display: flex;
 	align-items: center;
 `;
-
-interface InviteModalProps extends AnimatedModalProps {
-	channel_id?: string;
-	guild_id: string;
-}
 
 interface APICreateInvite {
 	flags: 0;
@@ -121,7 +101,7 @@ interface FormValues extends APICreateInvite {
 	code: string;
 }
 
-function CreateInviteModal(props: InviteModalProps) {
+function CreateInviteModal({ target, ...props }: ModalProps<"create_invite">) {
 	const logger = useLogger("CreateInviteModal");
 	const app = useAppStore();
 	const { openModal, closeModal } = useModals();
@@ -129,14 +109,6 @@ function CreateInviteModal(props: InviteModalProps) {
 	const [maxUses, setMaxUses] = React.useState(MAX_USES_OPTIONS[0]);
 	const [isEdited, setIsEdited] = React.useState(false);
 	const [inviteExpiresAt, setInviteExpiresAt] = React.useState<Date | null>(null);
-
-	const guild = app.guilds.get(props.guild_id);
-	const channel = props.channel_id ? guild?.channels.find((x) => x.id === props.channel_id) : guild?.channels[0];
-
-	if (!guild || !channel) {
-		closeModal();
-		return null;
-	}
 
 	const {
 		register,
@@ -154,7 +126,7 @@ function CreateInviteModal(props: InviteModalProps) {
 		clearErrors();
 		app.rest
 			.post<APICreateInvite, APIInvite>(
-				Routes.channelInvites(channel.id),
+				Routes.channelInvites(target.id),
 				Object.assign(
 					{
 						flags: 0,
@@ -223,144 +195,115 @@ function CreateInviteModal(props: InviteModalProps) {
 	React.useEffect(() => createCode(), []);
 
 	return (
-		<Modal {...props}>
-			<ModalCloseWrapper>
-				<button
-					onClick={closeModal}
+		<Modal {...props} title="Invite People" description={`to #${target.name} in ${target.guild?.name}`}>
+			<form
+				onKeyDown={(e) => {
+					if (e.key === "Enter") {
+						e.preventDefault();
+						onSubmit();
+					}
+				}}
+			>
+				<InputContainer>
+					<LabelWrapper error={false}>
+						<InputLabel>Expire after</InputLabel>
+					</LabelWrapper>
+					<InputWrapper>
+						<InputSelect
+							{...register("max_age", { value: EXPIRE_OPTIONS[5].value })}
+							onChange={handleAgeChange}
+							value={maxAge.value}
+						>
+							{EXPIRE_OPTIONS.map((option) => (
+								<InputSelectOption value={option.value}>{option.label}</InputSelectOption>
+							))}
+						</InputSelect>
+					</InputWrapper>
+				</InputContainer>
+
+				<InputContainer>
+					<LabelWrapper error={false}>
+						<InputLabel>Maximum Uses</InputLabel>
+					</LabelWrapper>
+					<InputWrapper>
+						<InputSelect
+							{...register("max_uses", { value: 0 })}
+							onChange={handleMaxUsesChange}
+							value={maxUses.value}
+						>
+							{MAX_USES_OPTIONS.map((option) => (
+								<InputSelectOption value={option.value}>{option.label}</InputSelectOption>
+							))}
+						</InputSelect>
+					</InputWrapper>
+				</InputContainer>
+
+				<div style={{ display: "flex", justifyContent: "flex-end", margin: "24px 0 12px 0" }}>
+					<Button disabled={!isEdited} onClick={onSubmit}>
+						Generate new Link
+					</Button>
+				</div>
+
+				<InputContainer
 					style={{
-						background: "none",
-						border: "none",
-						outline: "none",
+						marginTop: "0",
 					}}
 				>
-					<Icon
-						icon="mdiClose"
-						size={1}
+					<LabelWrapper error={!!errors.code}>
+						<InputLabel>Invite Code</InputLabel>
+						{errors.code && (
+							<InputErrorText>
+								<>
+									<TextDivider>-</TextDivider>
+									{errors.code.message}
+								</>
+							</InputErrorText>
+						)}
+					</LabelWrapper>
+
+					<InputWrapper
 						style={{
-							cursor: "pointer",
-							color: "var(--text)",
-						}}
-					/>
-				</button>
-			</ModalCloseWrapper>
-
-			<ModalHeader>
-				<ModalHeaderText>Invite People</ModalHeaderText>
-				<ModalSubHeaderText>
-					to <Mention>#{channel.name}</Mention> in <Mention>{guild.name}</Mention>
-				</ModalSubHeaderText>
-			</ModalHeader>
-
-			<ModelContentContainer>
-				<form
-					onKeyDown={(e) => {
-						if (e.key === "Enter") {
-							e.preventDefault();
-							onSubmit();
-						}
-					}}
-				>
-					<InputContainer>
-						<LabelWrapper error={false}>
-							<InputLabel>Expire after</InputLabel>
-						</LabelWrapper>
-						<InputWrapper>
-							<InputSelect
-								{...register("max_age", { value: EXPIRE_OPTIONS[5].value })}
-								onChange={handleAgeChange}
-								value={maxAge.value}
-							>
-								{EXPIRE_OPTIONS.map((option) => (
-									<InputSelectOption value={option.value}>{option.label}</InputSelectOption>
-								))}
-							</InputSelect>
-						</InputWrapper>
-					</InputContainer>
-
-					<InputContainer>
-						<LabelWrapper error={false}>
-							<InputLabel>Maximum Uses</InputLabel>
-						</LabelWrapper>
-						<InputWrapper>
-							<InputSelect
-								{...register("max_uses", { value: 0 })}
-								onChange={handleMaxUsesChange}
-								value={maxUses.value}
-							>
-								{MAX_USES_OPTIONS.map((option) => (
-									<InputSelectOption value={option.value}>{option.label}</InputSelectOption>
-								))}
-							</InputSelect>
-						</InputWrapper>
-					</InputContainer>
-
-					<div style={{ display: "flex", justifyContent: "flex-end", margin: "24px 0 12px 0" }}>
-						<Button disabled={!isEdited} onClick={onSubmit}>
-							Generate new Link
-						</Button>
-					</div>
-
-					<InputContainer
-						style={{
-							marginTop: "0",
+							background: "var(--background-secondary-alt)",
+							borderRadius: "12px",
 						}}
 					>
-						<LabelWrapper error={!!errors.code}>
-							<InputLabel>Invite Code</InputLabel>
-							{errors.code && (
-								<InputErrorText>
-									<>
-										<TextDivider>-</TextDivider>
-										{errors.code.message}
-									</>
-								</InputErrorText>
-							)}
-						</LabelWrapper>
+						<Input
+							autoFocus
+							{...register("code")}
+							readOnly={true}
+							placeholder={`${window.location.origin}/invite/`}
+						/>
 
-						<InputWrapper
+						<IconButton
 							style={{
-								background: "var(--background-secondary-alt)",
-								borderRadius: "12px",
+								marginRight: "8px",
+							}}
+							onClick={(e) => {
+								e.preventDefault();
+								navigator.clipboard.writeText(getValues("code"));
 							}}
 						>
-							<Input
-								autoFocus
-								{...register("code")}
-								readOnly={true}
-								placeholder={`${window.location.origin}/invite/`}
-							/>
+							<Icon icon="mdiContentCopy" size="20px" color="white" />
+						</IconButton>
+					</InputWrapper>
 
-							<IconButton
-								style={{
-									marginRight: "8px",
-								}}
-								onClick={(e) => {
-									e.preventDefault();
-									navigator.clipboard.writeText(getValues("code"));
-								}}
-							>
-								<Icon icon="mdiContentCopy" size="20px" color="white" />
-							</IconButton>
-						</InputWrapper>
-
-						<span
-							style={{
-								color: "var(--text-secondary)",
-								marginTop: "8px",
-								fontSize: "12px",
-								fontWeight: "var(--font-weight-regular)",
-								padding: "0 8px",
-							}}
-						>
-							{inviteExpiresAt ? (
-								<>This invite will expire {dayjs(inviteExpiresAt).calendar()}</>
-							) : (
-								"Invite will never expire."
-							)}
-						</span>
-					</InputContainer>
-				</form>
-			</ModelContentContainer>
+					<span
+						style={{
+							color: "var(--text-secondary)",
+							marginTop: "8px",
+							fontSize: "12px",
+							fontWeight: "var(--font-weight-regular)",
+							padding: "0 8px",
+						}}
+					>
+						{inviteExpiresAt ? (
+							<>This invite will expire {dayjs(inviteExpiresAt).fromNow()}</>
+						) : (
+							"Invite will never expire."
+						)}
+					</span>
+				</InputContainer>
+			</form>
 		</Modal>
 	);
 }
