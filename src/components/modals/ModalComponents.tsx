@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import styled, { css } from "styled-components";
 import Button, { Props as ButtonProps } from "../Button";
+import Icon from "../Icon";
 import { animationFadeIn, animationFadeOut, animationZoomIn, animationZoomOut } from "../common/animations";
 
 export type ModalAction = Omit<React.HTMLAttributes<HTMLButtonElement>, "as"> &
@@ -158,6 +159,22 @@ export const InputContainer = styled.div`
 	flex-direction: column;
 `;
 
+/**
+ * Wrapper for modal close button
+ */
+export const ModalCloseWrapper = styled.div`
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 10px;
+	cursor: pointer;
+	color: var(--text-disabled);
+
+	&:hover {
+		color: var(--text);
+	}
+`;
+
 export function Modal(props: ModalProps) {
 	const [closing, setClosing] = useState(false);
 
@@ -187,6 +204,13 @@ export function Modal(props: ModalProps) {
 	return createPortal(
 		<ModalBase closing={closing} onClick={() => !props.nonDismissable && closeModal()}>
 			<ModalWrapper {...props} onClick={(e) => e.stopPropagation()} actions={false}>
+				<div style={{ position: "relative" }}>
+					{!props.nonDismissable && (
+						<ModalCloseWrapper onClick={closeModal}>
+							<Icon icon="mdiClose" size={1} />
+						</ModalCloseWrapper>
+					)}
+				</div>
 				{(props.title || props.description) && (
 					<ModalHeader>
 						{props.title && <ModalHeaderText>{props.title}</ModalHeaderText>}
