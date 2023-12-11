@@ -1,4 +1,3 @@
-import { useModals } from "@mattjennings/react-modal-stack";
 import { APIInvite, Routes } from "@spacebarchat/spacebar-api-types/v9";
 import dayjs from "dayjs";
 import React from "react";
@@ -16,71 +15,56 @@ import Icon from "../Icon";
 import IconButton from "../IconButton";
 import { InputContainer, Modal } from "./ModalComponents";
 
-const EXPIRE_OPTIONS = [
-	{
-		label: "30 Minutes",
-		value: 1800,
-	},
-	{
-		label: "1 Hour",
-		value: 3600,
-	},
-	{
-		label: "6 Hours",
-		value: 21600,
-	},
-	{
-		label: "12 Hours",
-		value: 43200,
-	},
-	{
-		label: "1 Day",
-		value: 86400,
-	},
-	{
-		label: "7 Days",
-		value: 604800,
-	},
-	{
-		label: "30 Days",
-		value: 2592000,
-	},
-	{
-		label: "Never",
-		value: 0,
-	},
-];
+// TODO: refactor the layout of this modal when we have dms and friends, and move settings to a separate modal
 
-const MAX_USES_OPTIONS = [
-	{
-		label: "No Limit",
-		value: 0,
-	},
-	{
-		label: "1 use",
-		value: 1,
-	},
-	{
-		label: "5 uses",
-		value: 5,
-	},
-	{
-		label: "10 uses",
-		value: 10,
-	},
-	{
-		label: "25 uses",
-		value: 25,
-	},
-	{
-		label: "50 uses",
-		value: 50,
-	},
-	{
-		label: "100 uses",
-		value: 100,
-	},
-];
+type Option = { label: string; value: number };
+
+enum EExpiry {
+	MINUTES_30 = "MINUTES_30",
+	HOUR_1 = "HOUR_1",
+	HOURS_6 = "HOURS_6",
+	HOURS_12 = "HOURS_12",
+	DAY_1 = "DAY_1",
+	DAY_7 = "DAY_7",
+	DAYS_30 = "DAYS_30",
+	NEVER = "NEVER",
+}
+
+enum EMaxUses {
+	NO_LIMIT = "NO_LIMIT",
+	ONE = "USE_1",
+	FIVE = "USE_5",
+	TEN = "USE_10",
+	TWENTY_FIVE = "USE_25",
+	FIFTY = "USE_50",
+	ONE_HUNDRED = "USE_100",
+}
+
+const ExpiryOptions: Record<EExpiry, Option> = {
+	[EExpiry.MINUTES_30]: { label: "30 Minutes", value: 1800 },
+	[EExpiry.HOUR_1]: { label: "1 Hour", value: 3600 },
+	[EExpiry.HOURS_6]: { label: "6 Hours", value: 21600 },
+	[EExpiry.HOURS_12]: { label: "12 Hours", value: 43200 },
+	[EExpiry.DAY_1]: { label: "1 Day", value: 86400 },
+	[EExpiry.DAY_7]: { label: "7 Days", value: 604800 },
+	[EExpiry.DAYS_30]: { label: "30 Days", value: 2592000 },
+	[EExpiry.NEVER]: { label: "Never", value: 0 },
+};
+
+const MaxUsesOptions: Record<EMaxUses, Option> = {
+	[EMaxUses.NO_LIMIT]: { label: "No Limit", value: 0 },
+	[EMaxUses.ONE]: { label: "1 use", value: 1 },
+	[EMaxUses.FIVE]: { label: "5 uses", value: 5 },
+	[EMaxUses.TEN]: { label: "10 uses", value: 10 },
+	[EMaxUses.TWENTY_FIVE]: { label: "25 uses", value: 25 },
+	[EMaxUses.FIFTY]: { label: "50 uses", value: 50 },
+	[EMaxUses.ONE_HUNDRED]: { label: "100 uses", value: 100 },
+};
+
+function findOptionByValue(value: number, options: Record<string, Option>): Option | undefined {
+	const result = Object.values(options).find((option) => option.value === value);
+	return result;
+}
 
 const InputWrapper = styled.div`
 	width: 100%;
@@ -104,9 +88,8 @@ interface FormValues extends APICreateInvite {
 function CreateInviteModal({ target, ...props }: ModalProps<"create_invite">) {
 	const logger = useLogger("CreateInviteModal");
 	const app = useAppStore();
-	const { openModal, closeModal } = useModals();
-	const [maxAge, setMaxAge] = React.useState(EXPIRE_OPTIONS[5]);
-	const [maxUses, setMaxUses] = React.useState(MAX_USES_OPTIONS[0]);
+	const [maxAge, setMaxAge] = React.useState(ExpiryOptions.DAY_7);
+	const [maxUses, setMaxUses] = React.useState(MaxUsesOptions.NO_LIMIT);
 	const [isEdited, setIsEdited] = React.useState(false);
 	const [inviteExpiresAt, setInviteExpiresAt] = React.useState<Date | null>(null);
 
@@ -132,7 +115,7 @@ function CreateInviteModal({ target, ...props }: ModalProps<"create_invite">) {
 						flags: 0,
 						target_type: null,
 						target_user_id: null,
-						max_age: EXPIRE_OPTIONS[5].value,
+						max_age: ExpiryOptions.DAY_7.value,
 						max_uses: 0,
 						temporary: false,
 					},
@@ -183,12 +166,12 @@ function CreateInviteModal({ target, ...props }: ModalProps<"create_invite">) {
 	});
 
 	const handleAgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		setMaxAge(EXPIRE_OPTIONS.find((x) => x.value === Number(e.target.value)) ?? EXPIRE_OPTIONS[5]);
+		setMaxAge(findOptionByValue(Number(e.target.value), ExpiryOptions) ?? ExpiryOptions.DAY_7);
 		setIsEdited(true);
 	};
 
 	const handleMaxUsesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		setMaxUses(MAX_USES_OPTIONS.find((x) => x.value === Number(e.target.value)) ?? MAX_USES_OPTIONS[0]);
+		setMaxUses(findOptionByValue(Number(e.target.value), MaxUsesOptions) ?? MaxUsesOptions.NO_LIMIT);
 		setIsEdited(true);
 	};
 
@@ -210,12 +193,12 @@ function CreateInviteModal({ target, ...props }: ModalProps<"create_invite">) {
 					</LabelWrapper>
 					<InputWrapper>
 						<InputSelect
-							{...register("max_age", { value: EXPIRE_OPTIONS[5].value })}
+							{...register("max_age", { value: ExpiryOptions.DAY_7.value })}
 							onChange={handleAgeChange}
 							value={maxAge.value}
 						>
-							{EXPIRE_OPTIONS.map((option) => (
-								<InputSelectOption value={option.value}>{option.label}</InputSelectOption>
+							{Object.entries(ExpiryOptions).map(([_, b]) => (
+								<InputSelectOption value={b.value}>{b.label}</InputSelectOption>
 							))}
 						</InputSelect>
 					</InputWrapper>
@@ -223,7 +206,7 @@ function CreateInviteModal({ target, ...props }: ModalProps<"create_invite">) {
 
 				<InputContainer>
 					<LabelWrapper error={false}>
-						<InputLabel>Maximum Uses</InputLabel>
+						<InputLabel>Max Number of Uses</InputLabel>
 					</LabelWrapper>
 					<InputWrapper>
 						<InputSelect
@@ -231,8 +214,8 @@ function CreateInviteModal({ target, ...props }: ModalProps<"create_invite">) {
 							onChange={handleMaxUsesChange}
 							value={maxUses.value}
 						>
-							{MAX_USES_OPTIONS.map((option) => (
-								<InputSelectOption value={option.value}>{option.label}</InputSelectOption>
+							{Object.entries(MaxUsesOptions).map(([_, b]) => (
+								<InputSelectOption value={b.value}>{b.label}</InputSelectOption>
 							))}
 						</InputSelect>
 					</InputWrapper>
@@ -240,7 +223,7 @@ function CreateInviteModal({ target, ...props }: ModalProps<"create_invite">) {
 
 				<div style={{ display: "flex", justifyContent: "flex-end", margin: "24px 0 12px 0" }}>
 					<Button disabled={!isEdited} onClick={onSubmit}>
-						Generate new Link
+						Generate New Link
 					</Button>
 				</div>
 
