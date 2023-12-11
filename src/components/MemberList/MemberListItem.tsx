@@ -1,14 +1,8 @@
 import { PresenceUpdateStatus } from "@spacebarchat/spacebar-api-types/v9";
-import React from "react";
 import styled from "styled-components";
-import { ContextMenuContext } from "../../contexts/ContextMenuContext";
-import { PopoutContext } from "../../contexts/PopoutContext";
 import { useAppStore } from "../../stores/AppStore";
 import GuildMember from "../../stores/objects/GuildMember";
-import ContextMenus from "../../utils/ContextMenus";
 import Avatar from "../Avatar";
-import { IContextMenuItem } from "../ContextMenuItem";
-import UserProfilePopout from "../UserProfilePopout";
 
 const ListItem = styled.div<{ isCategory?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};
@@ -64,28 +58,16 @@ interface Props {
 
 function MemberListItem({ item }: Props) {
 	const app = useAppStore();
-	const popoutContext = React.useContext(PopoutContext);
-
-	const contextMenu = React.useContext(ContextMenuContext);
-	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
-		...ContextMenus.User(item.user!),
-		...ContextMenus.Member(app.account!, item, item.guild!),
-	]);
 
 	const presence = app.presences.get(item.guild.id)?.get(item.user!.id);
 
 	return (
 		<ListItem
 			key={item.user?.id}
-			onContextMenu={(e) => contextMenu.open2(e, contextMenuItems)}
 			onClick={(e) => {
 				e.preventDefault();
 				e.stopPropagation();
-				popoutContext.open({
-					element: <UserProfilePopout user={item.user!} presence={presence} member={item} />,
-					position: e.currentTarget.getBoundingClientRect(),
-					placement: "right",
-				});
+				// TODO: user popout
 			}}
 		>
 			<Container>

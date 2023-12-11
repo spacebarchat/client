@@ -1,4 +1,3 @@
-import { useModals } from "@mattjennings/react-modal-stack";
 import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +26,6 @@ type FormValues = {
 
 function JoinServerModal({ ...props }: ModalProps<"join_server">) {
 	const logger = useLogger("JoinServerModal");
-	const { openModal, closeAllModals } = useModals();
 	const app = useAppStore();
 	const navigate = useNavigate();
 
@@ -46,7 +44,8 @@ function JoinServerModal({ ...props }: ModalProps<"join_server">) {
 			.post<never, { guild_id: string; channel_id: string }>(Routes.invite(code))
 			.then((r) => {
 				navigate(`/channels/${r.guild_id}/${r.channel_id}`);
-				closeAllModals();
+				// modalController.closeAll();
+				// TODO:
 			})
 			.catch((r) => {
 				if ("message" in r) {

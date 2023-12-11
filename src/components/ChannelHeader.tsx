@@ -1,13 +1,9 @@
-import { StackedModalProps, useModals } from "@mattjennings/react-modal-stack";
 import { observer } from "mobx-react-lite";
-import React, { ComponentType } from "react";
+import React from "react";
 import styled from "styled-components";
-import { ContextMenuContext } from "../contexts/ContextMenuContext";
 import { useAppStore } from "../stores/AppStore";
-import { IContextMenuItem } from "./ContextMenuItem";
 import Icon, { IconProps } from "./Icon";
 import { SectionHeader } from "./SectionHeader";
-import LeaveServerModal from "./modals/LeaveServerModal";
 
 const Wrapper = styled(SectionHeader)`
 	background-color: var(--background-secondary);
@@ -29,61 +25,11 @@ const HeaderText = styled.header`
 
 function ChannelHeader() {
 	const app = useAppStore();
-	const contextMenu = React.useContext(ContextMenuContext);
-	const { openModal } = useModals();
 
-	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([]);
 	const [icon, setIcon] = React.useState<IconProps["icon"]>("mdiChevronDown");
-
-	React.useEffect(() => {
-		if (app.activeGuild && app.activeGuild.ownerId !== app.account?.id) {
-			setContextMenuItems([
-				{
-					label: "Leave Server",
-					color: "var(--danger)",
-					onClick: async () => {
-						openModal(LeaveServerModal as ComponentType<StackedModalProps>, {
-							guild: app.activeGuild,
-						});
-					},
-					iconProps: {
-						icon: "mdiLocationExit",
-						color: "var(--danger)",
-					},
-					hover: {
-						color: "var(--text)",
-						backgroundColor: "var(--danger)",
-					},
-				},
-			]);
-		} else {
-			setContextMenuItems([]);
-		}
-	}, [app.activeGuild]);
 
 	function openMenu(e: React.MouseEvent<HTMLDivElement>) {
 		e.stopPropagation();
-
-		if (contextMenu.visible) {
-			// "toggles" the menu
-			contextMenu.close();
-			setIcon("mdiChevronDown");
-			return;
-		}
-
-		const horizontalPadding = 5;
-		const verticalPadding = 10;
-		contextMenu.open({
-			position: {
-				x: e.currentTarget.offsetLeft + horizontalPadding, // centers the menu under the header
-				y: e.currentTarget.offsetHeight + horizontalPadding, // add a slight gap between the header and the menu
-			},
-			items: contextMenuItems,
-			style: {
-				width: e.currentTarget.clientWidth - verticalPadding, // adds "margin" to the left and right of the menu
-				boxSizing: "border-box",
-			},
-		});
 
 		setIcon("mdiClose");
 	}

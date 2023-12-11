@@ -1,13 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { PopoutContext } from "../contexts/PopoutContext";
 import { modalController } from "../controllers/modals/ModalController";
 import { useAppStore } from "../stores/AppStore";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
 import IconButton from "./IconButton";
 import Tooltip from "./Tooltip";
-import UserProfilePopout from "./UserProfilePopout";
 
 const Section = styled.section`
 	flex: 0 0 auto;
@@ -71,7 +69,6 @@ const ActionsWrapper = styled.div`
 
 function UserPanel() {
 	const app = useAppStore();
-	const popoutContext = React.useContext(PopoutContext);
 	const ref = React.useRef<HTMLDivElement>(null);
 
 	const openSettingsModal = () => {
@@ -85,16 +82,6 @@ function UserPanel() {
 	const openPopout = (e: React.MouseEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
-
-		if (!ref.current) return;
-		const rect = ref.current.getBoundingClientRect();
-		if (!rect) return;
-
-		popoutContext.open({
-			element: <UserProfilePopout user={app.account!} />,
-			position: rect,
-			placement: "top",
-		});
 	};
 
 	return (

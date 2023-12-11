@@ -1,12 +1,9 @@
 import { observer } from "mobx-react-lite";
-import React, { memo } from "react";
-import { ContextMenuContext } from "../../contexts/ContextMenuContext";
+import { memo } from "react";
 import { useAppStore } from "../../stores/AppStore";
 import { MessageLike } from "../../stores/objects/Message";
 import { QueuedMessageStatus } from "../../stores/objects/QueuedMessage";
-import ContextMenus from "../../utils/ContextMenus";
 import Avatar from "../Avatar";
-import { IContextMenuItem } from "../ContextMenuItem";
 import Markdown from "../markdown/MarkdownRenderer";
 import MessageAttachment from "./MessageAttachment";
 import MessageAuthor from "./MessageAuthor";
@@ -21,10 +18,6 @@ interface Props {
 
 function Message({ message, header }: Props) {
 	const app = useAppStore();
-	const contextMenu = React.useContext(ContextMenuContext);
-	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
-		...ContextMenus.Message(app, message, app.account),
-	]);
 
 	const guild = message.guild_id ? app.guilds.get(message.guild_id) : undefined;
 	const isEveryoneMentioned = "mention_everyone" in message && message.mention_everyone;
@@ -35,11 +28,7 @@ function Message({ message, header }: Props) {
 		message.mention_roles.some((role) => guild.members.me?.roles.some((role) => role.id === role.id));
 
 	return (
-		<MessageBase
-			header={header}
-			onContextMenu={(e) => contextMenu.open2(e, contextMenuItems)}
-			mention={isEveryoneMentioned || isUserMentioned || isRoleMentioned}
-		>
+		<MessageBase header={header} mention={isEveryoneMentioned || isUserMentioned || isRoleMentioned}>
 			<MessageInfo>
 				{header ? (
 					<Avatar key={message.author.id} user={message.author} size={40} />

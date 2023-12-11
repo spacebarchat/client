@@ -1,4 +1,3 @@
-import { useModals } from "@mattjennings/react-modal-stack";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -39,7 +38,6 @@ const Divider = styled.div`
 function GuildSidebar() {
 	const app = useAppStore();
 
-	const { openModal } = useModals();
 	const navigate = useNavigate();
 	const { all } = app.guilds;
 	const itemCount = all.length + 3; // add the home button, divider, and add server button

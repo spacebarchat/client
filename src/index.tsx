@@ -19,8 +19,6 @@ import { BrowserRouter } from "react-router-dom";
 import { ErrorBoundaryContext } from "react-use-error-boundary";
 import App from "./App";
 import { BannerContextProvider } from "./contexts/BannerContext";
-import { ContextMenuContextProvider } from "./contexts/ContextMenuContext";
-import { PopoutContextProvider } from "./contexts/PopoutContext";
 import Theme from "./contexts/Theme";
 import ModalRenderer from "./controllers/modals/ModalRenderer";
 import "./index.css";
@@ -32,14 +30,10 @@ dayjs.extend(calendar, calendarStrings);
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<ErrorBoundaryContext>
 		<BrowserRouter>
-			<PopoutContextProvider>
-				<ContextMenuContextProvider>
-					<BannerContextProvider>
-						<App />
-						<ModalRenderer />
-					</BannerContextProvider>
-				</ContextMenuContextProvider>
-			</PopoutContextProvider>
+			<BannerContextProvider>
+				<App />
+				<ModalRenderer />
+			</BannerContextProvider>
 			<Theme />
 		</BrowserRouter>
 	</ErrorBoundaryContext>,

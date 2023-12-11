@@ -1,5 +1,4 @@
 import HCaptchaLib from "@hcaptcha/react-hcaptcha";
-import { useModals } from "@mattjennings/react-modal-stack";
 import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -24,7 +23,6 @@ import {
 } from "../components/AuthComponents";
 import { TextDivider } from "../components/Divider";
 import HCaptcha, { HeaderContainer } from "../components/HCaptcha";
-import ForgotPasswordModal from "../components/modals/ForgotPasswordModal";
 import useLogger from "../hooks/useLogger";
 import { AUTH_NO_BRANDING, useAppStore } from "../stores/AppStore";
 import { Globals } from "../utils/Globals";
@@ -56,7 +54,6 @@ function LoginPage() {
 	const captchaRef = React.useRef<HCaptchaLib>(null);
 	const [debounce, setDebounce] = React.useState<NodeJS.Timeout | null>(null);
 	const [isCheckingInstance, setCheckingInstance] = React.useState(false);
-	const { openModal } = useModals();
 
 	const {
 		register,
@@ -208,7 +205,7 @@ function LoginPage() {
 	};
 
 	const forgotPassword = () => {
-		openModal(ForgotPasswordModal);
+		// TODO: forgot password modal
 	};
 
 	if (captchaSiteKey) {

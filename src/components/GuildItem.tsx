@@ -3,15 +3,12 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { ContextMenuContext } from "../contexts/ContextMenuContext";
-import { modalController } from "../controllers/modals/ModalController";
 import useLogger from "../hooks/useLogger";
 import { useAppStore } from "../stores/AppStore";
 import Guild from "../stores/objects/Guild";
 import { Permissions } from "../utils/Permissions";
 import REST from "../utils/REST";
 import Container from "./Container";
-import { IContextMenuItem } from "./ContextMenuItem";
 import SidebarPill, { PillType } from "./SidebarPill";
 import Tooltip from "./Tooltip";
 
@@ -55,40 +52,6 @@ function GuildItem({ guild, active }: Props) {
 	const [pillType, setPillType] = React.useState<PillType>("none");
 	const [isHovered, setHovered] = React.useState(false);
 
-	const contextMenu = React.useContext(ContextMenuContext);
-	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
-		{
-			index: 1,
-			label: "Copy Guild ID",
-			onClick: () => {
-				navigator.clipboard.writeText(guild.id);
-			},
-			iconProps: {
-				icon: "mdiIdentifier",
-			},
-		},
-		{
-			index: 0,
-			label: "Create Invite",
-			onClick: () => {
-				// get first channel with view permissions in guild
-				const channel = guild.channels.find((x) => {
-					const permission = Permissions.getPermission(app.account!.id, guild, x);
-					return permission.has("VIEW_CHANNEL") && x.type !== ChannelType.GuildCategory;
-				});
-				if (!channel) return logger.error("No suitable channel found for invite creation");
-
-				modalController.push({
-					type: "create_invite",
-					target: channel,
-				});
-			},
-			iconProps: {
-				icon: "mdiAccountPlus",
-			},
-		},
-	]);
-
 	React.useEffect(() => {
 		if (app.activeChannelId && app.activeGuildId === guild.id) return setPillType("active");
 		else if (isHovered) return setPillType("hover");
@@ -105,7 +68,7 @@ function GuildItem({ guild, active }: Props) {
 	};
 
 	return (
-		<GuildSidebarListItem onContextMenu={(e) => contextMenu.open2(e, contextMenuItems)}>
+		<GuildSidebarListItem>
 			<SidebarPill type={pillType} />
 			<Tooltip title={guild.name} placement="right">
 				<Wrapper

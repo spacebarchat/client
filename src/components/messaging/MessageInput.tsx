@@ -1,6 +1,5 @@
 import Channel from "../../stores/objects/Channel";
 
-import { useModals } from "@mattjennings/react-modal-stack";
 import { ChannelType, MessageType, RESTPostAPIChannelMessageJSONBody } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import React from "react";
@@ -60,7 +59,6 @@ function MessageInput({ channel }: Props) {
 	const logger = useLogger("MessageInput");
 	const [content, setContent] = React.useState("");
 	const [attachments, setAttachments] = React.useState<File[]>([]);
-	const { openModal } = useModals();
 
 	/**
 	 * Debounced stopTyping

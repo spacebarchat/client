@@ -2,13 +2,11 @@ import { PresenceUpdateStatus } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import styled from "styled-components";
-import { PopoutContext } from "../contexts/PopoutContext";
 import AccountStore from "../stores/AccountStore";
 import { useAppStore } from "../stores/AppStore";
 import Presence from "../stores/objects/Presence";
 import User from "../stores/objects/User";
 import Container from "./Container";
-import UserProfilePopout from "./UserProfilePopout";
 
 const Wrapper = styled(Container)<{ size: number; hasClick?: boolean }>`
 	width: ${(props) => props.size}px;
@@ -49,7 +47,6 @@ interface Props {
 function Avatar(props: Props) {
 	const app = useAppStore();
 
-	const popoutContext = React.useContext(PopoutContext);
 	const ref = React.useRef<HTMLDivElement>(null);
 
 	const user = props.user ?? app.account;
@@ -59,16 +56,7 @@ function Avatar(props: Props) {
 		e.preventDefault();
 		e.stopPropagation();
 
-		if (!ref.current) return;
-
-		const rect = ref.current.getBoundingClientRect();
-		if (!rect) return;
-
-		popoutContext.open({
-			element: <UserProfilePopout user={user} presence={props.presence} />,
-			position: rect,
-			placement: props.popoutPlacement,
-		});
+		// TODO:
 	};
 
 	const clickProp = props.onClick === null ? {} : { onClick: props.onClick ?? openPopout };
