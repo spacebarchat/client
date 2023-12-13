@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { modalController } from "../../controllers/modals/ModalController";
-import { ModalProps } from "../../controllers/modals/types";
+import { ModalProps, modalController } from "../../controllers/modals";
 import Button from "../Button";
 import { Modal } from "./ModalComponents";
 

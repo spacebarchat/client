@@ -1,17 +1,15 @@
+import styled from "styled-components";
+import useLogger from "../../hooks/useLogger";
+import GuildMember from "../../stores/objects/GuildMember";
+import User from "../../stores/objects/User";
+import Snowflake from "../../utils/Snowflake";
+import Avatar from "../Avatar";
+import { HorizontalDivider } from "../Divider";
+
 import { CDNRoutes, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import dayjs from "dayjs";
-import styled from "styled-components";
-import { ReactComponent as SpacebarLogoBlue } from "../assets/images/logo/Spacebar_Icon.svg";
-import useLogger from "../hooks/useLogger";
-import AccountStore from "../stores/AccountStore";
-import GuildMember from "../stores/objects/GuildMember";
-import Presence from "../stores/objects/Presence";
-import User from "../stores/objects/User";
-import REST from "../utils/REST";
-import Snowflake from "../utils/Snowflake";
-import Avatar from "./Avatar";
-import { HorizontalDivider } from "./Divider";
-import Tooltip from "./Tooltip";
+import { ReactComponent as SpacebarLogoBlue } from "../../assets/images/logo/Spacebar_Icon.svg";
+import REST from "../../utils/REST";
 
 const Container = styled.div`
 	background-color: #252525;
@@ -22,6 +20,7 @@ const Container = styled.div`
 	max-height: 600px;
 	overflow: hidden;
 	box-shadow: 0 0 0 1px rgb(0 0 0 / 15%), 0 4px 8px rgb(0 0 0 / 15%);
+	color: var(--text);
 `;
 
 const Top = styled.div`
@@ -36,10 +35,22 @@ const Bottom = styled.div`
 	border-radius: 4px;
 	margin: 0 16px 16px;
 	max-height: 340px;
+	gap: 8px;
+
+	& > :first-child {
+		padding: 12px 12px 0 12px;
+	}
+
+	& > :nth-child(n + 3) {
+		padding: 0 12px;
+	}
+
+	& > :last-child {
+		padding: 0 12px 12px 12px;
+	}
 `;
 
 const Section = styled.div`
-	padding: 12px;
 	display: flex;
 	justify-content: space-between;
 	display: flex;
@@ -102,20 +113,53 @@ const AcronymText = styled.div`
 	white-space: nowrap;
 `;
 
+const RoleList = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+	position: relative;
+	margin-top: 2px;
+`;
+
+const RolePillDot = styled.span<{ color?: string }>`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	padding: 0;
+	margin: 0 4px;
+	background-color: ${(props) => props.color ?? "var(--text-disabled)"};
+`;
+
+const RolePill = styled.div`
+	display: flex;
+	align-items: center;
+	font-size: 12px;
+	font-weight: var(--font-weight-medium);
+	background-color: var(--background-primary-alt);
+	border-radius: 12px;
+	box-sizing: border-box;
+	height: 22px;
+	margin: 0 4px 4px 0;
+	padding: 8px;
+`;
+
+const RoleName = styled.div`
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 200px;
+`;
+
 interface Props {
-	user?: User | AccountStore;
-	presence?: Presence;
+	user: User;
 	member?: GuildMember;
 }
 
-function UserProfilePopout({ user, presence, member }: Props) {
+function UserProfilePopout({ user, member }: Props) {
 	const logger = useLogger("UserProfilePopout");
-	if (!user && !member?.user) {
-		logger.error("neither user, nor a valid member was provided");
-		return null;
-	}
 
-	user = user ?? member!.user!;
 	const id = user.id;
 	const { timestamp: createdAt } = Snowflake.deconstruct(id);
 
@@ -131,7 +175,7 @@ function UserProfilePopout({ user, presence, member }: Props) {
 						e.stopPropagation();
 					}}
 					user={user}
-					presence={presence}
+					// presence={presence}
 					statusDotStyle={{
 						width: 16,
 						height: 16,
@@ -159,11 +203,11 @@ function UserProfilePopout({ user, presence, member }: Props) {
 				<Section>
 					<Heading>Member Since</Heading>
 					<MemberSinceContainer>
-						<Tooltip title="Spacebar" placement="top">
-							<div>
-								<SpacebarLogoBlue width={16} height={16} style={{ borderRadius: "50%" }} />
-							</div>
-						</Tooltip>
+						{/* <Tooltip title="Spacebar" placement="top"> */}
+						<div>
+							<SpacebarLogoBlue width={16} height={16} style={{ borderRadius: "50%" }} />
+						</div>
+						{/* </Tooltip> */}
 						<MemberSinceText>{dayjs(createdAt).format("MMM D, YYYY")}</MemberSinceText>
 						{member && (
 							<>
@@ -176,34 +220,44 @@ function UserProfilePopout({ user, presence, member }: Props) {
 									}}
 								/>
 
-								<Tooltip title={member.guild.name} placement="top">
-									{member.guild.icon ? (
-										<img
-											src={REST.makeCDNUrl(
-												CDNRoutes.guildIcon(
-													member.guild.id,
-													member.guild.icon,
-													ImageFormat.PNG,
-												),
-											)}
-											width={16}
-											height={16}
-											loading="lazy"
-											style={{
-												borderRadius: "50%",
-											}}
-										/>
-									) : (
-										<Acronym>
-											<AcronymText>{member.guild.acronym}</AcronymText>
-										</Acronym>
-									)}
-								</Tooltip>
+								{/* <Tooltip title={member.guild.name} placement="top"> */}
+								{member.guild.icon ? (
+									<img
+										src={REST.makeCDNUrl(
+											CDNRoutes.guildIcon(member.guild.id, member.guild.icon, ImageFormat.PNG),
+										)}
+										width={16}
+										height={16}
+										loading="lazy"
+										style={{
+											borderRadius: "50%",
+										}}
+									/>
+								) : (
+									<Acronym>
+										<AcronymText>{member.guild.acronym}</AcronymText>
+									</Acronym>
+								)}
+								{/* </Tooltip> */}
 								<MemberSinceText>{dayjs(member.joined_at).format("MMM D, YYYY")}</MemberSinceText>
 							</>
 						)}
 					</MemberSinceContainer>
 				</Section>
+
+				{member && (
+					<Section>
+						<Heading>{member.roles.length ? "Roles" : "No Roles"}</Heading>
+						<RoleList>
+							{member.roles.map((x) => (
+								<RolePill>
+									<RolePillDot color={x.color} />
+									<RoleName>{x.name}</RoleName>
+								</RolePill>
+							))}
+						</RoleList>
+					</Section>
+				)}
 			</Bottom>
 		</Container>
 	);

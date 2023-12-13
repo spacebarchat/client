@@ -1,6 +1,5 @@
-import { type StackedModalProps } from "@mattjennings/react-modal-stack";
 import React, { useCallback, useEffect, useState } from "react";
-import { createPortal } from "react-dom";
+import { Portal } from "react-portal";
 import styled, { css } from "styled-components";
 import Button, { Props as ButtonProps } from "../Button";
 import Icon from "../Icon";
@@ -13,7 +12,7 @@ export type ModalAction = Omit<React.HTMLAttributes<HTMLButtonElement>, "as"> &
 		onClick: () => any | Promise<any>;
 	};
 
-interface ModalProps extends StackedModalProps {
+interface ModalProps {
 	children: React.ReactNode;
 	onClose?: (force: boolean) => void;
 	signal?: "close" | "confirm" | "cancel";
@@ -202,41 +201,42 @@ export function Modal(props: ModalProps) {
 		}
 	}, [props.signal]);
 
-	return createPortal(
-		<ModalBase closing={closing} onClick={() => !props.nonDismissable && closeModal()}>
-			<ModalWrapper {...props} onClick={(e) => e.stopPropagation()} actions={false}>
-				<div style={{ position: "relative" }}>
-					{!props.nonDismissable && (
-						<ModalCloseWrapper onClick={closeModal}>
-							<Icon icon="mdiClose" size={1} />
-						</ModalCloseWrapper>
+	return (
+		<Portal>
+			<ModalBase closing={closing} onClick={() => !props.nonDismissable && closeModal()}>
+				<ModalWrapper {...props} onClick={(e) => e.stopPropagation()} actions={false}>
+					<div style={{ position: "relative" }}>
+						{!props.nonDismissable && (
+							<ModalCloseWrapper onClick={closeModal}>
+								<Icon icon="mdiClose" size={1} />
+							</ModalCloseWrapper>
+						)}
+					</div>
+					{(props.title || props.description) && (
+						<ModalHeader>
+							{props.title && <ModalHeaderText>{props.title}</ModalHeaderText>}
+							{props.description && <ModalSubHeaderText>{props.description}</ModalSubHeaderText>}
+						</ModalHeader>
 					)}
-				</div>
-				{(props.title || props.description) && (
-					<ModalHeader>
-						{props.title && <ModalHeaderText>{props.title}</ModalHeaderText>}
-						{props.description && <ModalSubHeaderText>{props.description}</ModalSubHeaderText>}
-					</ModalHeader>
-				)}
-				<ModalContentContainer {...props}>{props.children}</ModalContentContainer>
-				{props.actions && props.actions.length > 0 && (
-					<Actions>
-						{props.actions.map((x, index) => (
-							<Button
-								disabled={props.disabled}
-								key={index}
-								{...x}
-								onClick={async () => {
-									if (await x.onClick()) {
-										closeModal();
-									}
-								}}
-							/>
-						))}
-					</Actions>
-				)}
-			</ModalWrapper>
-		</ModalBase>,
-		document.body,
+					<ModalContentContainer {...props}>{props.children}</ModalContentContainer>
+					{props.actions && props.actions.length > 0 && (
+						<Actions>
+							{props.actions.map((x, index) => (
+								<Button
+									disabled={props.disabled}
+									key={index}
+									{...x}
+									onClick={async () => {
+										if (await x.onClick()) {
+											closeModal();
+										}
+									}}
+								/>
+							))}
+						</Actions>
+					)}
+				</ModalWrapper>
+			</ModalBase>
+		</Portal>
 	);
 }

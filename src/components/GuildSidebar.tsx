@@ -3,7 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { AutoSizer, List, ListRowProps } from "react-virtualized";
 import styled from "styled-components";
-import { modalController } from "../controllers/modals/ModalController";
+import { modalController } from "../controllers/modals";
 import { useAppStore } from "../stores/AppStore";
 import GuildItem, { GuildSidebarListItem } from "./GuildItem";
 import SidebarAction from "./SidebarAction";

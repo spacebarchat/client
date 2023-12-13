@@ -21,6 +21,7 @@ import App from "./App";
 import { BannerContextProvider } from "./contexts/BannerContext";
 import Theme from "./contexts/Theme";
 import ModalRenderer from "./controllers/modals/ModalRenderer";
+import FloatingRenderer from "./controllers/modals/floating/FloatingRenderer";
 import "./index.css";
 import { calendarStrings } from "./utils/i18n";
 
@@ -33,6 +34,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 			<BannerContextProvider>
 				<App />
 				<ModalRenderer />
+				<FloatingRenderer />
 			</BannerContextProvider>
 			<Theme />
 		</BrowserRouter>

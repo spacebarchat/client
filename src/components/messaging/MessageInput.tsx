@@ -4,7 +4,8 @@ import { ChannelType, MessageType, RESTPostAPIChannelMessageJSONBody } from "@sp
 import { observer } from "mobx-react-lite";
 import React from "react";
 import styled from "styled-components";
-import { modalController } from "../../controllers/modals/ModalController";
+
+import { modalController } from "../../controllers/modals";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import Guild from "../../stores/objects/Guild";

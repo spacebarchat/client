@@ -1,7 +1,7 @@
-import React from "react";
 import styled from "styled-components";
-import { modalController } from "../controllers/modals/ModalController";
+import useFloating from "../hooks/useFloating";
 import { useAppStore } from "../stores/AppStore";
+import User from "../stores/objects/User";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
 import IconButton from "./IconButton";
@@ -69,25 +69,21 @@ const ActionsWrapper = styled.div`
 
 function UserPanel() {
 	const app = useAppStore();
-	const ref = React.useRef<HTMLDivElement>(null);
 
-	const openSettingsModal = () => {
-		modalController.push({
-			type: "error",
-			title: "File Too Large",
-			error: "Max file size is 25MB.",
-		});
-	};
+	const { refs, getReferenceProps } = useFloating({
+		placement: "right-start",
+		type: "userPopout",
+		config: {
+			user: app.account as unknown as User,
+		},
+	});
 
-	const openPopout = (e: React.MouseEvent) => {
-		e.preventDefault();
-		e.stopPropagation();
-	};
+	const openSettingsModal = () => {};
 
 	return (
-		<Section ref={ref}>
+		<Section>
 			<Container>
-				<AvatarWrapper onClick={openPopout}>
+				<AvatarWrapper ref={refs.setReference} {...getReferenceProps()}>
 					<Avatar popoutPlacement="top" onClick={null} />
 					<Name>
 						<Username>{app.account?.username}</Username>

@@ -1,5 +1,6 @@
 import { PresenceUpdateStatus } from "@spacebarchat/spacebar-api-types/v9";
 import styled from "styled-components";
+import useFloating from "../../hooks/useFloating";
 import { useAppStore } from "../../stores/AppStore";
 import GuildMember from "../../stores/objects/GuildMember";
 import Avatar from "../Avatar";
@@ -7,6 +8,7 @@ import Avatar from "../Avatar";
 const ListItem = styled.div<{ isCategory?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};
 	cursor: pointer;
+	user-select: none;
 `;
 
 const Container = styled.div`
@@ -58,18 +60,19 @@ interface Props {
 
 function MemberListItem({ item }: Props) {
 	const app = useAppStore();
-
 	const presence = app.presences.get(item.guild.id)?.get(item.user!.id);
 
+	const { refs, getReferenceProps } = useFloating({
+		placement: "left-start",
+		type: "userPopout",
+		config: {
+			user: item.user!,
+			member: item,
+		},
+	});
+
 	return (
-		<ListItem
-			key={item.user?.id}
-			onClick={(e) => {
-				e.preventDefault();
-				e.stopPropagation();
-				// TODO: user popout
-			}}
-		>
+		<ListItem key={item.user?.id} ref={refs.setReference} {...getReferenceProps()}>
 			<Container>
 				<Wrapper offline={presence?.status === PresenceUpdateStatus.Offline}>
 					<AvatarWrapper>
