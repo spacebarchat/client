@@ -7,6 +7,10 @@ import { useAppStore } from "../stores/AppStore";
 import Presence from "../stores/objects/Presence";
 import User from "../stores/objects/User";
 import Container from "./Container";
+import Floating from "./floating/Floating";
+import FloatingContent from "./floating/FloatingContent";
+import FloatingTrigger from "./floating/FloatingTrigger";
+import UserProfilePopout from "./floating/UserProfilePopout";
 
 const Wrapper = styled(Container)<{ size: number; hasClick?: boolean }>`
 	width: ${(props) => props.size}px;
@@ -31,6 +35,12 @@ const StatusDot = styled.span<{ color: string; width?: number; height?: number }
 	height: ${(props) => props.height ?? 10}px;
 `;
 
+function Yes(onClick: React.MouseEventHandler<HTMLDivElement>) {
+	return ({ children }: { children: React.ReactNode }) => {
+		return <div onClick={onClick}>{children}</div>;
+	};
+}
+
 interface Props {
 	user?: User | AccountStore;
 	size?: number;
@@ -52,30 +62,31 @@ function Avatar(props: Props) {
 	const user = props.user ?? app.account;
 	if (!user) return null;
 
-	const openPopout = (e: React.MouseEvent) => {
-		e.preventDefault();
-		e.stopPropagation();
-
-		// TODO:
-	};
-
-	const clickProp = props.onClick === null ? {} : { onClick: props.onClick ?? openPopout };
+	const Base = props.onClick ? Yes(props.onClick) : FloatingTrigger;
 
 	return (
-		<Wrapper size={props.size ?? 32} style={props.style} ref={ref} hasClick={props.onClick !== null} {...clickProp}>
-			<img
-				style={{
-					borderRadius: "50%",
-				}}
-				src={user.avatarUrl}
-				width={props.size ?? 32}
-				height={props.size ?? 32}
-				loading="eager"
-			/>
-			{props.presence && props.presence.status !== PresenceUpdateStatus.Offline && (
-				<StatusDot color={app.theme.getStatusColor(props.presence.status)} {...props.statusDotStyle} />
-			)}
-		</Wrapper>
+		<Floating placement="right-start">
+			<Base>
+				<Wrapper size={props.size ?? 32} style={props.style} ref={ref} hasClick={props.onClick !== null}>
+					<img
+						style={{
+							borderRadius: "50%",
+						}}
+						src={user.avatarUrl}
+						width={props.size ?? 32}
+						height={props.size ?? 32}
+						loading="eager"
+					/>
+					{props.presence && props.presence.status !== PresenceUpdateStatus.Offline && (
+						<StatusDot color={app.theme.getStatusColor(props.presence.status)} {...props.statusDotStyle} />
+					)}
+				</Wrapper>
+			</Base>
+
+			<FloatingContent>
+				<UserProfilePopout user={user as unknown as User} />
+			</FloatingContent>
+		</Floating>
 	);
 }
 

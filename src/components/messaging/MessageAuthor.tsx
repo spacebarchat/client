@@ -3,6 +3,10 @@ import React from "react";
 import styled from "styled-components";
 import { useAppStore } from "../../stores/AppStore";
 import { MessageLike } from "../../stores/objects/Message";
+import Floating from "../floating/Floating";
+import FloatingContent from "../floating/FloatingContent";
+import FloatingTrigger from "../floating/FloatingTrigger";
+import UserProfilePopout from "../floating/UserProfilePopout";
 
 const Container = styled.div`
 	font-size: 16px;
@@ -34,24 +38,22 @@ function MessageAuthor({ message }: Props) {
 		}
 	}, [message]);
 
-	const openPopout = (e: React.MouseEvent) => {
-		e.preventDefault();
-		e.stopPropagation();
-
-		// TODO: user popout
-	};
-
 	return (
-		<Container
-			ref={ref}
-			style={{
-				color,
-			}}
-
-			onClick={openPopout}
-		>
-			{message.author.username}
-		</Container>
+		<Floating placement="right-start">
+			<FloatingTrigger>
+				<Container
+					ref={ref}
+					style={{
+						color,
+					}}
+				>
+					{message.author.username}
+				</Container>
+			</FloatingTrigger>
+			<FloatingContent>
+				<UserProfilePopout user={message.author} />
+			</FloatingContent>
+		</Floating>
 	);
 }
 

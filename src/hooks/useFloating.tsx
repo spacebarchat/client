@@ -10,33 +10,24 @@ import {
 	useInteractions,
 	useRole,
 } from "@floating-ui/react";
-import { useEffect, useMemo, useState } from "react";
-import { floatingController } from "../controllers/modals/floating/FloatingController";
-import GuildMember from "../stores/objects/GuildMember";
-import User from "../stores/objects/User";
+import { useMemo, useState } from "react";
 
-interface FloatingProps {
-	type: "userPopout";
+export interface FloatingOptions {
 	initialOpen?: boolean;
-	placement: Placement;
+	placement?: Placement;
 	open?: boolean;
 	onOpenChange?: (open: boolean) => void;
-	config: {
-		user: User;
-		member?: GuildMember;
-	};
 }
 
 export default function ({
-	type,
 	initialOpen = false,
 	placement,
 	open: controlledOpen,
 	onOpenChange: setControlledOpen,
-	config,
-}: FloatingProps) {
+}: // config,
+FloatingOptions) {
 	const [uncontrolledOpen, setUncontrolledOpen] = useState(initialOpen);
-	const [key, setKey] = useState<string>();
+	// const [key, setKey] = useState<string>();
 
 	const open = controlledOpen ?? uncontrolledOpen;
 	const setOpen = setControlledOpen ?? setUncontrolledOpen;
@@ -56,22 +47,22 @@ export default function ({
 	const role = useRole(context);
 	const interactions = useInteractions([click, dismiss, role]);
 
-	useEffect(() => {
-		if (open) {
-			const k = floatingController.add({
-				type,
-				data: {
-					...interactions,
-					...data,
-				},
-				open,
-				props: config,
-			});
-			setKey(k);
-		} else {
-			key && floatingController.remove(key);
-		}
-	}, [open]);
+	// useEffect(() => {
+	// 	if (open) {
+	// 		const k = floatingController.add({
+	// 			type,
+	// 			data: {
+	// 				...interactions,
+	// 				...data,
+	// 			},
+	// 			open,
+	// 			props: config,
+	// 		});
+	// 		setKey(k);
+	// 	} else {
+	// 		key && floatingController.remove(key);
+	// 	}
+	// }, [open]);
 
 	return useMemo(
 		() => ({

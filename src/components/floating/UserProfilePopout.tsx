@@ -170,9 +170,10 @@ function UserProfilePopout({ user, member }: Props) {
 					style={{ margin: "22px 16px" }}
 					size={80}
 					onClick={(e) => {
-						// TODO: open profile modal
 						e.preventDefault();
 						e.stopPropagation();
+						// TODO: open profile modal
+						logger.debug("open profile modal");
 					}}
 					user={user}
 					// presence={presence}

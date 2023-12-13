@@ -1,16 +1,3 @@
-import {
-	FloatingPortal,
-	flip,
-	offset,
-	shift,
-	useClick,
-	useDismiss,
-	useFloating,
-	useInteractions,
-	useRole,
-} from "@floating-ui/react";
-import { motion } from "framer-motion";
-import { useState } from "react";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 import User from "../stores/objects/User";
@@ -18,6 +5,9 @@ import Avatar from "./Avatar";
 import Icon from "./Icon";
 import IconButton from "./IconButton";
 import Tooltip from "./Tooltip";
+import Floating from "./floating/Floating";
+import FloatingContent from "./floating/FloatingContent";
+import FloatingTrigger from "./floating/FloatingTrigger";
 import UserProfilePopout from "./floating/UserProfilePopout";
 
 const Section = styled.section`
@@ -34,7 +24,7 @@ const Container = styled.div`
 	background-color: var(--background-secondary-alt);
 `;
 
-const AvatarWrapper = styled.div`
+const AvatarWrapper = styled(FloatingTrigger)`
 	display: flex;
 	align-items: center;
 	min-width: 120px;
@@ -82,28 +72,14 @@ const ActionsWrapper = styled.div`
 
 function UserPanel() {
 	const app = useAppStore();
-	const [open, setOpen] = useState(false);
-
-	const floating = useFloating({
-		placement: "bottom",
-		open,
-		onOpenChange: setOpen,
-		// whileElementsMounted: autoUpdate,
-		middleware: [offset(5), flip(), shift()],
-	});
-
-	const click = useClick(floating.context);
-	const dismiss = useDismiss(floating.context);
-	const role = useRole(floating.context);
-	const interactions = useInteractions([click, dismiss, role]);
 
 	const openSettingsModal = () => {};
 
 	return (
-		<>
+		<Floating placement="bottom">
 			<Section>
 				<Container>
-					<AvatarWrapper ref={floating.refs.setReference} {...interactions.getReferenceProps()}>
+					<AvatarWrapper>
 						<Avatar popoutPlacement="top" onClick={null} />
 						<Name>
 							<Username>{app.account?.username}</Username>
@@ -121,25 +97,10 @@ function UserPanel() {
 				</Container>
 			</Section>
 
-			{open && (
-				<FloatingPortal>
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 0.1, easing: [0.87, 0, 0.13, 1] }}
-					>
-						<div
-							ref={floating.refs.setFloating}
-							style={floating.floatingStyles}
-							{...interactions.getFloatingProps()}
-						>
-							<UserProfilePopout user={app.account! as unknown as User} />
-						</div>
-					</motion.div>
-				</FloatingPortal>
-			)}
-		</>
+			<FloatingContent>
+				<UserProfilePopout user={app.account! as unknown as User} />
+			</FloatingContent>
+		</Floating>
 	);
 }
 
