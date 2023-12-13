@@ -1,9 +1,23 @@
+import {
+	FloatingPortal,
+	flip,
+	offset,
+	shift,
+	useClick,
+	useDismiss,
+	useFloating,
+	useInteractions,
+	useRole,
+} from "@floating-ui/react";
 import { PresenceUpdateStatus } from "@spacebarchat/spacebar-api-types/v9";
+import { motion } from "framer-motion";
+import { useState } from "react";
 import styled from "styled-components";
-import useFloating from "../../hooks/useFloating";
 import { useAppStore } from "../../stores/AppStore";
 import GuildMember from "../../stores/objects/GuildMember";
+import User from "../../stores/objects/User";
 import Avatar from "../Avatar";
+import UserProfilePopout from "../floating/UserProfilePopout";
 
 const ListItem = styled.div<{ isCategory?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};
@@ -62,28 +76,55 @@ function MemberListItem({ item }: Props) {
 	const app = useAppStore();
 	const presence = app.presences.get(item.guild.id)?.get(item.user!.id);
 
-	const { refs, getReferenceProps } = useFloating({
-		placement: "left-start",
-		type: "userPopout",
-		config: {
-			user: item.user!,
-			member: item,
-		},
+	const [open, setOpen] = useState(false);
+
+	const floating = useFloating({
+		placement: "right-start",
+		open,
+		onOpenChange: setOpen,
+		// whileElementsMounted: autoUpdate,
+		middleware: [offset(5), flip(), shift()],
 	});
 
+	const click = useClick(floating.context);
+	const dismiss = useDismiss(floating.context);
+	const role = useRole(floating.context);
+	const interactions = useInteractions([click, dismiss, role]);
+
 	return (
-		<ListItem key={item.user?.id} ref={refs.setReference} {...getReferenceProps()}>
-			<Container>
-				<Wrapper offline={presence?.status === PresenceUpdateStatus.Offline}>
-					<AvatarWrapper>
-						<Avatar user={item.user!} size={32} presence={presence} />
-					</AvatarWrapper>
-					<TextWrapper>
-						<Text color={item.roleColor}>{item.nick ?? item.user?.username}</Text>
-					</TextWrapper>
-				</Wrapper>
-			</Container>
-		</ListItem>
+		<>
+			<ListItem key={item.user?.id} ref={floating.refs.setReference} {...interactions.getReferenceProps()}>
+				<Container>
+					<Wrapper offline={presence?.status === PresenceUpdateStatus.Offline}>
+						<AvatarWrapper>
+							<Avatar user={item.user!} size={32} presence={presence} />
+						</AvatarWrapper>
+						<TextWrapper>
+							<Text color={item.roleColor}>{item.nick ?? item.user?.username}</Text>
+						</TextWrapper>
+					</Wrapper>
+				</Container>
+			</ListItem>
+
+			{open && (
+				<FloatingPortal>
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.1, easing: [0.87, 0, 0.13, 1] }}
+					>
+						<div
+							ref={floating.refs.setFloating}
+							style={floating.floatingStyles}
+							{...interactions.getFloatingProps()}
+						>
+							<UserProfilePopout user={app.account! as unknown as User} member={item} />
+						</div>
+					</motion.div>
+				</FloatingPortal>
+			)}
+		</>
 	);
 }
 
