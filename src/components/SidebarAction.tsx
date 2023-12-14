@@ -4,7 +4,8 @@ import Container from "./Container";
 import { GuildSidebarListItem } from "./GuildItem";
 import Icon, { IconProps } from "./Icon";
 import SidebarPill, { PillType } from "./SidebarPill";
-import Tooltip from "./Tooltip";
+import Floating from "./floating/Floating";
+import FloatingTrigger from "./floating/FloatingTrigger";
 
 const Wrapper = styled(Container)<{
 	margin?: boolean;
@@ -60,25 +61,34 @@ function SidebarAction(props: Props) {
 	return (
 		<GuildSidebarListItem>
 			<SidebarPill type={pillType} />
-			<Tooltip title={props.tooltip} placement="right">
-				<Wrapper
-					onClick={props.action}
-					onMouseEnter={() => setHovered(true)}
-					onMouseLeave={() => setHovered(false)}
-					margin={props.margin}
-					active={props.active}
-					useGreenColorScheme={props.useGreenColorScheme}
-				>
-					{props.image && <img {...props.image} loading="lazy" />}
-					{props.icon && (
-						<Icon
-							{...props.icon}
-							color={isHovered && props.useGreenColorScheme ? "var(--text)" : props.icon.color}
-						/>
-					)}
-					{props.label && <span>{props.label}</span>}
-				</Wrapper>
-			</Tooltip>
+			<Floating
+				placement="right"
+				type="tooltip"
+				offset={20}
+				props={{
+					content: <span>{props.tooltip}</span>,
+				}}
+			>
+				<FloatingTrigger>
+					<Wrapper
+						onClick={props.action}
+						onMouseEnter={() => setHovered(true)}
+						onMouseLeave={() => setHovered(false)}
+						margin={props.margin}
+						active={props.active}
+						useGreenColorScheme={props.useGreenColorScheme}
+					>
+						{props.image && <img {...props.image} loading="lazy" />}
+						{props.icon && (
+							<Icon
+								{...props.icon}
+								color={isHovered && props.useGreenColorScheme ? "var(--text)" : props.icon.color}
+							/>
+						)}
+						{props.label && <span>{props.label}</span>}
+					</Wrapper>
+				</FloatingTrigger>
+			</Floating>
 		</GuildSidebarListItem>
 	);
 }

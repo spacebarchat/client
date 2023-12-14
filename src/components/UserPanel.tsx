@@ -4,11 +4,8 @@ import User from "../stores/objects/User";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
 import IconButton from "./IconButton";
-import Tooltip from "./Tooltip";
 import Floating from "./floating/Floating";
-import FloatingContent from "./floating/FloatingContent";
 import FloatingTrigger from "./floating/FloatingTrigger";
-import UserProfilePopout from "./floating/UserProfilePopout";
 
 const Section = styled.section`
 	flex: 0 0 auto;
@@ -76,7 +73,13 @@ function UserPanel() {
 	const openSettingsModal = () => {};
 
 	return (
-		<Floating placement="bottom">
+		<Floating
+			placement="bottom"
+			type="userPopout"
+			props={{
+				user: app.account! as unknown as User,
+			}}
+		>
 			<Section>
 				<Container>
 					<AvatarWrapper>
@@ -88,18 +91,23 @@ function UserPanel() {
 					</AvatarWrapper>
 
 					<ActionsWrapper>
-						<Tooltip title="Settings">
-							<IconButton aria-label="settings" color="#fff" onClick={openSettingsModal}>
-								<Icon icon="mdiCog" size="20px" />
-							</IconButton>
-						</Tooltip>
+						<Floating
+							placement="top"
+							type="tooltip"
+							offset={10}
+							props={{
+								content: <span>Settings</span>,
+							}}
+						>
+							<FloatingTrigger>
+								<IconButton aria-label="settings" color="#fff" onClick={openSettingsModal}>
+									<Icon icon="mdiCog" size="20px" />
+								</IconButton>
+							</FloatingTrigger>
+						</Floating>
 					</ActionsWrapper>
 				</Container>
 			</Section>
-
-			<FloatingContent>
-				<UserProfilePopout user={app.account! as unknown as User} />
-			</FloatingContent>
 		</Floating>
 	);
 }

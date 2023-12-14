@@ -1,7 +1,8 @@
 import dayjs from "dayjs";
 import { memo } from "react";
 import styled from "styled-components";
-import Tooltip from "../Tooltip";
+import Floating from "../floating/Floating";
+import FloatingTrigger from "../floating/FloatingTrigger";
 
 const Container = styled.div`
 	background-color: hsl(var(--background-tertiary-hsl) / 0.3);
@@ -43,9 +44,17 @@ function Timestamp({ timestamp, style }: Props) {
 
 	return (
 		<Container>
-			<Tooltip title={date.format("dddd, MMMM MM, h:mm A")} placement="top">
-				<span>{value}</span>
-			</Tooltip>
+			<Floating
+				placement="top"
+				type="tooltip"
+				props={{
+					content: <span>{date.format("dddd, MMMM MM, h:mm A")}</span>,
+				}}
+			>
+				<FloatingTrigger>
+					<span>{value}</span>
+				</FloatingTrigger>
+			</Floating>
 		</Container>
 	);
 }

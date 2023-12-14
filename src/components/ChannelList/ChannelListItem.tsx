@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Channel from "../../stores/objects/Channel";
 import Icon from "../Icon";
-import Tooltip from "../Tooltip";
+import Floating from "../floating/Floating";
+import FloatingTrigger from "../floating/FloatingTrigger";
 
 const ListItem = styled.div<{ isCategory?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};
@@ -93,18 +94,27 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 					</Text>
 				</div>
 				{isCategory && (
-					<Tooltip title="Create Channel" placement="top">
-						<span>
-							<Icon
-								icon="mdiPlus"
-								size="18px"
-								style={{
-									marginLeft: "auto",
-								}}
-								color={hovered ? "var(--text)" : "var(--text-secondary)"}
-							/>
-						</span>
-					</Tooltip>
+					<Floating
+						placement="top"
+						type="tooltip"
+						offset={10}
+						props={{
+							content: <span>Create Channel</span>,
+						}}
+					>
+						<FloatingTrigger>
+							<span>
+								<Icon
+									icon="mdiPlus"
+									size="18px"
+									style={{
+										marginLeft: "auto",
+									}}
+									color={hovered ? "var(--text)" : "var(--text-secondary)"}
+								/>
+							</span>
+						</FloatingTrigger>
+					</Floating>
 				)}
 			</Wrapper>
 		</ListItem>

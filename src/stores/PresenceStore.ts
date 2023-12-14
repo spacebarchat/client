@@ -1,11 +1,11 @@
 import type { GatewayPresenceUpdateDispatchData, Snowflake } from "@spacebarchat/spacebar-api-types/v9";
-import { ObservableMap, action, computed, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 import AppStore from "./AppStore";
 import Presence from "./objects/Presence";
 
 export default class PresenceStore {
 	private readonly app: AppStore;
-	@observable presences = observable.map<Snowflake, ObservableMap<Snowflake, Presence>>();
+	@observable presences = observable.map<Snowflake, Presence>();
 
 	constructor(app: AppStore) {
 		this.app = app;
@@ -15,11 +15,11 @@ export default class PresenceStore {
 
 	@action
 	add(data: GatewayPresenceUpdateDispatchData) {
-		if (!this.presences.has(data.guild_id)) {
-			this.presences.set(data.guild_id, observable.map<Snowflake, Presence>());
+		if (!this.presences.has(data.user.id)) {
+			this.presences.set(data.user.id, new Presence(this.app, data));
+		} else {
+			this.update(data);
 		}
-
-		this.presences.get(data.guild_id)?.set(data.user.id, new Presence(this.app, data));
 	}
 
 	@action
@@ -39,7 +39,7 @@ export default class PresenceStore {
 
 	@action
 	update(data: GatewayPresenceUpdateDispatchData) {
-		this.presences.get(data.guild_id)?.get(data.user.id)?.update(data);
+		this.presences.get(data.user.id)?.update(data);
 	}
 
 	get(id: Snowflake) {

@@ -4,9 +4,7 @@ import styled from "styled-components";
 import { useAppStore } from "../../stores/AppStore";
 import { MessageLike } from "../../stores/objects/Message";
 import Floating from "../floating/Floating";
-import FloatingContent from "../floating/FloatingContent";
 import FloatingTrigger from "../floating/FloatingTrigger";
-import UserProfilePopout from "../floating/UserProfilePopout";
 
 const Container = styled.div`
 	font-size: 16px;
@@ -39,7 +37,13 @@ function MessageAuthor({ message }: Props) {
 	}, [message]);
 
 	return (
-		<Floating placement="right-start">
+		<Floating
+			placement="right-start"
+			type="userPopout"
+			props={{
+				user: message.author,
+			}}
+		>
 			<FloatingTrigger>
 				<Container
 					ref={ref}
@@ -50,9 +54,6 @@ function MessageAuthor({ message }: Props) {
 					{message.author.username}
 				</Container>
 			</FloatingTrigger>
-			<FloatingContent>
-				<UserProfilePopout user={message.author} />
-			</FloatingContent>
 		</Floating>
 	);
 }

@@ -9,7 +9,10 @@ import { HorizontalDivider } from "../Divider";
 import { CDNRoutes, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import dayjs from "dayjs";
 import { ReactComponent as SpacebarLogoBlue } from "../../assets/images/logo/Spacebar_Icon.svg";
+import { useAppStore } from "../../stores/AppStore";
 import REST from "../../utils/REST";
+import Floating from "./Floating";
+import FloatingTrigger from "./FloatingTrigger";
 
 const Container = styled.div`
 	background-color: #252525;
@@ -158,10 +161,12 @@ interface Props {
 }
 
 function UserProfilePopout({ user, member }: Props) {
+	const app = useAppStore();
 	const logger = useLogger("UserProfilePopout");
 
 	const id = user.id;
 	const { timestamp: createdAt } = Snowflake.deconstruct(id);
+	const presence = app.presences.get(user.id);
 
 	return (
 		<Container>
@@ -176,11 +181,12 @@ function UserProfilePopout({ user, member }: Props) {
 						logger.debug("open profile modal");
 					}}
 					user={user}
-					// presence={presence}
+					presence={presence}
 					statusDotStyle={{
 						width: 16,
 						height: 16,
 					}}
+					showPresence
 				/>
 			</Top>
 			<Bottom>
@@ -204,11 +210,19 @@ function UserProfilePopout({ user, member }: Props) {
 				<Section>
 					<Heading>Member Since</Heading>
 					<MemberSinceContainer>
-						{/* <Tooltip title="Spacebar" placement="top"> */}
-						<div>
-							<SpacebarLogoBlue width={16} height={16} style={{ borderRadius: "50%" }} />
-						</div>
-						{/* </Tooltip> */}
+						<Floating
+							placement="top"
+							type="tooltip"
+							props={{
+								content: <span>Spacebar</span>,
+							}}
+						>
+							<FloatingTrigger>
+								<div>
+									<SpacebarLogoBlue width={16} height={16} style={{ borderRadius: "50%" }} />
+								</div>
+							</FloatingTrigger>
+						</Floating>
 						<MemberSinceText>{dayjs(createdAt).format("MMM D, YYYY")}</MemberSinceText>
 						{member && (
 							<>
@@ -221,25 +235,37 @@ function UserProfilePopout({ user, member }: Props) {
 									}}
 								/>
 
-								{/* <Tooltip title={member.guild.name} placement="top"> */}
-								{member.guild.icon ? (
-									<img
-										src={REST.makeCDNUrl(
-											CDNRoutes.guildIcon(member.guild.id, member.guild.icon, ImageFormat.PNG),
+								<Floating
+									placement="top"
+									type="tooltip"
+									props={{
+										content: <span>{member.guild.name}</span>,
+									}}
+								>
+									<FloatingTrigger>
+										{member.guild.icon ? (
+											<img
+												src={REST.makeCDNUrl(
+													CDNRoutes.guildIcon(
+														member.guild.id,
+														member.guild.icon,
+														ImageFormat.PNG,
+													),
+												)}
+												width={16}
+												height={16}
+												loading="lazy"
+												style={{
+													borderRadius: "50%",
+												}}
+											/>
+										) : (
+											<Acronym>
+												<AcronymText>{member.guild.acronym}</AcronymText>
+											</Acronym>
 										)}
-										width={16}
-										height={16}
-										loading="lazy"
-										style={{
-											borderRadius: "50%",
-										}}
-									/>
-								) : (
-									<Acronym>
-										<AcronymText>{member.guild.acronym}</AcronymText>
-									</Acronym>
-								)}
-								{/* </Tooltip> */}
+									</FloatingTrigger>
+								</Floating>
 								<MemberSinceText>{dayjs(member.joined_at).format("MMM D, YYYY")}</MemberSinceText>
 							</>
 						)}
@@ -250,8 +276,8 @@ function UserProfilePopout({ user, member }: Props) {
 					<Section>
 						<Heading>{member.roles.length ? "Roles" : "No Roles"}</Heading>
 						<RoleList>
-							{member.roles.map((x) => (
-								<RolePill>
+							{member.roles.map((x, i) => (
+								<RolePill key={i}>
 									<RolePillDot color={x.color} />
 									<RoleName>{x.name}</RoleName>
 								</RolePill>

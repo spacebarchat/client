@@ -6,7 +6,8 @@ import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 import Icon from "../Icon";
 import { SectionHeader } from "../SectionHeader";
-import Tooltip from "../Tooltip";
+import Floating from "../floating/Floating";
+import FloatingTrigger from "../floating/FloatingTrigger";
 
 const IconButton = styled.button`
 	margin: 0;
@@ -120,13 +121,21 @@ function ActionItem({ icon, active, ariaLabel, tooltip, onClick }: ActionItemPro
 	const logger = useLogger("ChatHeader.tsx:ActionItem");
 
 	return (
-		<Tooltip title={tooltip}>
-			<IconWrapper>
-				<IconButton onClick={onClick}>
-					<CustomIcon $active={active} icon={icon} size="24px" aria-label={ariaLabel} />
-				</IconButton>
-			</IconWrapper>
-		</Tooltip>
+		<Floating
+			placement="bottom"
+			type="tooltip"
+			props={{
+				content: <span>{tooltip}</span>,
+			}}
+		>
+			<FloatingTrigger>
+				<IconWrapper>
+					<IconButton onClick={onClick}>
+						<CustomIcon $active={active} icon={icon} size="24px" aria-label={ariaLabel} />
+					</IconButton>
+				</IconWrapper>
+			</FloatingTrigger>
+		</Floating>
 	);
 }
 

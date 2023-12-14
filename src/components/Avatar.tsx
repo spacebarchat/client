@@ -8,9 +8,7 @@ import Presence from "../stores/objects/Presence";
 import User from "../stores/objects/User";
 import Container from "./Container";
 import Floating from "./floating/Floating";
-import FloatingContent from "./floating/FloatingContent";
 import FloatingTrigger from "./floating/FloatingTrigger";
-import UserProfilePopout from "./floating/UserProfilePopout";
 
 const Wrapper = styled(Container)<{ size: number; hasClick?: boolean }>`
 	width: ${(props) => props.size}px;
@@ -52,6 +50,7 @@ interface Props {
 		width?: number;
 		height?: number;
 	};
+	showPresence?: boolean;
 }
 
 function Avatar(props: Props) {
@@ -65,7 +64,13 @@ function Avatar(props: Props) {
 	const Base = props.onClick ? Yes(props.onClick) : FloatingTrigger;
 
 	return (
-		<Floating placement="right-start">
+		<Floating
+			placement="right-start"
+			type="userPopout"
+			props={{
+				user: user as unknown as User,
+			}}
+		>
 			<Base>
 				<Wrapper size={props.size ?? 32} style={props.style} ref={ref} hasClick={props.onClick !== null}>
 					<img
@@ -77,15 +82,14 @@ function Avatar(props: Props) {
 						height={props.size ?? 32}
 						loading="eager"
 					/>
-					{props.presence && props.presence.status !== PresenceUpdateStatus.Offline && (
-						<StatusDot color={app.theme.getStatusColor(props.presence.status)} {...props.statusDotStyle} />
+					{props.showPresence && (
+						<StatusDot
+							color={app.theme.getStatusColor(props.presence?.status ?? PresenceUpdateStatus.Offline)}
+							{...props.statusDotStyle}
+						/>
 					)}
 				</Wrapper>
 			</Base>
-
-			<FloatingContent>
-				<UserProfilePopout user={user as unknown as User} />
-			</FloatingContent>
 		</Floating>
 	);
 }

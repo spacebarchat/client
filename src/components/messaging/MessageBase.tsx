@@ -3,7 +3,8 @@ import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 import Message, { MessageLike } from "../../stores/objects/Message";
 import { calendarStrings } from "../../utils/i18n";
-import Tooltip from "../Tooltip";
+import Floating from "../floating/Floating";
+import FloatingTrigger from "../floating/FloatingTrigger";
 
 interface Props {
 	header?: boolean;
@@ -96,18 +97,33 @@ export const MessageDetails = observer(({ message, position }: { message: Messag
 		if (message instanceof Message && message.edited_timestamp) {
 			return (
 				<div className="messageTimestampWrapper">
-					<Tooltip title={dayjs(message.timestamp).format("dddd, MMMM D, YYYY h:mm A")} placement="top">
-						<time className="copyTime" dateTime={message.edited_timestamp.toISOString()}>
-							{dayjs(message.edited_timestamp).format("h:mm A")}
-						</time>
-					</Tooltip>
+					<Floating
+						placement="top"
+						type="tooltip"
+						props={{
+							content: <span>{dayjs(message.timestamp).format("dddd, MMMM D, YYYY h:mm A")}</span>,
+						}}
+					>
+						<FloatingTrigger>
+							<time className="copyTime" dateTime={message.edited_timestamp.toISOString()}>
+								{dayjs(message.edited_timestamp).format("h:mm A")}
+							</time>
+						</FloatingTrigger>
+					</Floating>
 					<span className="edited">
-						<Tooltip
-							title={dayjs(message.edited_timestamp).format("dddd, MMMM D, YYYY h:mm A")}
+						<Floating
 							placement="top"
+							type="tooltip"
+							props={{
+								content: (
+									<span>{dayjs(message.edited_timestamp).format("dddd, MMMM D, YYYY h:mm A")}</span>
+								),
+							}}
 						>
-							<span>(edited)</span>
-						</Tooltip>
+							<FloatingTrigger>
+								<span>(edited)</span>
+							</FloatingTrigger>
+						</Floating>
 					</span>
 				</div>
 			);
@@ -121,15 +137,31 @@ export const MessageDetails = observer(({ message, position }: { message: Messag
 
 	return (
 		<DetailBase>
-			<Tooltip title={dayjs(message.timestamp).format("dddd, MMMM D, YYYY h:mm A")} placement="top">
-				<time className="copyTime" dateTime={message.timestamp.toISOString()}>
-					{dayjs(message.timestamp).calendar(undefined, calendarStrings)}
-				</time>
-			</Tooltip>
+			<Floating
+				placement="top"
+				type="tooltip"
+				props={{
+					content: <span>{dayjs(message.timestamp).format("dddd, MMMM D, YYYY h:mm A")}</span>,
+				}}
+			>
+				<FloatingTrigger>
+					<time className="copyTime" dateTime={message.timestamp.toISOString()}>
+						{dayjs(message.timestamp).calendar(undefined, calendarStrings)}
+					</time>
+				</FloatingTrigger>
+			</Floating>
 			{message instanceof Message && message.edited_timestamp && (
-				<Tooltip title={dayjs(message.edited_timestamp).format("dddd, MMMM D, YYYY h:mm A")} placement="top">
-					<span className="edited">(edited)</span>
-				</Tooltip>
+				<Floating
+					placement="top"
+					type="tooltip"
+					props={{
+						content: <span>{dayjs(message.edited_timestamp).format("dddd, MMMM D, YYYY h:mm A")}</span>,
+					}}
+				>
+					<FloatingTrigger>
+						<span className="edited">(edited)</span>
+					</FloatingTrigger>
+				</Floating>
 			)}
 		</DetailBase>
 	);

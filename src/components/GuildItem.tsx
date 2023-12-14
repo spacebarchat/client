@@ -10,7 +10,8 @@ import { Permissions } from "../utils/Permissions";
 import REST from "../utils/REST";
 import Container from "./Container";
 import SidebarPill, { PillType } from "./SidebarPill";
-import Tooltip from "./Tooltip";
+import Floating from "./floating/Floating";
+import FloatingTrigger from "./floating/FloatingTrigger";
 
 export const GuildSidebarListItem = styled.div`
 	position: relative;
@@ -70,34 +71,43 @@ function GuildItem({ guild, active }: Props) {
 	return (
 		<GuildSidebarListItem>
 			<SidebarPill type={pillType} />
-			<Tooltip title={guild.name} placement="right">
-				<Wrapper
-					onClick={doNavigate}
-					active={active}
-					hasImage={!!guild?.icon}
-					onMouseEnter={() => setHovered(true)}
-					onMouseLeave={() => setHovered(false)}
-				>
-					{guild.icon ? (
-						<img
-							src={REST.makeCDNUrl(CDNRoutes.guildIcon(guild.id, guild?.icon, ImageFormat.PNG))}
-							width={48}
-							height={48}
-							loading="lazy"
-						/>
-					) : (
-						<span
-							style={{
-								fontSize: "18px",
-								fontWeight: "bold",
-								cursor: "pointer",
-							}}
-						>
-							{guild?.acronym}
-						</span>
-					)}
-				</Wrapper>
-			</Tooltip>
+			<Floating
+				placement="right"
+				type="tooltip"
+				offset={20}
+				props={{
+					content: <span>{guild.name}</span>,
+				}}
+			>
+				<FloatingTrigger>
+					<Wrapper
+						onClick={doNavigate}
+						active={active}
+						hasImage={!!guild?.icon}
+						onMouseEnter={() => setHovered(true)}
+						onMouseLeave={() => setHovered(false)}
+					>
+						{guild.icon ? (
+							<img
+								src={REST.makeCDNUrl(CDNRoutes.guildIcon(guild.id, guild?.icon, ImageFormat.PNG))}
+								width={48}
+								height={48}
+								loading="lazy"
+							/>
+						) : (
+							<span
+								style={{
+									fontSize: "18px",
+									fontWeight: "bold",
+									cursor: "pointer",
+								}}
+							>
+								{guild?.acronym}
+							</span>
+						)}
+					</Wrapper>
+				</FloatingTrigger>
+			</Floating>
 		</GuildSidebarListItem>
 	);
 }

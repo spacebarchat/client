@@ -2,12 +2,9 @@ import { PresenceUpdateStatus } from "@spacebarchat/spacebar-api-types/v9";
 import styled from "styled-components";
 import { useAppStore } from "../../stores/AppStore";
 import GuildMember from "../../stores/objects/GuildMember";
-import User from "../../stores/objects/User";
 import Avatar from "../Avatar";
 import Floating from "../floating/Floating";
-import FloatingContent from "../floating/FloatingContent";
 import FloatingTrigger from "../floating/FloatingTrigger";
-import UserProfilePopout from "../floating/UserProfilePopout";
 
 const ListItem = styled(FloatingTrigger)<{ isCategory?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};
@@ -64,15 +61,23 @@ interface Props {
 
 function MemberListItem({ item }: Props) {
 	const app = useAppStore();
-	const presence = app.presences.get(item.guild.id)?.get(item.user!.id);
+	const presence = app.presences.get(item.user!.id);
 
 	return (
-		<Floating placement="right-start">
+		<Floating
+			placement="right-start"
+			type="userPopout"
+			offset={20}
+			props={{
+				user: item.user!,
+				member: item,
+			}}
+		>
 			<ListItem key={item.user?.id}>
 				<Container>
 					<Wrapper offline={presence?.status === PresenceUpdateStatus.Offline}>
 						<AvatarWrapper>
-							<Avatar user={item.user!} size={32} presence={presence} />
+							<Avatar user={item.user!} size={32} presence={presence} showPresence />
 						</AvatarWrapper>
 						<TextWrapper>
 							<Text color={item.roleColor}>{item.nick ?? item.user?.username}</Text>
@@ -80,10 +85,6 @@ function MemberListItem({ item }: Props) {
 					</Wrapper>
 				</Container>
 			</ListItem>
-
-			<FloatingContent>
-				<UserProfilePopout user={app.account! as unknown as User} member={item} />
-			</FloatingContent>
 		</Floating>
 	);
 }
