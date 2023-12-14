@@ -19,6 +19,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ErrorBoundaryContext } from "react-use-error-boundary";
 import App from "./App";
 import { BannerContextProvider } from "./contexts/BannerContext";
+import { ContextMenuContextProvider } from "./contexts/ContextMenuContext";
 import Theme from "./contexts/Theme";
 import ModalRenderer from "./controllers/modals/ModalRenderer";
 import "./index.css";
@@ -31,8 +32,10 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<ErrorBoundaryContext>
 		<BrowserRouter>
 			<BannerContextProvider>
-				<App />
-				<ModalRenderer />
+				<ContextMenuContextProvider>
+					<App />
+					<ModalRenderer />
+				</ContextMenuContextProvider>
 			</BannerContextProvider>
 			<Theme />
 		</BrowserRouter>

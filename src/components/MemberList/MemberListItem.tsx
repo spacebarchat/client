@@ -1,5 +1,7 @@
 import { PresenceUpdateStatus } from "@spacebarchat/spacebar-api-types/v9";
+import { useContext } from "react";
 import styled from "styled-components";
+import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { useAppStore } from "../../stores/AppStore";
 import GuildMember from "../../stores/objects/GuildMember";
 import Avatar from "../Avatar";
@@ -62,6 +64,7 @@ interface Props {
 function MemberListItem({ item }: Props) {
 	const app = useAppStore();
 	const presence = app.presences.get(item.user!.id);
+	const contextMenu = useContext(ContextMenuContext);
 
 	return (
 		<Floating
@@ -73,7 +76,11 @@ function MemberListItem({ item }: Props) {
 				member: item,
 			}}
 		>
-			<ListItem key={item.user?.id}>
+			<ListItem
+				key={item.user?.id}
+				ref={contextMenu.setReferenceElement}
+				onContextMenu={(e) => contextMenu.onContextMenu(e, { user: item.user! })}
+			>
 				<Container>
 					<Wrapper offline={presence?.status === PresenceUpdateStatus.Offline}>
 						<AvatarWrapper>
