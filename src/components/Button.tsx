@@ -18,7 +18,7 @@ export default styled.button<Props>`
 	border: none;
 	transition: background 0.2s ease-in-out;
 	cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-	opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+	opacity: ${(props) => (props.disabled ? 0.5 : 1)}
 	font-weight: var(--font-weight-bold);
 
 	${(props) => {
