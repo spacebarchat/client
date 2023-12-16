@@ -32,7 +32,7 @@ function Message({ message, header }: Props) {
 	const isRoleMentioned =
 		guild &&
 		"mention_roles" in message &&
-		message.mention_roles.some((r1) => guild.members.me?.roles.some((r2) => r1.id === r2.id));
+		message.mention_roles.some((r1) => guild.members.me?.roles.some((r2) => r1.id === r2));
 
 	return (
 		<MessageBase
