@@ -11,11 +11,6 @@ import { Input, InputErrorText, InputLabel, InputWrapper, LabelWrapper } from ".
 import { TextDivider } from "../Divider";
 import { InputContainer, Modal } from "./ModalComponents";
 
-export const ModalHeader = styled.div`
-	margin-bottom: 30px;
-	padding: 24px 24px 0;
-`;
-
 const UploadIcon = styled.div`
 	padding-top: 4;
 	display: flex;
@@ -49,7 +44,7 @@ type FormValues = {
 	name: string;
 };
 
-function CreateServerModal({ ...props }: ModalProps<"create_server">) {
+export function CreateServerModal({ ...props }: ModalProps<"create_server">) {
 	const app = useAppStore();
 	const logger = useLogger("CreateServerModal");
 	const [selectedFile, setSelectedFile] = React.useState<File>();
@@ -210,5 +205,3 @@ function CreateServerModal({ ...props }: ModalProps<"create_server">) {
 		</Modal>
 	);
 }
-
-export default CreateServerModal;

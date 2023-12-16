@@ -6,10 +6,13 @@ import { rgbToHsl } from "../utils/Utils";
 const font: ThemeFont["font"] = {
 	weight: {
 		thin: 100,
+		// extraLight: 200,
 		light: 300,
 		regular: 400,
 		medium: 500,
+		// semiBold: 600,
 		bold: 700,
+		// extraBold: 800,
 		black: 900,
 	},
 	family: "Roboto, Arial, Helvetica, sans-serif",
@@ -69,10 +72,13 @@ export type ThemeFont = {
 	font: {
 		weight: {
 			thin?: number;
+			extraLight?: number;
 			light?: number;
 			regular?: number;
 			medium?: number;
+			semiBold?: number;
 			bold?: number;
+			extraBold?: number;
 			black?: number;
 		};
 		family: string;

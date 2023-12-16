@@ -1,11 +1,15 @@
 // adapted from https://github.com/revoltchat/revite/blob/master/src/controllers/modals/ModalController.tsx
 
 import { action, computed, makeObservable, observable } from "mobx";
-import AddServerModal from "../../components/modals/AddServerModal";
-import CreateInviteModal from "../../components/modals/CreateInviteModal";
-import CreateServerModal from "../../components/modals/CreateServerModal";
-import ErrorModal from "../../components/modals/ErrorModal";
-import JoinServerModal from "../../components/modals/JoinServerModal";
+import {
+	AddServerModal,
+	BanMemberModal,
+	CreateInviteModal,
+	CreateServerModal,
+	ErrorModal,
+	JoinServerModal,
+	KickMemberModal,
+} from "../../components/modals";
 import { Modal } from "./types";
 
 function randomUUID() {
@@ -95,6 +99,7 @@ class ModalController<T extends Modal> {
 			<>
 				{this.stack.map((modal) => {
 					const Component = this.components[modal.type];
+					if (!Component) return null;
 					return <Component {...modal} onClose={() => this.remove(modal.key!)} />;
 				})}
 			</>
@@ -132,7 +137,7 @@ class ModalControllerExtended extends ModalController<Modal> {
 export const modalController = new ModalControllerExtended({
 	add_server: AddServerModal,
 	// add_friend: AddFriend,
-	// ban_member: BanMember,
+	ban_member: BanMemberModal,
 	// changelog: Changelog,
 	// channel_info: ChannelInfo,
 	// clipboard: Clipboard,
@@ -156,7 +161,7 @@ export const modalController = new ModalControllerExtended({
 	// delete_message: DeleteMessage,
 	error: ErrorModal,
 	// image_viewer: ImageViewer,
-	// kick_member: KickMember,
+	kick_member: KickMemberModal,
 	// link_warning: LinkWarning,
 	// mfa_flow: MFAFlow,
 	// mfa_recovery: MFARecovery,

@@ -85,7 +85,7 @@ interface FormValues extends APICreateInvite {
 	code: string;
 }
 
-function CreateInviteModal({ target, ...props }: ModalProps<"create_invite">) {
+export function CreateInviteModal({ target, ...props }: ModalProps<"create_invite">) {
 	const logger = useLogger("CreateInviteModal");
 	const app = useAppStore();
 	const [maxAge, setMaxAge] = React.useState(ExpiryOptions.DAY_7);
@@ -290,5 +290,3 @@ function CreateInviteModal({ target, ...props }: ModalProps<"create_invite">) {
 		</Modal>
 	);
 }
-
-export default CreateInviteModal;

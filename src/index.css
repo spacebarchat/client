@@ -18,9 +18,12 @@ textarea {
 	margin: 0;
 }
 
+html *:not(code) {
+	font-family: var(--font-family);
+}
+
 body {
 	margin: 0;
-	font-family: var(--font-family);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	overflow: hidden;

@@ -3,10 +3,12 @@ import { FloatingPortal, useFloating } from "@floating-ui/react";
 import React from "react";
 import UserContextMenu from "../components/contextMenus/UserContextMenu";
 import useContextMenu from "../hooks/useContextMenu";
+import GuildMember from "../stores/objects/GuildMember";
 import User from "../stores/objects/User";
 
 interface MenuProps {
 	user: User;
+	member?: GuildMember;
 }
 
 export type ContextMenuContextType = {

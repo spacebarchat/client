@@ -3,12 +3,12 @@ import { ModalProps, modalController } from "../../controllers/modals";
 import Button from "../Button";
 import { Modal } from "./ModalComponents";
 
-export const ActionWrapper = styled.div`
+const ActionWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
 `;
-function AddServerModal({ ...props }: ModalProps<"add_server">) {
+export function AddServerModal({ ...props }: ModalProps<"add_server">) {
 	return (
 		<Modal {...props} title="Add a Guild" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit.">
 			<ActionWrapper>
@@ -37,5 +37,3 @@ function AddServerModal({ ...props }: ModalProps<"add_server">) {
 		</Modal>
 	);
 }
-
-export default AddServerModal;

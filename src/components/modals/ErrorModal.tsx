@@ -1,7 +1,7 @@
 import { ModalProps } from "../../controllers/modals/types";
 import { Modal } from "./ModalComponents";
 
-function ErrorModal({ error, ...props }: ModalProps<"error">) {
+export function ErrorModal({ error, ...props }: ModalProps<"error">) {
 	return (
 		<Modal
 			{...props}
@@ -20,5 +20,3 @@ function ErrorModal({ error, ...props }: ModalProps<"error">) {
 		</Modal>
 	);
 }
-
-export default ErrorModal;

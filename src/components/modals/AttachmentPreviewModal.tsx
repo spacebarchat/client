@@ -1,5 +1,3 @@
-function AttachmentPreviewModal() {
+export function AttachmentPreviewModal() {
 	return null;
 }
-
-export default AttachmentPreviewModal;

@@ -17,7 +17,7 @@ interface ModalProps {
 	onClose?: (force: boolean) => void;
 	signal?: "close" | "confirm" | "cancel";
 	title?: string;
-	description?: string;
+	description?: React.ReactNode;
 	transparent?: boolean;
 	nonDismissable?: boolean;
 	maxWidth?: string;
@@ -214,8 +214,16 @@ export function Modal(props: ModalProps) {
 					</div>
 					{(props.title || props.description) && (
 						<ModalHeader>
-							{props.title && <ModalHeaderText>{props.title}</ModalHeaderText>}
-							{props.description && <ModalSubHeaderText>{props.description}</ModalSubHeaderText>}
+							{props.title && typeof props.title === "string" ? (
+								<ModalHeaderText>{props.title}</ModalHeaderText>
+							) : (
+								props.title
+							)}
+							{props.description && typeof props.description === "string" ? (
+								<ModalSubHeaderText>{props.description}</ModalSubHeaderText>
+							) : (
+								props.description
+							)}
 						</ModalHeader>
 					)}
 					<ModalContentContainer {...props}>{props.children}</ModalContentContainer>

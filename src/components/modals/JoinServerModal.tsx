@@ -10,10 +10,6 @@ import { Input, InputErrorText, InputLabel, LabelWrapper } from "../AuthComponen
 import { TextDivider } from "../Divider";
 import { Modal } from "./ModalComponents";
 
-export const ModalHeader = styled.div`
-	padding: 16px;
-`;
-
 const InviteInputContainer = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -23,7 +19,7 @@ type FormValues = {
 	code: string;
 };
 
-function JoinServerModal({ ...props }: ModalProps<"join_server">) {
+export function JoinServerModal({ ...props }: ModalProps<"join_server">) {
 	const logger = useLogger("JoinServerModal");
 	const app = useAppStore();
 	const navigate = useNavigate();
@@ -137,5 +133,3 @@ function JoinServerModal({ ...props }: ModalProps<"join_server">) {
 		</Modal>
 	);
 }
-
-export default JoinServerModal;

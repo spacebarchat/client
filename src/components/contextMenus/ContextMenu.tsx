@@ -21,16 +21,23 @@ export const ContextMenu = styled.div`
 export const ContextMenuDivider = styled.div`
 	height: 1px;
 	margin: 4px;
-	background: var(--text);
+	background: var(--text-disabled);
 `;
 
-export const ContextMenuItem = styled("a")`
+export const ContextMenuItem = styled("button")`
 	display: block;
 	padding: 6px 8px;
 	border-radius: 4px;
 	font-size: 14px;
 	margin: 2px 0;
-	cursor: pointer;
+	cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+	opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+
+	// remove default button styles
+	border: none;
+	background: none;
+	color: inherit;
+	outline: none;
 `;
 
 const ButtonBase = styled(ContextMenuItem)<{ destructive?: boolean }>`
@@ -53,14 +60,15 @@ const ButtonBase = styled(ContextMenuItem)<{ destructive?: boolean }>`
 
 type ButtonProps = ComponentProps<typeof ContextMenuItem> & {
 	icon?: IconProps["icon"];
+	iconProps?: Omit<IconProps, "icon" | "size">;
 	destructive?: boolean;
 };
 
-export function ContextMenuButton(props: ButtonProps) {
+export function ContextMenuButton({ icon, children, iconProps, ...props }: ButtonProps) {
 	return (
 		<ButtonBase {...props}>
-			<span>{props.children}</span>
-			{props.icon && <Icon icon={props.icon} size="18px" />}
+			<span>{children}</span>
+			{icon && <Icon icon={icon} {...iconProps} size="18px" />}
 		</ButtonBase>
 	);
 }

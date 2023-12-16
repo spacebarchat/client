@@ -1,9 +1,11 @@
 import { autoUpdate, flip, offset, shift, useDismiss, useFloating, useInteractions, useRole } from "@floating-ui/react";
 import { useMemo, useState } from "react";
+import GuildMember from "../stores/objects/GuildMember";
 import User from "../stores/objects/User";
 
 interface MenuProps {
 	user: User;
+	member?: GuildMember;
 }
 
 export default function (type: "user") {
