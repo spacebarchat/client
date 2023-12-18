@@ -14,6 +14,7 @@ export function AddServerModal({ ...props }: ModalProps<"add_server">) {
 			<ActionWrapper>
 				<Button
 					palette="primary"
+					grow
 					onClick={() => {
 						modalController.push({
 							type: "create_server",
@@ -25,6 +26,7 @@ export function AddServerModal({ ...props }: ModalProps<"add_server">) {
 
 				<Button
 					palette="secondary"
+					grow
 					onClick={() => {
 						modalController.push({
 							type: "join_server",

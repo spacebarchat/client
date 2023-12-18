@@ -6,6 +6,7 @@ export interface Props {
 	readonly compact?: boolean | "icon";
 	palette?: "primary" | "secondary" | "success" | "warning" | "danger" | "accent" | "link";
 	size?: "small" | "medium" | "large";
+	grow?: boolean;
 	readonly disabled?: boolean;
 }
 
@@ -44,6 +45,7 @@ export default styled.button<Props>`
 		}
 	}};
 	width: ${(props) => {
+		if (props.grow) return "auto";
 		switch (props.size) {
 			default:
 			case "small":
@@ -55,6 +57,7 @@ export default styled.button<Props>`
 		}
 	}};
 	min-width: ${(props) => {
+		if (props.grow) return "auto";
 		switch (props.size) {
 			default:
 			case "small":
