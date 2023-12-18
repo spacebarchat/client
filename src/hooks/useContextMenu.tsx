@@ -62,6 +62,7 @@ export default function () {
 
 	function onContextMenu(e: React.MouseEvent, props: ContextMenuProps) {
 		e.preventDefault();
+		e.stopPropagation();
 
 		data.refs.setPositionReference({
 			getBoundingClientRect() {

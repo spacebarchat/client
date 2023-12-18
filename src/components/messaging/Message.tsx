@@ -30,7 +30,16 @@ function Message({ message, header }: Props) {
 		message.mention_roles.some((role) => guild.members.me?.roles.some((role) => role.id === role.id));
 
 	return (
-		<MessageBase header={header} mention={isEveryoneMentioned || isUserMentioned || isRoleMentioned}>
+		<MessageBase
+			header={header}
+			mention={isEveryoneMentioned || isUserMentioned || isRoleMentioned}
+			onContextMenu={(e) =>
+				contextMenuContext.onContextMenu(e, {
+					type: "message",
+					message: message,
+				})
+			}
+		>
 			<MessageInfo>
 				{header ? (
 					<Avatar key={message.author.id} user={message.author} size={40} />
@@ -45,31 +54,21 @@ function Message({ message, header }: Props) {
 						<MessageDetails message={message} position="top" />
 					</span>
 				)}
-				<div
-					onContextMenu={(e) =>
-						contextMenuContext.onContextMenu(e, {
-							type: "message",
-							message: message,
-						})
-					}
-				>
-					<MessageContentText
-						sending={"status" in message && message.status === QueuedMessageStatus.SENDING}
-						failed={"status" in message && message.status === QueuedMessageStatus.FAILED}
-					>
-						{message.content && <Markdown content={message.content} />}
-					</MessageContentText>
 
-					{"attachments" in message &&
-						message.attachments.map((attachment, index) => (
-							<MessageAttachment key={index} attachment={attachment} />
-						))}
-					{"embeds" in message &&
-						message.embeds?.map((embed, index) => <MessageEmbed key={index} embed={embed} />)}
-					{"files" in message && message.files?.length !== 0 && (
-						<AttachmentUploadProgress message={message} />
-					)}
-				</div>
+				<MessageContentText
+					sending={"status" in message && message.status === QueuedMessageStatus.SENDING}
+					failed={"status" in message && message.status === QueuedMessageStatus.FAILED}
+				>
+					{message.content && <Markdown content={message.content} />}
+				</MessageContentText>
+
+				{"attachments" in message &&
+					message.attachments.map((attachment, index) => (
+						<MessageAttachment key={index} attachment={attachment} />
+					))}
+				{"embeds" in message &&
+					message.embeds?.map((embed, index) => <MessageEmbed key={index} embed={embed} />)}
+				{"files" in message && message.files?.length !== 0 && <AttachmentUploadProgress message={message} />}
 			</MessageContent>
 		</MessageBase>
 	);
