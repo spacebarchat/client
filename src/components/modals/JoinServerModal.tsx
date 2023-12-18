@@ -39,8 +39,7 @@ export function JoinServerModal({ ...props }: ModalProps<"join_server">) {
 			.post<never, { guild_id: string; channel_id: string }>(Routes.invite(code))
 			.then((r) => {
 				navigate(`/channels/${r.guild_id}/${r.channel_id}`);
-				// modalController.closeAll();
-				// TODO:
+				modalController.closeAll();
 			})
 			.catch((r) => {
 				if ("message" in r) {
