@@ -80,16 +80,17 @@ const Content = observer((props: Props2) => {
 function Chat() {
 	const app = useAppStore();
 	const logger = useLogger("Messages");
+	const { activeChannel, activeGuild, activeChannelId, activeGuildId } = app;
 
 	React.useEffect(() => {
-		if (!app.activeChannel || !app.activeGuild || app.activeChannelId === "@me") return;
+		if (!activeChannel || !activeGuild || activeChannelId === "@me") return;
 
 		runInAction(() => {
-			app.gateway.onChannelOpen(app.activeGuildId!, app.activeChannelId!);
+			app.gateway.onChannelOpen(activeGuildId!, activeChannelId!);
 		});
-	}, [app.activeChannel, app.activeGuild]);
+	}, [activeChannel, activeGuild]);
 
-	if (app.activeGuildId && app.activeGuildId === "@me") {
+	if (activeGuildId && activeGuildId === "@me") {
 		return (
 			<WrapperTwo>
 				<span>Home Section Placeholder</span>
@@ -97,7 +98,7 @@ function Chat() {
 		);
 	}
 
-	if (!app.activeGuild || !app.activeChannel) {
+	if (!activeGuild || !activeChannel) {
 		return (
 			<WrapperTwo>
 				<span
@@ -115,8 +116,8 @@ function Chat() {
 
 	return (
 		<WrapperTwo>
-			<ChatHeader channel={app.activeChannel} />
-			<Content channel={app.activeChannel} guild={app.activeGuild} />
+			<ChatHeader channel={activeChannel} />
+			<Content channel={activeChannel} guild={activeGuild} />
 		</WrapperTwo>
 	);
 }
