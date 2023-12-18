@@ -2,6 +2,7 @@
 
 import Channel from "../../stores/objects/Channel";
 import GuildMember from "../../stores/objects/GuildMember";
+import Message from "../../stores/objects/Message";
 
 export type Modal = {
 	key?: string;
@@ -31,6 +32,10 @@ export type Modal = {
 	| {
 			type: "ban_member";
 			target: GuildMember;
+	  }
+	| {
+			type: "delete_message";
+			target: Message;
 	  }
 );
 

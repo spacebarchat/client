@@ -1,21 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FloatingPortal, useFloating } from "@floating-ui/react";
 import React from "react";
-import UserContextMenu from "../components/contextMenus/UserContextMenu";
-import useContextMenu from "../hooks/useContextMenu";
+import useContextMenu, { ContextMenuComponents } from "../hooks/useContextMenu";
 import GuildMember from "../stores/objects/GuildMember";
+import { MessageLike } from "../stores/objects/Message";
 import User from "../stores/objects/User";
 
-interface MenuProps {
-	user: User;
-	member?: GuildMember;
-}
+export type ContextMenuProps =
+	| {
+			type: "user";
+			user: User;
+			member?: GuildMember;
+	  }
+	| {
+			type: "message";
+			message: MessageLike;
+	  };
 
 export type ContextMenuContextType = {
 	setReferenceElement: ReturnType<typeof useFloating>["refs"]["setReference"];
-	onContextMenu: (e: React.MouseEvent, props: MenuProps) => void;
+	onContextMenu: (e: React.MouseEvent, props: ContextMenuProps) => void;
 	close: () => void;
-	open: (user: User) => void;
+	open: (props: ContextMenuProps) => void;
 };
 
 // @ts-expect-error not specifying a default value here
@@ -23,13 +29,17 @@ export const ContextMenuContext = React.createContext<ContextMenuContextType>();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ContextMenuContextProvider: React.FC<any> = ({ children }) => {
-	const contextMenu = useContextMenu("user");
+	const contextMenu = useContextMenu();
 
-	const open = (user: User) => {
-		contextMenu.open({
-			user,
-		});
+	const open = (props: ContextMenuProps) => {
+		contextMenu.open(props);
 	};
+
+	const Component = contextMenu.props
+		? ContextMenuComponents[contextMenu.props.type]
+		: () => {
+				return null;
+		  };
 
 	return (
 		<ContextMenuContext.Provider
@@ -49,7 +59,7 @@ export const ContextMenuContextProvider: React.FC<any> = ({ children }) => {
 						style={contextMenu.floatingStyles}
 						{...contextMenu.getFloatingProps()}
 					>
-						<UserContextMenu {...(contextMenu.props as any)} />
+						<Component {...contextMenu.props} />
 					</div>
 				)}
 			</FloatingPortal>

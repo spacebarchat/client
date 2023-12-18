@@ -77,7 +77,7 @@ function UserContextMenu({ user, member }: MenuProps) {
 				}}
 				onClick={copyId}
 			>
-				Copy user ID
+				Copy ID
 			</ContextMenuButton>
 		</ContextMenu>
 	);

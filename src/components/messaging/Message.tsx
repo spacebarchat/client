@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
-import { memo } from "react";
+import { memo, useContext } from "react";
+import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { useAppStore } from "../../stores/AppStore";
 import { MessageLike } from "../../stores/objects/Message";
 import { QueuedMessageStatus } from "../../stores/objects/QueuedMessage";
@@ -18,6 +19,7 @@ interface Props {
 
 function Message({ message, header }: Props) {
 	const app = useAppStore();
+	const contextMenuContext = useContext(ContextMenuContext);
 
 	const guild = message.guild_id ? app.guilds.get(message.guild_id) : undefined;
 	const isEveryoneMentioned = "mention_everyone" in message && message.mention_everyone;
@@ -43,20 +45,31 @@ function Message({ message, header }: Props) {
 						<MessageDetails message={message} position="top" />
 					</span>
 				)}
-				<MessageContentText
-					sending={"status" in message && message.status === QueuedMessageStatus.SENDING}
-					failed={"status" in message && message.status === QueuedMessageStatus.FAILED}
+				<div
+					onContextMenu={(e) =>
+						contextMenuContext.onContextMenu(e, {
+							type: "message",
+							message: message,
+						})
+					}
 				>
-					{message.content && <Markdown content={message.content} />}
-				</MessageContentText>
+					<MessageContentText
+						sending={"status" in message && message.status === QueuedMessageStatus.SENDING}
+						failed={"status" in message && message.status === QueuedMessageStatus.FAILED}
+					>
+						{message.content && <Markdown content={message.content} />}
+					</MessageContentText>
 
-				{"attachments" in message &&
-					message.attachments.map((attachment, index) => (
-						<MessageAttachment key={index} attachment={attachment} />
-					))}
-				{"embeds" in message &&
-					message.embeds?.map((embed, index) => <MessageEmbed key={index} embed={embed} />)}
-				{"files" in message && message.files?.length !== 0 && <AttachmentUploadProgress message={message} />}
+					{"attachments" in message &&
+						message.attachments.map((attachment, index) => (
+							<MessageAttachment key={index} attachment={attachment} />
+						))}
+					{"embeds" in message &&
+						message.embeds?.map((embed, index) => <MessageEmbed key={index} embed={embed} />)}
+					{"files" in message && message.files?.length !== 0 && (
+						<AttachmentUploadProgress message={message} />
+					)}
+				</div>
 			</MessageContent>
 		</MessageBase>
 	);

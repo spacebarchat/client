@@ -3,6 +3,7 @@ export * from "./AttachmentPreviewModal";
 export * from "./BanMemberModal";
 export * from "./CreateInviteModal";
 export * from "./CreateServerModal";
+export * from "./DeleteMessageModal";
 export * from "./ErrorModal";
 export * from "./ForgotPasswordModal";
 export * from "./JoinServerModal";

@@ -1,16 +1,20 @@
 import { autoUpdate, flip, offset, shift, useDismiss, useFloating, useInteractions, useRole } from "@floating-ui/react";
 import { useMemo, useState } from "react";
-import GuildMember from "../stores/objects/GuildMember";
-import User from "../stores/objects/User";
+import MessageContextMenu from "../components/contextMenus/MessageContextMenu";
+import UserContextMenu from "../components/contextMenus/UserContextMenu";
+import { ContextMenuProps } from "../contexts/ContextMenuContext";
 
-interface MenuProps {
-	user: User;
-	member?: GuildMember;
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Components = Record<string, React.FC<any>>;
 
-export default function (type: "user") {
+export const ContextMenuComponents: Components = {
+	user: UserContextMenu,
+	message: MessageContextMenu,
+};
+
+export default function () {
 	const [isOpen, setIsOpen] = useState(false);
-	const [props, setProps] = useState<MenuProps | null>(null);
+	const [props, setProps] = useState<ContextMenuProps | null>(null);
 
 	const data = useFloating({
 		placement: "right-start",
@@ -47,7 +51,7 @@ export default function (type: "user") {
 
 	const interactions = useInteractions([dismiss, role]);
 
-	const open = (props: MenuProps) => {
+	const open = (props: ContextMenuProps) => {
 		setProps(props);
 		setIsOpen(true);
 	};
@@ -56,7 +60,7 @@ export default function (type: "user") {
 		setIsOpen(false);
 	};
 
-	function onContextMenu(e: React.MouseEvent, props: MenuProps) {
+	function onContextMenu(e: React.MouseEvent, props: ContextMenuProps) {
 		e.preventDefault();
 
 		data.refs.setPositionReference({

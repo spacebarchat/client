@@ -21,6 +21,7 @@ import {
 } from "@spacebarchat/spacebar-api-types/v9";
 import { action, makeObservable, observable } from "mobx";
 import AppStore from "../AppStore";
+import Channel from "./Channel";
 import MessageBase from "./MessageBase";
 import QueuedMessage, { QueuedMessageData } from "./QueuedMessage";
 
@@ -31,7 +32,8 @@ export default class Message extends MessageBase {
 	/**
 	 * ID of the channel the message was sent in
 	 */
-	channel_id: Snowflake;
+	// channel_id: Snowflake;
+	channel: Channel;
 	/**
 	 * When this message was edited (or null if never)
 	 */
@@ -205,7 +207,8 @@ export default class Message extends MessageBase {
 		super(app, data);
 
 		this.id = data.id;
-		this.channel_id = data.channel_id;
+		// this.channel_id = data.channel_id;
+		this.channel = this.app.channels.get(data.channel_id)!;
 		// this.member = message.member ? new GuildMember(message.member) : undefined;
 		this.content = data.content;
 		this.timestamp = new Date(data.timestamp);
@@ -250,6 +253,6 @@ export default class Message extends MessageBase {
 	}
 
 	async delete() {
-		await this.app.rest.delete(Routes.channelMessage(this.channel_id, this.id));
+		await this.app.rest.delete(Routes.channelMessage(this.channel.id, this.id));
 	}
 }

@@ -79,7 +79,7 @@ function MemberListItem({ item }: Props) {
 			<ListItem
 				key={item.user?.id}
 				ref={contextMenu.setReferenceElement}
-				onContextMenu={(e) => contextMenu.onContextMenu(e, { user: item.user!, member: item })}
+				onContextMenu={(e) => contextMenu.onContextMenu(e, { type: "user", user: item.user!, member: item })}
 			>
 				<Container>
 					<Wrapper offline={presence?.status === PresenceUpdateStatus.Offline}>
