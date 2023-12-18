@@ -114,6 +114,22 @@ function Chat() {
 		);
 	}
 
+	if (!activeChannel.hasPermission("VIEW_CHANNEL")) {
+		return (
+			<WrapperTwo>
+				<span
+					style={{
+						color: "var(--text-secondary)",
+						fontSize: "1.5rem",
+						margin: "auto",
+					}}
+				>
+					You do not have permission to view this channel
+				</span>
+			</WrapperTwo>
+		);
+	}
+
 	return (
 		<WrapperTwo>
 			<ChatHeader channel={activeChannel} />
