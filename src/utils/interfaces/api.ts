@@ -1,3 +1,5 @@
+import { APIGuildMember, PublicUser } from "@spacebarchat/spacebar-api-types/v9";
+
 export interface IAPILoginResponseMFARequired {
 	token: null;
 	mfa: true;
@@ -119,3 +121,29 @@ export interface APIError {
 }
 
 // export type RESTAPIPostInviteResponse = {} | IAPIError;
+
+export type UserProfile = Pick<PublicUser, "bio" | "accent_color" | "banner" | "pronouns" | "theme_colors">;
+
+export type MutualGuild = {
+	id: string;
+	nick?: string;
+};
+
+export type PublicMemberProfile = Pick<APIGuildMember, "banner" | "bio" | "pronouns" | "theme_colors"> & {
+	accent_color: unknown; // TODO:
+	emoji: unknown; // TODO:
+	guild_id: string;
+};
+
+export interface APIUserProfile {
+	user: PublicUser;
+	connected_accounts: unknown[]; // TODO: type
+	premium_guild_since?: Date;
+	premium_since?: Date;
+	mutual_guilds: unknown[]; // TODO: type
+	premium_type: number;
+	profile_themes_experiment_bucket: number;
+	user_profile: UserProfile;
+	guild_member?: APIGuildMember;
+	guild_member_profile?: PublicMemberProfile;
+}

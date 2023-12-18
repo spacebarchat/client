@@ -175,7 +175,7 @@ export const ModalCloseWrapper = styled.div`
 	}
 `;
 
-export function Modal(props: ModalProps) {
+export function Modal({ title, description, ...props }: ModalProps) {
 	const [closing, setClosing] = useState(false);
 
 	const closeModal = useCallback(() => {
@@ -212,17 +212,13 @@ export function Modal(props: ModalProps) {
 							</ModalCloseWrapper>
 						)}
 					</div>
-					{(props.title || props.description) && (
+					{(title || description) && (
 						<ModalHeader>
-							{props.title && typeof props.title === "string" ? (
-								<ModalHeaderText>{props.title}</ModalHeaderText>
+							{title && typeof title === "string" ? <ModalHeaderText>{title}</ModalHeaderText> : title}
+							{description && typeof description === "string" ? (
+								<ModalSubHeaderText>{description}</ModalSubHeaderText>
 							) : (
-								props.title
-							)}
-							{props.description && typeof props.description === "string" ? (
-								<ModalSubHeaderText>{props.description}</ModalSubHeaderText>
-							) : (
-								props.description
+								description
 							)}
 						</ModalHeader>
 					)}

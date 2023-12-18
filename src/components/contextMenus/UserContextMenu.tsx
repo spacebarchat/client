@@ -46,21 +46,25 @@ function UserContextMenu({ user, member }: MenuProps) {
 			<ContextMenuButton disabled>Mention</ContextMenuButton>
 			<ContextMenuButton disabled>Message</ContextMenuButton>
 			<ContextMenuDivider />
-			<ContextMenuButton disabled>Change Nickname</ContextMenuButton>
+			{member && <ContextMenuButton disabled>Change Nickname</ContextMenuButton>}
 			<ContextMenuButton disabled>Add Friend</ContextMenuButton>
 			<ContextMenuButton disabled>Block</ContextMenuButton>
 			<ContextMenuDivider />
-			<ContextMenuButton destructive onClick={kick}>
-				Kick {member?.nick ?? user.username}
-			</ContextMenuButton>
-			<ContextMenuButton destructive onClick={ban}>
-				Ban {member?.nick ?? user.username}
-			</ContextMenuButton>
-			<ContextMenuDivider />
-			<ContextMenuButton disabled icon="mdiChevronRight">
-				Roles
-			</ContextMenuButton>
-			<ContextMenuDivider />
+			{member && (
+				<>
+					<ContextMenuButton destructive onClick={kick}>
+						Kick {member?.nick ?? user.username}
+					</ContextMenuButton>
+					<ContextMenuButton destructive onClick={ban}>
+						Ban {member?.nick ?? user.username}
+					</ContextMenuButton>
+					<ContextMenuDivider />
+					<ContextMenuButton disabled icon="mdiChevronRight">
+						Roles
+					</ContextMenuButton>
+					<ContextMenuDivider />
+				</>
+			)}
 
 			<ContextMenuButton
 				icon="mdiIdentifier"

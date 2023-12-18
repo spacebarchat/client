@@ -5,14 +5,15 @@ import styled, { css } from "styled-components";
 export interface Props {
 	readonly compact?: boolean | "icon";
 	palette?: "primary" | "secondary" | "success" | "warning" | "danger" | "accent" | "link";
+	size?: "small" | "medium" | "large";
 	readonly disabled?: boolean;
 }
 
 export default styled.button<Props>`
 	color: var(--text);
-	padding: 8px 16px;
+	padding: 2px 16px;
 	border-radius: 8px;
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: var(--font-weight-medium);
 	outline: none;
 	border: none;
@@ -20,6 +21,50 @@ export default styled.button<Props>`
 	cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 	opacity: ${(props) => (props.disabled ? 0.5 : 1)}
 	font-weight: var(--font-weight-bold);
+	height: ${(props) => {
+		switch (props.size) {
+			default:
+			case "small":
+				return "32px;";
+			case "medium":
+				return "40px";
+			case "large":
+				return "45px";
+		}
+	}};
+	min-height: ${(props) => {
+		switch (props.size) {
+			default:
+			case "small":
+				return "32px;";
+			case "medium":
+				return "40px";
+			case "large":
+				return "45px";
+		}
+	}};
+	width: ${(props) => {
+		switch (props.size) {
+			default:
+			case "small":
+				return "96px";
+			case "medium":
+				return "96px";
+			case "large":
+				return "130px";
+		}
+	}};
+	min-width: ${(props) => {
+		switch (props.size) {
+			default:
+			case "small":
+				return "96px";
+			case "medium":
+				return "96px";
+			case "large":
+				return "130px";
+		}
+	}};
 
 	${(props) => {
 		if (!props.palette) props.palette = "primary";
