@@ -58,6 +58,7 @@ export const ContextMenuContextProvider: React.FC<any> = ({ children }) => {
 						ref={contextMenu.refs.setFloating}
 						style={contextMenu.floatingStyles}
 						{...contextMenu.getFloatingProps()}
+						onClick={() => [contextMenu.close()]}
 					>
 						<Component {...contextMenu.props} />
 					</div>
