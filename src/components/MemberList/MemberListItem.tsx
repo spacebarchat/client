@@ -1,18 +1,17 @@
 import { PresenceUpdateStatus } from "@spacebarchat/spacebar-api-types/v9";
-import React from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
-import { PopoutContext } from "../../contexts/PopoutContext";
 import { useAppStore } from "../../stores/AppStore";
 import GuildMember from "../../stores/objects/GuildMember";
-import ContextMenus from "../../utils/ContextMenus";
 import Avatar from "../Avatar";
-import { IContextMenuItem } from "../ContextMenuItem";
-import UserProfilePopout from "../UserProfilePopout";
+import Floating from "../floating/Floating";
+import FloatingTrigger from "../floating/FloatingTrigger";
 
-const ListItem = styled.div<{ isCategory?: boolean }>`
+const ListItem = styled(FloatingTrigger)<{ isCategory?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};
 	cursor: pointer;
+	user-select: none;
 `;
 
 const Container = styled.div`
@@ -64,41 +63,36 @@ interface Props {
 
 function MemberListItem({ item }: Props) {
 	const app = useAppStore();
-	const popoutContext = React.useContext(PopoutContext);
-
-	const contextMenu = React.useContext(ContextMenuContext);
-	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
-		...ContextMenus.User(item.user!),
-		...ContextMenus.Member(app.account!, item, item.guild!),
-	]);
-
-	const presence = app.presences.get(item.guild.id)?.get(item.user!.id);
+	const presence = app.presences.get(item.user!.id);
+	const contextMenu = useContext(ContextMenuContext);
 
 	return (
-		<ListItem
-			key={item.user?.id}
-			onContextMenu={(e) => contextMenu.open2(e, contextMenuItems)}
-			onClick={(e) => {
-				e.preventDefault();
-				e.stopPropagation();
-				popoutContext.open({
-					element: <UserProfilePopout user={item.user!} presence={presence} member={item} />,
-					position: e.currentTarget.getBoundingClientRect(),
-					placement: "right",
-				});
+		<Floating
+			placement="right-start"
+			type="userPopout"
+			offset={20}
+			props={{
+				user: item.user!,
+				member: item,
 			}}
 		>
-			<Container>
-				<Wrapper offline={presence?.status === PresenceUpdateStatus.Offline}>
-					<AvatarWrapper>
-						<Avatar user={item.user!} size={32} presence={presence} />
-					</AvatarWrapper>
-					<TextWrapper>
-						<Text color={item.roleColor}>{item.nick ?? item.user?.username}</Text>
-					</TextWrapper>
-				</Wrapper>
-			</Container>
-		</ListItem>
+			<ListItem
+				key={item.user?.id}
+				ref={contextMenu.setReferenceElement}
+				onContextMenu={(e) => contextMenu.onContextMenu(e, { type: "user", user: item.user!, member: item })}
+			>
+				<Container>
+					<Wrapper offline={presence?.status === PresenceUpdateStatus.Offline}>
+						<AvatarWrapper>
+							<Avatar user={item.user!} size={32} presence={presence} showPresence />
+						</AvatarWrapper>
+						<TextWrapper>
+							<Text color={item.roleColor}>{item.nick ?? item.user?.username}</Text>
+						</TextWrapper>
+					</Wrapper>
+				</Container>
+			</ListItem>
+		</Floating>
 	);
 }
 

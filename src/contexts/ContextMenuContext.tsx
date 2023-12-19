@@ -1,47 +1,79 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { FloatingPortal, useFloating } from "@floating-ui/react";
 import React from "react";
-import { IContextMenuItem } from "../components/ContextMenuItem";
+import useContextMenu, { ContextMenuComponents } from "../hooks/useContextMenu";
+import Channel from "../stores/objects/Channel";
+import Guild from "../stores/objects/Guild";
+import GuildMember from "../stores/objects/GuildMember";
+import { MessageLike } from "../stores/objects/Message";
+import User from "../stores/objects/User";
 
-export interface ContextMenuOpenProps {
-	position: { x: number; y: number };
-	items: { label: string; onClick: React.MouseEventHandler<HTMLDivElement> }[];
-	style?: React.CSSProperties;
-}
+export type ContextMenuProps =
+	| {
+			type: "user";
+			user: User;
+			member?: GuildMember;
+	  }
+	| {
+			type: "message";
+			message: MessageLike;
+	  }
+	| {
+			type: "channel";
+			channel: Channel;
+	  }
+	| {
+			type: "guild";
+			guild: Guild;
+	  };
 
-const useValue = () => {
-	const [visible, setVisible] = React.useState(false);
-	const [position, setPosition] = React.useState({ x: 0, y: 0 });
-	const [items, setItems] = React.useState<IContextMenuItem[]>([]);
-	const [style, setStyle] = React.useState<ContextMenuOpenProps["style"]>({});
-
-	const open = (props: ContextMenuOpenProps) => {
-		setPosition(props.position);
-		setItems(props.items);
-		setStyle(props.style);
-		setVisible(true);
-	};
-
-	const open2 = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, items: IContextMenuItem[]) => {
-		e.preventDefault();
-		e.stopPropagation();
-		setPosition({ x: e.pageX, y: e.pageY });
-		setItems(items);
-		setVisible(true);
-	};
-
-	return {
-		open,
-		open2,
-		close: () => setVisible(false),
-		visible,
-		position,
-		items,
-		style,
-	};
+export type ContextMenuContextType = {
+	setReferenceElement: ReturnType<typeof useFloating>["refs"]["setReference"];
+	onContextMenu: (e: React.MouseEvent, props: ContextMenuProps) => void;
+	close: () => void;
+	open: (props: ContextMenuProps) => void;
 };
 
-export const ContextMenuContext = React.createContext({} as ReturnType<typeof useValue>);
+// @ts-expect-error not specifying a default value here
+export const ContextMenuContext = React.createContext<ContextMenuContextType>();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const ContextMenuContextProvider: React.FC<any> = (props) => {
-	return <ContextMenuContext.Provider value={useValue()}>{props.children}</ContextMenuContext.Provider>;
+export const ContextMenuContextProvider: React.FC<any> = ({ children }) => {
+	const contextMenu = useContextMenu();
+
+	const open = (props: ContextMenuProps) => {
+		contextMenu.open(props);
+	};
+
+	const Component = contextMenu.props
+		? ContextMenuComponents[contextMenu.props.type]
+		: () => {
+				return null;
+		  };
+
+	return (
+		<ContextMenuContext.Provider
+			value={{
+				close: contextMenu.close,
+				open,
+				setReferenceElement: contextMenu.refs.setReference,
+				onContextMenu: contextMenu.onContextMenu,
+			}}
+		>
+			{children}
+			<FloatingPortal>
+				{contextMenu.isOpen && (
+					<div
+						className="ContextMenu"
+						ref={contextMenu.refs.setFloating}
+						style={contextMenu.floatingStyles}
+						{...contextMenu.getFloatingProps()}
+						onClick={() => [contextMenu.close()]}
+					>
+						<Component {...contextMenu.props} />
+					</div>
+				)}
+			</FloatingPortal>
+		</ContextMenuContext.Provider>
+	);
 };

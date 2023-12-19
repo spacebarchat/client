@@ -1,13 +1,12 @@
-import { useModals } from "@mattjennings/react-modal-stack";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { AutoSizer, List, ListRowProps } from "react-virtualized";
 import styled from "styled-components";
+import { modalController } from "../controllers/modals";
 import { useAppStore } from "../stores/AppStore";
 import GuildItem, { GuildSidebarListItem } from "./GuildItem";
 import SidebarAction from "./SidebarAction";
-import AddServerModal from "./modals/AddServerModal";
 
 const Container = styled.div`
 	display: flex;
@@ -39,7 +38,6 @@ const Divider = styled.div`
 function GuildSidebar() {
 	const app = useAppStore();
 
-	const { openModal } = useModals();
 	const navigate = useNavigate();
 	const { all } = app.guilds;
 	const itemCount = all.length + 3; // add the home button, divider, and add server button
@@ -80,7 +78,9 @@ function GuildSidebar() {
 						color: "var(--success)",
 					}}
 					action={() => {
-						openModal(AddServerModal);
+						modalController.push({
+							type: "add_server",
+						});
 					}}
 					margin={false}
 					disablePill

@@ -1,21 +1,24 @@
-import MuiTooltip, { TooltipProps as MuiTooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import styled from "styled-components";
+import { FloatingProps } from "./floating/Floating";
 
-export default styled(({ className, ...props }: MuiTooltipProps) => (
-	<MuiTooltip {...props} arrow classes={{ popper: className }} />
-))(() => ({
-	[`& .${tooltipClasses.popper}`]: {
-		maxWidth: 200,
-		borderRadius: 5,
-	},
-	[`& .${tooltipClasses.arrow}`]: {
-		color: "var(--background-tertiary)",
-	},
-	[`& .${tooltipClasses.tooltip}`]: {
-		backgroundColor: "var(--background-tertiary)",
-		fontSize: "14px",
-		padding: "8px 12px",
-		overflow: "hidden",
-		textOverflow: "ellipsis",
-	},
-}));
+const Container = styled.div`
+	background-color: var(--background-tertiary);
+	line-height: 16px;
+	box-sizing: border-box;
+	font-size: 14px;
+	padding: 8px 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 250px;
+	border-radius: 4px;
+	color: var(--text);
+	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+`;
+
+function Tooltip(props: FloatingProps<"tooltip">) {
+	if (!props) return null;
+	return <Container aria-label={props.aria}>{props.content}</Container>;
+}
+
+export default Tooltip;

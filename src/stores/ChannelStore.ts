@@ -53,4 +53,8 @@ export default class ChannelStore {
 	sortPosition(channels: Channel[]) {
 		return channels.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
 	}
+
+	has(id: string) {
+		return this.channels.has(id);
+	}
 }

@@ -1,14 +1,11 @@
-import { useModals } from "@mattjennings/react-modal-stack";
-import React from "react";
 import styled from "styled-components";
-import { PopoutContext } from "../contexts/PopoutContext";
 import { useAppStore } from "../stores/AppStore";
+import User from "../stores/objects/User";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
 import IconButton from "./IconButton";
-import Tooltip from "./Tooltip";
-import UserProfilePopout from "./UserProfilePopout";
-import SettingsModal from "./modals/SettingsModal";
+import Floating from "./floating/Floating";
+import FloatingTrigger from "./floating/FloatingTrigger";
 
 const Section = styled.section`
 	flex: 0 0 auto;
@@ -24,7 +21,7 @@ const Container = styled.div`
 	background-color: var(--background-secondary-alt);
 `;
 
-const AvatarWrapper = styled.div`
+const AvatarWrapper = styled(FloatingTrigger)`
 	display: flex;
 	align-items: center;
 	min-width: 120px;
@@ -72,49 +69,46 @@ const ActionsWrapper = styled.div`
 
 function UserPanel() {
 	const app = useAppStore();
-	const popoutContext = React.useContext(PopoutContext);
-	const { openModal } = useModals();
-	const ref = React.useRef<HTMLDivElement>(null);
 
-	const openSettingsModal = () => {
-		openModal(SettingsModal);
-	};
-
-	const openPopout = (e: React.MouseEvent) => {
-		e.preventDefault();
-		e.stopPropagation();
-
-		if (!ref.current) return;
-		const rect = ref.current.getBoundingClientRect();
-		if (!rect) return;
-
-		popoutContext.open({
-			element: <UserProfilePopout user={app.account!} />,
-			position: rect,
-			placement: "top",
-		});
-	};
+	const openSettingsModal = () => {};
 
 	return (
-		<Section ref={ref}>
-			<Container>
-				<AvatarWrapper onClick={openPopout}>
-					<Avatar popoutPlacement="top" onClick={null} />
-					<Name>
-						<Username>{app.account?.username}</Username>
-						<Subtext>#{app.account?.discriminator}</Subtext>
-					</Name>
-				</AvatarWrapper>
+		<Floating
+			placement="bottom"
+			type="userPopout"
+			props={{
+				user: app.account! as unknown as User,
+			}}
+		>
+			<Section>
+				<Container>
+					<AvatarWrapper>
+						<Avatar popoutPlacement="top" onClick={null} />
+						<Name>
+							<Username>{app.account?.username}</Username>
+							<Subtext>#{app.account?.discriminator}</Subtext>
+						</Name>
+					</AvatarWrapper>
 
-				<ActionsWrapper>
-					<Tooltip title="Settings">
-						<IconButton aria-label="settings" color="#fff" onClick={openSettingsModal}>
-							<Icon icon="mdiCog" size="20px" />
-						</IconButton>
-					</Tooltip>
-				</ActionsWrapper>
-			</Container>
-		</Section>
+					<ActionsWrapper>
+						<Floating
+							placement="top"
+							type="tooltip"
+							offset={10}
+							props={{
+								content: <span>Settings</span>,
+							}}
+						>
+							<FloatingTrigger>
+								<IconButton aria-label="settings" color="#fff" onClick={openSettingsModal}>
+									<Icon icon="mdiCog" size="20px" />
+								</IconButton>
+							</FloatingTrigger>
+						</Floating>
+					</ActionsWrapper>
+				</Container>
+			</Section>
+		</Floating>
 	);
 }
 

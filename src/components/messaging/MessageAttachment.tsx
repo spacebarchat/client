@@ -1,17 +1,11 @@
-import { useModals } from "@mattjennings/react-modal-stack";
 import { APIAttachment } from "@spacebarchat/spacebar-api-types/v9";
-import React from "react";
 import styled from "styled-components";
-import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import useLogger from "../../hooks/useLogger";
-import ContextMenus from "../../utils/ContextMenus";
 import { calculateImageRatio, calculateScaledDimensions } from "../../utils/Message";
 import { getFileDetails, zoomFit } from "../../utils/Utils";
-import { IContextMenuItem } from "../ContextMenuItem";
 import Audio from "../media/Audio";
 import File from "../media/File";
 import Video from "../media/Video";
-import AttachmentPreviewModal from "../modals/AttachmentPreviewModal";
 
 const Attachment = styled.div<{ withPointer?: boolean }>`
 	cursor: ${(props) => (props.withPointer ? "pointer" : "default")};
@@ -25,16 +19,12 @@ const Image = styled.img`
 
 interface AttachmentProps {
 	attachment: APIAttachment;
-	contextMenuItems?: IContextMenuItem[];
 	maxWidth?: number;
 	maxHeight?: number;
 }
 
-export default function MessageAttachment({ attachment, contextMenuItems, maxWidth, maxHeight }: AttachmentProps) {
+export default function MessageAttachment({ attachment, maxWidth, maxHeight }: AttachmentProps) {
 	const logger = useLogger("MessageAttachment");
-
-	const { openModal } = useModals();
-	const contextMenu = React.useContext(ContextMenuContext);
 
 	const url = attachment.proxy_url && attachment.proxy_url.length > 0 ? attachment.proxy_url : attachment.url;
 
@@ -64,13 +54,10 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 		<Attachment
 			withPointer={attachment.content_type?.startsWith("image")}
 			key={attachment.id}
-			onContextMenu={(e) =>
-				contextMenu.open2(e, [...(contextMenuItems ?? []), ...ContextMenus.MessageAttachment(attachment)])
-			}
 			onClick={() => {
 				if (!attachment.content_type?.startsWith("image")) return;
 				const { width, height } = zoomFit(attachment.width!, attachment.height!);
-				openModal(AttachmentPreviewModal, { attachment, width, height });
+				// TODO: preview modal
 			}}
 		>
 			{finalElement}

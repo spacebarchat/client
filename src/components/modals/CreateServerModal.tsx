@@ -1,30 +1,15 @@
-import { useModals } from "@mattjennings/react-modal-stack";
 import { APIGuild, Routes } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { ModalProps, modalController } from "../../controllers/modals";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import { messageFromFieldError } from "../../utils/messageFromFieldError";
 import { Input, InputErrorText, InputLabel, InputWrapper, LabelWrapper } from "../AuthComponents";
 import { TextDivider } from "../Divider";
-import Icon from "../Icon";
-import {
-	Modal,
-	ModalActionItem,
-	ModalCloseWrapper,
-	ModalFooter,
-	ModalHeaderText,
-	ModalSubHeaderText,
-	ModelContentContainer,
-} from "./ModalComponents";
-import { AnimatedModalProps } from "./ModalRenderer";
-
-export const ModalHeader = styled.div`
-	margin-bottom: 30px;
-	padding: 24px 24px 0;
-`;
+import { InputContainer, Modal } from "./ModalComponents";
 
 const UploadIcon = styled.div`
 	padding-top: 4;
@@ -51,25 +36,17 @@ const FileInput = styled.div`
 	width: 100%;
 	height: 100%;
 	opacity: 0;
-	// cursor: pointer;
-	cursor: not-allowed;
+	cursor: pointer;
 	font-size: 0px;
-`;
-
-export const InputContainer = styled.div`
-	margin-top: 24px;
-	display: flex;
-	flex-direction: column;
 `;
 
 type FormValues = {
 	name: string;
 };
 
-function CreateServerModal(props: AnimatedModalProps) {
+export function CreateServerModal({ ...props }: ModalProps<"create_server">) {
 	const app = useAppStore();
 	const logger = useLogger("CreateServerModal");
-	const { openModal, closeModal, closeAllModals } = useModals();
 	const [selectedFile, setSelectedFile] = React.useState<File>();
 	const fileInputRef = React.useRef<HTMLInputElement>(null);
 	const navigate = useNavigate();
@@ -98,7 +75,7 @@ function CreateServerModal(props: AnimatedModalProps) {
 			})
 			.then((r) => {
 				navigate(`/channels/${r.id}`);
-				closeAllModals();
+				modalController.closeAll();
 			})
 			.catch((r) => {
 				if ("message" in r) {
@@ -135,39 +112,38 @@ function CreateServerModal(props: AnimatedModalProps) {
 	return (
 		<Modal
 			{...props}
-			// used for clicking outside of the modal to close it
-			onClose={closeAllModals}
+			onClose={() => modalController.closeAll()}
+			title="Customize your guild"
+			description="Give your new guild a personality with a name and an icon. You can always change it later."
+			actions={[
+				{
+					onClick: onSubmit,
+					children: <span>Create</span>,
+					palette: "primary",
+					confirmation: true,
+					disabled: isLoading,
+				},
+				{
+					onClick: () => modalController.pop("close"),
+					children: <span>Back</span>,
+					palette: "link",
+					disabled: isLoading,
+				},
+			]}
 		>
-			<ModalCloseWrapper>
-				<button
-					onClick={closeAllModals}
-					style={{
-						background: "none",
-						border: "none",
-						outline: "none",
-					}}
-				>
-					<Icon
-						icon="mdiClose"
-						size={1}
-						style={{
-							cursor: "pointer",
-							color: "var(--text)",
-						}}
-					/>
-				</button>
-			</ModalCloseWrapper>
-
-			<ModalHeader>
-				<ModalHeaderText>Customize your guild</ModalHeaderText>
-				<ModalSubHeaderText>
-					Give your new guild a personality with a name and an icon. You can always change it later.
-				</ModalSubHeaderText>
-			</ModalHeader>
-
-			<ModelContentContainer>
-				<UploadIcon>
-					<IconContainer>
+			<UploadIcon>
+				<IconContainer>
+					{selectedFile ? (
+						<img
+							src={URL.createObjectURL(selectedFile)}
+							alt="Guild Icon"
+							width="80px"
+							height="80px"
+							style={{
+								borderRadius: "50%",
+							}}
+						/>
+					) : (
 						<svg width="80" height="80" viewBox="0 0 80 80" fill="none">
 							<path
 								fillRule="evenodd"
@@ -188,71 +164,44 @@ function CreateServerModal(props: AnimatedModalProps) {
 								fill="currentColor"
 							></path>
 						</svg>
-						<IconInput
-							ref={fileInputRef}
-							type="file"
-							name="icon"
-							accept="image/*"
-							onChange={onIconChange}
+					)}
+					<IconInput ref={fileInputRef} type="file" name="icon" accept="image/*" onChange={onIconChange} />
+					{/* FIXME: need to like, remove focus after the selector is closed */}
+					<FileInput role="button" onClick={() => fileInputRef.current?.click()} />
+				</IconContainer>
+			</UploadIcon>
+
+			<form
+				onKeyDown={(e) => {
+					if (e.key === "Enter") {
+						e.preventDefault();
+						onSubmit();
+					}
+				}}
+			>
+				<InputContainer>
+					<LabelWrapper error={!!errors.name}>
+						<InputLabel>Guild Name</InputLabel>
+						{errors.name && (
+							<InputErrorText>
+								<>
+									<TextDivider>-</TextDivider>
+									{errors.name.message}
+								</>
+							</InputErrorText>
+						)}
+					</LabelWrapper>
+					<InputWrapper>
+						<Input
+							autoFocus
+							{...register("name", { required: true })}
+							placeholder="Guild Name"
+							error={!!errors.name}
+							disabled={isLoading}
 						/>
-						<FileInput
-							role="button"
-							// disabled until I get the motiviation to not make it shit, I don't really want to use an invisible input
-							onClick={() => fileInputRef.current?.click()}
-						></FileInput>
-					</IconContainer>
-				</UploadIcon>
-
-				<form
-					onKeyDown={(e) => {
-						if (e.key === "Enter") {
-							e.preventDefault();
-							onSubmit();
-						}
-					}}
-				>
-					<InputContainer>
-						<LabelWrapper error={!!errors.name}>
-							<InputLabel>Guild Name</InputLabel>
-							{errors.name && (
-								<InputErrorText>
-									<>
-										<TextDivider>-</TextDivider>
-										{errors.name.message}
-									</>
-								</InputErrorText>
-							)}
-						</LabelWrapper>
-						<InputWrapper>
-							<Input
-								autoFocus
-								{...register("name", { required: true })}
-								placeholder="Guild Name"
-								error={!!errors.name}
-								disabled={isLoading}
-							/>
-						</InputWrapper>
-					</InputContainer>
-				</form>
-			</ModelContentContainer>
-
-			<ModalFooter>
-				<ModalActionItem variant="filled" size="med" onClick={onSubmit} disabled={isLoading}>
-					Create
-				</ModalActionItem>
-
-				<ModalActionItem
-					variant="link"
-					size="min"
-					onClick={() => {
-						closeModal();
-					}}
-				>
-					Back
-				</ModalActionItem>
-			</ModalFooter>
+					</InputWrapper>
+				</InputContainer>
+			</form>
 		</Modal>
 	);
 }
-
-export default CreateServerModal;

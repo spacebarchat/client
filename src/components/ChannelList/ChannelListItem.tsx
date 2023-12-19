@@ -1,13 +1,11 @@
-import { useModals } from "@mattjennings/react-modal-stack";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import Channel from "../../stores/objects/Channel";
-import { IContextMenuItem } from "../ContextMenuItem";
 import Icon from "../Icon";
-import Tooltip from "../Tooltip";
-import CreateInviteModal from "../modals/CreateInviteModal";
+import Floating from "../floating/Floating";
+import FloatingTrigger from "../floating/FloatingTrigger";
 
 const ListItem = styled.div<{ isCategory?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};
@@ -45,32 +43,8 @@ interface Props {
 
 function ChannelListItem({ channel, isCategory, active }: Props) {
 	const navigate = useNavigate();
+	const contextMenu = useContext(ContextMenuContext);
 
-	const { openModal } = useModals();
-
-	const contextMenu = React.useContext(ContextMenuContext);
-	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
-		{
-			index: 1,
-			label: "Copy Channel ID",
-			onClick: () => {
-				navigator.clipboard.writeText(channel.id);
-			},
-			iconProps: {
-				icon: "mdiIdentifier",
-			},
-		},
-		{
-			index: 0,
-			label: "Create Channel Invite",
-			onClick: () => {
-				openModal(CreateInviteModal, { guild_id: channel.guildId!, channel_id: channel.id });
-			},
-			iconProps: {
-				icon: "mdiAccountPlus",
-			},
-		},
-	]);
 	const [hovered, setHovered] = React.useState(false);
 
 	return (
@@ -83,7 +57,8 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 
 				navigate(`/channels/${channel.guildId}/${channel.id}`);
 			}}
-			onContextMenu={(e) => contextMenu.open2(e, contextMenuItems)}
+			ref={contextMenu.setReferenceElement}
+			onContextMenu={(e) => contextMenu.onContextMenu(e, { type: "channel", channel })}
 		>
 			<Wrapper
 				isCategory={isCategory}
@@ -123,18 +98,27 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 					</Text>
 				</div>
 				{isCategory && (
-					<Tooltip title="Create Channel" placement="top">
-						<span>
-							<Icon
-								icon="mdiPlus"
-								size="18px"
-								style={{
-									marginLeft: "auto",
-								}}
-								color={hovered ? "var(--text)" : "var(--text-secondary)"}
-							/>
-						</span>
-					</Tooltip>
+					<Floating
+						placement="top"
+						type="tooltip"
+						offset={10}
+						props={{
+							content: <span>Create Channel</span>,
+						}}
+					>
+						<FloatingTrigger>
+							<span>
+								<Icon
+									icon="mdiPlus"
+									size="18px"
+									style={{
+										marginLeft: "auto",
+									}}
+									color={hovered ? "var(--text)" : "var(--text-secondary)"}
+								/>
+							</span>
+						</FloatingTrigger>
+					</Floating>
 				)}
 			</Wrapper>
 		</ListItem>

@@ -3,7 +3,8 @@
 
 import React from "react";
 import styled from "styled-components";
-import Tooltip from "./Tooltip";
+import Floating from "./floating/Floating";
+import FloatingTrigger from "./floating/FloatingTrigger";
 
 const Actions = styled.div`
 	position: absolute;
@@ -57,9 +58,17 @@ function CodeBlock(props: Props) {
 			}}
 		>
 			<Actions>
-				<Tooltip title="Copy to Clipboard" placement="top">
-					<a onClick={onCopy}>{text}</a>
-				</Tooltip>
+				<Floating
+					placement="top"
+					type="tooltip"
+					props={{
+						content: <span>"Copy to Clipboard</span>,
+					}}
+				>
+					<FloatingTrigger>
+						<a onClick={onCopy}>{text}</a>
+					</FloatingTrigger>
+				</Floating>
 			</Actions>
 			{props.children}
 		</pre>

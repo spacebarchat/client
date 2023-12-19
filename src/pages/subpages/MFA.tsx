@@ -130,7 +130,7 @@ function MFA(props: Props) {
 							</InputWrapper>
 						</InputContainer>
 
-						<SubmitButton variant="primary" type="submit" disabled={loading}>
+						<SubmitButton palette="primary" type="submit" disabled={loading}>
 							Log In
 						</SubmitButton>
 

@@ -275,7 +275,7 @@ function RegistrationPage() {
 						</InputWrapper>
 					</InputContainer>
 
-					<SubmitButton variant="primary" type="submit" disabled={loading}>
+					<SubmitButton palette="primary" type="submit" disabled={loading}>
 						Create Account
 					</SubmitButton>
 

@@ -6,10 +6,13 @@ import { rgbToHsl } from "../utils/Utils";
 const font: ThemeFont["font"] = {
 	weight: {
 		thin: 100,
+		// extraLight: 200,
 		light: 300,
 		regular: 400,
 		medium: 500,
+		// semiBold: 600,
 		bold: 700,
+		// extraBold: 800,
 		black: 900,
 	},
 	family: "Roboto, Arial, Helvetica, sans-serif",
@@ -58,7 +61,8 @@ export type ThemeVariables =
 	| "scrollbarTrack"
 	| "scrollbarThumb"
 	| "statusIdle"
-	| "statusOffline";
+	| "statusOffline"
+	| "accent";
 
 export type Overrides = {
 	[variable in ThemeVariables]: string;
@@ -68,10 +72,13 @@ export type ThemeFont = {
 	font: {
 		weight: {
 			thin?: number;
+			extraLight?: number;
 			light?: number;
 			regular?: number;
 			medium?: number;
+			semiBold?: number;
 			bold?: number;
+			extraBold?: number;
 			black?: number;
 		};
 		family: string;
@@ -108,9 +115,10 @@ export const ThemePresets: Record<string, Theme> = {
 		primaryLight: "#339dff",
 		primaryDark: "#005db2",
 		primaryContrastText: "#ffffff",
-		secondary: "#000115",
-		secondaryLight: "#000677",
-		secondaryDark: "#000111",
+		accent: "#000115",
+		secondary: "#4e4e4e",
+		secondaryLight: "#ff9633",
+		secondaryDark: "#b25e00",
 		secondaryContrastText: "",
 		danger: "",
 		dangerLight: "",
@@ -153,11 +161,10 @@ export const ThemePresets: Record<string, Theme> = {
 		primaryLight: "#339dff",
 		primaryDark: "#005db2",
 		primaryContrastText: "#ffffff",
-		secondary: "#000115",
-		secondaryLight: "#000677",
-		secondaryDark: "#000111",
-		// secondary: "#ff7c01",
-		// secondaryLight: "#ff9633",
+		accent: "#000115",
+		secondary: "#4e4e4e",
+		secondaryLight: "#ff9633",
+		secondaryDark: "#b25e00",
 		secondaryContrastText: "#040404",
 		danger: "#ff3a3b",
 		dangerLight: "#ff6162",

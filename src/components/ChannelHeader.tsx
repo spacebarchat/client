@@ -1,13 +1,11 @@
-import { StackedModalProps, useModals } from "@mattjennings/react-modal-stack";
 import { observer } from "mobx-react-lite";
-import React, { ComponentType } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { ContextMenuContext } from "../contexts/ContextMenuContext";
 import { useAppStore } from "../stores/AppStore";
-import { IContextMenuItem } from "./ContextMenuItem";
 import Icon, { IconProps } from "./Icon";
 import { SectionHeader } from "./SectionHeader";
-import LeaveServerModal from "./modals/LeaveServerModal";
+import Floating from "./floating/Floating";
+import FloatingTrigger from "./floating/FloatingTrigger";
 
 const Wrapper = styled(SectionHeader)`
 	background-color: var(--background-secondary);
@@ -29,64 +27,18 @@ const HeaderText = styled.header`
 
 function ChannelHeader() {
 	const app = useAppStore();
-	const contextMenu = React.useContext(ContextMenuContext);
-	const { openModal } = useModals();
 
-	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([]);
+	const [isOpen, setOpen] = React.useState(false);
 	const [icon, setIcon] = React.useState<IconProps["icon"]>("mdiChevronDown");
 
-	React.useEffect(() => {
-		if (app.activeGuild && app.activeGuild.ownerId !== app.account?.id) {
-			setContextMenuItems([
-				{
-					label: "Leave Server",
-					color: "var(--danger)",
-					onClick: async () => {
-						openModal(LeaveServerModal as ComponentType<StackedModalProps>, {
-							guild: app.activeGuild,
-						});
-					},
-					iconProps: {
-						icon: "mdiLocationExit",
-						color: "var(--danger)",
-					},
-					hover: {
-						color: "var(--text)",
-						backgroundColor: "var(--danger)",
-					},
-				},
-			]);
-		} else {
-			setContextMenuItems([]);
-		}
-	}, [app.activeGuild]);
+	const onOpenChange = (open: boolean) => {
+		setOpen(open);
+	};
 
-	function openMenu(e: React.MouseEvent<HTMLDivElement>) {
-		e.stopPropagation();
-
-		if (contextMenu.visible) {
-			// "toggles" the menu
-			contextMenu.close();
-			setIcon("mdiChevronDown");
-			return;
-		}
-
-		const horizontalPadding = 5;
-		const verticalPadding = 10;
-		contextMenu.open({
-			position: {
-				x: e.currentTarget.offsetLeft + horizontalPadding, // centers the menu under the header
-				y: e.currentTarget.offsetHeight + horizontalPadding, // add a slight gap between the header and the menu
-			},
-			items: contextMenuItems,
-			style: {
-				width: e.currentTarget.clientWidth - verticalPadding, // adds "margin" to the left and right of the menu
-				boxSizing: "border-box",
-			},
-		});
-
-		setIcon("mdiClose");
-	}
+	useEffect(() => {
+		if (isOpen) setIcon("mdiClose");
+		else setIcon("mdiChevronDown");
+	}, [isOpen]);
 
 	if (app.activeGuildId === "@me") {
 		return (
@@ -106,10 +58,14 @@ function ChannelHeader() {
 	if (!app.activeGuild) return null;
 
 	return (
-		<Wrapper onClick={openMenu}>
-			<HeaderText>{app.activeGuild.name}</HeaderText>
-			<Icon icon={icon} size="20px" color="var(--text)" />
-		</Wrapper>
+		<Floating type="guild" open={isOpen} onOpenChange={onOpenChange} props={{ guild: app.activeGuild! }}>
+			<FloatingTrigger>
+				<Wrapper>
+					<HeaderText>{app.activeGuild.name}</HeaderText>
+					<Icon icon={icon} size="20px" color="var(--text)" />
+				</Wrapper>
+			</FloatingTrigger>
+		</Floating>
 	);
 }
 

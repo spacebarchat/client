@@ -40,7 +40,7 @@ function LoadingPage() {
 							bottom: "30vh",
 						}}
 					>
-						<Button variant="danger" onClick={() => app.logout()}>
+						<Button palette="danger" onClick={() => app.logout()}>
 							Logout
 						</Button>
 					</div>
