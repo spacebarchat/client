@@ -1,5 +1,6 @@
 import type { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
 import {
+	ChannelType,
 	RESTPutAPIGuildBanJSONBody,
 	RESTPutAPIGuildBanResult,
 	Routes,
@@ -146,9 +147,17 @@ export default class Guild {
 
 	@computed
 	get channels() {
-		const guildChannels = this.app.channels.all.filter(
-			(channel) => this.channels_.has(channel.id) && channel.hasPermission("VIEW_CHANNEL"),
-		);
+		let guildChannels = this.app.channels.all.filter((channel) => this.channels_.has(channel.id));
+		guildChannels = guildChannels.filter((channel) => {
+			if (channel.type === ChannelType.GuildCategory) {
+				// check if any children are visible
+				return guildChannels.some(
+					(child) => child.parentId === channel.id && child.hasPermission("VIEW_CHANNEL"),
+				);
+			}
+
+			return channel.hasPermission("VIEW_CHANNEL");
+		});
 		const topLevelChannels = guildChannels.filter((channel) => !channel.parentId);
 		const sortedChannels = topLevelChannels
 			.sort(compareChannels)
