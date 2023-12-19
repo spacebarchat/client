@@ -1,22 +1,34 @@
 import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ModalProps, modalController } from "../../controllers/modals";
+import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import { Modal } from "./ModalComponents";
 
 export function LeaveServerModal({ target, ...props }: ModalProps<"leave_server">) {
 	const app = useAppStore();
+	const logger = useLogger("LeaveServerModal");
+	const navigate = useNavigate();
 	const [isDisabled, setDisabled] = useState(false);
 
 	async function leaveGuild() {
 		setDisabled(true);
 		await app.rest
-			.delete(Routes.guildMember(target.id, "@me"))
+			.delete(Routes.userGuild(target.id))
 			.then(() => {
 				modalController.pop("close");
+				navigate("/channels/@me");
 			})
 			.catch((e) => {
-				console.error(e);
+				logger.error(e);
+				modalController.pop("close");
+				modalController.push({
+					type: "error",
+					error: e,
+					title: "Failed to leave server",
+					description: "An error occurred while trying to leave the server.",
+				});
 			})
 			.finally(() => setDisabled(false));
 	}
