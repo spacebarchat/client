@@ -26,6 +26,7 @@ interface ModalProps {
 	actions?: ModalAction[];
 	disabled?: boolean;
 	withEmptyActionBar?: boolean;
+	withoutCloseButton?: boolean;
 }
 
 /**
@@ -205,13 +206,15 @@ export function Modal({ title, description, ...props }: ModalProps) {
 		<Portal>
 			<ModalBase closing={closing} onClick={() => !props.nonDismissable && closeModal()}>
 				<ModalWrapper {...props} onClick={(e) => e.stopPropagation()} actions={false}>
-					<div style={{ position: "relative" }}>
-						{!props.nonDismissable && (
-							<ModalCloseWrapper onClick={closeModal}>
-								<Icon icon="mdiClose" size={1} />
-							</ModalCloseWrapper>
-						)}
-					</div>
+					{!props.withoutCloseButton && (
+						<div style={{ position: "relative" }}>
+							{!props.nonDismissable && (
+								<ModalCloseWrapper onClick={closeModal}>
+									<Icon icon="mdiClose" size={1} />
+								</ModalCloseWrapper>
+							)}
+						</div>
+					)}
 					{(title || description) && (
 						<ModalHeader>
 							{title && typeof title === "string" ? <ModalHeaderText>{title}</ModalHeaderText> : title}

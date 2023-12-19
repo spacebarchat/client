@@ -2,6 +2,7 @@
 // https://github.com/revoltchat/revite/blob/master/src/components/common/messaging/embed/Embed.tsx
 
 import { APIEmbed, EmbedType } from "@spacebarchat/spacebar-api-types/v9";
+import { modalController } from "../../controllers/modals";
 import styles from "./Embed.module.css";
 
 interface Props {
@@ -111,7 +112,16 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 						src={url}
 						loading="lazy"
 						style={{ width: "100%", height: "100%" }}
-						onClick={() => window.open(url, "_blank")}
+						onClick={() => {
+							if (!embed.image) {
+								console.error("embed has no image... wtf");
+								return;
+							}
+							modalController.push({
+								type: "image_viewer",
+								attachment: embed.image,
+							});
+						}}
 					/>
 				);
 			} else if (embed.thumbnail) {
@@ -123,7 +133,16 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 						src={url}
 						loading="lazy"
 						style={{ width, height }}
-						onClick={() => window.open(url, "_blank")}
+						onClick={() => {
+							if (!embed.thumbnail) {
+								console.error("embed has no thumbnail... wtf");
+								return;
+							}
+							modalController.push({
+								type: "image_viewer",
+								attachment: embed.thumbnail,
+							});
+						}}
 					/>
 				);
 			}

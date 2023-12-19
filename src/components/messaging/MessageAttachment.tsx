@@ -1,5 +1,6 @@
 import { APIAttachment } from "@spacebarchat/spacebar-api-types/v9";
 import styled from "styled-components";
+import { modalController } from "../../controllers/modals";
 import useLogger from "../../hooks/useLogger";
 import { calculateImageRatio, calculateScaledDimensions } from "../../utils/Message";
 import { getFileDetails, zoomFit } from "../../utils/Utils";
@@ -57,7 +58,12 @@ export default function MessageAttachment({ attachment, maxWidth, maxHeight }: A
 			onClick={() => {
 				if (!attachment.content_type?.startsWith("image")) return;
 				const { width, height } = zoomFit(attachment.width!, attachment.height!);
-				// TODO: preview modal
+				modalController.push({
+					type: "image_viewer",
+					attachment,
+					width,
+					height,
+				});
 			}}
 		>
 			{finalElement}
