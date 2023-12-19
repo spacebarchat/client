@@ -10,6 +10,7 @@ import {
 	ErrorModal,
 	JoinServerModal,
 	KickMemberModal,
+	LeaveServerModal,
 } from "../../components/modals";
 import { Modal } from "./types";
 
@@ -144,7 +145,7 @@ export const modalController = new ModalControllerExtended({
 	// clipboard: Clipboard,
 	// leave_group: ConfirmLeave,
 	// close_dm: Confirmation,
-	// leave_server: ConfirmLeave,
+	leave_server: LeaveServerModal,
 	// delete_server: Confirmation,
 	// delete_channel: Confirmation,
 	// delete_bot: Confirmation,

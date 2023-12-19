@@ -2,9 +2,11 @@ import { FloatingArrow, FloatingPortal, Placement } from "@floating-ui/react";
 import { motion } from "framer-motion";
 import { FloatingContext } from "../../contexts/FloatingContext";
 import useFloating from "../../hooks/useFloating";
+import Guild from "../../stores/objects/Guild";
 import GuildMember from "../../stores/objects/GuildMember";
 import User from "../../stores/objects/User";
 import Tooltip from "../Tooltip";
+import GuildMenuPopout from "./GuildMenuPopout";
 import UserProfilePopout from "./UserProfilePopout";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -13,6 +15,7 @@ type Components = Record<string, React.FC<any>>;
 const components: Components = {
 	userPopout: UserProfilePopout,
 	tooltip: Tooltip,
+	guild: GuildMenuPopout,
 };
 
 export type FloatingOptions = {
@@ -34,6 +37,12 @@ export type FloatingOptions = {
 			props: {
 				content: JSX.Element;
 				aria?: string;
+			};
+	  }
+	| {
+			type: "guild";
+			props: {
+				guild: Guild;
 			};
 	  }
 );

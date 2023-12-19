@@ -44,18 +44,6 @@ export default styled.button<Props>`
 				return "45px";
 		}
 	}};
-	width: ${(props) => {
-		if (props.grow) return "auto";
-		switch (props.size) {
-			default:
-			case "small":
-				return "96px";
-			case "medium":
-				return "96px";
-			case "large":
-				return "130px";
-		}
-	}};
 	min-width: ${(props) => {
 		if (props.grow) return "auto";
 		switch (props.size) {

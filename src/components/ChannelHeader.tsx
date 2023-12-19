@@ -1,9 +1,11 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useAppStore } from "../stores/AppStore";
 import Icon, { IconProps } from "./Icon";
 import { SectionHeader } from "./SectionHeader";
+import Floating from "./floating/Floating";
+import FloatingTrigger from "./floating/FloatingTrigger";
 
 const Wrapper = styled(SectionHeader)`
 	background-color: var(--background-secondary);
@@ -26,13 +28,17 @@ const HeaderText = styled.header`
 function ChannelHeader() {
 	const app = useAppStore();
 
+	const [isOpen, setOpen] = React.useState(false);
 	const [icon, setIcon] = React.useState<IconProps["icon"]>("mdiChevronDown");
 
-	function openMenu(e: React.MouseEvent<HTMLDivElement>) {
-		e.stopPropagation();
+	const onOpenChange = (open: boolean) => {
+		setOpen(open);
+	};
 
-		setIcon("mdiClose");
-	}
+	useEffect(() => {
+		if (isOpen) setIcon("mdiChevronDown");
+		else setIcon("mdiClose");
+	}, [isOpen]);
 
 	if (app.activeGuildId === "@me") {
 		return (
@@ -52,10 +58,14 @@ function ChannelHeader() {
 	if (!app.activeGuild) return null;
 
 	return (
-		<Wrapper onClick={openMenu}>
-			<HeaderText>{app.activeGuild.name}</HeaderText>
-			<Icon icon={icon} size="20px" color="var(--text)" />
-		</Wrapper>
+		<Floating type="guild" open={isOpen} onOpenChange={onOpenChange} props={{ guild: app.activeGuild! }}>
+			<FloatingTrigger>
+				<Wrapper>
+					<HeaderText>{app.activeGuild.name}</HeaderText>
+					<Icon icon={icon} size="20px" color="var(--text)" />
+				</Wrapper>
+			</FloatingTrigger>
+		</Floating>
 	);
 }
 

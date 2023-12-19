@@ -13,7 +13,7 @@ export type ModalAction = Omit<React.HTMLAttributes<HTMLButtonElement>, "as"> &
 	};
 
 interface ModalProps {
-	children: React.ReactNode;
+	children?: React.ReactNode;
 	onClose?: (force: boolean) => void;
 	signal?: "close" | "confirm" | "cancel";
 	title?: string;
