@@ -1,8 +1,9 @@
 import { CDNRoutes, ChannelType, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { ContextMenuContext } from "../contexts/ContextMenuContext";
 import useLogger from "../hooks/useLogger";
 import { useAppStore } from "../stores/AppStore";
 import Guild from "../stores/objects/Guild";
@@ -49,6 +50,7 @@ function GuildItem({ guild, active }: Props) {
 	const logger = useLogger("GuildItem");
 	const app = useAppStore();
 	const navigate = useNavigate();
+	const contextMenu = useContext(ContextMenuContext);
 
 	const [pillType, setPillType] = React.useState<PillType>("none");
 	const [isHovered, setHovered] = React.useState(false);
@@ -69,7 +71,10 @@ function GuildItem({ guild, active }: Props) {
 	};
 
 	return (
-		<GuildSidebarListItem>
+		<GuildSidebarListItem
+			ref={contextMenu.setReferenceElement}
+			onContextMenu={(e) => contextMenu.onContextMenu(e, { type: "guild", guild })}
+		>
 			<SidebarPill type={pillType} />
 			<Floating
 				placement="right"
