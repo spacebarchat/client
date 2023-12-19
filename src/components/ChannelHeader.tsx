@@ -36,8 +36,8 @@ function ChannelHeader() {
 	};
 
 	useEffect(() => {
-		if (isOpen) setIcon("mdiChevronDown");
-		else setIcon("mdiClose");
+		if (isOpen) setIcon("mdiClose");
+		else setIcon("mdiChevronDown");
 	}, [isOpen]);
 
 	if (app.activeGuildId === "@me") {
