@@ -9,6 +9,8 @@ export const ContextMenu = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 6px 8px;
+	min-width: 200px;
+	max-width: 300px;
 
 	overflow: hidden;
 	border-radius: 4px;
