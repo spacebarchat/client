@@ -44,8 +44,18 @@ function MessageContextMenu({ message }: MenuProps) {
 				</ContextMenuButton>
 			)}
 			<ContextMenuDivider />
-			<ContextMenuButton icon="mdiIdentifier" onClick={copyId}>
-				Copy ID
+			<ContextMenuButton
+				icon="mdiIdentifier"
+				onClick={copyId}
+				iconProps={{
+					style: {
+						filter: "invert(100%)",
+						background: "black",
+						borderRadius: "4px",
+					},
+				}}
+			>
+				Copy Message ID
 			</ContextMenuButton>
 		</ContextMenu>
 	);
