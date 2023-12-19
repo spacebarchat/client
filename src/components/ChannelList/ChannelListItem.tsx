@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import Channel from "../../stores/objects/Channel";
 import Icon from "../Icon";
 import Floating from "../floating/Floating";
@@ -42,6 +43,7 @@ interface Props {
 
 function ChannelListItem({ channel, isCategory, active }: Props) {
 	const navigate = useNavigate();
+	const contextMenu = useContext(ContextMenuContext);
 
 	const [hovered, setHovered] = React.useState(false);
 
@@ -55,6 +57,8 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 
 				navigate(`/channels/${channel.guildId}/${channel.id}`);
 			}}
+			ref={contextMenu.setReferenceElement}
+			onContextMenu={(e) => contextMenu.onContextMenu(e, { type: "channel", channel })}
 		>
 			<Wrapper
 				isCategory={isCategory}

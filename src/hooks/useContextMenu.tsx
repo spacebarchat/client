@@ -1,5 +1,6 @@
 import { autoUpdate, flip, offset, shift, useDismiss, useFloating, useInteractions, useRole } from "@floating-ui/react";
 import { useMemo, useState } from "react";
+import ChannelContextMenu from "../components/contextMenus/ChannelContextMenu";
 import MessageContextMenu from "../components/contextMenus/MessageContextMenu";
 import UserContextMenu from "../components/contextMenus/UserContextMenu";
 import { ContextMenuProps } from "../contexts/ContextMenuContext";
@@ -10,6 +11,7 @@ type Components = Record<string, React.FC<any>>;
 export const ContextMenuComponents: Components = {
 	user: UserContextMenu,
 	message: MessageContextMenu,
+	channel: ChannelContextMenu,
 };
 
 export default function () {

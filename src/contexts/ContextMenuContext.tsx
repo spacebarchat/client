@@ -2,6 +2,7 @@
 import { FloatingPortal, useFloating } from "@floating-ui/react";
 import React from "react";
 import useContextMenu, { ContextMenuComponents } from "../hooks/useContextMenu";
+import Channel from "../stores/objects/Channel";
 import GuildMember from "../stores/objects/GuildMember";
 import { MessageLike } from "../stores/objects/Message";
 import User from "../stores/objects/User";
@@ -15,6 +16,10 @@ export type ContextMenuProps =
 	| {
 			type: "message";
 			message: MessageLike;
+	  }
+	| {
+			type: "channel";
+			channel: Channel;
 	  };
 
 export type ContextMenuContextType = {
