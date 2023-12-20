@@ -33,7 +33,7 @@
 				}
 			},
 			"updater": {
-				"active": false,
+				"active": true,
 				"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDQxRkQwNTY1NzBEOTMyMTUKUldRVk10bHdaUVg5UWVoVm9JeDg4UEs1TkpMT3FKdzc3Y29CN2NZNk9vRE9sanJCUERqT09HVVYK",
 				"windows": {
 					"installMode": "passive"
@@ -50,7 +50,7 @@
 			"open": true
 		},
 		"updater": {
-			"endpoints": ["https://update.spacebar.chat/updates/{{target}}/{{arch}}"]
+			"endpoints": ["https://api.old.server.spacebar.chat/api/updates?platform={{target}}&arch={{arch}}"]
 		}
 	}
 }

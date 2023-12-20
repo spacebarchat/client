@@ -34,6 +34,8 @@ jobs:
       - uses: spacebarchat/tauri-action@dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           tagName: client-__BRANCH__-v__VERSION__
           releaseName: "Spacebar Client v__VERSION__ (__BRANCH__)"
