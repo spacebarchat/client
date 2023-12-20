@@ -10,8 +10,6 @@ const Container = styled.div`
 	max-height: 75vh;
 
 	img {
-		width: auto;
-		height: auto;
 		object-fit: contain;
 	}
 `;
