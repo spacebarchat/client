@@ -105,7 +105,8 @@
 		"url": "git+https://github.com/spacebarchat/client.git"
 	},
 	"scripts": {
-		"build": "tsc && vite build",
+		"build": "npm run ci:prebuild && tsc && vite build",
+		"ci:prebuild": "node scripts/tauri-version.js",
 		"dev": "vite",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"lint:fix": "pnpx prettier . --write",

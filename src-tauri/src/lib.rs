@@ -1,6 +1,11 @@
+use tauri::RunEvent;
 #[cfg(desktop)]
-use tauri::Manager;
+use tauri::{AppHandle, Env, Manager};
+use tauri_plugin_log::{Target, TargetKind, WEBVIEW_TARGET};
+
+#[macro_use]
 mod tray;
+mod updater;
 
 #[tauri::command]
 async fn close_splashscreen(window: tauri::Window) {
@@ -21,13 +26,57 @@ pub fn run() {
     std::env::set_var("RUST_BACKTRACE", "1");
     std::env::set_var("RUST_LOG", "debug");
 
-    tauri::Builder::default()
+    let mut context = tauri::generate_context!();
+
+    let config = context.config_mut();
+
+    let mut app = tauri::Builder::default()
+        .plugin(tauri_plugin_process::init())
+        // Add logging plugin
+        .plugin(
+            tauri_plugin_log::Builder::default()
+                .clear_targets()
+                .targets([
+                    Target::new(TargetKind::Webview),
+                    Target::new(TargetKind::LogDir {
+                        file_name: Some("webview.log".into()),
+                    })
+                    .filter(|metadata| metadata.target() == WEBVIEW_TARGET),
+                    Target::new(TargetKind::LogDir {
+                        file_name: Some("rust.log".into()),
+                    })
+                    .filter(|metadata| metadata.target() != WEBVIEW_TARGET),
+                ])
+                .format(move |out, message, record| {
+                    out.finish(format_args!(
+                        "{} [{}] {}",
+                        chrono::Local::now().format("%Y-%m-%d %H:%M:%S"),
+                        record.level(),
+                        message
+                    ));
+                })
+                .level(log::LevelFilter::Info)
+                .build(),
+        );
+
+    if config.tauri.bundle.updater.active {
+        app = app.plugin(tauri_plugin_updater::Builder::new().build());
+    }
+
+    let app = app
         .setup(move |app| {
             #[cfg(desktop)]
             {
+                // Tray
                 let handle = app.handle();
                 tray::create_tray(handle)?;
             }
+
+            // Open the dev tools automatically when debugging the application
+            #[cfg(debug_assertions)]
+            if let Some(main_window) = app.get_window("main") {
+                main_window.open_devtools();
+            };
 
             Ok(())
         })
@@ -38,7 +87,25 @@ pub fn run() {
             }
             _ => {}
         })
-        .invoke_handler(tauri::generate_handler![close_splashscreen,])
-        .run(tauri::generate_context!())
+        .invoke_handler(tauri::generate_handler![
+            close_splashscreen,
+            updater::check_for_updates,
+            updater::install_update
+        ])
+        .build(context)
         .expect("error while running tauri application");
+
+    #[cfg(desktop)]
+    app.run(|app_handle, e| match e {
+        RunEvent::Ready => {
+            #[cfg(any(target_os = "macos", debug_assertions))]
+            let window = app_handle.get_window("main").unwrap();
+
+            #[cfg(debug_assertions)]
+            window.open_devtools();
+
+            println!("App is ready");
+        }
+        _ => {}
+    });
 }
