@@ -105,16 +105,16 @@
 		"url": "git+https://github.com/spacebarchat/client.git"
 	},
 	"scripts": {
-		"build": "npm run ci:prebuild && tsc && vite build",
+		"build": "tsc && vite build",
 		"ci:prebuild": "node scripts/tauri-version.js",
 		"dev": "vite",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"lint:fix": "pnpx prettier . --write",
 		"preview": "vite preview",
-		"tauri:dev": "tauri dev",
-		"tauri:build": "tauri build",
-		"tauri:android:dev": "tauri android dev",
-		"tauri:android:build": "tauri android build"
+		"tauri:dev": "pnpm run ci:prebuild && tauri dev",
+		"tauri:build": "pnpm run ci:prebuild && tauri build",
+		"tauri:android:dev": "pnpm run ci:prebuild && tauri android dev",
+		"tauri:android:build": "pnpm run ci:prebuild && tauri android build"
 	},
 	"type": "module",
 	"version": "0.1.1"

@@ -2,10 +2,10 @@ import fs from "fs";
 import path from "path";
 import process from "process";
 
-if (!process.env.CI) {
-	console.log("Not running in CI, skipping. Please do not run this script manually!");
-	process.exit(0);
-}
+// if (!process.env.CI) {
+// 	console.log("Not running in CI, skipping. Please do not run this script manually!");
+// 	process.exit(0);
+// }
 
 const GITHUB_RUN_ID = process.env.GITHUB_RUN_ID;
 const GITHUB_RUN_ATTEMPT = process.env.GITHUB_RUN_ATTEMPT;
