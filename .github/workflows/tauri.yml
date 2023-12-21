@@ -47,4 +47,4 @@ jobs:
           includeDebug: true
           includeRelease: true
           includeUpdaterJson: true
-          shaAsVersion: true
+          buildIdAsVersion: true
