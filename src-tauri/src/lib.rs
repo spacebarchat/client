@@ -32,6 +32,7 @@ pub fn run() {
 
     let mut app = tauri::Builder::default()
         .plugin(tauri_plugin_process::init())
+        .plugin(tauri_plugin_os::init())
         // Add logging plugin
         .plugin(
             tauri_plugin_log::Builder::default()
@@ -39,11 +40,11 @@ pub fn run() {
                 .targets([
                     Target::new(TargetKind::Webview),
                     Target::new(TargetKind::LogDir {
-                        file_name: Some("webview.log".into()),
+                        file_name: Some("webview".into()),
                     })
                     .filter(|metadata| metadata.target() == WEBVIEW_TARGET),
                     Target::new(TargetKind::LogDir {
-                        file_name: Some("rust.log".into()),
+                        file_name: Some("rust".into()),
                     })
                     .filter(|metadata| metadata.target() != WEBVIEW_TARGET),
                 ])
@@ -90,7 +91,9 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             close_splashscreen,
             updater::check_for_updates,
-            updater::install_update
+            updater::download_update,
+            updater::install_update,
+            updater::clear_update_cache
         ])
         .build(context)
         .expect("error while running tauri application");

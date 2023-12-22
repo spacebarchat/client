@@ -21,6 +21,7 @@ tauri = { version = "2.0.0-alpha", features = ["devtools", "tray-icon"] }
 tauri-plugin-updater = "2.0.0-alpha"
 tauri-plugin-process = "2.0.0-alpha"
 tauri-plugin-log = "2.0.0-alpha"
+tauri-plugin-os = "2.0.0-alpha"
 reqwest = { version = "0.11.22", features = ["json"] }
 url = "2.4.1"
 chrono = "0.4"

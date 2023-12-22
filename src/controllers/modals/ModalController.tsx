@@ -12,6 +12,7 @@ import {
 	JoinServerModal,
 	KickMemberModal,
 	LeaveServerModal,
+	SettingsModal,
 } from "../../components/modals";
 import { Modal } from "./types";
 
@@ -184,4 +185,5 @@ export const modalController = new ModalControllerExtended({
 	// report_success: ReportSuccess,
 	// modify_displayname: ModifyDisplayname,
 	// changelog_usernames: ChangelogUsernames,
+	settings: SettingsModal,
 });

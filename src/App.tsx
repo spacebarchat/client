@@ -52,7 +52,7 @@ function App() {
 		);
 
 		Globals.load();
-		app.loadToken();
+		app.loadSettings();
 
 		logger.debug("Loading complete");
 		app.setAppLoading(false);

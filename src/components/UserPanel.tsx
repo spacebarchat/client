@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { modalController } from "../controllers/modals";
 import { useAppStore } from "../stores/AppStore";
 import User from "../stores/objects/User";
 import Avatar from "./Avatar";
@@ -70,7 +71,11 @@ const ActionsWrapper = styled.div`
 function UserPanel() {
 	const app = useAppStore();
 
-	const openSettingsModal = () => {};
+	const openSettingsModal = () => {
+		modalController.push({
+			type: "settings",
+		});
+	};
 
 	return (
 		<Floating

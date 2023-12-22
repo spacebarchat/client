@@ -3,6 +3,7 @@ import { action, computed, makeAutoObservable, observable } from "mobx";
 import secureLocalStorage from "react-secure-storage";
 import Logger from "../utils/Logger";
 import REST from "../utils/REST";
+import { isTauri } from "../utils/Utils";
 import AccountStore from "./AccountStore";
 import ChannelStore from "./ChannelStore";
 import ExperimentsStore from "./ExperimentsStore";
@@ -13,6 +14,7 @@ import PresenceStore from "./PresenceStore";
 import PrivateChannelStore from "./PrivateChannelStore";
 import RoleStore from "./RoleStore";
 import ThemeStore from "./ThemeStore";
+import UpdaterStore from "./UpdaterStore";
 import UserStore from "./UserStore";
 import Channel from "./objects/Channel";
 import Guild from "./objects/Guild";
@@ -46,6 +48,8 @@ export default class AppStore {
 	@observable experiments = new ExperimentsStore();
 	@observable presences = new PresenceStore(this);
 	@observable queue = new MessageQueue(this);
+	@observable updaterStore: UpdaterStore | null = null;
+
 	@observable activeGuild: Guild | null = null;
 	@observable activeGuildId: Snowflake | undefined | "@me" = "@me";
 	@observable activeChannel: Channel | null = null;
@@ -54,6 +58,10 @@ export default class AppStore {
 
 	constructor() {
 		makeAutoObservable(this);
+
+		if (isTauri) {
+			this.updaterStore = new UpdaterStore(this);
+		}
 
 		// bind this in toggleMemberList
 		this.toggleMemberList = this.toggleMemberList.bind(this);
@@ -78,40 +86,8 @@ export default class AppStore {
 	}
 
 	@action
-	setToken(token: string, save = false) {
-		this.token = token;
-		this.tokenLoaded = true;
-		if (save) {
-			secureLocalStorage.setItem("token", token);
-			this.logger.info("Token saved to storage");
-		}
-	}
-
-	@action
 	setUser(user: APIUser) {
 		this.account = new AccountStore(user);
-	}
-
-	@action
-	loadToken() {
-		const token = secureLocalStorage.getItem("token") as string | null;
-
-		this.tokenLoaded = true;
-
-		if (token) {
-			this.logger.debug("Loaded token from storage.");
-			this.setToken(token);
-		} else {
-			this.logger.debug("No token found in storage.");
-			this.setGatewayReady(true);
-		}
-	}
-
-	@action
-	logout() {
-		this.token = null;
-		this.tokenLoaded = false;
-		secureLocalStorage.removeItem("token");
 	}
 
 	@action
@@ -144,11 +120,6 @@ export default class AppStore {
 	}
 
 	@action
-	setFpsShown(value: boolean) {
-		this.fpsShown = value;
-	}
-
-	@action
 	toggleMemberList() {
 		this.memberListVisible = !this.memberListVisible;
 	}
@@ -156,6 +127,73 @@ export default class AppStore {
 	@action
 	windowToggleFps() {
 		this.setFpsShown(!this.fpsShown);
+	}
+
+	// stuff mainly for settings, really anything that uses local storage
+
+	@action
+	setToken(token: string, save = false) {
+		this.token = token;
+		this.tokenLoaded = true;
+		if (save) {
+			secureLocalStorage.setItem("token", token);
+			this.logger.info("Token saved to storage");
+		}
+	}
+
+	@action
+	loadToken() {
+		const token = secureLocalStorage.getItem("token") as string | null;
+
+		this.tokenLoaded = true;
+
+		if (token) {
+			this.logger.debug("Loaded token from storage.");
+			this.setToken(token);
+		} else {
+			this.logger.debug("No token found in storage.");
+			this.setGatewayReady(true);
+		}
+	}
+
+	@action
+	logout() {
+		this.token = null;
+		this.tokenLoaded = false;
+		this.isAppLoading = false;
+		this.isGatewayReady = true;
+		secureLocalStorage.clear();
+	}
+
+	@action
+	setFpsShown(value: boolean) {
+		this.fpsShown = value;
+
+		secureLocalStorage.setItem("fpsShown", value);
+	}
+
+	@action
+	loadFpsShown() {
+		this.fpsShown = (secureLocalStorage.getItem("fpsShown") as boolean | null) ?? false;
+	}
+
+	@action
+	setUpdaterEnabled(value: boolean) {
+		this.updaterStore?.setEnabled(value);
+
+		secureLocalStorage.setItem("updaterEnabled", value);
+	}
+
+	@action
+	loadUpdaterEnabled() {
+		this.updaterStore?.setEnabled((secureLocalStorage.getItem("updaterEnabled") as boolean | null) ?? true);
+	}
+
+	@action
+	loadSettings() {
+		this.loadFpsShown();
+		this.loadToken();
+		this.loadUpdaterEnabled();
 	}
 }
 

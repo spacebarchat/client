@@ -10,7 +10,7 @@ export type Modal = {
 	key?: string;
 } & (
 	| {
-			type: "add_server" | "create_server" | "join_server";
+			type: "add_server" | "create_server" | "join_server" | "settings";
 	  }
 	| {
 			type: "error";
