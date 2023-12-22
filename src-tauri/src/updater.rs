@@ -33,8 +33,6 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
         return;
     }
 
-    println!("Current version: {}", handle.package_info().version);
-
     tauri::async_runtime::spawn(async move {
         println!("Searching for update file on github.");
         // Custom configure the updater.
@@ -125,7 +123,18 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
             .version_comparator(|current_version, latest_version| {
                 println!("Current version: {}", current_version);
                 println!("Latest version: {}", latest_version.version.clone());
-                false
+
+                if latest_version.version > current_version {
+                    println!("Latest version is greater than current version. ");
+                    return true;
+                }
+
+                if latest_version.version < current_version {
+                    println!("Latest version is lower than current version. ");
+                    return false;
+                }
+
+                return latest_version.version.build > current_version.build;
             })
             .endpoints(vec![tauri_release_endpoint])
             .header("User-Agent", "spacebar-client")

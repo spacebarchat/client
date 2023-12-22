@@ -7,8 +7,8 @@ import process from "process";
 // 	process.exit(0);
 // }
 
-const GITHUB_RUN_ID = process.env.GITHUB_RUN_ID;
-const GITHUB_RUN_ATTEMPT = process.env.GITHUB_RUN_ATTEMPT;
+const GITHUB_RUN_ID = process.env.GITHUB_RUN_ID || "0";
+const GITHUB_RUN_ATTEMPT = process.env.GITHUB_RUN_ATTEMPT || "0";
 const GITHUB_REF_NAME = process.env.GITHUB_REF_NAME;
 
 const pkgJsonPath = path.resolve("./package.json");
