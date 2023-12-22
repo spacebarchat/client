@@ -38,11 +38,12 @@ function MessageContextMenu({ message }: MenuProps) {
 				Copy Raw Text
 			</ContextMenuButton>
 			<ContextMenuDivider />
-			{message.channel.hasPermission("MANAGE_MESSAGES") && message instanceof Message && (
-				<ContextMenuButton icon="mdiDelete" destructive onClick={deleteMessage}>
-					Delete Message
-				</ContextMenuButton>
-			)}
+			{(message.channel.hasPermission("MANAGE_MESSAGES") || message.author.id === app.account?.id) &&
+				message instanceof Message && (
+					<ContextMenuButton icon="mdiDelete" destructive onClick={deleteMessage}>
+						Delete Message
+					</ContextMenuButton>
+				)}
 			<ContextMenuDivider />
 			<ContextMenuButton
 				icon="mdiIdentifier"
