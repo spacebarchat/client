@@ -71,7 +71,6 @@ export default class UpdaterStore {
 
 		setupListeners();
 
-		// @ts-expect-error - expose updater to window, don't use use this though
 		window.updater = {
 			setUpdateAvailable: this.setUpdateAvailable.bind(this),
 			setUpdateDownloading: this.setUpdateDownloading.bind(this),

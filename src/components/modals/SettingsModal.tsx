@@ -1,8 +1,5 @@
 import { FormControlLabel, FormGroup, Switch } from "@mui/material";
-import { getTauriVersion, getVersion } from "@tauri-apps/api/app";
-import { arch, locale, platform, version } from "@tauri-apps/plugin-os";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import styled from "styled-components";
 import { ModalProps } from "../../controllers/modals";
 import { useAppStore } from "../../stores/AppStore";
@@ -35,45 +32,8 @@ const VersionWrapper = styled.div`
 	}
 `;
 
-interface VersionInfo {
-	tauri: string;
-	app: string;
-	platform: {
-		name: string;
-		arch: string;
-		version: string;
-		locale: string | null;
-	};
-}
-
 export const SettingsModal = observer(({ ...props }: ModalProps<"settings">) => {
 	const app = useAppStore();
-	const [versionInfo, setVersionInfo] = React.useState<VersionInfo | undefined>(undefined);
-
-	const getVersionInfo = React.useMemo(
-		() => async () => {
-			const [tauriVersion, appVersion, platformName, platformArch, platformVersion, platformLocale] =
-				await Promise.all([getTauriVersion(), getVersion(), platform(), arch(), version(), locale()]);
-
-			setVersionInfo({
-				tauri: tauriVersion,
-				app: appVersion,
-				platform: {
-					name: platformName,
-					arch: platformArch,
-					version: platformVersion,
-					locale: platformLocale,
-				},
-			});
-		},
-		[],
-	);
-
-	React.useEffect(() => {
-		if (isTauri) {
-			getVersionInfo();
-		}
-	}, [getVersionInfo]);
 
 	return (
 		<Modal {...props}>
@@ -117,12 +77,14 @@ export const SettingsModal = observer(({ ...props }: ModalProps<"settings">) => 
 
 					{isTauri && (
 						<>
-							<span>App Version: {versionInfo?.app ?? "Fetching version information..."}</span>
-							<span>Tauri Version: {versionInfo?.tauri ?? "Fetching version information..."}</span>
-							<span>Platform: {versionInfo?.platform.name}</span>
-							<span>Arch: {versionInfo?.platform.arch}</span>
-							<span>OS Version: {versionInfo?.platform.version}</span>
-							<span>Locale: {versionInfo?.platform.locale ?? "Unknown"}</span>
+							<span>App Version: {window.globals.appVersion ?? "Fetching version information..."}</span>
+							<span>
+								Tauri Version: {window.globals.tauriVersion ?? "Fetching version information..."}
+							</span>
+							<span>Platform: {window.globals.platform.name}</span>
+							<span>Arch: {window.globals.platform.arch}</span>
+							<span>OS Version: {window.globals.platform.version}</span>
+							<span>Locale: {window.globals.platform.locale ?? "Unknown"}</span>
 						</>
 					)}
 				</VersionWrapper>

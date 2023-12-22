@@ -6,6 +6,8 @@ import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFound";
 import RegistrationPage from "./pages/RegistrationPage";
 
+import { getTauriVersion, getVersion } from "@tauri-apps/api/app";
+import { arch, locale, platform, version } from "@tauri-apps/plugin-os";
 import { reaction } from "mobx";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Loader from "./components/Loader";
@@ -51,6 +53,22 @@ function App() {
 			},
 		);
 
+		const loadAsyncGlobals = async () => {
+			const [tauriVersion, appVersion, platformName, platformArch, platformVersion, platformLocale] =
+				await Promise.all([getTauriVersion(), getVersion(), platform(), arch(), version(), locale()]);
+			window.globals = {
+				tauriVersion: tauriVersion,
+				appVersion: appVersion,
+				platform: {
+					name: platformName,
+					arch: platformArch,
+					version: platformVersion,
+					locale: platformLocale,
+				},
+			};
+		};
+
+		loadAsyncGlobals();
 		Globals.load();
 		app.loadSettings();
 
