@@ -126,7 +126,7 @@ export default class UpdaterStore {
 	}
 
 	async quitAndInstall() {
-		if (!this.updateAvailable) {
+		if (!this.updateDownloaded) {
 			this.logger.warn("No update is pending installation");
 			return;
 		}

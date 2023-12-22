@@ -40,6 +40,17 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
         }
     }
 
+    let package_path = handle
+        .path()
+        .app_local_data_dir()
+        .unwrap()
+        .join("update.sbcup");
+
+    // if we already have an update package, remove it
+    if package_path.exists() {
+        clear_update_cache(window.clone());
+    }
+
     tauri::async_runtime::spawn(async move {
         println!("[Updater] Searching for update file on github.");
         // Custom configure the updater.
@@ -189,29 +200,6 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
                 //     return;
                 // }
                 UPDATE_INFO.lock().unwrap().replace(update.clone());
-
-                let package_path = handle
-                    .path()
-                    .app_local_data_dir()
-                    .unwrap()
-                    .join("update.sbcup");
-
-                // if we already have an update package, emit the update downloaded event
-                if package_path.exists() {
-                    match window.emit(
-                        "UPDATE_DOWNLOADED",
-                        Some(UpdateAvailable {
-                            version: update.version.clone(),
-                            body: update.body.clone(),
-                        }),
-                    ) {
-                        Ok(_) => {}
-                        Err(e) => {
-                            println!("[Updater] Failed to emit update downloaded event: {:?}", e);
-                        }
-                    }
-                    return;
-                }
 
                 // otherwise emit the update available event
                 match window.emit("UPDATE_AVAILABLE", Some({})) {
