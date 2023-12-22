@@ -59,6 +59,14 @@ export default class UpdaterStore {
 				this.setUpdateDownloading(false);
 				this.setUpdateDownloaded(true);
 			});
+
+			await listen("UPDATE_ERROR", (e) => {
+				this.logger.debug("Update error", e);
+				this.setCheckingForUpdates(false);
+				this.setUpdateAvailable(false);
+				this.setUpdateDownloading(false);
+				this.setUpdateDownloaded(false);
+			});
 		};
 
 		setupListeners();

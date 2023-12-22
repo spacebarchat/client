@@ -62,6 +62,7 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
                     "[Updater] Failed to parse url: {:?}. Failed to check for updates",
                     e
                 );
+                emit_update_error(window, format!("Failed to parse url: {:?}", e));
                 return;
             }
         };
@@ -78,6 +79,7 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
                     "[Updater] Failed to send request: {:?}. Failed to check for updates",
                     e
                 );
+                emit_update_error(window, format!("Failed to send request: {:?}", e));
                 return;
             }
         };
@@ -86,6 +88,10 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
             println!(
                 "[Updater] Non OK status code: {:?}. Failed to check for updates",
                 response.status()
+            );
+            emit_update_error(
+                window,
+                format!("Non OK status code: {:?}", response.status()),
             );
             return;
         }
@@ -96,6 +102,7 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
                     "[Updater] Failed to parse response: {:?}. Failed to check for updates",
                     e
                 );
+                emit_update_error(window, format!("Failed to parse response: {:?}", e));
                 return;
             }
         };
@@ -103,6 +110,15 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
         // check if there are any releases
         if releases.len() == 0 {
             println!("[Updater] No releases found. Failed to check for updates");
+            match window.emit("UPDATE_NOT_AVAILABLE", Some({})) {
+                Ok(_) => {}
+                Err(e) => {
+                    println!(
+                        "[Updater] Failed to emit update not available event: {:?}",
+                        e
+                    );
+                }
+            }
             return;
         }
 
@@ -128,6 +144,10 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
                 for asset in latest_release.assets.iter() {
                     println!("  {:?}", asset.name);
                 }
+                emit_update_error(
+                    window,
+                    format!("Failed to find latest.json asset. Failed to check for updates"),
+                );
                 return;
             }
         };
@@ -139,6 +159,7 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
                     "[Updater] Failed to parse url: {:?}. Failed to check for updates",
                     e
                 );
+                emit_update_error(window, format!("Failed to parse url: {:?}", e));
                 return;
             }
         };
@@ -151,17 +172,25 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
                     latest_version.version.clone()
                 );
 
+				// if the current build is 00 then its a dev environment and we should not update
+				if current_version.build.to_string() == "00" {
+					println!("[Updater] Build ID is 00, looks like a development environment, not updating.");
+					return false;
+				}
+
+				// upgrade
                 if latest_version.version > current_version {
-                    println!("[Updater] Latest version is greater than current version. ");
+                    println!("[Updater] An update is available.");
                     return true;
                 }
 
+				// downgrade
                 if latest_version.version < current_version {
-                    println!("[Updater] Latest version is lower than current version. ");
-                    return false;
+                    println!("[Updater] The installed version is newer than the latest version. A little odd, but ok.");
+                    return true;
                 }
 
-                return latest_version.version.build > current_version.build;
+                return false;
             })
             .endpoints(vec![tauri_release_endpoint])
             .header("User-Agent", "spacebar-client")
@@ -172,6 +201,7 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
                     "[Updater] Failed to build updater builder: {:?}. Failed to check for updates",
                     e
                 );
+                emit_update_error(window, format!("Failed to build updater builder: {:?}", e));
                 return;
             }
         };
@@ -183,6 +213,7 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
                     "[Updater] Failed to build updater: {:?}. Failed to check for updates",
                     e
                 );
+                emit_update_error(window, format!("Failed to build updater: {:?}", e));
                 return;
             }
         };
@@ -225,6 +256,12 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
             }
             Err(e) => {
                 println!("[Updater] Failed to check for updates: {:?}.", e);
+                match window.emit("UPDATE_ERROR", Some(format!("{:?}", e))) {
+                    Ok(_) => {}
+                    Err(e) => {
+                        println!("[Updater] Failed to emit update error event: {:?}", e);
+                    }
+                }
             }
         }
     });
@@ -238,6 +275,7 @@ pub async fn download_update<R: Runtime>(window: tauri::Window<R>) {
         Some(update) => update,
         None => {
             println!("[Updater] No update found to download");
+            emit_update_error(window, format!("No update found to download"));
             return;
         }
     };
@@ -265,6 +303,8 @@ pub async fn download_update<R: Runtime>(window: tauri::Window<R>) {
 
     if let Err(e) = download_response {
         println!("[Updater] Failed to download update: {:?}", e);
+        emit_update_error(window, format!("Failed to download update: {:?}", e));
+        return;
     } else {
         println!("[Updater] Update downloaded");
 
@@ -281,6 +321,8 @@ pub async fn download_update<R: Runtime>(window: tauri::Window<R>) {
             Ok(_) => {}
             Err(e) => {
                 println!("[Updater] Failed to save update package: {:?}", e);
+                emit_update_error(window, format!("Failed to save update package: {:?}", e));
+                return;
             }
         }
     }
@@ -307,6 +349,7 @@ pub async fn install_update<R: Runtime>(window: tauri::Window<R>) {
         Some(update) => update,
         None => {
             println!("[Updater] No update found to install");
+            emit_update_error(window, format!("No update found to install"));
             return;
         }
     };
@@ -321,6 +364,7 @@ pub async fn install_update<R: Runtime>(window: tauri::Window<R>) {
     // check if the update package exists
     if !package_path.exists() {
         println!("[Updater] No pending update found to install");
+        emit_update_error(window, format!("No pending update found to install"));
         return;
     }
 
@@ -329,6 +373,7 @@ pub async fn install_update<R: Runtime>(window: tauri::Window<R>) {
         Ok(bytes) => bytes,
         Err(e) => {
             println!("[Updater] Failed to read update package: {:?}", e);
+            emit_update_error(window, format!("Failed to read update package: {:?}", e));
             return;
         }
     };
@@ -337,6 +382,7 @@ pub async fn install_update<R: Runtime>(window: tauri::Window<R>) {
 
     if let Err(e) = install_response {
         println!("[Updater] Failed to install update: {:?}", e);
+        emit_update_error(window, format!("Failed to install update: {:?}", e));
     } else {
         println!("[Updater] Update installed");
 
@@ -345,6 +391,7 @@ pub async fn install_update<R: Runtime>(window: tauri::Window<R>) {
             Ok(_) => {}
             Err(e) => {
                 println!("[Updater] Failed to remove update package: {:?}", e);
+                emit_update_error(window, format!("Failed to remove update package: {:?}", e));
             }
         }
     }
@@ -370,6 +417,17 @@ pub fn clear_update_cache<R: Runtime>(window: tauri::Window<R>) {
         Ok(_) => {}
         Err(e) => {
             println!("[Updater] Failed to remove update package: {:?}", e);
+            emit_update_error(window, format!("Failed to remove update package: {:?}", e));
+        }
+    }
+}
+
+// utility function to emit UPDATE_ERROR
+fn emit_update_error<R: Runtime>(window: tauri::Window<R>, error: String) {
+    match window.emit("UPDATE_ERROR", Some(error)) {
+        Ok(_) => {}
+        Err(e) => {
+            println!("[Updater] Failed to emit update error event: {:?}", e);
         }
     }
 }

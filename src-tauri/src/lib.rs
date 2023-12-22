@@ -17,7 +17,11 @@ async fn close_splashscreen(window: tauri::Window) {
         }
 
         // Show main window
-        window.get_window("main").unwrap().show().unwrap();
+        let main_window = window.get_window("main").unwrap();
+        main_window.show().unwrap();
+        // Open the dev tools automatically when debugging the application
+        #[cfg(debug_assertions)]
+        main_window.open_devtools();
     }
 }
 
@@ -72,12 +76,6 @@ pub fn run() {
                 let handle = app.handle();
                 tray::create_tray(handle)?;
             }
-
-            // Open the dev tools automatically when debugging the application
-            #[cfg(debug_assertions)]
-            if let Some(main_window) = app.get_window("main") {
-                main_window.open_devtools();
-            };
 
             Ok(())
         })
