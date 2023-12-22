@@ -61,7 +61,8 @@ function Avatar(props: Props) {
 	const user = props.user ?? app.account;
 	if (!user) return null;
 
-	const Base = props.onClick ? Yes(props.onClick) : FloatingTrigger;
+	// if onClick is null, use a div. if we pass a function, use yes. otherwise use FloatingTrigger
+	const Base = props.onClick === null ? "div" : props.onClick ? Yes(props.onClick) : FloatingTrigger;
 
 	return (
 		<Floating

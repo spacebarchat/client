@@ -84,7 +84,7 @@ function MemberListItem({ item }: Props) {
 				<Container>
 					<Wrapper offline={presence?.status === PresenceUpdateStatus.Offline}>
 						<AvatarWrapper>
-							<Avatar user={item.user!} size={32} presence={presence} showPresence />
+							<Avatar user={item.user!} size={32} presence={presence} showPresence onClick={null} />
 						</AvatarWrapper>
 						<TextWrapper>
 							<Text color={item.roleColor}>{item.nick ?? item.user?.username}</Text>
