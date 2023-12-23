@@ -17,6 +17,7 @@ iframe {
 
 .embedImage {
 	cursor: pointer;
+	border-radius: 8px;
 }
 
 .website {
@@ -159,6 +160,7 @@ iframe {
 
 .embedThumbnail {
 	margin-left: 16px;
+	border-radius: 8px;
 }
 
 img.image {
@@ -169,4 +171,20 @@ img.image {
 
 a {
 	cursor: pointer;
+}
+
+.embedGifIcon {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+}
+
+.embedGifIconBg {
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	width: 18px;
+	height: 18px;
+	background: #000000;
+	border-radius: 4px;
 }

@@ -16,8 +16,10 @@ export default styled.div<Props>`
 	overflow: none;
 	flex-direction: row;
 	${(props) => !props.header && "align-items: center;"}
-	${(props) => props.header && "margin-top: 20px;"}
+	${(props) => props.header && "margin-top: 10px;"}
 	${(props) => props.mention && "background-color: hsl(var(--warning-light-hsl)/0.1);"}
+	padding-top: 0.2rem;
+	padding-bottom: 0.2rem;
 
 	.message-details {
 		display: flex;

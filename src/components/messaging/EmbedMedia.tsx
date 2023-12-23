@@ -3,6 +3,7 @@
 
 import { APIEmbed, EmbedType } from "@spacebarchat/spacebar-api-types/v9";
 import { modalController } from "../../controllers/modals";
+import Icon from "../Icon";
 import styles from "./Embed.module.css";
 
 interface Props {
@@ -31,7 +32,7 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 
 			return (
 				<iframe
-					style={{ borderRadius: "12px", width: "400px", height: "80px" }}
+					style={{ width: "400px", height: "80px", borderRadius: 12 }}
 					src={`https://open.spotify.com/embed/${type}/${id}`}
 					frameBorder="0"
 					allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
@@ -93,22 +94,31 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 				const url = embed.video.url;
 
 				return (
-					<video
-						className={styles.embedImage}
-						style={{ width, height }}
-						src={url}
-						loop={embed.type === EmbedType.GIFV}
-						controls={embed.type !== EmbedType.GIFV}
-						autoPlay={embed.type === EmbedType.GIFV}
-						muted={embed.type === EmbedType.GIFV ? true : undefined}
-						onClick={() => {
-							modalController.push({
-								type: "image_viewer",
-								attachment: embed.video!,
-								isVideo: true,
-							});
-						}}
-					/>
+					<div>
+						<video
+							className={styles.embedImage}
+							style={{ width, height }}
+							src={url}
+							loop={embed.type === EmbedType.GIFV}
+							controls={embed.type !== EmbedType.GIFV}
+							autoPlay={embed.type === EmbedType.GIFV}
+							muted={embed.type === EmbedType.GIFV ? true : undefined}
+							onClick={() => {
+								modalController.push({
+									type: "image_viewer",
+									attachment: embed.video!,
+									isVideo: true,
+								});
+							}}
+						/>
+
+						{embed.type === EmbedType.GIFV && (
+							<div>
+								<div className={styles.embedGifIconBg}></div>
+								<Icon icon="mdiFileGifBox" size={1} className={styles.embedGifIcon} />
+							</div>
+						)}
+					</div>
 				);
 			} else if (embed.image && !thumbnail) {
 				const url = embed.image.url;
