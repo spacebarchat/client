@@ -98,7 +98,7 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 						style={{ width, height }}
 						src={url}
 						loop={embed.type === EmbedType.GIFV}
-						controls={embed.type === EmbedType.GIFV}
+						controls={embed.type !== EmbedType.GIFV}
 						autoPlay={embed.type === EmbedType.GIFV}
 						muted={embed.type === EmbedType.GIFV ? true : undefined}
 					/>

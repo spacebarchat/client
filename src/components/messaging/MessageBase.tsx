@@ -64,7 +64,6 @@ export const MessageInfo = styled.div`
 export const MessageContent = styled.div`
 	position: relative;
 	min-width: 0;
-	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

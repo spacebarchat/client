@@ -9,7 +9,7 @@ import styles from "./Embed.module.css";
 import EmbedMedia from "./EmbedMedia";
 import { MESSAGE_AREA_PADDING, MessageAreaWidthContext } from "./MessageList";
 
-const MAX_EMBED_WIDTH = 400;
+const MAX_EMBED_WIDTH = 300;
 const MAX_EMBED_HEIGHT = 640;
 const THUMBNAIL_MAX_WIDTH = 80;
 const CONTAINER_PADDING = 24;
@@ -26,7 +26,6 @@ function MessageEmbed({ embed }: Props) {
 
 	function calculateSize(w: number, h: number): { width: number; height: number } {
 		const limitingWidth = Math.min(w, maxWidth);
-
 		const limitingHeight = Math.min(MAX_EMBED_HEIGHT, h);
 
 		// Calculate smallest possible WxH.
@@ -76,13 +75,7 @@ function MessageEmbed({ embed }: Props) {
 
 	const { width, height } = calculateSize(mw, mh);
 	if (embed.type === EmbedType.GIFV || EMBEDDABLE_PROVIDERS.includes(embed.provider?.name ?? "")) {
-		return (
-			<EmbedMedia
-				embed={embed}
-				width={height * ((embed.image?.width ?? 0) / (embed.image?.height ?? 0))}
-				height={height}
-			/>
-		);
+		return <EmbedMedia embed={embed} width={height} height={height} />;
 	}
 
 	return (
