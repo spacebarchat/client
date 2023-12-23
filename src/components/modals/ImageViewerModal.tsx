@@ -1,4 +1,4 @@
-import { APIAttachment, APIEmbedImage, APIEmbedThumbnail } from "@spacebarchat/spacebar-api-types/v9";
+import { APIAttachment, APIEmbedImage, APIEmbedThumbnail, APIEmbedVideo } from "@spacebarchat/spacebar-api-types/v9";
 import styled from "styled-components";
 import { Modal } from "./ModalComponents";
 
@@ -15,9 +15,10 @@ const Container = styled.div`
 `;
 
 interface Props {
-	attachment: APIAttachment | APIEmbedImage | APIEmbedThumbnail;
+	attachment: APIAttachment | APIEmbedImage | APIEmbedThumbnail | APIEmbedVideo;
 	width?: number;
 	height?: number;
+	isVideo?: boolean; // should only be for gifs
 }
 
 export function ImageViewerModal(props: Props) {
@@ -27,7 +28,20 @@ export function ImageViewerModal(props: Props) {
 	return (
 		<Modal {...props} transparent maxWidth="100vw" maxHeight="100vh" withoutCloseButton withEmptyActionBar>
 			<Container>
-				<img src={props.attachment.url} width={width} height={height} loading="eager" />
+				{props.isVideo ? (
+					<video
+						loop
+						autoPlay
+						onContextMenu={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
+						}}
+					>
+						<source src={props.attachment.url} />
+					</video>
+				) : (
+					<img src={props.attachment.url} width={width} height={height} loading="eager" />
+				)}
 			</Container>
 		</Modal>
 	);

@@ -1,6 +1,6 @@
 // adapted from https://github.com/revoltchat/revite/blob/master/src/controllers/modals/types.ts
 
-import { APIAttachment, APIEmbedImage, APIEmbedThumbnail } from "@spacebarchat/spacebar-api-types/v9";
+import { APIAttachment, APIEmbedImage, APIEmbedThumbnail, APIEmbedVideo } from "@spacebarchat/spacebar-api-types/v9";
 import Channel from "../../stores/objects/Channel";
 import Guild from "../../stores/objects/Guild";
 import GuildMember from "../../stores/objects/GuildMember";
@@ -45,9 +45,10 @@ export type Modal = {
 	  }
 	| {
 			type: "image_viewer";
-			attachment: APIAttachment | APIEmbedImage | APIEmbedThumbnail;
+			attachment: APIAttachment | APIEmbedImage | APIEmbedThumbnail | APIEmbedVideo;
 			width?: number;
 			height?: number;
+			isVideo?: boolean;
 	  }
 );
 

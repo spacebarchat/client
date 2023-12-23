@@ -74,7 +74,12 @@ function MessageEmbed({ embed }: Props) {
 	}
 
 	const { width, height } = calculateSize(mw, mh);
-	if (embed.type === EmbedType.GIFV || EMBEDDABLE_PROVIDERS.includes(embed.provider?.name ?? "")) {
+	if (
+		embed.type === EmbedType.GIFV ||
+		embed.type === EmbedType.Image ||
+		embed.type === EmbedType.Video ||
+		EMBEDDABLE_PROVIDERS.includes(embed.provider?.name ?? "")
+	) {
 		return <EmbedMedia embed={embed} width={height} height={height} />;
 	}
 

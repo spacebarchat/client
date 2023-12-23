@@ -101,6 +101,13 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 						controls={embed.type !== EmbedType.GIFV}
 						autoPlay={embed.type === EmbedType.GIFV}
 						muted={embed.type === EmbedType.GIFV ? true : undefined}
+						onClick={() => {
+							modalController.push({
+								type: "image_viewer",
+								attachment: embed.video!,
+								isVideo: true,
+							});
+						}}
 					/>
 				);
 			} else if (embed.image && !thumbnail) {
@@ -113,13 +120,9 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 						loading="lazy"
 						style={{ width: "100%", height: "100%" }}
 						onClick={() => {
-							if (!embed.image) {
-								console.error("embed has no image... wtf");
-								return;
-							}
 							modalController.push({
 								type: "image_viewer",
-								attachment: embed.image,
+								attachment: embed.image!,
 							});
 						}}
 					/>
@@ -134,13 +137,9 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 						loading="lazy"
 						style={{ width, height }}
 						onClick={() => {
-							if (!embed.thumbnail) {
-								console.error("embed has no thumbnail... wtf");
-								return;
-							}
 							modalController.push({
 								type: "image_viewer",
-								attachment: embed.thumbnail,
+								attachment: embed.thumbnail!,
 							});
 						}}
 					/>
