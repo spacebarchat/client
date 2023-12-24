@@ -100,6 +100,7 @@ function MessageList({ guild, channel }: Props) {
 							display: "flex",
 							flexDirection: "column-reverse",
 							marginBottom: 30,
+							overflow: "hidden",
 						}} // to put endMessage and loader to the top.
 						hasMore={hasMore}
 						inverse={true}
