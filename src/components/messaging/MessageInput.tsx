@@ -12,7 +12,6 @@ import Guild from "../../stores/objects/Guild";
 import Snowflake from "../../utils/Snowflake";
 import { MAX_ATTACHMENTS } from "../../utils/constants";
 import { debounce } from "../../utils/debounce";
-import { isTouchscreenDevice } from "../../utils/isTouchscreenDevice";
 import MessageTextArea from "./MessageTextArea";
 import AttachmentUpload from "./attachments/AttachmentUpload";
 import AttachmentUploadList from "./attachments/AttachmentUploadPreview";
@@ -138,7 +137,7 @@ function MessageInput({ channel }: Props) {
 
 		// TODO: handle editing last message
 
-		if (!e.shiftKey && e.key === "Enter" && !isTouchscreenDevice) {
+		if (!e.shiftKey && e.key === "Enter") {
 			e.preventDefault();
 			return sendMessage();
 		}
