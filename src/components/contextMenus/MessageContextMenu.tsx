@@ -40,11 +40,13 @@ function MessageContextMenu({ message }: MenuProps) {
 			<ContextMenuDivider />
 			{(message.channel.hasPermission("MANAGE_MESSAGES") || message.author.id === app.account?.id) &&
 				message instanceof Message && (
-					<ContextMenuButton icon="mdiDelete" destructive onClick={deleteMessage}>
-						Delete Message
-					</ContextMenuButton>
+					<>
+						<ContextMenuButton icon="mdiDelete" destructive onClick={deleteMessage}>
+							Delete Message
+						</ContextMenuButton>
+						<ContextMenuDivider />
+					</>
 				)}
-			<ContextMenuDivider />
 			<ContextMenuButton
 				icon="mdiIdentifier"
 				onClick={copyId}
