@@ -1,6 +1,7 @@
 import type { APIUser, Snowflake } from "@spacebarchat/spacebar-api-types/v9";
 import { action, computed, makeAutoObservable, observable } from "mobx";
 import secureLocalStorage from "react-secure-storage";
+import { modalController } from "../controllers/modals";
 import Logger from "../utils/Logger";
 import REST from "../utils/REST";
 import { isTauri } from "../utils/Utils";
@@ -161,6 +162,7 @@ export default class AppStore {
 		this.isAppLoading = false;
 		this.isGatewayReady = true;
 		secureLocalStorage.clear();
+		modalController.closeAll();
 	}
 
 	@action
