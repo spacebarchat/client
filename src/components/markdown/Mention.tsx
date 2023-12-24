@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 import Role from "../../stores/objects/Role";
@@ -30,6 +31,7 @@ interface MentionProps {
 function UserMention({ id }: MentionProps) {
 	const app = useAppStore();
 	const [user, setUser] = React.useState<User | null>(null);
+	const contextMenu = React.useContext(ContextMenuContext);
 
 	React.useEffect(() => {
 		const getUser = async () => {
@@ -40,8 +42,6 @@ function UserMention({ id }: MentionProps) {
 
 		getUser();
 	}, [id]);
-
-	console.log(user);
 
 	if (!user) return <MentionText>@{id}</MentionText>;
 
@@ -54,7 +54,9 @@ function UserMention({ id }: MentionProps) {
 			}}
 		>
 			<FloatingTrigger>
-				<MentionText withHover>@{user.username}</MentionText>
+				<MentionText withHover onContextMenu={(e) => contextMenu.onContextMenu(e, { type: "user", user })}>
+					@{user.username}
+				</MentionText>
 			</FloatingTrigger>
 		</Floating>
 	);
@@ -64,6 +66,7 @@ function ChannelMention({ id }: MentionProps) {
 	const app = useAppStore();
 	const [channel, setChannel] = React.useState<Channel | null>(null);
 	const navigate = useNavigate();
+	const contextMenu = React.useContext(ContextMenuContext);
 
 	const onClick = () => {
 		if (!channel) return;
@@ -79,7 +82,11 @@ function ChannelMention({ id }: MentionProps) {
 	if (!channel) return <MentionText>#{id}</MentionText>;
 
 	return (
-		<MentionText withHover onClick={onClick}>
+		<MentionText
+			withHover
+			onClick={onClick}
+			onContextMenu={(e) => contextMenu.onContextMenu(e, { type: "channelMention", channel })}
+		>
 			#{channel.name}
 		</MentionText>
 	);

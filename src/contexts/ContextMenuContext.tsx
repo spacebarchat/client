@@ -23,6 +23,10 @@ export type ContextMenuProps =
 			channel: Channel;
 	  }
 	| {
+			type: "channelMention";
+			channel: Channel;
+	  }
+	| {
 			type: "guild";
 			guild: Guild;
 	  };
