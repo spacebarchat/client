@@ -1,5 +1,6 @@
 // loosely based on https://github.com/revoltchat/frontend/blob/master/components/app/menus/UserContextMenu.tsx
 
+import { modalController } from "../../controllers/modals";
 import Channel from "../../stores/objects/Channel";
 import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "./ContextMenu";
 
@@ -15,8 +16,20 @@ function ChannelContextMenu({ channel }: MenuProps) {
 		navigator.clipboard.writeText(channel.id);
 	}
 
+	/**
+	 * Open invite creation modal
+	 */
+	function openInviteCreateModal() {
+		modalController.push({
+			type: "create_invite",
+			target: channel,
+		});
+	}
+
 	return (
 		<ContextMenu>
+			<ContextMenuButton onClick={openInviteCreateModal}>Create Invite</ContextMenuButton>
+			<ContextMenuDivider />
 			{channel.hasPermission("MANAGE_CHANNELS") && (
 				<>
 					<ContextMenuButton disabled>Edit Channel</ContextMenuButton>
