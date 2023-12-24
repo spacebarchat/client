@@ -4,6 +4,7 @@ import {
 	GuildMemberFlags,
 } from "@spacebarchat/spacebar-api-types/v9";
 import { action, computed, observable } from "mobx";
+import { PermissionResolvable, Permissions } from "../../utils/Permissions";
 import AppStore from "../AppStore";
 import Guild from "./Guild";
 import Role from "./Role";
@@ -67,5 +68,10 @@ export default class GuildMember {
 	@action
 	async ban(reason?: string, deleteMessageSeconds?: number) {
 		return this.guild.banMember(this.user!.id, reason, deleteMessageSeconds);
+	}
+
+	hasPermission(permission: PermissionResolvable) {
+		const permissions = Permissions.getPermission(this.app.account!.id, this.guild);
+		return permissions.has(permission);
 	}
 }

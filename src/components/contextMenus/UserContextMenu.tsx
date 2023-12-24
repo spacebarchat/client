@@ -1,6 +1,7 @@
 // loosely based on https://github.com/revoltchat/frontend/blob/master/components/app/menus/UserContextMenu.tsx
 
 import { modalController } from "../../controllers/modals";
+import { useAppStore } from "../../stores/AppStore";
 import GuildMember from "../../stores/objects/GuildMember";
 import User from "../../stores/objects/User";
 import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "./ContextMenu";
@@ -11,6 +12,10 @@ interface MenuProps {
 }
 
 function UserContextMenu({ user, member }: MenuProps) {
+	const app = useAppStore();
+	const guild = member ? app.guilds.get(member.guild.id) : undefined;
+	const guildMe = guild ? guild.members.get(app.account!.id) : undefined;
+
 	/**
 	 * Copy user id to clipboard
 	 */
@@ -50,19 +55,29 @@ function UserContextMenu({ user, member }: MenuProps) {
 			<ContextMenuButton disabled>Add Friend</ContextMenuButton>
 			<ContextMenuButton disabled>Block</ContextMenuButton>
 			<ContextMenuDivider />
-			{member && (
+			{member && guildMe && (
 				<>
-					<ContextMenuButton destructive onClick={kick}>
-						Kick {member?.nick ?? user.username}
-					</ContextMenuButton>
-					<ContextMenuButton destructive onClick={ban}>
-						Ban {member?.nick ?? user.username}
-					</ContextMenuButton>
-					<ContextMenuDivider />
-					<ContextMenuButton disabled icon="mdiChevronRight">
-						Roles
-					</ContextMenuButton>
-					<ContextMenuDivider />
+					{guildMe.hasPermission("KICK_MEMBERS") && (
+						<ContextMenuButton destructive onClick={kick}>
+							Kick {member?.nick ?? user.username}
+						</ContextMenuButton>
+					)}
+					{guildMe.hasPermission("BAN_MEMBERS") && (
+						<>
+							<ContextMenuButton destructive onClick={ban}>
+								Ban {member?.nick ?? user.username}
+							</ContextMenuButton>
+							<ContextMenuDivider />
+						</>
+					)}
+					{guildMe.hasPermission("MANAGE_ROLES") && (
+						<>
+							<ContextMenuButton disabled icon="mdiChevronRight">
+								Roles
+							</ContextMenuButton>
+							<ContextMenuDivider />
+						</>
+					)}
 				</>
 			)}
 
