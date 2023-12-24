@@ -29,7 +29,7 @@ function MessageAuthor({ message }: Props) {
 
 	const onContextMenu = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		e.preventDefault();
-		const member = await app.guilds.get(message.guild_id!)?.members.fetch(message.author.id);
+		const member = await app.guilds.get(message.guild_id!)?.members.resolve(message.author.id);
 		contextMenu.onContextMenu(e, { type: "user", user: message.author, member });
 	};
 

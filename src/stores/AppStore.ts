@@ -43,7 +43,7 @@ export default class AppStore {
 	@observable guilds = new GuildStore(this);
 	@observable roles = new RoleStore(this);
 	@observable channels = new ChannelStore(this);
-	@observable users = new UserStore();
+	@observable users = new UserStore(this);
 	@observable privateChannels = new PrivateChannelStore(this);
 	@observable rest = new REST(this);
 	@observable experiments = new ExperimentsStore();

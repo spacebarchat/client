@@ -36,9 +36,16 @@ function UserMention({ id }: MentionProps) {
 	};
 
 	React.useEffect(() => {
-		const user = app.users.get(id);
-		if (user) setUser(user);
+		const getUser = async () => {
+			const resolvedUser = await app.users.resolve(id);
+			console.log(`resolvedUser`, resolvedUser);
+			setUser(resolvedUser ?? null);
+		};
+
+		getUser();
 	}, [id]);
+
+	console.log(user);
 
 	if (!user)
 		return (

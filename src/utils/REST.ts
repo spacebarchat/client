@@ -90,7 +90,16 @@ export default class REST {
 				method: "GET",
 				headers: this.headers,
 			})
-				.then((res) => res.json())
+				.then(async (res) => {
+					if (res.headers.get("content-length") !== "0") {
+						if (res.headers.get("content-type")?.includes("application/json")) {
+							if (!res.ok) return reject(await res.json());
+							return res.json();
+						}
+						if (!res.ok) return reject(res.json());
+						return res.text();
+					}
+				})
 				.then(resolve)
 				.catch(reject);
 		});

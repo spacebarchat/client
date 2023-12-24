@@ -74,8 +74,8 @@ export default class GuildMemberStore {
 	}
 
 	@action
-	async fetch(id: Snowflake): Promise<GuildMember | undefined> {
-		if (this.has(id)) return this.get(id);
+	async resolve(id: Snowflake, fetch: boolean = false): Promise<GuildMember | undefined> {
+		if (this.has(id) && !fetch) return this.get(id);
 		const profile = await this.app.rest.get<APIUserProfile>(`/users/${id}/profile`, {
 			guild_id: this.guild.id,
 		});
