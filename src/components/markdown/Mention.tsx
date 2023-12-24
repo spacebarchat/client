@@ -6,8 +6,10 @@ import Channel from "../../stores/objects/Channel";
 import Role from "../../stores/objects/Role";
 import User from "../../stores/objects/User";
 import { hexToRGB, rgbToHsl } from "../../utils/Utils";
+import Floating from "../floating/Floating";
+import FloatingTrigger from "../floating/FloatingTrigger";
 
-const Container = styled.span<{ color?: string; withHover?: boolean }>`
+const MentionText = styled.span<{ color?: string; withHover?: boolean }>`
 	padding: 0 2px;
 	border-radius: 4px;
 	background-color: hsl(${(props) => props.color ?? "var(--primary-hsl)"} / 0.3);
@@ -28,12 +30,6 @@ interface MentionProps {
 function UserMention({ id }: MentionProps) {
 	const app = useAppStore();
 	const [user, setUser] = React.useState<User | null>(null);
-	const ref = React.useRef<HTMLDivElement>(null);
-
-	const click = (e: React.MouseEvent) => {
-		e.preventDefault();
-		e.stopPropagation();
-	};
 
 	React.useEffect(() => {
 		const getUser = async () => {
@@ -47,17 +43,20 @@ function UserMention({ id }: MentionProps) {
 
 	console.log(user);
 
-	if (!user)
-		return (
-			<Container ref={ref}>
-				<span>@{id}</span>
-			</Container>
-		);
+	if (!user) return <MentionText>@{id}</MentionText>;
 
 	return (
-		<Container onClick={click} ref={ref} withHover>
-			<span>@{user.username}</span>
-		</Container>
+		<Floating
+			type="userPopout"
+			placement="right"
+			props={{
+				user,
+			}}
+		>
+			<FloatingTrigger>
+				<MentionText withHover>@{user.username}</MentionText>
+			</FloatingTrigger>
+		</Floating>
 	);
 }
 
@@ -66,7 +65,7 @@ function ChannelMention({ id }: MentionProps) {
 	const [channel, setChannel] = React.useState<Channel | null>(null);
 	const navigate = useNavigate();
 
-	const click = () => {
+	const onClick = () => {
 		if (!channel) return;
 		if (!channel.isGuildTextChannel) return;
 		navigate(`/channels/${channel.guildId}/${channel.id}`);
@@ -77,17 +76,12 @@ function ChannelMention({ id }: MentionProps) {
 		if (channel) setChannel(channel);
 	}, [id]);
 
-	if (!channel)
-		return (
-			<Container>
-				<span>#{id}</span>
-			</Container>
-		);
+	if (!channel) return <MentionText>#{id}</MentionText>;
 
 	return (
-		<Container onClick={click} withHover>
-			<span>#{channel.name}</span>
-		</Container>
+		<MentionText withHover onClick={onClick}>
+			#{channel.name}
+		</MentionText>
 	);
 }
 
@@ -110,26 +104,17 @@ function RoleMention({ id }: MentionProps) {
 		setColor(rgbToHsl(rgb.r, rgb.g, rgb.b));
 	}, [role]);
 
-	if (!role)
-		return (
-			<Container>
-				<span>@unknown-role</span>
-			</Container>
-		);
+	if (!role) return <MentionText>@unknown-role</MentionText>;
 
 	return (
-		<Container color={color}>
-			<span>@{role.name}</span>
-		</Container>
+		<MentionText color={color} withHover>
+			@{role.name}
+		</MentionText>
 	);
 }
 
 function CustomMention({ id }: MentionProps) {
-	return (
-		<Container>
-			<span>{id}</span>
-		</Container>
-	);
+	return <MentionText>{id}</MentionText>;
 }
 
 interface Props {

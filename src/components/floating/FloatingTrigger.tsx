@@ -28,9 +28,9 @@ export default React.forwardRef<HTMLElement, React.HTMLProps<HTMLElement> & Popo
 		}
 
 		return (
-			<div ref={ref} data-state={context.open ? "open" : "closed"} {...context.getReferenceProps(props)}>
+			<span ref={ref} data-state={context.open ? "open" : "closed"} {...context.getReferenceProps(props)}>
 				{children}
-			</div>
+			</span>
 		);
 	},
 );
