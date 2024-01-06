@@ -193,7 +193,7 @@ function UserProfilePopout({ user, member }: Props) {
 				<Section>
 					<div>
 						<UsernameWrapper>
-							<NicknameText>{user.username}</NicknameText>
+							<NicknameText>{member?.nick ?? user.username}</NicknameText>
 							<div>
 								<UsernameText>
 									{user.username}#{user.discriminator}

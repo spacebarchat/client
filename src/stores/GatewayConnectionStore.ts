@@ -15,6 +15,7 @@ import {
 	GatewayGuildMemberAddDispatchData,
 	GatewayGuildMemberListUpdateDispatchData,
 	GatewayGuildMemberRemoveDispatchData,
+	GatewayGuildMemberUpdateDispatchData,
 	GatewayGuildModifyDispatchData,
 	GatewayHeartbeat,
 	GatewayHelloData,
@@ -135,6 +136,7 @@ export default class GatewayConnectionStore {
 		this.dispatchHandlers.set(GatewayDispatchEvents.GuildDelete, this.onGuildDelete);
 		this.dispatchHandlers.set(GatewayDispatchEvents.GuildMemberAdd, this.onGuildMemberAdd);
 		this.dispatchHandlers.set(GatewayDispatchEvents.GuildMemberRemove, this.onGuildMemberRemove);
+		this.dispatchHandlers.set(GatewayDispatchEvents.GuildMemberUpdate, this.onGuildMemberUpdate);
 		this.dispatchHandlers.set(GatewayDispatchEvents.GuildMemberListUpdate, this.onGuildMemberListUpdate);
 
 		this.dispatchHandlers.set(GatewayDispatchEvents.ChannelCreate, this.onChannelCreate);
@@ -560,6 +562,16 @@ export default class GatewayConnectionStore {
 			return;
 		}
 		guild.members.remove(data.user.id);
+	};
+
+	private onGuildMemberUpdate = (data: GatewayGuildMemberUpdateDispatchData) => {
+		this.logger.debug("Received GuildMemberUpdate event");
+		const guild = this.app.guilds.get(data.guild_id);
+		if (!guild) {
+			this.logger.warn(`[GuildMemberUpdate] Guild ${data.guild_id} not found for member ${data.user.id}`);
+			return;
+		}
+		guild.members.update(data as APIGuildMember);
 	};
 
 	private onGuildMemberListUpdate = (data: GatewayGuildMemberListUpdateDispatchData) => {

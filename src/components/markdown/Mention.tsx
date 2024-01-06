@@ -14,6 +14,7 @@ const MentionText = styled.span<{ color?: string; withHover?: boolean }>`
 	padding: 0 2px;
 	border-radius: 4px;
 	background-color: hsl(${(props) => props.color ?? "var(--primary-hsl)"} / 0.3);
+	user-select: ${(props) => (props.withHover ? "none" : "inherit")};
 
 	${(props) =>
 		props.withHover &&

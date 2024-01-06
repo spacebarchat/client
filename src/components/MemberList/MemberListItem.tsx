@@ -1,4 +1,5 @@
 import { PresenceUpdateStatus } from "@spacebarchat/spacebar-api-types/v9";
+import { observer } from "mobx-react-lite";
 import { useContext } from "react";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
@@ -96,4 +97,4 @@ function MemberListItem({ item }: Props) {
 	);
 }
 
-export default MemberListItem;
+export default observer(MemberListItem);
