@@ -32,6 +32,7 @@ import {
 	GatewayReceivePayload,
 	GatewaySendPayload,
 	GatewayTypingStartDispatchData,
+	GatewayUserUpdateDispatchData,
 	PresenceUpdateStatus,
 	Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
@@ -151,6 +152,8 @@ export default class GatewayConnectionStore {
 		this.dispatchHandlers.set(GatewayDispatchEvents.PresenceUpdate, this.onPresenceUpdate);
 
 		this.dispatchHandlers.set(GatewayDispatchEvents.TypingStart, this.onTypingStart);
+
+		this.dispatchHandlers.set(GatewayDispatchEvents.UserUpdate, this.onUserUpdate);
 	}
 
 	private onopen = () => {
@@ -720,5 +723,9 @@ export default class GatewayConnectionStore {
 			this.logger.debug(`[TypingStart] ${data.user_id} is still typing in ${channel.id}`);
 			channel.typingIds.get(data.user_id)?.();
 		}
+	};
+
+	private onUserUpdate = (data: GatewayUserUpdateDispatchData) => {
+		this.app.users.update(data);
 	};
 }

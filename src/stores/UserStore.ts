@@ -1,4 +1,9 @@
-import { Routes, type APIUser, type Snowflake } from "@spacebarchat/spacebar-api-types/v9";
+import {
+	GatewayUserUpdateDispatchData,
+	Routes,
+	type APIUser,
+	type Snowflake,
+} from "@spacebarchat/spacebar-api-types/v9";
 import { ObservableMap, action, computed, observable } from "mobx";
 import useLogger from "../hooks/useLogger";
 import AppStore from "./AppStore";
@@ -20,6 +25,11 @@ export default class UserStore {
 	@action
 	addAll(users: APIUser[]) {
 		users.forEach((user) => this.add(user));
+	}
+
+	@action
+	update(user: APIUser | GatewayUserUpdateDispatchData) {
+		this.users.get(user.id)?.update(user);
 	}
 
 	@action
