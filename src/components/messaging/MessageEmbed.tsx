@@ -5,6 +5,8 @@ import { APIEmbed, EmbedType } from "@spacebarchat/spacebar-api-types/v9";
 import classNames from "classnames";
 import React from "react";
 import { decimalColorToHex } from "../../utils/Utils";
+import Markdown from "../markdown/Markdown";
+import MarkdownRenderer from "../markdown/MarkdownRenderer";
 import styles from "./Embed.module.css";
 import EmbedMedia from "./EmbedMedia";
 import { MESSAGE_AREA_PADDING, MessageAreaWidthContext } from "./MessageList";
@@ -139,7 +141,11 @@ function MessageEmbed({ embed }: Props) {
 							</>
 						)}
 
-						{embed.description && <div className={styles.embedDescription}>{embed.description}</div>}
+						{embed.description && (
+							<div className={styles.embedDescription}>
+								<MarkdownRenderer content={embed.description} />
+							</div>
+						)}
 
 						{embed.fields && (
 							<div className={styles.embedFields}>
@@ -154,7 +160,9 @@ function MessageEmbed({ embed }: Props) {
 										}}
 									>
 										<div className={styles.embedFieldName}>{field.name}</div>
-										<div className={styles.embedFieldValue}>{field.value}</div>
+										<div className={styles.embedFieldValue}>
+											<Markdown content={field.value} />
+										</div>
 									</div>
 								))}
 							</div>
