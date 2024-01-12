@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { useAppStore } from "../../stores/AppStore";
+import GuildMember from "../../stores/objects/GuildMember";
 import { MessageLike } from "../../stores/objects/Message";
 import Floating from "../floating/Floating";
 import FloatingTrigger from "../floating/FloatingTrigger";
@@ -26,11 +27,20 @@ function MessageAuthor({ message }: Props) {
 	const app = useAppStore();
 	const contextMenu = useContext(ContextMenuContext);
 	const [color, setColor] = React.useState<string | undefined>(undefined);
+	const [eventData, setEventData] = React.useState<React.MouseEvent<HTMLDivElement, MouseEvent> | undefined>();
+	const [member, setMember] = React.useState<GuildMember | undefined>(undefined);
+
+	React.useEffect(() => {
+		if (!eventData) return;
+		contextMenu.onContextMenu(eventData, { type: "user", user: message.author, member });
+	}, [eventData, member]);
 
 	const onContextMenu = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		e.preventDefault();
-		const member = await app.guilds.get(message.guild_id!)?.members.resolve(message.author.id);
-		contextMenu.onContextMenu(e, { type: "user", user: message.author, member });
+		e.stopPropagation();
+
+		setEventData(e);
+		app.guilds.get(message.guild_id!)?.members.resolve(message.author.id).then(setMember);
 	};
 
 	React.useEffect(() => {
