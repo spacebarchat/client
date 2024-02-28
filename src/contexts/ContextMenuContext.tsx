@@ -53,7 +53,7 @@ export const ContextMenuContextProvider: React.FC<any> = ({ children }) => {
 		? ContextMenuComponents[contextMenu.props.type]
 		: () => {
 				return null;
-		  };
+			};
 
 	return (
 		<ContextMenuContext.Provider

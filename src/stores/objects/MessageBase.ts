@@ -27,7 +27,10 @@ export default class MessageBase {
 	type: MessageType;
 	author: User;
 
-	constructor(public readonly app: AppStore, data: MessageLikeData) {
+	constructor(
+		public readonly app: AppStore,
+		data: MessageLikeData,
+	) {
 		this.id = data.id;
 		this.content = data.content;
 		this.timestamp = new Date(data.timestamp);

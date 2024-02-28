@@ -22,7 +22,9 @@ const Container = styled.div`
 	width: 340px;
 	max-height: 600px;
 	overflow: hidden;
-	box-shadow: 0 0 0 1px rgb(0 0 0 / 15%), 0 4px 8px rgb(0 0 0 / 15%);
+	box-shadow:
+		0 0 0 1px rgb(0 0 0 / 15%),
+		0 4px 8px rgb(0 0 0 / 15%);
 	color: var(--text);
 `;
 

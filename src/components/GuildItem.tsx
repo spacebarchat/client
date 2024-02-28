@@ -30,7 +30,9 @@ const Wrapper = styled(Container)<{ active?: boolean; hasImage?: boolean }>`
 	border-radius: ${(props) => (props.active ? "30%" : "50%")};
 	background-color: ${(props) =>
 		props.hasImage ? "transparent" : props.active ? "var(--primary)" : "var(--background-secondary)"};
-	transition: border-radius 0.2s ease, background-color 0.2s ease;
+	transition:
+		border-radius 0.2s ease,
+		background-color 0.2s ease;
 
 	&:hover {
 		border-radius: 30%;

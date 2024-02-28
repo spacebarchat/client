@@ -198,7 +198,7 @@ export default class Guild {
 			reason
 				? {
 						"X-Audit-Log-Reason": reason,
-				  }
+					}
 				: {},
 		);
 	}
@@ -214,7 +214,7 @@ export default class Guild {
 			reason
 				? {
 						"X-Audit-Log-Reason": reason,
-				  }
+					}
 				: {},
 		);
 	}

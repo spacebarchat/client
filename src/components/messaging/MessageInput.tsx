@@ -197,7 +197,7 @@ function MessageInput({ channel }: Props) {
 										channel.type === ChannelType.DM
 											? channel.recipients?.[0].username
 											: "#" + channel.name
-								  }`
+									}`
 								: "You do not have permission to send messages in this channel."
 						}
 						disabled={!channel.hasPermission("SEND_MESSAGES")}

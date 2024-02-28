@@ -54,7 +54,7 @@ export function BanMemberModal({ target, type, ...props }: ModalProps<"ban_membe
 				data.reason
 					? {
 							"X-Audit-Log-Reason": data.reason,
-					  }
+						}
 					: undefined,
 			)
 			.then(() => {

@@ -374,11 +374,14 @@ export default class GatewayConnectionStore {
 			}
 		};
 
-		this.initialHeartbeatTimeout = setTimeout(() => {
-			this.initialHeartbeatTimeout = null;
-			this.heartbeater = setInterval(heartbeaterFn, this.heartbeatInterval!);
-			heartbeaterFn();
-		}, Math.floor(Math.random() * this.heartbeatInterval!));
+		this.initialHeartbeatTimeout = setTimeout(
+			() => {
+				this.initialHeartbeatTimeout = null;
+				this.heartbeater = setInterval(heartbeaterFn, this.heartbeatInterval!);
+				heartbeaterFn();
+			},
+			Math.floor(Math.random() * this.heartbeatInterval!),
+		);
 	};
 
 	/**

@@ -54,7 +54,7 @@ export function KickMemberModal({ target, ...props }: ModalProps<"kick_member">)
 				data.reason
 					? {
 							"X-Audit-Log-Reason": data.reason,
-					  }
+						}
 					: undefined,
 			)
 			.then(() => {

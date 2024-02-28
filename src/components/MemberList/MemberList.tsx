@@ -59,7 +59,7 @@ function MemberList() {
 									<MemberListItem item={x} />
 								))}
 							/>
-					  ))
+						))
 					: null}
 			</List>
 		</Container>

@@ -62,10 +62,10 @@ export const ModalBase = styled.div<{ closing?: boolean }>`
 					> div {
 						animation-name: ${animationZoomOut};
 					}
-			  `
+				`
 			: css`
 					animation-name: ${animationFadeIn};
-			  `}
+				`}
 `;
 
 /**
