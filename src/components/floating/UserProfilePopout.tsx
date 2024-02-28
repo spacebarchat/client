@@ -8,7 +8,7 @@ import { HorizontalDivider } from "../Divider";
 
 import { CDNRoutes, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import dayjs from "dayjs";
-import { ReactComponent as SpacebarLogoBlue } from "../../assets/images/logo/Spacebar_Icon.svg";
+import SpacebarLogoBlue from "../../assets/images/logo/Spacebar_Icon.svg?react";
 import { useAppStore } from "../../stores/AppStore";
 import REST from "../../utils/REST";
 import Floating from "./Floating";

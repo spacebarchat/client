@@ -1,0 +1,24 @@
+{
+	"identifier": "base",
+	"description": "base",
+	"windows": ["main", "splashscreen"],
+	"permissions": [
+		"path:default",
+		"event:default",
+		"window:default",
+		"app:default",
+		"resources:default",
+		"menu:default",
+		"tray:default",
+		"updater:default",
+		"notification:default",
+		"os:allow-platform",
+		"os:allow-arch",
+		"os:allow-family",
+		"os:allow-locale",
+		"os:allow-os-type",
+		"os:allow-version",
+		"webview:allow-internal-toggle-devtools"
+	],
+	"platforms": ["linux", "macOS", "windows", "android", "iOS"]
+}

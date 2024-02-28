@@ -5,8 +5,8 @@ use tauri::{
 };
 
 pub fn create_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
-    let branding = MenuItem::with_id(app, "name", "Spacebar", false, None);
-    let quit_i = MenuItem::with_id(app, "quit", "Quit", true, None);
+    let branding = MenuItem::with_id(app, "name", "Spacebar", false, None::<String>)?;
+    let quit_i = MenuItem::with_id(app, "quit", "Quit", true, None::<String>)?;
     let menu1 = Menu::with_items(app, &[&branding, &quit_i])?;
 
     let _ = TrayIconBuilder::with_id("main")
@@ -24,7 +24,7 @@ pub fn create_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
         .on_tray_icon_event(|tray, event| {
             if event.click_type == ClickType::Left {
                 let app = tray.app_handle();
-                if let Some(window) = app.get_window("main") {
+                if let Some(window) = app.get_webview_window("main") {
                     let _ = window.show();
                     let _ = window.set_focus();
                 }

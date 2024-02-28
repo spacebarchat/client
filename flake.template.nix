@@ -26,7 +26,7 @@
 			makeCacheWritable = true;
 			installPhase = ''
 				runHook preInstall
-				cp -r build $out/
+				cp -r dist $out/
 				runHook postInstall
 			'';
 		};

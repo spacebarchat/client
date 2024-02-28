@@ -1,3 +1,4 @@
+use reqwest;
 use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
 use tauri::{Manager, Runtime};
@@ -29,9 +30,15 @@ struct UpdateAvailable {
 pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Window<R>) {
     let handle = window.app_handle().clone();
 
-    if !handle.config().tauri.bundle.updater.active {
+    if std::env::var("DEVELOPMENT").is_ok() {
+        println!("[Updater] This is a development environment, not updating.");
         return;
     }
+
+    // TODO: readd this
+    // if !handle.config().tauri.bundle.updater.active {
+    //     return;
+    // }
 
     match window.emit("CHECKING_FOR_UPDATE", Some(serde_json::json!({}))) {
         Ok(_) => {}
@@ -163,6 +170,7 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
                 return;
             }
         };
+
         let updater_builder = match handle
             .updater_builder()
             .version_comparator(|current_version, latest_version| {
@@ -269,6 +277,11 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
 
 #[tauri::command]
 pub async fn download_update<R: Runtime>(window: tauri::Window<R>) {
+    if std::env::var("DEVELOPMENT").is_ok() {
+        println!("[Updater] This is a development environment, not updating.");
+        return;
+    }
+
     println!("[Updater] Downloading update package");
 
     let update = match UPDATE_INFO.lock().unwrap().clone() {
@@ -343,6 +356,11 @@ pub async fn download_update<R: Runtime>(window: tauri::Window<R>) {
 
 #[tauri::command]
 pub async fn install_update<R: Runtime>(window: tauri::Window<R>) {
+    if std::env::var("DEVELOPMENT").is_ok() {
+        println!("[Updater] This is a development environment, not updating.");
+        return;
+    }
+
     println!("[Updater] Installing update package");
 
     let update = match UPDATE_INFO.lock().unwrap().clone() {

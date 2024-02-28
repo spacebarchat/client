@@ -22,6 +22,7 @@ import { useAppStore } from "./stores/AppStore";
 import { Globals } from "./utils/Globals";
 // @ts-expect-error no types
 import FPSStats from "react-fps-stats";
+import { isTauri } from "./utils/Utils";
 
 function App() {
 	const app = useAppStore();
@@ -68,7 +69,7 @@ function App() {
 			};
 		};
 
-		loadAsyncGlobals();
+		isTauri && loadAsyncGlobals();
 		Globals.load();
 		app.loadSettings();
 

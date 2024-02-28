@@ -2,7 +2,7 @@ import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as SpacebarLogoBlue } from "../../assets/images/logo/Logo-Blue.svg";
+import SpacebarLogoBlue from "../../assets/images/logo/Logo-Blue.svg?react";
 import {
 	AuthContainer,
 	FormContainer,

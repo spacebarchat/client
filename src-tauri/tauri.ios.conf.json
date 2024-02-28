@@ -1,10 +1,10 @@
 {
-	"tauri": {
-		"bundle": {
-			"iOS": {
-				"developmentTeam": "47RXBB8X9K"
-			}
-		},
+	"bundle": {
+		"iOS": {
+			"developmentTeam": "47RXBB8X9K"
+		}
+	},
+	"app": {
 		"windows": [
 			{
 				"fullscreen": false,

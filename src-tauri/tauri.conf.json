@@ -1,56 +1,62 @@
 {
+	"productName": "Spacebar",
+	"version": "./version.json",
+	"identifier": "chat.spacebar.app",
 	"build": {
+		"frontendDist": "../dist",
+		"devUrl": "http://localhost:1420",
 		"beforeDevCommand": "pnpm run dev",
-		"beforeBuildCommand": "pnpm run build",
-		"devPath": "http://localhost:1420",
-		"distDir": "../build",
-		"withGlobalTauri": true
+		"beforeBuildCommand": "pnpm run build"
 	},
-	"package": {
-		"productName": "Spacebar",
-		"version": "./version.json"
-	},
-	"tauri": {
-		"bundle": {
-			"active": true,
-			"targets": ["app", "appimage", "deb", "dmg", "nsis", "updater"],
-			"identifier": "chat.spacebar.app",
-			"icon": [
-				"icons/32x32.png",
-				"icons/128x128.png",
-				"icons/128x128@2x.png",
-				"icons/icon.icns",
-				"icons/icon.ico"
-			],
-			"publisher": "Spacebar",
-			"category": "SocialNetworking",
-			"shortDescription": "A free, opensource self-hostable discord-compatible chat, voice and video platform.",
-			"windows": {
-				"nsis": {
-					"license": "../LICENSE",
-					"sidebarImage": "./icons/sidebar.bmp",
-					"installerIcon": "./icons/icon.ico"
-				}
+	"app": {
+		"withGlobalTauri": true,
+		"windows": [
+			{
+				"label": "main",
+				"title": "Tauri",
+				"width": 800,
+				"height": 600,
+				"visible": false
 			},
-			"updater": {
-				"active": true,
-				"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDQxRkQwNTY1NzBEOTMyMTUKUldRVk10bHdaUVg5UWVoVm9JeDg4UEs1TkpMT3FKdzc3Y29CN2NZNk9vRE9sanJCUERqT09HVVYK",
-				"windows": {
-					"installMode": "passive"
-				}
+			{
+				"label": "splashscreen",
+				"width": 400,
+				"height": 200,
+				"decorations": false,
+				"resizable": false,
+				"url": "splashscreen.html"
 			}
-		},
+		],
 		"security": {
-			"csp": null
-		},
-		"windows": []
+			"csp": "default-src 'self'; connect-src ipc: http://ipc.localhost"
+		}
+	},
+	"bundle": {
+		"active": true,
+		"targets": "all",
+		"icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
+		"publisher": "Spacebar",
+		"category": "SocialNetworking",
+		"shortDescription": "A free, opensource self-hostable discord-compatible chat, voice and video platform.",
+		"licenseFile": "../LICENSE",
+		"windows": {
+			"nsis": {
+				"sidebarImage": "./icons/sidebar.bmp",
+				"installerIcon": "./icons/icon.ico"
+			}
+		}
 	},
 	"plugins": {
 		"shell": {
 			"open": true
 		},
 		"updater": {
-			"endpoints": ["https://github.com/spacebarchat/client/releases/download/latest/latest.json"]
+			"active": true,
+			"endpoints": ["https://github.com/spacebarchat/client/releases/download/latest/latest.json"],
+			"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDQxRkQwNTY1NzBEOTMyMTUKUldRVk10bHdaUVg5UWVoVm9JeDg4UEs1TkpMT3FKdzc3Y29CN2NZNk9vRE9sanJCUERqT09HVVYK",
+			"windows": {
+				"installMode": "passive"
+			}
 		}
 	}
 }
