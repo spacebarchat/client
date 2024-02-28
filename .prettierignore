@@ -4,3 +4,4 @@ node_modules
 .github
 .vscode
 src-tauri/target
+src-tauri/gen
