@@ -132,7 +132,7 @@ export function hexToRGB(hex: string) {
 }
 
 export function compareChannels(a: Channel, b: Channel): number {
-	return (a.position ?? 0) - (b.position ?? 0);
+	return (a.position ?? -1) - (b.position ?? -1);
 }
 
 export function doFit(width: number, height: number, maxWidth: number, maxHeight: number, minWidth = 0, minHeight = 0) {
