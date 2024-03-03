@@ -2,7 +2,9 @@ import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
+import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
+import Guild from "../../stores/objects/Guild";
 import GuildMember from "../../stores/objects/GuildMember";
 import { MessageLike } from "../../stores/objects/Message";
 import Floating from "../floating/Floating";
@@ -21,14 +23,17 @@ const Container = styled.div`
 
 interface Props {
 	message: MessageLike;
+	guild?: Guild;
 }
 
-function MessageAuthor({ message }: Props) {
+function MessageAuthor({ message, guild }: Props) {
 	const app = useAppStore();
+	const logger = useLogger("MessageAuthor");
 	const contextMenu = useContext(ContextMenuContext);
 	const [color, setColor] = React.useState<string | undefined>(undefined);
 	const [eventData, setEventData] = React.useState<React.MouseEvent<HTMLDivElement, MouseEvent> | undefined>();
 	const [member, setMember] = React.useState<GuildMember | undefined>(undefined);
+	const { members } = guild || {};
 
 	React.useEffect(() => {
 		if (!eventData) return;
@@ -44,14 +49,12 @@ function MessageAuthor({ message }: Props) {
 	};
 
 	React.useEffect(() => {
-		if ("guild_id" in message && message.guild_id) {
-			const guild = app.guilds.get(message.guild_id!);
-			if (!guild) return;
-			const member = guild.members.get(message.author.id);
-			if (!member) return;
-			setColor(member.roleColor);
-		}
-	}, [message]);
+		if (!members) return;
+
+		const member = members.get(message.author.id);
+		if (!member) return;
+		setColor(member.roleColor);
+	}, [message, members]);
 
 	return (
 		<Floating

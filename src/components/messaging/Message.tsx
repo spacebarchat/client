@@ -50,7 +50,7 @@ function Message({ message, header }: Props) {
 			<MessageContent>
 				{header && (
 					<span className="message-details">
-						<MessageAuthor message={message} />
+						<MessageAuthor message={message} guild={guild} />
 						<MessageDetails message={message} position="top" />
 					</span>
 				)}
