@@ -374,14 +374,11 @@ export default class GatewayConnectionStore {
 			}
 		};
 
-		this.initialHeartbeatTimeout = setTimeout(
-			() => {
-				this.initialHeartbeatTimeout = null;
-				this.heartbeater = setInterval(heartbeaterFn, this.heartbeatInterval!);
-				heartbeaterFn();
-			},
-			Math.floor(Math.random() * this.heartbeatInterval!),
-		);
+		this.initialHeartbeatTimeout = setTimeout(() => {
+			this.initialHeartbeatTimeout = null;
+			this.heartbeater = setInterval(heartbeaterFn, this.heartbeatInterval!);
+			heartbeaterFn();
+		}, Math.floor(Math.random() * this.heartbeatInterval!));
 	};
 
 	/**
@@ -494,7 +491,7 @@ export default class GatewayConnectionStore {
 					const guild = this.app.guilds.get(m.guild_id);
 					if (!guild) {
 						this.logger.warn(`[Ready] Guild ${m.guild_id} not found for member ${m.id}`);
-						return;
+						continue;
 					}
 					guild.members.add(m);
 				}
