@@ -50,6 +50,11 @@ export type Modal = {
 			height?: number;
 			isVideo?: boolean;
 	  }
+	| {
+			type: "create_channel";
+			guild: Guild;
+			category?: Channel;
+	  }
 );
 
 export type ModalProps<T extends Modal["type"]> = Modal & { type: T } & {

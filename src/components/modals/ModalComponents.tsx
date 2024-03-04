@@ -16,7 +16,7 @@ interface ModalProps {
 	children?: React.ReactNode;
 	onClose?: (force: boolean) => void;
 	signal?: "close" | "confirm" | "cancel";
-	title?: string;
+	title?: React.ReactNode;
 	description?: React.ReactNode;
 	transparent?: boolean;
 	nonDismissable?: boolean;
@@ -62,10 +62,10 @@ export const ModalBase = styled.div<{ closing?: boolean }>`
 					> div {
 						animation-name: ${animationZoomOut};
 					}
-				`
+			  `
 			: css`
 					animation-name: ${animationFadeIn};
-				`}
+			  `}
 `;
 
 /**
@@ -96,7 +96,7 @@ export const ModalWrapper = styled.div<
 		!props.transparent &&
 		css`
 			overflow: hidden;
-			background: var(--background-secondary);
+			background: var(--background-primary);
 			border-radius: 8px;
 		`}
 `;
@@ -126,7 +126,7 @@ export const ModalContentContainer = styled.div<Pick<ModalProps, "transparent" |
 	${(props) =>
 		!props.transparent &&
 		css`
-			background: var(--background-secondary);
+			background: var(--background-primary);
 		`}
 `;
 
@@ -135,7 +135,7 @@ const Actions = styled.div`
 	display: flex;
 	padding: 16px;
 	flex-direction: row-reverse;
-	background: var(--background-primary);
+	background: var(--background-secondary);
 	border-radius: 0 0 4px 4px;
 `;
 

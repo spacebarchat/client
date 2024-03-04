@@ -246,7 +246,7 @@ export function CreateInviteModal({ target, ...props }: ModalProps<"create_invit
 
 					<InputWrapper
 						style={{
-							background: "var(--background-secondary-alt)",
+							background: "var(--background-secondary)",
 							borderRadius: "12px",
 						}}
 					>

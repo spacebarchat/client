@@ -1,5 +1,6 @@
 export * from "./AddServerModal";
 export * from "./BanMemberModal";
+export * from "./CreateChannelModel";
 export * from "./CreateInviteModal";
 export * from "./CreateServerModal";
 export * from "./DeleteMessageModal";

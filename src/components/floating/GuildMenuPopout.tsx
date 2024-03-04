@@ -24,16 +24,23 @@ function GuildMenuPopout() {
 		});
 	}
 
+	function onChannelCreateClick() {
+		modalController.push({
+			type: "create_channel",
+			guild: activeGuild!,
+		});
+	}
+
 	return (
 		<CustomContextMenu>
 			<ContextMenuButton icon="mdiCog" disabled>
 				Server Settings
 			</ContextMenuButton>
-			<ContextMenuButton icon="mdiPlusCircle" disabled>
+			<ContextMenuButton icon="mdiPlusCircle" onClick={onChannelCreateClick}>
 				Create Channel
 			</ContextMenuButton>
 			<ContextMenuButton icon="mdiFolderPlus" disabled>
-				Create Channel
+				Create Category
 			</ContextMenuButton>
 			<ContextMenuDivider />
 			<ContextMenuButton icon="mdiBell" disabled>

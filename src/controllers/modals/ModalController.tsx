@@ -4,6 +4,7 @@ import { action, computed, makeObservable, observable } from "mobx";
 import {
 	AddServerModal,
 	BanMemberModal,
+	CreateChannelModel,
 	CreateInviteModal,
 	CreateServerModal,
 	DeleteMessageModal,
@@ -154,7 +155,7 @@ export const modalController = new ModalControllerExtended({
 	// block_user: Confirmation,
 	// unfriend_user: Confirmation,
 	// create_category: CreateCategory,
-	// create_channel: CreateChannel,
+	create_channel: CreateChannelModel,
 	// create_group: CreateGroup,
 	create_invite: CreateInviteModal,
 	// create_role: CreateRole,

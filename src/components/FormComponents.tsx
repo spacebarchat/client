@@ -3,7 +3,7 @@ import styled from "styled-components";
 // TODO: migrate some things from AuthComponents
 
 export const InputSelect = styled.select`
-	background-color: var(--background-secondary-alt);
+	background-color: var(--background-secondary);
 	color: var(--text);
 	outline: none;
 	border: 1px solid transparent;

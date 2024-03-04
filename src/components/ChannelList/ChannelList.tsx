@@ -25,6 +25,7 @@ function ChannelList() {
 
 		const active = app.activeChannelId === item.id;
 		const isCategory = item.type === ChannelType.GuildCategory;
+
 		return (
 			<div style={style}>
 				<ChannelListItem key={key} isCategory={isCategory} active={active} channel={item} />

@@ -66,7 +66,7 @@ export const LabelWrapper = styled.div<{ error?: boolean }>`
 	display: flex;
 	flex-direction: row;
 	margin-bottom: 8px;
-	color: ${(props) => (props.error ? "var(--error)" : "var(--text)")};
+	color: ${(props) => (props.error ? "var(--error)" : "var(--text-header-secondary)")};
 `;
 
 export const InputErrorText = styled.label`
@@ -88,10 +88,9 @@ export const InputWrapper = styled.div`
 	display: flex;
 `;
 
-// TODO: Fix border hover causing small layout shift
-export const Input = styled.input<{ error?: boolean }>`
+export const Input = styled.input<{ error?: boolean; disableFocusRing?: boolean }>`
 	outline: none;
-	background: var(--background-secondary-alt);
+	background: var(--background-secondary);
 	padding: 10px;
 	font-size: 16px;
 	flex: 1;
@@ -100,17 +99,23 @@ export const Input = styled.input<{ error?: boolean }>`
 	margin: 0;
 	border: none;
 	aria-invalid: ${(props) => (props.error ? "true" : "false")};
-	border: ${(props) => (props.error ? "1px solid var(--error)" : "none")};
+	border: ${(props) => (props.error ? "1px solid var(--error)" : "1px solid var(--background-secondary)")};
 
-	&:focus {
-		border: 1px solid var(--primary);
-	}
+	${(props) =>
+		!props.disableFocusRing &&
+		`
+		&:focus {
+			border: 1px solid var(--primary);
+		}
+	`}
 
 	// disabled styling
 	&:disabled {
-		background: var(--background-secondary-alt);
+		// TODO: this might need to be adjusted
+		background: var(--background-primary-alt);
 		color: var(--text-disabled);
 		border: 1px solid var(--background-secondary-alt);
+		cursor: not-allowed;
 	}
 
 	-moz-appearance: textfield;

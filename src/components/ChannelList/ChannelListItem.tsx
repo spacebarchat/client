@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
+import { modalController } from "../../controllers/modals";
 import Channel from "../../stores/objects/Channel";
 import Icon from "../Icon";
 import Floating from "../floating/Floating";
@@ -9,7 +10,7 @@ import FloatingTrigger from "../floating/FloatingTrigger";
 
 const ListItem = styled.div<{ isCategory?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};
-	cursor: ${(props) => (props.isCategory ? "not-allowed" : "pointer")};
+	cursor: pointer;
 `;
 
 const Wrapper = styled.div<{ isCategory?: boolean; active?: boolean }>`
@@ -45,7 +46,9 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 	const navigate = useNavigate();
 	const contextMenu = useContext(ContextMenuContext);
 
-	const [hovered, setHovered] = React.useState(false);
+	const [wrapperHovered, setWrapperHovered] = React.useState(false);
+	const [createChannelHovered, setCreateChannelHovered] = React.useState(false);
+	const [createChannelDown, setChannelCreateDown] = React.useState(false);
 
 	return (
 		<ListItem
@@ -63,8 +66,8 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 			<Wrapper
 				isCategory={isCategory}
 				active={active}
-				onMouseOver={() => setHovered(true)}
-				onMouseOut={() => setHovered(false)}
+				onMouseOver={() => setWrapperHovered(true)}
+				onMouseOut={() => setWrapperHovered(false)}
 			>
 				<div
 					style={{
@@ -87,13 +90,13 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 						<Icon
 							icon="mdiChevronDown"
 							size="12px"
-							color={hovered ? "var(--text)" : "var(--text-secondary)"}
+							color={wrapperHovered ? "var(--text)" : "var(--text-secondary)"}
 							style={{
 								marginRight: "8px",
 							}}
 						/>
 					)}
-					<Text isCategory={isCategory} hovered={hovered}>
+					<Text isCategory={isCategory} hovered={wrapperHovered}>
 						{channel.name}
 					</Text>
 				</div>
@@ -107,14 +110,37 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 						}}
 					>
 						<FloatingTrigger>
-							<span>
+							<span
+								onMouseOver={() => setCreateChannelHovered(true)}
+								onMouseOut={() => setCreateChannelHovered(false)}
+								onMouseDown={() => setChannelCreateDown(true)}
+								onMouseUp={() => setChannelCreateDown(false)}
+								onClick={() => {
+									if (!channel.guild) {
+										console.warn("No guild found for channel", channel);
+										return;
+									}
+
+									modalController.push({
+										type: "create_channel",
+										guild: channel.guild,
+										category: channel,
+									});
+								}}
+							>
 								<Icon
 									icon="mdiPlus"
 									size="18px"
 									style={{
 										marginLeft: "auto",
 									}}
-									color={hovered ? "var(--text)" : "var(--text-secondary)"}
+									color={
+										createChannelDown
+											? "var(--text-header)"
+											: createChannelHovered
+											? "var(--text)"
+											: "var(--text-secondary)"
+									}
 								/>
 							</span>
 						</FloatingTrigger>
