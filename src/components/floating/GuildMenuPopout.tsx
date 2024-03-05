@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import useLogger from "../../hooks/useLogger";
 
+import React, { useEffect } from "react";
 import { modalController } from "../../controllers/modals";
 import { useAppStore } from "../../stores/AppStore";
+import { Permissions } from "../../utils/Permissions";
 import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "../contextMenus/ContextMenu";
 
 const CustomContextMenu = styled(ContextMenu)`
@@ -10,8 +12,19 @@ const CustomContextMenu = styled(ContextMenu)`
 `;
 
 function GuildMenuPopout() {
-	const { activeGuild } = useAppStore();
+	const { activeGuild, account } = useAppStore();
 	const logger = useLogger("GuildMenuPopout");
+
+	const [hasCreateChannelPermission, setHasCreateChannelPermission] = React.useState(false);
+
+	useEffect(() => {
+		if (!activeGuild) return;
+
+		const permission = Permissions.getPermission(account!.id, activeGuild, undefined);
+		const hasPermission = permission.has("MANAGE_CHANNELS");
+		setHasCreateChannelPermission(hasPermission);
+	}, [activeGuild]);
+
 	if (!activeGuild) {
 		logger.error("activeGuild is undefined");
 		return null;
@@ -36,12 +49,16 @@ function GuildMenuPopout() {
 			<ContextMenuButton icon="mdiCog" disabled>
 				Server Settings
 			</ContextMenuButton>
-			<ContextMenuButton icon="mdiPlusCircle" onClick={onChannelCreateClick}>
-				Create Channel
-			</ContextMenuButton>
-			<ContextMenuButton icon="mdiFolderPlus" disabled>
-				Create Category
-			</ContextMenuButton>
+			{hasCreateChannelPermission && (
+				<>
+					<ContextMenuButton icon="mdiPlusCircle" onClick={onChannelCreateClick}>
+						Create Channel
+					</ContextMenuButton>
+					<ContextMenuButton icon="mdiFolderPlus" disabled>
+						Create Category
+					</ContextMenuButton>
+				</>
+			)}
 			<ContextMenuDivider />
 			<ContextMenuButton icon="mdiBell" disabled>
 				Notification Settings

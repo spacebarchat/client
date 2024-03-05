@@ -1,9 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { modalController } from "../../controllers/modals";
+import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
+import { Permissions } from "../../utils/Permissions";
 import Icon from "../Icon";
 import Floating from "../floating/Floating";
 import FloatingTrigger from "../floating/FloatingTrigger";
@@ -43,12 +45,22 @@ interface Props {
 }
 
 function ChannelListItem({ channel, isCategory, active }: Props) {
+	const app = useAppStore();
 	const navigate = useNavigate();
 	const contextMenu = useContext(ContextMenuContext);
 
 	const [wrapperHovered, setWrapperHovered] = React.useState(false);
 	const [createChannelHovered, setCreateChannelHovered] = React.useState(false);
 	const [createChannelDown, setChannelCreateDown] = React.useState(false);
+	const [hasCreateChannelPermission, setHasCreateChannelPermission] = React.useState(false);
+
+	useEffect(() => {
+		if (!isCategory) return;
+
+		const permission = Permissions.getPermission(app.account!.id, channel.guild, channel);
+		const hasPermission = permission.has("MANAGE_CHANNELS");
+		setHasCreateChannelPermission(hasPermission);
+	}, [channel]);
 
 	return (
 		<ListItem
@@ -100,7 +112,7 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 						{channel.name}
 					</Text>
 				</div>
-				{isCategory && (
+				{isCategory && hasCreateChannelPermission && (
 					<Floating
 						placement="top"
 						type="tooltip"
