@@ -10,14 +10,10 @@ const Container = styled.div`
 	flex: 1;
 `;
 
-export function EmptyChannelList() {
-	return <Container></Container>;
-}
-
 function ChannelList() {
 	const app = useAppStore();
 
-	if (!app.activeGuild || !app.activeChannel) return null;
+	if (!app.activeGuild || !app.activeChannel) return <Container />;
 	const { channels } = app.activeGuild;
 
 	const rowRenderer = ({ index, key, style }: ListRowProps) => {
