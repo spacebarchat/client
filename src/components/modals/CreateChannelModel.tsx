@@ -296,7 +296,7 @@ export function CreateChannelModel({ guild, category, ...props }: ModalProps<"cr
 							<Input
 								{...nameProps}
 								onChange={(e) => {
-									e.target.value = e.target.value.replace(" ", "-");
+									e.target.value = e.target.value.replace(" ", "-").toLowerCase();
 									nameProps.onChange(e);
 								}}
 								disableFocusRing
