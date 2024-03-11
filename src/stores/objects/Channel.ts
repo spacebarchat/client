@@ -177,7 +177,8 @@ export default class Channel {
 				opts = { ...opts, around };
 			}
 
-			this.logger.info(`Fetching initial messages for ${this.id}`);
+			if (isInitial) this.logger.info(`Fetching initial messages for ${this.id}`);
+			else this.logger.info(`Fetching messages for ${this.id} before ${before}`);
 			app.rest
 				.get<RESTGetAPIChannelMessagesResult | APIError>(Routes.channelMessages(this.id), opts)
 				.then((res) => {

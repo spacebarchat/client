@@ -138,7 +138,7 @@ const customRenderer: Partial<ReactRenderer> = {
 			content[0].length === 1 &&
 			typeof content[0][0] === "string"
 		) {
-			return <p>{content}</p>;
+			return <span>{content}</span>;
 		}
 
 		return <>{content}</>;

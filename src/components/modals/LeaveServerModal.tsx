@@ -17,8 +17,8 @@ export function LeaveServerModal({ target, ...props }: ModalProps<"leave_server"
 		await app.rest
 			.delete(Routes.userGuild(target.id))
 			.then(() => {
-				modalController.pop("close");
 				navigate("/channels/@me");
+				modalController.pop("close");
 			})
 			.catch((e) => {
 				logger.error(e);
