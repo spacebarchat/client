@@ -1,5 +1,9 @@
 import type { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
 import {
+	ChannelType,
+	RESTPutAPIGuildBanJSONBody,
+	RESTPutAPIGuildBanResult,
+	Routes,
 	type APIChannel,
 	type APIGuild,
 	type GatewayGuild,
@@ -143,7 +147,17 @@ export default class Guild {
 
 	@computed
 	get channels() {
-		const guildChannels = this.app.channels.all.filter((channel) => this.channels_.has(channel.id));
+		let guildChannels = this.app.channels.all.filter((channel) => this.channels_.has(channel.id));
+		guildChannels = guildChannels.filter((channel) => {
+			if (channel.type === ChannelType.GuildCategory) {
+				// check if any children are visible
+				return guildChannels.some(
+					(child) => child.parentId === channel.id && child.hasPermission("VIEW_CHANNEL"),
+				);
+			}
+
+			return channel.hasPermission("VIEW_CHANNEL");
+		});
 		const topLevelChannels = guildChannels.filter((channel) => !channel.parentId);
 		const sortedChannels = topLevelChannels
 			.sort(compareChannels)
@@ -166,8 +180,42 @@ export default class Guild {
 	}
 
 	@action
+	updateChannel(data: APIChannel) {
+		this.app.channels.update(data);
+	}
+
+	@action
 	removeChannel(id: Snowflake) {
 		this.app.channels.remove(id);
 		this.channels_.delete(id);
+	}
+
+	@action
+	async kickMember(id: Snowflake, reason?: string) {
+		return this.app.rest.delete(
+			Routes.guildMember(this.id, id),
+			{},
+			reason
+				? {
+						"X-Audit-Log-Reason": reason,
+				  }
+				: {},
+		);
+	}
+
+	@action
+	async banMember(id: Snowflake, reason?: string, deleteMessageSeconds?: number) {
+		return this.app.rest.put<RESTPutAPIGuildBanJSONBody, RESTPutAPIGuildBanResult>(
+			Routes.guildBan(this.id, id),
+			{
+				delete_message_seconds: deleteMessageSeconds,
+			},
+			{},
+			reason
+				? {
+						"X-Audit-Log-Reason": reason,
+				  }
+				: {},
+		);
 	}
 }

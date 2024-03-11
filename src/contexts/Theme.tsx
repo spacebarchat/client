@@ -6,10 +6,13 @@ import { rgbToHsl } from "../utils/Utils";
 const font: ThemeFont["font"] = {
 	weight: {
 		thin: 100,
+		// extraLight: 200,
 		light: 300,
 		regular: 400,
 		medium: 500,
+		// semiBold: 600,
 		bold: 700,
+		// extraBold: 800,
 		black: 900,
 	},
 	family: "Roboto, Arial, Helvetica, sans-serif",
@@ -56,7 +59,10 @@ export type ThemeVariables =
 	| "warningContrastText"
 	| "interactive"
 	| "scrollbarTrack"
-	| "scrollbarThumb";
+	| "scrollbarThumb"
+	| "statusIdle"
+	| "statusOffline"
+	| "accent";
 
 export type Overrides = {
 	[variable in ThemeVariables]: string;
@@ -66,10 +72,13 @@ export type ThemeFont = {
 	font: {
 		weight: {
 			thin?: number;
+			extraLight?: number;
 			light?: number;
 			regular?: number;
 			medium?: number;
+			semiBold?: number;
 			bold?: number;
+			extraBold?: number;
 			black?: number;
 		};
 		family: string;
@@ -102,13 +111,14 @@ export const ThemePresets: Record<string, Theme> = {
 		inputBackground: "#757575",
 		error: "#e83f36",
 		divider: "#3c3c3c",
-		primary: "",
-		primaryLight: "",
-		primaryDark: "",
-		primaryContrastText: "",
-		secondary: "",
-		secondaryLight: "",
-		secondaryDark: "",
+		primary: "#0185ff",
+		primaryLight: "#339dff",
+		primaryDark: "#005db2",
+		primaryContrastText: "#ffffff",
+		accent: "#000115",
+		secondary: "#4e4e4e",
+		secondaryLight: "#ff9633",
+		secondaryDark: "#b25e00",
 		secondaryContrastText: "",
 		danger: "",
 		dangerLight: "",
@@ -125,6 +135,8 @@ export const ThemePresets: Record<string, Theme> = {
 		scrollbarTrack: "",
 		scrollbarThumb: "",
 		interactive: "",
+		statusIdle: "#ff7c01",
+		statusOffline: "#5d5d5d",
 		font: font,
 	},
 	dark: {
@@ -149,9 +161,10 @@ export const ThemePresets: Record<string, Theme> = {
 		primaryLight: "#339dff",
 		primaryDark: "#005db2",
 		primaryContrastText: "#ffffff",
-		secondary: "#ff7c01",
+		accent: "#000115",
+		secondary: "#4e4e4e",
 		secondaryLight: "#ff9633",
-		secondaryDark: "#b25600",
+		secondaryDark: "#b25e00",
 		secondaryContrastText: "#040404",
 		danger: "#ff3a3b",
 		dangerLight: "#ff6162",
@@ -168,6 +181,8 @@ export const ThemePresets: Record<string, Theme> = {
 		scrollbarTrack: "#232323",
 		scrollbarThumb: "#171717",
 		interactive: "#424242",
+		statusIdle: "#ff7c01",
+		statusOffline: "#5d5d5d",
 		font: font,
 	},
 };

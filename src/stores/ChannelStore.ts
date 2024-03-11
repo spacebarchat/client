@@ -17,6 +17,16 @@ export default class ChannelStore {
 	}
 
 	@action
+	update(channel: APIChannel) {
+		const existing = this.channels.get(channel.id);
+		if (existing) {
+			existing.update(channel);
+		} else {
+			this.add(channel);
+		}
+	}
+
+	@action
 	addAll(channels: APIChannel[]) {
 		channels.forEach((channel) => this.add(channel));
 	}
@@ -42,5 +52,9 @@ export default class ChannelStore {
 
 	sortPosition(channels: Channel[]) {
 		return channels.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
+	}
+
+	has(id: string) {
+		return this.channels.has(id);
 	}
 }

@@ -1,4 +1,4 @@
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import LoadingPage from "../pages/LoadingPage";

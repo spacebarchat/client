@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 import Icon from "./Icon";
 
@@ -35,7 +35,7 @@ const Item = styled.span`
 
 interface Props {
 	name: string;
-	items: string[];
+	items: ReactNode[];
 }
 
 function ListSection(props: Props) {
@@ -49,9 +49,10 @@ function ListSection(props: Props) {
 				{props.name}
 			</Title>
 			<Wrapper open={open}>
-				{props.items.map((item, i) => (
+				{/* {props.items.map((item, i) => (
 					<Item key={i}>{item}</Item>
-				))}
+				))} */}
+				{...props.items}
 			</Wrapper>
 		</Container>
 	);

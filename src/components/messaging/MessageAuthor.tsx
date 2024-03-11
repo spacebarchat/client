@@ -1,12 +1,14 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
-import { PopoutContext } from "../../contexts/PopoutContext";
+import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
+import Guild from "../../stores/objects/Guild";
+import GuildMember from "../../stores/objects/GuildMember";
 import { MessageLike } from "../../stores/objects/Message";
-import ContextMenus from "../../utils/ContextMenus";
-import UserProfilePopout from "../UserProfilePopout";
+import Floating from "../floating/Floating";
+import FloatingTrigger from "../floating/FloatingTrigger";
 
 const Container = styled.div`
 	font-size: 16px;
@@ -21,57 +23,59 @@ const Container = styled.div`
 
 interface Props {
 	message: MessageLike;
+	guild?: Guild;
 }
 
-function MessageAuthor({ message }: Props) {
+function MessageAuthor({ message, guild }: Props) {
 	const app = useAppStore();
-	const contextMenu = React.useContext(ContextMenuContext);
-	const popoutContext = React.useContext(PopoutContext);
+	const logger = useLogger("MessageAuthor");
+	const contextMenu = useContext(ContextMenuContext);
 	const [color, setColor] = React.useState<string | undefined>(undefined);
-	const ref = React.useRef<HTMLDivElement>(null);
+	const [eventData, setEventData] = React.useState<React.MouseEvent<HTMLDivElement, MouseEvent> | undefined>();
+	const [member, setMember] = React.useState<GuildMember | undefined>(undefined);
+	const { members } = guild || {};
 
 	React.useEffect(() => {
-		if ("guild_id" in message && message.guild_id) {
-			const guild = app.guilds.get(message.guild_id);
-			if (!guild) return;
-			const member = guild.members.get(message.author.id);
-			if (!member) return;
-			const highestRole = member.roles.reduce((prev, role) => {
-				if (role.position > prev.position) return role;
-				return prev;
-			}, member.roles[0]);
-			if (highestRole?.color === "#000000") return; // TODO: why the fk do we use black as the default color???
-			setColor(highestRole?.color);
-		}
-	}, [message]);
+		if (!eventData) return;
+		contextMenu.onContextMenu(eventData, { type: "user", user: message.author, member });
+	}, [eventData, member]);
 
-	const openPopout = (e: React.MouseEvent) => {
+	const onContextMenu = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		e.preventDefault();
 		e.stopPropagation();
 
-		if (!ref.current) return;
-
-		const rect = ref.current.getBoundingClientRect();
-		if (!rect) return;
-
-		popoutContext.open({
-			element: <UserProfilePopout user={message.author} />,
-			position: rect,
-			placement: "right",
-		});
+		setEventData(e);
+		app.guilds.get(message.guild_id!)?.members.resolve(message.author.id).then(setMember);
 	};
 
+	React.useEffect(() => {
+		if (!members) return;
+
+		const member = members.get(message.author.id);
+		if (!member) return;
+		setColor(member.roleColor);
+	}, [message, members]);
+
 	return (
-		<Container
-			ref={ref}
-			style={{
-				color,
+		<Floating
+			placement="right-start"
+			type="userPopout"
+			props={{
+				user: message.author,
 			}}
-			onContextMenu={(e) => contextMenu.open2(e, [...ContextMenus.User(message.author)])}
-			onClick={openPopout}
 		>
-			{message.author.username}
-		</Container>
+			<FloatingTrigger>
+				<Container
+					style={{
+						color,
+					}}
+					ref={contextMenu.setReferenceElement}
+					onContextMenu={onContextMenu}
+				>
+					{message.author.username}
+				</Container>
+			</FloatingTrigger>
+		</Floating>
 	);
 }
 

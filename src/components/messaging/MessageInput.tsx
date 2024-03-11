@@ -1,18 +1,17 @@
 import Channel from "../../stores/objects/Channel";
 
-import { useModals } from "@mattjennings/react-modal-stack";
 import { ChannelType, MessageType, RESTPostAPIChannelMessageJSONBody } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import styled from "styled-components";
+
+import { modalController } from "../../controllers/modals";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import Guild from "../../stores/objects/Guild";
 import Snowflake from "../../utils/Snowflake";
 import { MAX_ATTACHMENTS } from "../../utils/constants";
 import { debounce } from "../../utils/debounce";
-import { isTouchscreenDevice } from "../../utils/isTouchscreenDevice";
-import ErrorModal from "../modals/ErrorModal";
 import MessageTextArea from "./MessageTextArea";
 import AttachmentUpload from "./attachments/AttachmentUpload";
 import AttachmentUploadList from "./attachments/AttachmentUploadPreview";
@@ -60,7 +59,6 @@ function MessageInput({ channel }: Props) {
 	const logger = useLogger("MessageInput");
 	const [content, setContent] = React.useState("");
 	const [attachments, setAttachments] = React.useState<File[]>([]);
-	const { openModal } = useModals();
 
 	/**
 	 * Debounced stopTyping
@@ -139,7 +137,7 @@ function MessageInput({ channel }: Props) {
 
 		// TODO: handle editing last message
 
-		if (!e.shiftKey && e.key === "Enter" && !isTouchscreenDevice) {
+		if (!e.shiftKey && e.key === "Enter") {
 			e.preventDefault();
 			return sendMessage();
 		}
@@ -161,13 +159,10 @@ function MessageInput({ channel }: Props) {
 	const appendAttachment = (files: File[]) => {
 		if (files.length === 0) return;
 		if (files.length > MAX_ATTACHMENTS || attachments.length + files.length > MAX_ATTACHMENTS) {
-			openModal(ErrorModal, {
+			modalController.push({
+				type: "error",
 				title: "Too many attachments",
-				message: (
-					<div style={{ justifyContent: "center", display: "flex" }}>
-						You can only attach {MAX_ATTACHMENTS} files at once.
-					</div>
-				),
+				error: `You can only attach ${MAX_ATTACHMENTS} files at once.`,
 			});
 			return;
 		}
@@ -202,7 +197,7 @@ function MessageInput({ channel }: Props) {
 										channel.type === ChannelType.DM
 											? channel.recipients?.[0].username
 											: "#" + channel.name
-								  }`
+									}`
 								: "You do not have permission to send messages in this channel."
 						}
 						disabled={!channel.hasPermission("SEND_MESSAGES")}

@@ -1,3 +1,4 @@
+import { PresenceUpdateStatus } from "@spacebarchat/spacebar-api-types/v9";
 import { computed, makeAutoObservable } from "mobx";
 import type { Theme } from "../contexts/Theme";
 import { ThemePresets } from "../contexts/Theme";
@@ -20,5 +21,20 @@ export default class ThemeStore {
 		const variables = this.getVariables();
 
 		return variables as unknown as Theme;
+	}
+
+	@computed
+	getStatusColor(status?: PresenceUpdateStatus) {
+		switch (status) {
+			case PresenceUpdateStatus.Online:
+				return ThemePresets["dark"].successLight;
+			case PresenceUpdateStatus.Idle:
+				return ThemePresets["dark"].statusIdle;
+			case PresenceUpdateStatus.DoNotDisturb:
+				return ThemePresets["dark"].dangerLight;
+			case PresenceUpdateStatus.Offline:
+			default:
+				return ThemePresets["dark"].statusOffline;
+		}
 	}
 }

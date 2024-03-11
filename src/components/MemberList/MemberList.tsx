@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { useAppStore } from "../../stores/AppStore";
 import GuildMemberListStore from "../../stores/GuildMemberListStore";
 import ListSection from "../ListSection";
+import MemberListItem from "./MemberListItem";
 
 const Container = styled.div`
 	display: flex;
@@ -16,13 +17,6 @@ const Container = styled.div`
 	@media (max-width: 1050px) {
 		display: none;
 	}
-`;
-
-const Wrapper = styled.aside`
-	justify-content: center;
-	min-width: 240px;
-	max-height: 100%;
-	display: flex;
 `;
 
 const List = styled.ul`
@@ -61,11 +55,11 @@ function MemberList() {
 							<ListSection
 								key={i}
 								name={category.name}
-								items={
-									category.items.map((x) => x.nick ?? x.user?.username).filter((x) => x) as string[]
-								}
+								items={category.items.map((x) => (
+									<MemberListItem item={x} />
+								))}
 							/>
-					  ))
+						))
 					: null}
 			</List>
 		</Container>

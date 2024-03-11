@@ -2,6 +2,8 @@
 // https://github.com/revoltchat/revite/blob/master/src/components/common/messaging/embed/Embed.tsx
 
 import { APIEmbed, EmbedType } from "@spacebarchat/spacebar-api-types/v9";
+import { modalController } from "../../controllers/modals";
+import Icon from "../Icon";
 import styles from "./Embed.module.css";
 
 interface Props {
@@ -30,7 +32,7 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 
 			return (
 				<iframe
-					style={{ borderRadius: "12px", width: "400px", height: "80px" }}
+					style={{ width: "400px", height: "80px", borderRadius: 12 }}
 					src={`https://open.spotify.com/embed/${type}/${id}`}
 					frameBorder="0"
 					allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
@@ -92,15 +94,31 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 				const url = embed.video.url;
 
 				return (
-					<video
-						className={styles.embedImage}
-						style={{ width, height }}
-						src={url}
-						loop={embed.type === EmbedType.GIFV}
-						controls={embed.type === EmbedType.GIFV}
-						autoPlay={embed.type === EmbedType.GIFV}
-						muted={embed.type === EmbedType.GIFV ? true : undefined}
-					/>
+					<div>
+						<video
+							className={styles.embedImage}
+							style={{ width, height }}
+							src={url}
+							loop={embed.type === EmbedType.GIFV}
+							controls={embed.type !== EmbedType.GIFV}
+							autoPlay={embed.type === EmbedType.GIFV}
+							muted={embed.type === EmbedType.GIFV ? true : undefined}
+							onClick={() => {
+								modalController.push({
+									type: "image_viewer",
+									attachment: embed.video!,
+									isVideo: true,
+								});
+							}}
+						/>
+
+						{embed.type === EmbedType.GIFV && (
+							<div>
+								<div className={styles.embedGifIconBg}></div>
+								<Icon icon="mdiFileGifBox" size={1} className={styles.embedGifIcon} />
+							</div>
+						)}
+					</div>
 				);
 			} else if (embed.image && !thumbnail) {
 				const url = embed.image.url;
@@ -112,9 +130,11 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 						loading="lazy"
 						style={{ width: "100%", height: "100%" }}
 						onClick={() => {
-							console.log("preview image");
+							modalController.push({
+								type: "image_viewer",
+								attachment: embed.image!,
+							});
 						}}
-						onMouseDown={(ev) => ev.button === 1 && window.open(url, "_blank")}
 					/>
 				);
 			} else if (embed.thumbnail) {
@@ -127,9 +147,11 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 						loading="lazy"
 						style={{ width, height }}
 						onClick={() => {
-							console.log("preview image");
+							modalController.push({
+								type: "image_viewer",
+								attachment: embed.thumbnail!,
+							});
 						}}
-						onMouseDown={(ev) => ev.button === 1 && window.open(url, "_blank")}
 					/>
 				);
 			}

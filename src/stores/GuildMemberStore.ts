@@ -1,6 +1,7 @@
 import type { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
-import type { APIGuildMember } from "@spacebarchat/spacebar-api-types/v9";
-import { action, computed, makeObservable, observable, ObservableMap } from "mobx";
+import { type APIGuildMember } from "@spacebarchat/spacebar-api-types/v9";
+import { ObservableMap, action, computed, makeObservable, observable } from "mobx";
+import { APIUserProfile } from "../utils/interfaces/api";
 import AppStore from "./AppStore";
 import Guild from "./objects/Guild";
 import GuildMember from "./objects/GuildMember";
@@ -70,5 +71,17 @@ export default class GuildMemberStore {
 		const meId = this.app.account?.id;
 		if (!meId) return null;
 		return this.members.get(meId);
+	}
+
+	@action
+	async resolve(id: Snowflake, fetch: boolean = false): Promise<GuildMember | undefined> {
+		if (this.has(id) && !fetch) return this.get(id);
+		const profile = await this.app.rest.get<APIUserProfile>(`/users/${id}/profile`, {
+			guild_id: this.guild.id,
+		});
+		if (!profile.guild_member) return undefined;
+		profile.guild_member.user = profile.user;
+
+		return this.add(profile.guild_member);
 	}
 }

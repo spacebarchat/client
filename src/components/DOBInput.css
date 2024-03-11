@@ -7,7 +7,7 @@
 	position: relative;
 	display: block;
 	padding: 10px;
-	background: var(--background-secondary-alt);
+	background: var(--background-secondary);
 	border: none;
 	color: var(--text);
 	outline: none;

@@ -210,6 +210,7 @@ export default class Channel {
 				Routes.channelMessages(this.id),
 				data,
 				undefined,
+				undefined,
 				msg,
 			);
 		return this.app.rest.post<RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult>(
@@ -233,6 +234,22 @@ export default class Channel {
 			this.type === ChannelType.PublicThread ||
 			this.type === ChannelType.GroupDM ||
 			this.type === ChannelType.DM
+		);
+	}
+
+	@computed
+	get isGuildTextChannel() {
+		return (
+			this.type === ChannelType.GuildText ||
+			this.type === ChannelType.GuildVoice ||
+			this.type === ChannelType.GuildStageVoice ||
+			this.type === ChannelType.GuildForum ||
+			this.type === ChannelType.GuildAnnouncement ||
+			this.type === ChannelType.AnnouncementThread ||
+			this.type === ChannelType.Encrypted ||
+			this.type === ChannelType.EncryptedThread ||
+			this.type === ChannelType.PrivateThread ||
+			this.type === ChannelType.PublicThread
 		);
 	}
 

@@ -17,6 +17,16 @@ export default class PrivateChannelStore {
 	}
 
 	@action
+	update(channel: APIChannel) {
+		const existing = this.channels.get(channel.id);
+		if (existing) {
+			existing.update(channel);
+		} else {
+			this.add(channel);
+		}
+	}
+
+	@action
 	addAll(channels: APIChannel[]) {
 		channels.forEach((channel) => this.add(channel));
 	}

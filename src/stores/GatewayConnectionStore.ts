@@ -2,15 +2,20 @@ import {
 	APIGuildMember,
 	APIMessage,
 	ChannelType,
+	GatewayActivity,
 	GatewayChannelCreateDispatchData,
 	GatewayChannelDeleteDispatchData,
+	GatewayChannelUpdateDispatchData,
 	GatewayCloseCodes,
 	GatewayDispatchEvents,
 	GatewayDispatchPayload,
 	GatewayGuild,
 	GatewayGuildCreateDispatchData,
 	GatewayGuildDeleteDispatchData,
+	GatewayGuildMemberAddDispatchData,
 	GatewayGuildMemberListUpdateDispatchData,
+	GatewayGuildMemberRemoveDispatchData,
+	GatewayGuildMemberUpdateDispatchData,
 	GatewayGuildModifyDispatchData,
 	GatewayHeartbeat,
 	GatewayHelloData,
@@ -18,6 +23,7 @@ import {
 	GatewayLazyRequest,
 	GatewayLazyRequestData,
 	GatewayMessageCreateDispatchData,
+	GatewayMessageDeleteBulkDispatchData,
 	GatewayMessageDeleteDispatchData,
 	GatewayMessageUpdateDispatchData,
 	GatewayOpcodes,
@@ -26,6 +32,7 @@ import {
 	GatewayReceivePayload,
 	GatewaySendPayload,
 	GatewayTypingStartDispatchData,
+	GatewayUserUpdateDispatchData,
 	PresenceUpdateStatus,
 	Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
@@ -38,10 +45,23 @@ const GATEWAY_VERSION = "9";
 const GATEWAY_ENCODING = "json";
 const RECONNECT_TIMEOUT = 10000; // start at 10 seconds, doubles each time
 
+interface GatewaySession {
+	active: boolean;
+	activities: GatewayActivity[];
+	client_info: {
+		client?: string;
+		os?: string;
+		version?: number;
+	};
+	session_id: string;
+	status: PresenceUpdateStatus;
+}
+
 export default class GatewayConnectionStore {
 	private readonly logger: Logger = new Logger("GatewayConnectionStore");
 	@observable private socket: WebSocket | null = null;
-	@observable private sessionId: string | null = null;
+	@observable public sessionId: string | null = null;
+	@observable public session: GatewaySession | undefined;
 	@observable public readyState: number = WebSocket.CLOSED;
 
 	private app: AppStore;
@@ -63,6 +83,7 @@ export default class GatewayConnectionStore {
 
 		makeObservable(this);
 	}
+
 	/**
 	 * Starts connection to gateway
 	 */
@@ -114,18 +135,25 @@ export default class GatewayConnectionStore {
 		this.dispatchHandlers.set(GatewayDispatchEvents.GuildCreate, this.onGuildCreate);
 		this.dispatchHandlers.set(GatewayDispatchEvents.GuildUpdate, this.onGuildUpdate);
 		this.dispatchHandlers.set(GatewayDispatchEvents.GuildDelete, this.onGuildDelete);
+		this.dispatchHandlers.set(GatewayDispatchEvents.GuildMemberAdd, this.onGuildMemberAdd);
+		this.dispatchHandlers.set(GatewayDispatchEvents.GuildMemberRemove, this.onGuildMemberRemove);
+		this.dispatchHandlers.set(GatewayDispatchEvents.GuildMemberUpdate, this.onGuildMemberUpdate);
 		this.dispatchHandlers.set(GatewayDispatchEvents.GuildMemberListUpdate, this.onGuildMemberListUpdate);
 
 		this.dispatchHandlers.set(GatewayDispatchEvents.ChannelCreate, this.onChannelCreate);
+		this.dispatchHandlers.set(GatewayDispatchEvents.ChannelUpdate, this.onChannelUpdate);
 		this.dispatchHandlers.set(GatewayDispatchEvents.ChannelDelete, this.onChannelDelete);
 
 		this.dispatchHandlers.set(GatewayDispatchEvents.MessageCreate, this.onMessageCreate);
 		this.dispatchHandlers.set(GatewayDispatchEvents.MessageUpdate, this.onMessageUpdate);
 		this.dispatchHandlers.set(GatewayDispatchEvents.MessageDelete, this.onMessageDelete);
+		this.dispatchHandlers.set(GatewayDispatchEvents.MessageDeleteBulk, this.onMessageBulkDelete);
 
 		this.dispatchHandlers.set(GatewayDispatchEvents.PresenceUpdate, this.onPresenceUpdate);
 
 		this.dispatchHandlers.set(GatewayDispatchEvents.TypingStart, this.onTypingStart);
+
+		this.dispatchHandlers.set(GatewayDispatchEvents.UserUpdate, this.onUserUpdate);
 	}
 
 	private onopen = () => {
@@ -441,8 +469,9 @@ export default class GatewayConnectionStore {
 	 */
 	private onReady = (data: GatewayReadyDispatchData) => {
 		this.logger.info(`[Ready] took ${Date.now() - this.connectionStartTime!}ms`);
-		const { session_id, guilds, users, user, private_channels } = data;
+		const { session_id, guilds, users, user, private_channels, sessions } = data;
 		this.sessionId = session_id;
+		this.session = (sessions as GatewaySession[]).find((x) => x.session_id === session_id);
 
 		this.app.setUser(user);
 
@@ -462,7 +491,7 @@ export default class GatewayConnectionStore {
 					const guild = this.app.guilds.get(m.guild_id);
 					if (!guild) {
 						this.logger.warn(`[Ready] Guild ${m.guild_id} not found for member ${m.id}`);
-						return;
+						continue;
 					}
 					guild.members.add(m);
 				}
@@ -518,6 +547,36 @@ export default class GatewayConnectionStore {
 		});
 	};
 
+	private onGuildMemberAdd = (data: GatewayGuildMemberAddDispatchData) => {
+		this.logger.debug("Received GuildMemberAdd event");
+		const guild = this.app.guilds.get(data.guild_id);
+		if (!guild) {
+			this.logger.warn(`[GuildMemberAdd] Guild ${data.guild_id} not found for member ${data.user?.id}`);
+			return;
+		}
+		guild.members.add(data);
+	};
+
+	private onGuildMemberRemove = (data: GatewayGuildMemberRemoveDispatchData) => {
+		this.logger.debug("Received GuildMemberRemove event");
+		const guild = this.app.guilds.get(data.guild_id);
+		if (!guild) {
+			this.logger.warn(`[GuildMemberRemove] Guild ${data.guild_id} not found for member ${data.user.id}`);
+			return;
+		}
+		guild.members.remove(data.user.id);
+	};
+
+	private onGuildMemberUpdate = (data: GatewayGuildMemberUpdateDispatchData) => {
+		this.logger.debug("Received GuildMemberUpdate event");
+		const guild = this.app.guilds.get(data.guild_id);
+		if (!guild) {
+			this.logger.warn(`[GuildMemberUpdate] Guild ${data.guild_id} not found for member ${data.user.id}`);
+			return;
+		}
+		guild.members.update(data as APIGuildMember);
+	};
+
 	private onGuildMemberListUpdate = (data: GatewayGuildMemberListUpdateDispatchData) => {
 		this.logger.debug("Received GuildMemberListUpdate event");
 		const { guild_id } = data;
@@ -543,6 +602,20 @@ export default class GatewayConnectionStore {
 			return;
 		}
 		guild.addChannel(data);
+	};
+
+	private onChannelUpdate = (data: GatewayChannelUpdateDispatchData) => {
+		if (data.type === ChannelType.DM || data.type === ChannelType.GroupDM) {
+			this.app.privateChannels.update(data);
+			return;
+		}
+
+		const guild = this.app.guilds.get(data.guild_id!);
+		if (!guild) {
+			this.logger.warn(`[ChannelUpdate] Guild ${data.guild_id} not found for channel ${data.id}`);
+			return;
+		}
+		guild.updateChannel(data);
 	};
 
 	private onChannelDelete = (data: GatewayChannelDeleteDispatchData) => {
@@ -605,8 +678,25 @@ export default class GatewayConnectionStore {
 		channel.messages.remove(data.id);
 	};
 
+	private onMessageBulkDelete = (data: GatewayMessageDeleteBulkDispatchData) => {
+		const guild = this.app.guilds.get(data.guild_id!);
+		if (!guild) {
+			this.logger.warn(`[MessageDeleteBulk] Guild ${data.guild_id} not found.`);
+			return;
+		}
+		const channel = this.app.channels.get(data.channel_id);
+		if (!channel) {
+			this.logger.warn(`[MessageDeleteBulk] Channel ${data.channel_id} not found.`);
+			return;
+		}
+
+		for (const id of data.ids) {
+			channel.messages.remove(id);
+		}
+	};
+
 	private onPresenceUpdate = (data: GatewayPresenceUpdateDispatchData) => {
-		this.app.presences.add(data);
+		this.app.presences.update(data);
 	};
 
 	private onTypingStart = (data: GatewayTypingStartDispatchData) => {
@@ -633,5 +723,9 @@ export default class GatewayConnectionStore {
 			this.logger.debug(`[TypingStart] ${data.user_id} is still typing in ${channel.id}`);
 			channel.typingIds.get(data.user_id)?.();
 		}
+	};
+
+	private onUserUpdate = (data: GatewayUserUpdateDispatchData) => {
+		this.app.users.update(data);
 	};
 }

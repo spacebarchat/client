@@ -1,8 +1,7 @@
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
-import { useAppStore } from "../stores/AppStore";
 import ChannelHeader from "./ChannelHeader";
-import ChannelList, { EmptyChannelList } from "./ChannelList/ChannelList";
+import ChannelList from "./ChannelList/ChannelList";
 import Container from "./Container";
 import UserPanel from "./UserPanel";
 
@@ -18,13 +17,11 @@ const Wrapper = styled(Container)`
 `;
 
 function ChannelSidebar() {
-	const app = useAppStore();
-
 	return (
 		<Wrapper>
 			{/* TODO: replace with dm search if no guild */}
 			<ChannelHeader />
-			{app.activeGuild ? <ChannelList /> : <EmptyChannelList />}
+			<ChannelList />
 			<UserPanel />
 		</Wrapper>
 	);

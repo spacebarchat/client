@@ -6,24 +6,22 @@ import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 import Icon from "../Icon";
 import { SectionHeader } from "../SectionHeader";
-import Tooltip from "../Tooltip";
+import Floating from "../floating/Floating";
+import FloatingTrigger from "../floating/FloatingTrigger";
 
 const IconButton = styled.button`
 	margin: 0;
 	padding: 0;
 	background-color: inherit;
 	border: none;
-
-	&:hover {
-		color: red;
-	}
 `;
 
 const CustomIcon = styled(Icon)<{ $active?: boolean }>`
-	color: ${(props) => (props.$active ? "#ffffff" : "var(--text-secondary)")};
+	color: ${(props) => (props.$active ? "var(--text)" : "var(--text-secondary)")};
 
 	&:hover {
-		color: var(--text);
+		color: ${(props) => (props.$active ? "var(--text-secondary)" : "var(--text)")};
+		cursor: pointer;
 	}
 `;
 
@@ -114,19 +112,35 @@ interface ActionItemProps {
 	ariaLabel?: string;
 	tooltip: string;
 	onClick?: () => void;
+	disabled?: boolean;
+	color?: string;
 }
 
-function ActionItem({ icon, active, ariaLabel, tooltip, onClick }: ActionItemProps) {
+function ActionItem({ icon, active, ariaLabel, tooltip, disabled, color, onClick }: ActionItemProps) {
 	const logger = useLogger("ChatHeader.tsx:ActionItem");
 
 	return (
-		<Tooltip title={tooltip}>
-			<IconWrapper>
-				<IconButton onClick={onClick}>
-					<CustomIcon $active={active} icon={icon} size="24px" aria-label={ariaLabel} />
-				</IconButton>
-			</IconWrapper>
-		</Tooltip>
+		<Floating
+			placement="bottom"
+			type="tooltip"
+			props={{
+				content: <span>{tooltip}</span>,
+			}}
+		>
+			<FloatingTrigger>
+				<IconWrapper>
+					<IconButton onClick={onClick}>
+						<CustomIcon
+							$active={!disabled && active}
+							icon={icon}
+							size="24px"
+							aria-label={ariaLabel}
+							color={color}
+						/>
+					</IconButton>
+				</IconWrapper>
+			</FloatingTrigger>
+		</Floating>
 	);
 }
 
@@ -134,7 +148,7 @@ function ActionItem({ icon, active, ariaLabel, tooltip, onClick }: ActionItemPro
  * Top header for channel messages section
  */
 function ChatHeader({ channel }: Props) {
-	const { memberListVisible, toggleMemberList } = useAppStore();
+	const { memberListVisible, toggleMemberList, updaterStore } = useAppStore();
 
 	return (
 		<Container>
@@ -144,6 +158,36 @@ function ChatHeader({ channel }: Props) {
 				<ChannelTopic channel={channel} />
 				{/* Action Items */}
 				<ActionItemsWrapper>
+					{updaterStore?.checkingForUpdates && (
+						<ActionItem
+							icon="mdiCloudSync"
+							tooltip="Checking for Updates"
+							ariaLabel="Checking for Updates"
+							disabled
+						/>
+					)}
+					{updaterStore?.updateAvailable && (
+						<ActionItem icon="mdiUpdate" tooltip="Update Available" ariaLabel="Upate Available" disabled />
+					)}
+					{updaterStore?.updateDownloading && (
+						<ActionItem
+							icon="mdiCloudDownload"
+							tooltip="Downloading Update"
+							ariaLabel="Downloading Update"
+							disabled
+						/>
+					)}
+					{updaterStore?.updateDownloaded && (
+						<ActionItem
+							icon="mdiDownload"
+							tooltip="Update Ready!"
+							ariaLabel="Update Ready!"
+							color="var(--success)"
+							onClick={() => {
+								updaterStore.quitAndInstall();
+							}}
+						/>
+					)}
 					{/* <ActionItem icon="mdiPound" ariaLabel="Threads" /> */}
 					<DummySearch>
 						<span>Search</span>

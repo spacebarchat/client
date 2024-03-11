@@ -63,6 +63,12 @@ export default class GuildMemberListStore {
 								data: [],
 							});
 						} else {
+							// handle presence
+							this.app.presences.add({
+								...item.member.presence,
+								guild_id: this.guild.id,
+							});
+
 							const member = this.guild.members.get(item.member.id);
 							if (member) {
 								listData[listData.length - 1].data.push({

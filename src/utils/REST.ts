@@ -90,7 +90,16 @@ export default class REST {
 				method: "GET",
 				headers: this.headers,
 			})
-				.then((res) => res.json())
+				.then(async (res) => {
+					if (res.headers.get("content-length") !== "0") {
+						if (res.headers.get("content-type")?.includes("application/json")) {
+							if (!res.ok) return reject(await res.json());
+							return res.json();
+						}
+						if (!res.ok) return reject(res.json());
+						return res.text();
+					}
+				})
 				.then(resolve)
 				.catch(reject);
 		});
@@ -101,6 +110,7 @@ export default class REST {
 		body?: T,
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		queryParams: Record<string, any> = {},
+		headers: Record<string, string> = {},
 	): Promise<U> {
 		return new Promise((resolve, reject) => {
 			const url = REST.makeAPIUrl(path, queryParams);
@@ -108,6 +118,48 @@ export default class REST {
 			return fetch(url, {
 				method: "POST",
 				headers: {
+					...headers,
+					...this.headers,
+					"Content-Type": "application/json",
+				},
+				body: body ? JSON.stringify(body) : undefined,
+			})
+				.then(async (res) => {
+					// handle json if content type is json
+					if (res.headers.get("content-type")?.includes("application/json")) {
+						const data = await res.json();
+						if (res.ok) return resolve(data);
+						else return reject(data);
+					}
+
+					// if theres content, handle text
+					if (res.headers.get("content-length") !== "0") {
+						const data = await res.text();
+						if (res.ok) return resolve(data as U);
+						else return reject(data as U);
+					}
+
+					if (res.ok) return resolve(res.status as U);
+					else return reject(res.statusText);
+				})
+				.catch(reject);
+		});
+	}
+
+	public async put<T, U>(
+		path: string,
+		body?: T,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		queryParams: Record<string, any> = {},
+		headers: Record<string, string> = {},
+	): Promise<U> {
+		return new Promise((resolve, reject) => {
+			const url = REST.makeAPIUrl(path, queryParams);
+			this.logger.debug(`PUT ${url}; payload:`, body);
+			return fetch(url, {
+				method: "PUT",
+				headers: {
+					...headers,
 					...this.headers,
 					"Content-Type": "application/json",
 				},
@@ -140,6 +192,7 @@ export default class REST {
 		body: FormData,
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		queryParams: Record<string, any> = {},
+		headers: Record<string, string> = {},
 		msg?: QueuedMessage,
 	): Promise<U> {
 		return new Promise((resolve, reject) => {
@@ -172,7 +225,7 @@ export default class REST {
 			});
 			xhr.open("POST", url);
 			// set headers
-			Object.entries(this.headers).forEach(([key, value]) => {
+			Object.entries({ ...headers, ...this.headers }).forEach(([key, value]) => {
 				xhr.setRequestHeader(key, value);
 			});
 			xhr.send(body);
@@ -183,6 +236,7 @@ export default class REST {
 		path: string,
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		queryParams: Record<string, any> = {},
+		headers: Record<string, string> = {},
 	): Promise<void> {
 		return new Promise((resolve, reject) => {
 			const url = REST.makeAPIUrl(path, queryParams);
@@ -190,7 +244,10 @@ export default class REST {
 			return (
 				fetch(url, {
 					method: "DELETE",
-					headers: this.headers,
+					headers: {
+						...headers,
+						...this.headers,
+					},
 				})
 					// .then((res) => res.json())
 					.then(() => resolve())

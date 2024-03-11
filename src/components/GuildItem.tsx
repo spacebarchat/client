@@ -1,19 +1,18 @@
-import { useModals } from "@mattjennings/react-modal-stack";
 import { CDNRoutes, ChannelType, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ContextMenuContext } from "../contexts/ContextMenuContext";
+import useLogger from "../hooks/useLogger";
 import { useAppStore } from "../stores/AppStore";
 import Guild from "../stores/objects/Guild";
 import { Permissions } from "../utils/Permissions";
 import REST from "../utils/REST";
 import Container from "./Container";
-import { IContextMenuItem } from "./ContextMenuItem";
 import SidebarPill, { PillType } from "./SidebarPill";
-import Tooltip from "./Tooltip";
-import CreateInviteModal from "./modals/CreateInviteModal";
+import Floating from "./floating/Floating";
+import FloatingTrigger from "./floating/FloatingTrigger";
 
 export const GuildSidebarListItem = styled.div`
 	position: relative;
@@ -31,7 +30,9 @@ const Wrapper = styled(Container)<{ active?: boolean; hasImage?: boolean }>`
 	border-radius: ${(props) => (props.active ? "30%" : "50%")};
 	background-color: ${(props) =>
 		props.hasImage ? "transparent" : props.active ? "var(--primary)" : "var(--background-secondary)"};
-	transition: border-radius 0.2s ease, background-color 0.2s ease;
+	transition:
+		border-radius 0.2s ease,
+		background-color 0.2s ease;
 
 	&:hover {
 		border-radius: 30%;
@@ -48,36 +49,13 @@ interface Props {
  * List item for use in the guild sidebar
  */
 function GuildItem({ guild, active }: Props) {
+	const logger = useLogger("GuildItem");
 	const app = useAppStore();
 	const navigate = useNavigate();
-	const { openModal } = useModals();
+	const contextMenu = useContext(ContextMenuContext);
 
 	const [pillType, setPillType] = React.useState<PillType>("none");
 	const [isHovered, setHovered] = React.useState(false);
-
-	const contextMenu = React.useContext(ContextMenuContext);
-	const [contextMenuItems, setContextMenuItems] = React.useState<IContextMenuItem[]>([
-		{
-			index: 1,
-			label: "Copy Guild ID",
-			onClick: () => {
-				navigator.clipboard.writeText(guild.id);
-			},
-			iconProps: {
-				icon: "mdiIdentifier",
-			},
-		},
-		{
-			index: 0,
-			label: "Create Invite",
-			onClick: () => {
-				openModal(CreateInviteModal, { guild_id: guild.id });
-			},
-			iconProps: {
-				icon: "mdiAccountPlus",
-			},
-		},
-	]);
 
 	React.useEffect(() => {
 		if (app.activeChannelId && app.activeGuildId === guild.id) return setPillType("active");
@@ -95,36 +73,48 @@ function GuildItem({ guild, active }: Props) {
 	};
 
 	return (
-		<GuildSidebarListItem onContextMenu={(e) => contextMenu.open2(e, contextMenuItems)}>
+		<GuildSidebarListItem
+			ref={contextMenu.setReferenceElement}
+			onContextMenu={(e) => contextMenu.onContextMenu(e, { type: "guild", guild })}
+		>
 			<SidebarPill type={pillType} />
-			<Tooltip title={guild.name} placement="right">
-				<Wrapper
-					onClick={doNavigate}
-					active={active}
-					hasImage={!!guild?.icon}
-					onMouseEnter={() => setHovered(true)}
-					onMouseLeave={() => setHovered(false)}
-				>
-					{guild.icon ? (
-						<img
-							src={REST.makeCDNUrl(CDNRoutes.guildIcon(guild.id, guild?.icon, ImageFormat.PNG))}
-							width={48}
-							height={48}
-							loading="lazy"
-						/>
-					) : (
-						<span
-							style={{
-								fontSize: "18px",
-								fontWeight: "bold",
-								cursor: "pointer",
-							}}
-						>
-							{guild?.acronym}
-						</span>
-					)}
-				</Wrapper>
-			</Tooltip>
+			<Floating
+				placement="right"
+				type="tooltip"
+				offset={20}
+				props={{
+					content: <span>{guild.name}</span>,
+				}}
+			>
+				<FloatingTrigger>
+					<Wrapper
+						onClick={doNavigate}
+						active={active}
+						hasImage={!!guild?.icon}
+						onMouseEnter={() => setHovered(true)}
+						onMouseLeave={() => setHovered(false)}
+					>
+						{guild.icon ? (
+							<img
+								src={REST.makeCDNUrl(CDNRoutes.guildIcon(guild.id, guild?.icon, ImageFormat.PNG))}
+								width={48}
+								height={48}
+								loading="lazy"
+							/>
+						) : (
+							<span
+								style={{
+									fontSize: "18px",
+									fontWeight: "bold",
+									cursor: "pointer",
+								}}
+							>
+								{guild?.acronym}
+							</span>
+						)}
+					</Wrapper>
+				</FloatingTrigger>
+			</Floating>
 		</GuildSidebarListItem>
 	);
 }

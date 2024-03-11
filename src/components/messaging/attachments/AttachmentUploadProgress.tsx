@@ -7,7 +7,6 @@ import Icon from "../../Icon";
 import IconButton from "../../IconButton";
 
 const Container = styled.div`
-	max-width: 25%;
 	width: 100%;
 	border: 1px solid transparent;
 	padding: 10px;

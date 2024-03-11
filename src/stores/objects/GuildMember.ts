@@ -3,7 +3,8 @@ import {
 	GatewayGuildMemberListUpdateMember,
 	GuildMemberFlags,
 } from "@spacebarchat/spacebar-api-types/v9";
-import { action, observable } from "mobx";
+import { action, computed, observable } from "mobx";
+import { PermissionResolvable, Permissions } from "../../utils/Permissions";
 import AppStore from "../AppStore";
 import Guild from "./Guild";
 import Role from "./Role";
@@ -42,20 +43,35 @@ export default class GuildMember {
 		this.flags = data.flags;
 		this.pending = data.pending;
 		this.communication_disabled_until = data.communication_disabled_until;
+	}
 
-		if ("presence" in data) {
-			// TODO:
-			this.app.presences.add(data.presence);
-		}
+	@computed
+	get roleColor() {
+		const highestRole = this.roles.reduce((prev, role) => {
+			if (role.position > prev.position) return role;
+			return prev;
+		}, this.roles[0]);
+		if (highestRole?.color === "#000000") return; // TODO: why the fk do we use black as the default color???
+		return highestRole?.color;
 	}
 
 	@action
 	update(member: APIGuildMember | GatewayGuildMemberListUpdateMember) {
 		Object.assign(this, member);
+	}
 
-		if ("presence" in member) {
-			// TODO:
-			this.app.presences.add(member.presence);
-		}
+	@action
+	async kick(reason?: string) {
+		return this.guild.kickMember(this.user!.id, reason);
+	}
+
+	@action
+	async ban(reason?: string, deleteMessageSeconds?: number) {
+		return this.guild.banMember(this.user!.id, reason, deleteMessageSeconds);
+	}
+
+	hasPermission(permission: PermissionResolvable) {
+		const permissions = Permissions.getPermission(this.app.account!.id, this.guild);
+		return permissions.has(permission);
 	}
 }

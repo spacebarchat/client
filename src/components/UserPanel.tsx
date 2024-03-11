@@ -1,11 +1,12 @@
-import { useModals } from "@mattjennings/react-modal-stack";
 import styled from "styled-components";
+import { modalController } from "../controllers/modals";
 import { useAppStore } from "../stores/AppStore";
+import User from "../stores/objects/User";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
 import IconButton from "./IconButton";
-import Tooltip from "./Tooltip";
-import SettingsModal from "./modals/SettingsModal";
+import Floating from "./floating/Floating";
+import FloatingTrigger from "./floating/FloatingTrigger";
 
 const Section = styled.section`
 	flex: 0 0 auto;
@@ -21,13 +22,14 @@ const Container = styled.div`
 	background-color: var(--background-secondary-alt);
 `;
 
-const AvatarWrapper = styled.div`
+const AvatarWrapper = styled(FloatingTrigger)`
 	display: flex;
 	align-items: center;
 	min-width: 120px;
 	padding-left: 2px;
 	margin-right: 8px;
 	border-radius: 4px;
+	cursor: default;
 
 	&:hover {
 		background-color: var(--background-primary-alt);
@@ -45,6 +47,7 @@ const Username = styled.div`
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	cursor: pointer;
 `;
 
 const Subtext = styled.div`
@@ -53,6 +56,7 @@ const Subtext = styled.div`
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	user-select: none;
 `;
 
 const ActionsWrapper = styled.div`
@@ -66,32 +70,50 @@ const ActionsWrapper = styled.div`
 
 function UserPanel() {
 	const app = useAppStore();
-	const { openModal } = useModals();
 
 	const openSettingsModal = () => {
-		openModal(SettingsModal);
+		modalController.push({
+			type: "settings",
+		});
 	};
 
 	return (
-		<Section>
-			<Container>
-				<AvatarWrapper>
-					<Avatar popoutPlacement="top" />
-					<Name>
-						<Username>{app.account?.username}</Username>
-						<Subtext>#{app.account?.discriminator}</Subtext>
-					</Name>
-				</AvatarWrapper>
+		<Floating
+			placement="bottom"
+			type="userPopout"
+			props={{
+				user: app.account! as unknown as User,
+			}}
+		>
+			<Section>
+				<Container>
+					<AvatarWrapper>
+						<Avatar popoutPlacement="top" onClick={null} />
+						<Name>
+							<Username>{app.account?.username}</Username>
+							<Subtext>#{app.account?.discriminator}</Subtext>
+						</Name>
+					</AvatarWrapper>
 
-				<ActionsWrapper>
-					<Tooltip title="Settings">
-						<IconButton aria-label="settings" color="#fff" onClick={openSettingsModal}>
-							<Icon icon="mdiCog" size="20px" />
-						</IconButton>
-					</Tooltip>
-				</ActionsWrapper>
-			</Container>
-		</Section>
+					<ActionsWrapper>
+						<Floating
+							placement="top"
+							type="tooltip"
+							offset={10}
+							props={{
+								content: <span>Settings</span>,
+							}}
+						>
+							<FloatingTrigger>
+								<IconButton aria-label="settings" color="#fff" onClick={openSettingsModal}>
+									<Icon icon="mdiCog" size="20px" />
+								</IconButton>
+							</FloatingTrigger>
+						</Floating>
+					</ActionsWrapper>
+				</Container>
+			</Section>
+		</Floating>
 	);
 }
 

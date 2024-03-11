@@ -1,88 +1,88 @@
 name: app
 options:
-  bundleIdPrefix: chat.spacebar
-  deploymentTarget:
-    iOS: 13.0
+    bundleIdPrefix: chat.spacebar
+    deploymentTarget:
+        iOS: 13.0
 fileGroups: [../../src]
 configs:
-  debug: debug
-  release: release
+    debug: debug
+    release: release
 settingGroups:
-  app:
-    base:
-      PRODUCT_NAME: Spacebar
-      PRODUCT_BUNDLE_IDENTIFIER: chat.spacebar.app
-      DEVELOPMENT_TEAM: 47RXBB8X9K
+    app:
+        base:
+            PRODUCT_NAME: Spacebar
+            PRODUCT_BUNDLE_IDENTIFIER: chat.spacebar.app
+            DEVELOPMENT_TEAM: 47RXBB8X9K
 targetTemplates:
-  app:
-    type: application
-    sources:
-      - path: Sources
-    scheme:
-      environmentVariables:
-        RUST_BACKTRACE: full
-        RUST_LOG: info
-    settings:
-      groups: [app]
+    app:
+        type: application
+        sources:
+            - path: Sources
+        scheme:
+            environmentVariables:
+                RUST_BACKTRACE: full
+                RUST_LOG: info
+        settings:
+            groups: [app]
 targets:
-  app_iOS:
-    type: application
-    platform: iOS
-    sources:
-      - path: Sources
-      - path: Assets.xcassets
-      - path: Externals
-      - path: app_iOS
-      - path: assets
-        buildPhase: resources
-        type: folder
-    info:
-      path: app_iOS/Info.plist
-      properties:
-        LSRequiresIPhoneOS: true
-        UILaunchStoryboardName: LaunchScreen
-        UIRequiredDeviceCapabilities: [arm64, metal]
-        UISupportedInterfaceOrientations:
-          - UIInterfaceOrientationPortrait
-          - UIInterfaceOrientationLandscapeLeft
-          - UIInterfaceOrientationLandscapeRight
-        UISupportedInterfaceOrientations~ipad:
-          - UIInterfaceOrientationPortrait
-          - UIInterfaceOrientationPortraitUpsideDown
-          - UIInterfaceOrientationLandscapeLeft
-          - UIInterfaceOrientationLandscapeRight
-        CFBundleShortVersionString: 0.1.1
-        CFBundleVersion: 0.1.1
-    entitlements:
-      path: app_iOS/app_iOS.entitlements
-    scheme:
-      environmentVariables:
-        RUST_BACKTRACE: full
-        RUST_LOG: info
-    settings:
-      base:
-        ENABLE_BITCODE: false
-        ARCHS: [arm64, x86_64]
-        VALID_ARCHS: arm64  x86_64 
-        LIBRARY_SEARCH_PATHS[arch=x86_64]: $(inherited) $(PROJECT_DIR)/Externals/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME) $(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)
-        LIBRARY_SEARCH_PATHS[arch=arm64]: $(inherited) $(PROJECT_DIR)/Externals/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME) $(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)
-        LIBRARY_SEARCH_PATHS[arch=arm64-sim]: $(inherited) $(PROJECT_DIR)/Externals/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME) $(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)
-        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: true
-      groups: [app]
-    dependencies:
-      - framework: libspacebar.a
-        embed: false
-      - sdk: CoreGraphics.framework
-      - sdk: Metal.framework
-      - sdk: MetalKit.framework
-      - sdk: QuartzCore.framework
-      - sdk: Security.framework
-      - sdk: UIKit.framework
-      - sdk: WebKit.framework
-    preBuildScripts:
-      - script: node /Users/rileyzicafoose/Documents/client/./node_modules/.bin/../@tauri-apps/cli/tauri.js ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths "${FRAMEWORK_SEARCH_PATHS:?}" --header-search-paths "${HEADER_SEARCH_PATHS:?}" --gcc-preprocessor-definitions "${GCC_PREPROCESSOR_DEFINITIONS:-}" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}
-        name: Build Rust Code
-        basedOnDependencyAnalysis: false
-        outputFiles:
-          - $(SRCROOT)/target/aarch64-apple-ios/${CONFIGURATION}/deps/libspacebar.a
-          - $(SRCROOT)/target/x86_64-apple-ios/${CONFIGURATION}/deps/libspacebar.a
+    app_iOS:
+        type: application
+        platform: iOS
+        sources:
+            - path: Sources
+            - path: Assets.xcassets
+            - path: Externals
+            - path: app_iOS
+            - path: assets
+              buildPhase: resources
+              type: folder
+        info:
+            path: app_iOS/Info.plist
+            properties:
+                LSRequiresIPhoneOS: true
+                UILaunchStoryboardName: LaunchScreen
+                UIRequiredDeviceCapabilities: [arm64, metal]
+                UISupportedInterfaceOrientations:
+                    - UIInterfaceOrientationPortrait
+                    - UIInterfaceOrientationLandscapeLeft
+                    - UIInterfaceOrientationLandscapeRight
+                UISupportedInterfaceOrientations~ipad:
+                    - UIInterfaceOrientationPortrait
+                    - UIInterfaceOrientationPortraitUpsideDown
+                    - UIInterfaceOrientationLandscapeLeft
+                    - UIInterfaceOrientationLandscapeRight
+                CFBundleShortVersionString: 0.1.1
+                CFBundleVersion: 0.1.1
+        entitlements:
+            path: app_iOS/app_iOS.entitlements
+        scheme:
+            environmentVariables:
+                RUST_BACKTRACE: full
+                RUST_LOG: info
+        settings:
+            base:
+                ENABLE_BITCODE: false
+                ARCHS: [arm64, x86_64]
+                VALID_ARCHS: arm64  x86_64
+                LIBRARY_SEARCH_PATHS[arch=x86_64]: $(inherited) $(PROJECT_DIR)/Externals/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME) $(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)
+                LIBRARY_SEARCH_PATHS[arch=arm64]: $(inherited) $(PROJECT_DIR)/Externals/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME) $(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)
+                LIBRARY_SEARCH_PATHS[arch=arm64-sim]: $(inherited) $(PROJECT_DIR)/Externals/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME) $(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)
+                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: true
+            groups: [app]
+        dependencies:
+            - framework: libspacebar.a
+              embed: false
+            - sdk: CoreGraphics.framework
+            - sdk: Metal.framework
+            - sdk: MetalKit.framework
+            - sdk: QuartzCore.framework
+            - sdk: Security.framework
+            - sdk: UIKit.framework
+            - sdk: WebKit.framework
+        preBuildScripts:
+            - script: node /Users/rileyzicafoose/Documents/client/./node_modules/.bin/../@tauri-apps/cli/tauri.js ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths "${FRAMEWORK_SEARCH_PATHS:?}" --header-search-paths "${HEADER_SEARCH_PATHS:?}" --gcc-preprocessor-definitions "${GCC_PREPROCESSOR_DEFINITIONS:-}" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}
+              name: Build Rust Code
+              basedOnDependencyAnalysis: false
+              outputFiles:
+                  - $(SRCROOT)/target/aarch64-apple-ios/${CONFIGURATION}/deps/libspacebar.a
+                  - $(SRCROOT)/target/x86_64-apple-ios/${CONFIGURATION}/deps/libspacebar.a

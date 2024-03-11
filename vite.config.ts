@@ -44,7 +44,7 @@ function getVersion() {
 	return JSON.parse(readFileSync("package.json").toString()).version;
 }
 
-const mobile = !!/android|ios/.exec(process.env.TAURI_PLATFORM);
+const mobile = !!/android|ios/.exec(process.env.TAURI_ENV_PLATFORM);
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
@@ -79,7 +79,7 @@ export default defineConfig(async () => ({
 					protocol: "ws",
 					host: await internalIpV4(),
 					port: 1421,
-			  }
+				}
 			: undefined,
 		strictPort: true,
 	},
@@ -88,7 +88,7 @@ export default defineConfig(async () => ({
 	// https://tauri.studio/v1/api/config#buildconfig.beforedevcommand
 	envPrefix: ["VITE_", "TAURI_"],
 	build: {
-		outDir: "build",
+		outDir: "dist",
 		sourcemap: true,
 		rollupOptions: {
 			input: {

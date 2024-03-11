@@ -22,6 +22,7 @@ export default class MessageStore {
 	constructor(app: AppStore, channelId: string) {
 		this.app = app;
 		this.channelId = channelId;
+		// eslint-disable-next-line react-hooks/rules-of-hooks
 		this.logger = useLogger("MessageStore.ts");
 
 		this.messages = observable.array([]);

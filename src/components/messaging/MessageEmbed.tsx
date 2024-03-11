@@ -5,11 +5,13 @@ import { APIEmbed, EmbedType } from "@spacebarchat/spacebar-api-types/v9";
 import classNames from "classnames";
 import React from "react";
 import { decimalColorToHex } from "../../utils/Utils";
+import Markdown from "../markdown/Markdown";
+import MarkdownRenderer from "../markdown/MarkdownRenderer";
 import styles from "./Embed.module.css";
 import EmbedMedia from "./EmbedMedia";
 import { MESSAGE_AREA_PADDING, MessageAreaWidthContext } from "./MessageList";
 
-const MAX_EMBED_WIDTH = 400;
+const MAX_EMBED_WIDTH = 300;
 const MAX_EMBED_HEIGHT = 640;
 const THUMBNAIL_MAX_WIDTH = 80;
 const CONTAINER_PADDING = 24;
@@ -26,7 +28,6 @@ function MessageEmbed({ embed }: Props) {
 
 	function calculateSize(w: number, h: number): { width: number; height: number } {
 		const limitingWidth = Math.min(w, maxWidth);
-
 		const limitingHeight = Math.min(MAX_EMBED_HEIGHT, h);
 
 		// Calculate smallest possible WxH.
@@ -75,14 +76,13 @@ function MessageEmbed({ embed }: Props) {
 	}
 
 	const { width, height } = calculateSize(mw, mh);
-	if (embed.type === EmbedType.GIFV || EMBEDDABLE_PROVIDERS.includes(embed.provider?.name ?? "")) {
-		return (
-			<EmbedMedia
-				embed={embed}
-				width={height * ((embed.image?.width ?? 0) / (embed.image?.height ?? 0))}
-				height={height}
-			/>
-		);
+	if (
+		embed.type === EmbedType.GIFV ||
+		embed.type === EmbedType.Image ||
+		embed.type === EmbedType.Video ||
+		EMBEDDABLE_PROVIDERS.includes(embed.provider?.name ?? "")
+	) {
+		return <EmbedMedia embed={embed} width={height} height={height} />;
 	}
 
 	return (
@@ -141,7 +141,11 @@ function MessageEmbed({ embed }: Props) {
 							</>
 						)}
 
-						{embed.description && <div className={styles.embedDescription}>{embed.description}</div>}
+						{embed.description && (
+							<div className={styles.embedDescription}>
+								<MarkdownRenderer content={embed.description} />
+							</div>
+						)}
 
 						{embed.fields && (
 							<div className={styles.embedFields}>
@@ -156,7 +160,9 @@ function MessageEmbed({ embed }: Props) {
 										}}
 									>
 										<div className={styles.embedFieldName}>{field.name}</div>
-										<div className={styles.embedFieldValue}>{field.value}</div>
+										<div className={styles.embedFieldValue}>
+											<Markdown content={field.value} />
+										</div>
 									</div>
 								))}
 							</div>

@@ -44,25 +44,34 @@ function MessageList({ guild, channel }: Props) {
 	const ref = React.useRef<HTMLDivElement>(null);
 	const { width } = useResizeObserver<HTMLDivElement>({ ref });
 
-	// handles the permission check
 	React.useEffect(() => {
 		const permission = Permissions.getPermission(app.account!.id, guild, channel);
-		setCanView(permission.has("READ_MESSAGE_HISTORY"));
-	}, [guild, channel]);
+		const hasPermission = permission.has("READ_MESSAGE_HISTORY");
+		setCanView(hasPermission);
 
-	// handles the initial fetch of channel messages
-	React.useEffect(() => {
-		if (!canView) return;
+		if (!hasPermission) {
+			logger.debug("User cannot view this channel. Aborting initial message fetch.");
+			return;
+		}
+
 		if (guild && channel && channel.messages.count === 0) {
 			channel.getMessages(app, true).then((r) => {
-				if (r !== 50) setHasMore(false);
-				else setHasMore(true);
+				if (r < 50) {
+					setHasMore(false);
+				}
 			});
 		}
-	}, [guild, channel, canView]);
+
+		return () => {
+			logger.debug("MessageList unmounted");
+			setHasMore(true);
+			setCanView(false);
+		};
+	}, [guild, channel]);
 
 	const fetchMore = React.useCallback(() => {
 		if (!channel.messages.count) {
+			logger.warn("channel has no messages, aborting!");
 			return;
 		}
 		// get last group
@@ -77,16 +86,17 @@ function MessageList({ guild, channel }: Props) {
 		const before = lastGroup.messages[0].id;
 		logger.debug(`Fetching 50 messages before ${before} for channel ${channel.id}`);
 		channel.getMessages(app, false, 50, before).then((r) => {
-			if (r !== 50) setHasMore(false);
-			else setHasMore(true);
+			if (r < 50) {
+				setHasMore(false);
+			}
 		});
-	}, [channel, messageGroups, setHasMore]);
+	}, [channel, messageGroups]);
 
 	const renderGroup = React.useCallback(
 		(group: MessageGroupType) => (
 			<MessageGroup key={`messageGroup-${group.messages[group.messages.length - 1].id}`} group={group} />
 		),
-		[],
+		[messageGroups],
 	);
 
 	return (
@@ -100,6 +110,7 @@ function MessageList({ guild, channel }: Props) {
 							display: "flex",
 							flexDirection: "column-reverse",
 							marginBottom: 30,
+							overflow: "hidden",
 						}} // to put endMessage and loader to the top.
 						hasMore={hasMore}
 						inverse={true}
@@ -109,11 +120,13 @@ function MessageList({ guild, channel }: Props) {
 									display: "flex",
 									justifyContent: "center",
 									alignContent: "center",
-									marginBottom: 30,
+									margin: 30,
 								}}
 								color="var(--primary)"
 							/>
 						}
+						// FIXME: seems to be broken in react-infinite-scroll-component when using inverse
+						scrollThreshold={0.5}
 						scrollableTarget="scrollable-div"
 						endMessage={
 							<EndMessageContainer>

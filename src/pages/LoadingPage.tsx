@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { Suspense } from "react";
 import PulseLoader from "react-spinners/PulseLoader";
 import styled from "styled-components";
-import { ReactComponent as SpacebarLogoBlue } from "../assets/images/logo/Logo-Blue.svg";
+import SpacebarLogoBlue from "../assets/images/logo/Logo-Blue.svg?react";
 import Button from "../components/Button";
 import Container from "../components/Container";
 import { useAppStore } from "../stores/AppStore";
@@ -40,7 +40,7 @@ function LoadingPage() {
 							bottom: "30vh",
 						}}
 					>
-						<Button variant="danger" onClick={() => app.logout()}>
+						<Button palette="danger" onClick={() => app.logout()}>
 							Logout
 						</Button>
 					</div>

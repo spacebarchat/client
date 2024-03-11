@@ -6,6 +6,8 @@ import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFound";
 import RegistrationPage from "./pages/RegistrationPage";
 
+import { getTauriVersion, getVersion } from "@tauri-apps/api/app";
+import { arch, locale, platform, version } from "@tauri-apps/plugin-os";
 import { reaction } from "mobx";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Loader from "./components/Loader";
@@ -20,6 +22,7 @@ import { useAppStore } from "./stores/AppStore";
 import { Globals } from "./utils/Globals";
 // @ts-expect-error no types
 import FPSStats from "react-fps-stats";
+import { isTauri } from "./utils/Utils";
 
 function App() {
 	const app = useAppStore();
@@ -51,8 +54,24 @@ function App() {
 			},
 		);
 
+		const loadAsyncGlobals = async () => {
+			const [tauriVersion, appVersion, platformName, platformArch, platformVersion, platformLocale] =
+				await Promise.all([getTauriVersion(), getVersion(), platform(), arch(), version(), locale()]);
+			window.globals = {
+				tauriVersion: tauriVersion,
+				appVersion: appVersion,
+				platform: {
+					name: platformName,
+					arch: platformArch,
+					version: platformVersion,
+					locale: platformLocale,
+				},
+			};
+		};
+
+		isTauri && loadAsyncGlobals();
 		Globals.load();
-		app.loadToken();
+		app.loadSettings();
 
 		logger.debug("Loading complete");
 		app.setAppLoading(false);

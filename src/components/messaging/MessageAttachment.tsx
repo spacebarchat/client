@@ -1,17 +1,29 @@
-import { useModals } from "@mattjennings/react-modal-stack";
 import { APIAttachment } from "@spacebarchat/spacebar-api-types/v9";
-import React from "react";
 import styled from "styled-components";
-import { ContextMenuContext } from "../../contexts/ContextMenuContext";
+import { modalController } from "../../controllers/modals";
 import useLogger from "../../hooks/useLogger";
-import ContextMenus from "../../utils/ContextMenus";
-import { calculateImageRatio, calculateScaledDimensions } from "../../utils/Message";
-import { getFileDetails } from "../../utils/Utils";
-import { IContextMenuItem } from "../ContextMenuItem";
+import { getFileDetails, zoomFit } from "../../utils/Utils";
 import Audio from "../media/Audio";
 import File from "../media/File";
 import Video from "../media/Video";
-import AttachmentPreviewModal from "../modals/AttachmentPreviewModal";
+
+const MAX_ATTACHMENT_HEIGHT = 350;
+
+function adjustDimensions(width: number, height: number): { adjustedWidth: number; adjustedHeight: number } {
+	const aspectRatio = width / height;
+
+	let adjustedWidth: number = width * aspectRatio;
+	let adjustedHeight: number = height * aspectRatio;
+
+	// Ensure the adjusted height does not exceed the maximum height
+	if (adjustedHeight > MAX_ATTACHMENT_HEIGHT) {
+		const scale = MAX_ATTACHMENT_HEIGHT / adjustedHeight;
+		adjustedWidth *= scale;
+		adjustedHeight = MAX_ATTACHMENT_HEIGHT;
+	}
+
+	return { adjustedWidth: Math.floor(adjustedWidth), adjustedHeight: Math.floor(adjustedHeight) };
+}
 
 const Attachment = styled.div<{ withPointer?: boolean }>`
 	cursor: ${(props) => (props.withPointer ? "pointer" : "default")};
@@ -20,36 +32,33 @@ const Attachment = styled.div<{ withPointer?: boolean }>`
 
 const Image = styled.img`
 	border-radius: 4px;
+	width: 100%;
+	height: auto;
 `;
 
 interface AttachmentProps {
 	attachment: APIAttachment;
-	contextMenuItems?: IContextMenuItem[];
-	maxWidth?: number;
-	maxHeight?: number;
 }
 
-export default function MessageAttachment({ attachment, contextMenuItems, maxWidth, maxHeight }: AttachmentProps) {
+export default function MessageAttachment({ attachment }: AttachmentProps) {
 	const logger = useLogger("MessageAttachment");
-
-	const { openModal } = useModals();
-	const contextMenu = React.useContext(ContextMenuContext);
 
 	const url = attachment.proxy_url && attachment.proxy_url.length > 0 ? attachment.proxy_url : attachment.url;
 
 	const details = getFileDetails(attachment);
 	let finalElement: JSX.Element = <></>;
 	if (details.isImage && details.isEmbeddable) {
-		const ratio = calculateImageRatio(attachment.width!, attachment.height!, maxWidth, maxHeight);
-		const { scaledWidth, scaledHeight } = calculateScaledDimensions(
-			attachment.width!,
-			attachment.height!,
-			ratio,
-			maxWidth,
-			maxHeight,
-		);
+		const width = attachment.width!;
+		const height = attachment.height!;
+		const { adjustedWidth, adjustedHeight } = adjustDimensions(width, height);
+
 		finalElement = (
-			<Image src={url} alt={attachment.filename} width={scaledWidth} height={scaledHeight} loading="lazy" />
+			<Image
+				src={url}
+				alt={attachment.filename}
+				loading="lazy"
+				style={{ maxWidth: adjustedWidth, maxHeight: adjustedHeight }}
+			/>
 		);
 	} else if (details.isVideo && details.isEmbeddable) {
 		finalElement = <Video attachment={attachment} />;
@@ -63,12 +72,15 @@ export default function MessageAttachment({ attachment, contextMenuItems, maxWid
 		<Attachment
 			withPointer={attachment.content_type?.startsWith("image")}
 			key={attachment.id}
-			onContextMenu={(e) =>
-				contextMenu.open2(e, [...(contextMenuItems ?? []), ...ContextMenus.MessageAttachment(attachment)])
-			}
 			onClick={() => {
 				if (!attachment.content_type?.startsWith("image")) return;
-				openModal(AttachmentPreviewModal, { attachment });
+				const { width, height } = zoomFit(attachment.width!, attachment.height!);
+				modalController.push({
+					type: "image_viewer",
+					attachment,
+					width,
+					height,
+				});
 			}}
 		>
 			{finalElement}
