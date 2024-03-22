@@ -230,7 +230,7 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
 
         let response = updater.check().await;
 
-        println!("[Updater] Update check response: {:?}", response);
+        // println!("[Updater] Update check response: {:?}", response);
 
         match response {
             Ok(Some(update)) => {

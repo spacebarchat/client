@@ -1,5 +1,6 @@
 use std::{sync::Arc, sync::Mutex};
 use tauri::{Manager, RunEvent, State, WebviewWindow};
+#[cfg(desktop)]
 use tauri_plugin_autostart::MacosLauncher;
 use tauri_plugin_log::{Target, TargetKind, WEBVIEW_TARGET};
 use tauri_plugin_notification::NotificationExt;
@@ -19,10 +20,13 @@ fn close_splashscreen(
     splashscreen: State<SplashscreenWindow>,
     main: State<MainWindow>,
 ) {
-    // Close splashscreen
-    splashscreen.0.lock().unwrap().close().unwrap();
-    // Show main window
-    main.0.lock().unwrap().show().unwrap();
+    #[cfg(desktop)]
+    {
+        // Close splashscreen
+        splashscreen.0.lock().unwrap().close().unwrap();
+        // Show main window
+        main.0.lock().unwrap().show().unwrap();
+    }
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -30,9 +34,9 @@ pub fn run() {
     std::env::set_var("RUST_BACKTRACE", "1");
     std::env::set_var("RUST_LOG", "debug");
 
-    let mut context = tauri::generate_context!();
+    let context = tauri::generate_context!();
 
-    let config = context.config_mut();
+    // let config = context.config_mut();
 
     let app = tauri::Builder::default()
         .plugin(tauri_plugin_os::init())
@@ -62,19 +66,6 @@ pub fn run() {
                 .build(),
         )
         .plugin(tauri_plugin_notification::init())
-        .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
-            println!("{}, {argv:?}, {cwd}", app.package_info().name);
-            app.notification()
-                .builder()
-                .title("This app is already running!")
-                .body("You can find it in the tray menu.")
-                .show()
-                .unwrap();
-        }))
-        .plugin(tauri_plugin_autostart::init(
-            MacosLauncher::LaunchAgent,
-            Some(vec![]),
-        ))
         .plugin(tauri_plugin_process::init())
         .setup(move |app| {
             let app_handle = app.handle();
@@ -86,10 +77,24 @@ pub fn run() {
                 app.get_webview_window("main").unwrap(),
             ))));
 
-            app_handle.plugin(tauri_plugin_updater::Builder::new().build())?;
-
             #[cfg(desktop)]
             {
+                app_handle.plugin(tauri_plugin_updater::Builder::new().build())?;
+                let _ =
+                    app_handle.plugin(tauri_plugin_single_instance::init(|app, _argv, _cwd| {
+                        app.notification()
+                            .builder()
+                            .title("This app is already running!")
+                            .body("You can find it in the tray menu.")
+                            .show()
+                            .unwrap();
+                    }));
+
+                let _ = app_handle.plugin(tauri_plugin_autostart::init(
+                    MacosLauncher::LaunchAgent,
+                    Some(vec![]),
+                ));
+
                 // Tray
                 let handle = app.handle();
                 tray::create_tray(handle)?;
@@ -147,6 +152,14 @@ pub fn run() {
                 window.hide().unwrap();
             }
             api.prevent_close();
+        }
+        _ => {}
+    });
+
+    #[cfg(mobile)]
+    app.run(|app, e| match e {
+        RunEvent::Ready => {
+            println!("App is ready");
         }
         _ => {}
     });
