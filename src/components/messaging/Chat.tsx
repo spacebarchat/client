@@ -93,7 +93,14 @@ function Chat() {
 	if (activeGuildId && activeGuildId === "@me") {
 		return (
 			<WrapperTwo>
-				<span>Home Section Placeholder</span>
+				<span
+					style={{
+						padding: "1rem",
+						userSelect: "none",
+					}}
+				>
+					Home Section Placeholder
+				</span>
 			</WrapperTwo>
 		);
 	}
