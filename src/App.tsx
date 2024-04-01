@@ -11,7 +11,6 @@ import { arch, locale, platform, version } from "@tauri-apps/plugin-os";
 import { reaction } from "mobx";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Loader from "./components/Loader";
-import OfflineBanner from "./components/banners/OfflineBanner";
 import { UnauthenticatedGuard } from "./components/guards/UnauthenticatedGuard";
 import { BannerContext } from "./contexts/BannerContext";
 import useLogger from "./hooks/useLogger";
@@ -22,6 +21,7 @@ import { useAppStore } from "./stores/AppStore";
 import { Globals } from "./utils/Globals";
 // @ts-expect-error no types
 import FPSStats from "react-fps-stats";
+import VeryImportantBanner from "./components/banners/VeryImportantBanner";
 import { isTauri } from "./utils/Utils";
 
 function App() {
@@ -69,6 +69,13 @@ function App() {
 			};
 		};
 
+		const hasVeryImportantBannerShown = localStorage.getItem("very_important_banner_dismissed");
+		if (!hasVeryImportantBannerShown) {
+			bannerContext.setContent({
+				element: <VeryImportantBanner />,
+			});
+		}
+
 		isTauri && loadAsyncGlobals();
 		Globals.load();
 		app.loadSettings();
@@ -79,14 +86,14 @@ function App() {
 		return dispose;
 	}, []);
 
-	React.useEffect(() => {
-		if (!app.isNetworkConnected)
-			bannerContext.setContent({
-				forced: true,
-				element: <OfflineBanner />,
-			});
-		else bannerContext.close();
-	}, [app.isNetworkConnected, bannerContext]);
+	// React.useEffect(() => {
+	// 	if (!app.isNetworkConnected)
+	// 		bannerContext.setContent({
+	// 			forced: true,
+	// 			element: <OfflineBanner />,
+	// 		});
+	// 	else bannerContext.close();
+	// }, [app.isNetworkConnected, bannerContext]);
 
 	return (
 		<ErrorBoundary section="app">

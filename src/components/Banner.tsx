@@ -21,48 +21,48 @@ function Banner() {
 	const logger = useLogger("Banner");
 	const bannerContext = React.useContext(BannerContext);
 
+	if (!bannerContext.content) return null;
+
 	return (
 		<AnimatePresence>
-			{bannerContext.content && (
-				<Container
-					variants={{
-						show: {
-							// slide down
-							y: 0,
-							transition: {
-								delayChildren: 0.3,
-								staggerChildren: 0.2,
-							},
+			<Container
+				variants={{
+					show: {
+						// slide down
+						y: 0,
+						transition: {
+							delayChildren: 0.3,
+							staggerChildren: 0.2,
 						},
-						hide: {
-							// slide up
-							y: "-100%",
-							transition: {
-								delayChildren: 0.3,
-								staggerChildren: 0.2,
-							},
+					},
+					hide: {
+						// slide up
+						y: "-100%",
+						transition: {
+							delayChildren: 0.3,
+							staggerChildren: 0.2,
 						},
-					}}
-					initial="hide"
-					animate="show"
-					exit="hide"
-					onAnimationComplete={() => {
-						logger.debug("animation complete");
-					}}
-					style={bannerContext.content.style}
-				>
-					{bannerContext.content.element}
-					{!bannerContext.content.forced && (
-						<CloseWrapper
-							onClick={() => {
-								bannerContext.close();
-							}}
-						>
-							<Icon icon="mdiClose" color="var(--text)" size="24px" />
-						</CloseWrapper>
-					)}
-				</Container>
-			)}
+					},
+				}}
+				initial="hide"
+				animate="show"
+				exit="hide"
+				onAnimationComplete={() => {
+					logger.debug("animation complete");
+				}}
+				style={bannerContext.content.style}
+			>
+				{bannerContext.content.element}
+				{!bannerContext.content.forced && (
+					<CloseWrapper
+						onClick={() => {
+							bannerContext.close();
+						}}
+					>
+						<Icon icon="mdiClose" color="var(--text)" size="24px" />
+					</CloseWrapper>
+				)}
+			</Container>
 		</AnimatePresence>
 	);
 }
