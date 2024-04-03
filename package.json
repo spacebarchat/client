@@ -14,7 +14,7 @@
 		"@mattjennings/react-modal-stack": "^1.0.4",
 		"@mdi/js": "^7.4.47",
 		"@mdi/react": "^1.6.1",
-		"@mui/material": "^5.15.11",
+		"@mui/material": "^5.15.14",
 		"@originjs/vite-plugin-commonjs": "^1.0.3",
 		"@rollup/plugin-replace": "^5.0.5",
 		"@spacebarchat/spacebar-api-types": "0.37.51",
