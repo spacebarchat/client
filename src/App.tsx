@@ -21,7 +21,6 @@ import { useAppStore } from "./stores/AppStore";
 import { Globals } from "./utils/Globals";
 // @ts-expect-error no types
 import FPSStats from "react-fps-stats";
-import VeryImportantBanner from "./components/banners/VeryImportantBanner";
 import { isTauri } from "./utils/Utils";
 
 function App() {
@@ -69,13 +68,6 @@ function App() {
 			};
 		};
 
-		const hasVeryImportantBannerShown = localStorage.getItem("very_important_banner_dismissed");
-		if (!hasVeryImportantBannerShown) {
-			bannerContext.setContent({
-				element: <VeryImportantBanner />,
-			});
-		}
-
 		isTauri && loadAsyncGlobals();
 		Globals.load();
 		app.loadSettings();
@@ -86,6 +78,7 @@ function App() {
 		return dispose;
 	}, []);
 
+	// TODO: we need more of a stack for banners, closing here will cause any banners to immediately close
 	// React.useEffect(() => {
 	// 	if (!app.isNetworkConnected)
 	// 		bannerContext.setContent({

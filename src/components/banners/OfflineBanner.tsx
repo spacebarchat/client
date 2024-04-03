@@ -4,6 +4,8 @@ import Icon from "../Icon";
 const Wrapper = styled.div`
 	display: flex;
 	flex-direction: row;
+	flex: 1;
+	justify-content: center;
 	align-items: center;
 `;
 
