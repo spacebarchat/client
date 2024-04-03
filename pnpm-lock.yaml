@@ -117,8 +117,8 @@ dependencies:
     specifier: ^6.12.0
     version: 6.12.0
   mobx-react-lite:
-    specifier: ^4.0.5
-    version: 4.0.5(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^4.0.7
+    version: 4.0.7(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0)
   murmurhash-js:
     specifier: ^1.0.0
     version: 1.0.0
@@ -9902,8 +9902,8 @@ packages:
       minimist: 1.2.8
     dev: true
 
-  /mobx-react-lite@4.0.5(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-StfB2wxE8imKj1f6T8WWPf4lVMx3cYH9Iy60bbKXEs21+HQ4tvvfIBZfSmMXgQAefi8xYEwQIz4GN9s0d2h7dg==}
+  /mobx-react-lite@4.0.7(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-RjwdseshK9Mg8On5tyJZHtGD+J78ZnCnRaxeQDSiciKVQDUbfZcXhmld0VMxAwvcTnPEHZySGGewm467Fcpreg==}
     peerDependencies:
       mobx: ^6.9.0
       react: ^16.8.0 || ^17 || ^18
