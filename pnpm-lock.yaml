@@ -51,8 +51,8 @@ dependencies:
     specifier: 2.0.0-beta.3
     version: 2.0.0-beta.3
   '@tauri-apps/plugin-authenticator':
-    specifier: 2.0.0-beta.1
-    version: 2.0.0-beta.1
+    specifier: 2.0.0-beta.2
+    version: 2.0.0-beta.2
   '@tauri-apps/plugin-autostart':
     specifier: 2.0.0-beta.1
     version: 2.0.0-beta.1
@@ -3598,10 +3598,10 @@ packages:
       '@tauri-apps/cli-win32-x64-msvc': 2.0.0-beta.5
     dev: true
 
-  /@tauri-apps/plugin-authenticator@2.0.0-beta.1:
-    resolution: {integrity: sha512-c8AAkPsJ82+B73DXmks7P3TTBDxNKPv13iPH7NEIOOXENmwnf3IffyWF9HfyEpTAlW+pvyNW2XO0NB7afAQLNQ==}
+  /@tauri-apps/plugin-authenticator@2.0.0-beta.2:
+    resolution: {integrity: sha512-CX2cL8WiuyxDOTg2xkIqTBlQOypilJ/UGsEFp+HMC3o2NPaedfv2VuqO6sHYnZXGPmZJtEP10Phd7/wU+ymmtA==}
     dependencies:
-      '@tauri-apps/api': 2.0.0-beta.2
+      '@tauri-apps/api': 2.0.0-beta.4
     dev: false
 
   /@tauri-apps/plugin-autostart@2.0.0-beta.1:
