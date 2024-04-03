@@ -15,7 +15,6 @@ import {
 	LeaveServerModal,
 	SettingsModal,
 } from "../../components/modals";
-import { VeryImportantModal } from "../../components/modals/VeryImportantModal";
 import { Modal } from "./types";
 
 function randomUUID() {
@@ -188,5 +187,4 @@ export const modalController = new ModalControllerExtended({
 	// modify_displayname: ModifyDisplayname,
 	// changelog_usernames: ChangelogUsernames,
 	settings: SettingsModal,
-	very_important: VeryImportantModal,
 });
