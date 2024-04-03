@@ -51,8 +51,8 @@ dependencies:
     specifier: 2.0.0-beta.3
     version: 2.0.0-beta.3
   '@tauri-apps/plugin-authenticator':
-    specifier: 2.0.0-beta.1
-    version: 2.0.0-beta.1
+    specifier: 2.0.0-beta.2
+    version: 2.0.0-beta.2
   '@tauri-apps/plugin-autostart':
     specifier: 2.0.0-beta.1
     version: 2.0.0-beta.1
@@ -3470,6 +3470,11 @@ packages:
     engines: {node: '>= 18', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
     dev: false
 
+  /@tauri-apps/api@2.0.0-beta.4:
+    resolution: {integrity: sha512-Nxtj28NYUo5iwYkpYslxmOPkdI2WkELU2e3UH9nbJm9Ydki2CQwJVGQxx4EANtdZcMNsEsUzRqaDTvEUYH1l6w==}
+    engines: {node: '>= 18', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
+    dev: false
+
   /@tauri-apps/cli-darwin-arm64@2.0.0-beta.5:
     resolution: {integrity: sha512-xNMkg+uFJjIX1K4KK2AGxXRVn+gBE+lpmMjLPmOo+/5BO/qXeNCBeob1blOpAhI9yVIoU2HN/L6Bh+DONp690w==}
     engines: {node: '>= 10'}
@@ -3577,10 +3582,10 @@ packages:
       '@tauri-apps/cli-win32-x64-msvc': 2.0.0-beta.5
     dev: true
 
-  /@tauri-apps/plugin-authenticator@2.0.0-beta.1:
-    resolution: {integrity: sha512-c8AAkPsJ82+B73DXmks7P3TTBDxNKPv13iPH7NEIOOXENmwnf3IffyWF9HfyEpTAlW+pvyNW2XO0NB7afAQLNQ==}
+  /@tauri-apps/plugin-authenticator@2.0.0-beta.2:
+    resolution: {integrity: sha512-CX2cL8WiuyxDOTg2xkIqTBlQOypilJ/UGsEFp+HMC3o2NPaedfv2VuqO6sHYnZXGPmZJtEP10Phd7/wU+ymmtA==}
     dependencies:
-      '@tauri-apps/api': 2.0.0-beta.2
+      '@tauri-apps/api': 2.0.0-beta.4
     dev: false
 
   /@tauri-apps/plugin-autostart@2.0.0-beta.1:
@@ -13898,6 +13903,7 @@ packages:
 
   /workbox-google-analytics@6.6.0:
     resolution: {integrity: sha512-p4DJa6OldXWd6M9zRl0H6vB9lkrmqYFkRQ2xEiNdBFp9U0LhsGO7hsBscVEyH9H2/3eZZt8c97NB2FD9U2NJ+Q==}
+    deprecated: It is not compatible with newer versions of GA starting with v4, as long as you are using GAv3 it should be ok, but the package is not longer being maintained
     dependencies:
       workbox-background-sync: 6.6.0
       workbox-core: 6.6.0
