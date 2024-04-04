@@ -8,5 +8,5 @@ export const SectionHeader = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	white-space: nowrap;
-	height: 24px;
+	height: 50px;
 `;

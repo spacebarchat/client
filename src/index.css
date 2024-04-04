@@ -1,33 +1,29 @@
 html,
 body,
-#root,
-#root > div {
+#root {
 	height: 100%;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-span,
-textarea {
-	padding: 0;
-	margin: 0;
-}
-
-html *:not(code) {
-	font-family: var(--font-family);
+	width: 100%;
+	overflow: hidden;
+	display: flex;
 }
 
 body {
 	margin: 0;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	overflow: hidden;
+	/* overflow: hidden; */
+	font-family: var(--font-family);
 }
+
+*,
+*:after,
+*:before {
+	box-sizing: border-box;
+}
+
+/* html *:not(code) {
+	font-family: var(--font-family);
+} */
 
 code {
 	font-family: "Source Code Pro", monospace;
