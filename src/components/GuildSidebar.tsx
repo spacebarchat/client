@@ -13,9 +13,9 @@ const Container = styled.div`
 	flex: 0 0 72px;
 	margin: 4px 0 0 0;
 
-	@media (max-width: 560px) {
-		display: none;
-	}
+	// @media (max-width: 560px) {
+	// 	display: none;
+	// }
 
 	.ReactVirtualized__List {
 		scrollbar-width: none; /* Firefox */

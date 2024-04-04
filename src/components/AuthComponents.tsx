@@ -6,8 +6,8 @@ export const Wrapper = styled(Container)`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
 	background-color: var(--background-tertiary);
+	flex: 1;
 `;
 
 export const AuthContainer = styled(Container)`

@@ -1,0 +1,37 @@
+.item {
+	position: relative;
+	/* width: 100%; */
+	/* height: 100%; */
+	pointer-events: auto;
+	/* transform-origin: 50% 50% 0px; */
+	/* padding-left: 32px; */
+	/* padding-right: 32px; */
+	box-sizing: border-box;
+	display: flex;
+	flex: 1;
+	/* align-items: center; */
+	/* text-align: center; */
+	/* border-radius: 5px; */
+	/* box-shadow: 0px 10px 10px -5px rgba(0, 0, 0, 0.2); */
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+.fg {
+	cursor: -webkit-grab;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	display: grid;
+}
+
+.fg > * {
+	pointer-events: none;
+}
+
+.container {
+	display: flex;
+	align-items: center;
+	height: 100%;
+	justify-content: center;
+}

@@ -12,7 +12,7 @@ const Container = styled.div`
 	flex: 0 0 240px;
 	flex-direction: column;
 	background-color: var(--background-secondary);
-	height: 100%;
+	overflow-x: hidden;
 
 	@media (max-width: 1050px) {
 		display: none;
@@ -23,9 +23,9 @@ const List = styled.ul`
 	padding: 0;
 	margin: 0;
 	list-style: none;
-	overflow-y: auto;
-	height: 100%;
-	width: 100%;
+	// overflow-y: auto;
+	// height: 100%;
+	// width: 100%;
 `;
 
 function MemberList() {
@@ -59,7 +59,7 @@ function MemberList() {
 									<MemberListItem item={x} />
 								))}
 							/>
-						))
+					  ))
 					: null}
 			</List>
 		</Container>

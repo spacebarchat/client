@@ -1,96 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="ALL" />
+    <option name="autoReloadType" value="NONE" />
   </component>
   <component name="CargoProjects">
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0756a13d-f814-41e0-81ae-eb872c2c747f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.eslintignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.eslintignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.eslintrc" beforeDir="false" afterPath="$PROJECT_DIR$/../.eslintrc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.github/ISSUE_TEMPLATE/bug_report.md" beforeDir="false" afterPath="$PROJECT_DIR$/../.github/ISSUE_TEMPLATE/bug_report.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.github/ISSUE_TEMPLATE/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../.github/ISSUE_TEMPLATE/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.github/ISSUE_TEMPLATE/feature_request.md" beforeDir="false" afterPath="$PROJECT_DIR$/../.github/ISSUE_TEMPLATE/feature_request.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.github/workflows/pages-deploy.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../.github/workflows/pages-deploy.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.github/workflows/tauri.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../.github/workflows/tauri.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.prettierignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.prettierignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.vscode/extensions.json" beforeDir="false" afterPath="$PROJECT_DIR$/../.vscode/extensions.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../.vscode/settings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/../LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flake.nix" beforeDir="false" afterPath="$PROJECT_DIR$/../flake.nix" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flake.template.nix" beforeDir="false" afterPath="$PROJECT_DIR$/../flake.template.nix" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nix-build-test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../nix-build-test.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nix-rebuild-flake.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../nix-rebuild-flake.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/../public/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../public/robots.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../public/robots.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../public/splashscreen.css" beforeDir="false" afterPath="$PROJECT_DIR$/../public/splashscreen.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../public/splashscreen.html" beforeDir="false" afterPath="$PROJECT_DIR$/../public/splashscreen.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.rs" beforeDir="false" afterPath="$PROJECT_DIR$/build.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/.idea/deploymentTargetDropDown.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/.idea/deploymentTargetDropDown.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/.idea/discord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/.idea/discord.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/.idea/kotlinc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/.idea/migrations.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/.idea/migrations.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/app/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/app/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/app/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/app/proguard-rules.pro" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/app/proguard-rules.pro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/app/src/main/java/chat/spacebar/app/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/app/src/main/java/chat/spacebar/app/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/app/src/main/res/drawable/ic_launcher_background.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/app/src/main/res/values-night/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/app/src/main/res/values-night/themes.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/app/src/main/res/values/colors.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/app/src/main/res/values/themes.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/app/src/main/res/xml/file_paths.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/app/src/main/res/xml/file_paths.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/buildSrc/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/buildSrc/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/buildSrc/src/main/java/chat/spacebar/app/kotlin/BuildTask.kt" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/buildSrc/src/main/java/chat/spacebar/app/kotlin/BuildTask.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/buildSrc/src/main/java/chat/spacebar/app/kotlin/RustPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/buildSrc/src/main/java/chat/spacebar/app/kotlin/RustPlugin.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gen/android/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/apple/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/gen/apple/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/apple/ExportOptions.plist" beforeDir="false" afterPath="$PROJECT_DIR$/gen/apple/ExportOptions.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/apple/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/gen/apple/Podfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/apple/Sources/app/bindings/bindings.h" beforeDir="false" afterPath="$PROJECT_DIR$/gen/apple/Sources/app/bindings/bindings.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/apple/Sources/app/main.mm" beforeDir="false" afterPath="$PROJECT_DIR$/gen/apple/Sources/app/main.mm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/apple/app.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/gen/apple/app.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/apple/app.xcodeproj/project.xcworkspace/contents.xcworkspacedata" beforeDir="false" afterPath="$PROJECT_DIR$/gen/apple/app.xcodeproj/project.xcworkspace/contents.xcworkspacedata" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/apple/app.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings" beforeDir="false" afterPath="$PROJECT_DIR$/gen/apple/app.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/apple/app.xcodeproj/xcshareddata/xcschemes/app_iOS.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/gen/apple/app.xcodeproj/xcshareddata/xcschemes/app_iOS.xcscheme" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/apple/app_iOS/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/gen/apple/app_iOS/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/apple/app_iOS/app_iOS.entitlements" beforeDir="false" afterPath="$PROJECT_DIR$/gen/apple/app_iOS/app_iOS.entitlements" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tray.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/tray.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/assets/images/logo/Logo-Blue.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../src/assets/images/logo/Logo-Blue.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/assets/images/logo/Logo-White.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../src/assets/images/logo/Logo-White.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/assets/images/logo/Spacebar_Icon.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../src/assets/images/logo/Spacebar_Icon.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/assets/images/logo/Spacebar_Logo_Blue.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../src/assets/images/logo/Spacebar_Logo_Blue.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/assets/images/logo/icon-rounded.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../src/assets/images/logo/icon-rounded.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/components/ChannelList/ChannelListItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/components/ChannelList/ChannelListItem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/components/modals/ModalComponents.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/components/modals/ModalComponents.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/components/modals/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../src/components/modals/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/android/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/android/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/android/.idea/deploymentTargetDropDown.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/android/.idea/discord.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/android/.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/android/.idea/kotlinc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/android/.idea/migrations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/android/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/android/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/android/buildSrc/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/android/buildSrc/src/main/java/chat/spacebar/app/kotlin/BuildTask.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/android/buildSrc/src/main/java/chat/spacebar/app/kotlin/RustPlugin.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/components/ChannelSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/components/ChannelSidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/components/GuildSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/components/GuildSidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/components/messaging/Chat.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/components/messaging/Chat.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/components/modals/JoinServerModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/components/modals/JoinServerModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/controllers/modals/ModalController.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/controllers/modals/ModalController.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/controllers/modals/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../src/controllers/modals/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -110,10 +55,13 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
     "git-widget-placeholder": "dev",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/23562/Documents/Code/workspaces/spacebar/client-react/src-tauri/Cargo.toml",
+    "last_opened_file_path": "E:/client-react/src-tauri",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",

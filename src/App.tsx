@@ -8,11 +8,11 @@ import RegistrationPage from "./pages/RegistrationPage";
 
 import { getTauriVersion, getVersion } from "@tauri-apps/api/app";
 import { arch, locale, platform, version } from "@tauri-apps/plugin-os";
+import { useNetworkState } from "@uidotdev/usehooks";
 import { reaction } from "mobx";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Loader from "./components/Loader";
 import { UnauthenticatedGuard } from "./components/guards/UnauthenticatedGuard";
-import { BannerContext } from "./contexts/BannerContext";
 import useLogger from "./hooks/useLogger";
 import AppPage from "./pages/AppPage";
 import LogoutPage from "./pages/LogoutPage";
@@ -21,13 +21,14 @@ import { useAppStore } from "./stores/AppStore";
 import { Globals } from "./utils/Globals";
 // @ts-expect-error no types
 import FPSStats from "react-fps-stats";
+import { bannerController } from "./controllers/banners";
 import { isTauri } from "./utils/Utils";
 
 function App() {
 	const app = useAppStore();
-	const bannerContext = React.useContext(BannerContext);
 	const logger = useLogger("App");
 	const navigate = useNavigate();
+	const networkState = useNetworkState();
 
 	React.useEffect(() => {
 		// Handles gateway connection/disconnection on token change
@@ -78,15 +79,19 @@ function App() {
 		return dispose;
 	}, []);
 
-	// TODO: we need more of a stack for banners, closing here will cause any banners to immediately close
-	// React.useEffect(() => {
-	// 	if (!app.isNetworkConnected)
-	// 		bannerContext.setContent({
-	// 			forced: true,
-	// 			element: <OfflineBanner />,
-	// 		});
-	// 	else bannerContext.close();
-	// }, [app.isNetworkConnected, bannerContext]);
+	React.useEffect(() => {
+		if (!networkState.online) {
+			bannerController.push(
+				{
+					type: "offline",
+				},
+				"offline",
+			);
+		} else {
+			// only close if the current banner is the offline banner
+			bannerController.remove("offline");
+		}
+	}, [networkState]);
 
 	return (
 		<ErrorBoundary section="app">

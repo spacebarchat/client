@@ -31,7 +31,6 @@ export default class AppStore {
 	// whether the app is still loading
 	@observable isAppLoading = true;
 
-	@observable isNetworkConnected = true;
 	@observable tokenLoaded = false;
 	@observable token: string | null = null;
 	@observable fpsShown: boolean = process.env.NODE_ENV === "development";
@@ -69,9 +68,6 @@ export default class AppStore {
 		// bind this in windowToggleFps
 		this.windowToggleFps = this.windowToggleFps.bind(this);
 		window.windowToggleFps = this.windowToggleFps;
-
-		window.addEventListener("online", () => this.setNetworkConnected(true));
-		window.addEventListener("offline", () => this.setNetworkConnected(false));
 	}
 
 	@action
@@ -89,17 +85,12 @@ export default class AppStore {
 		this.account = new AccountStore(user);
 	}
 
-	@action
-	setNetworkConnected(value: boolean) {
-		this.isNetworkConnected = value;
-	}
-
 	@computed
 	/**
 	 * Whether the app is done loading and ready to be displayed
 	 */
 	get isReady() {
-		return !this.isAppLoading && this.isGatewayReady && this.isNetworkConnected;
+		return !this.isAppLoading && this.isGatewayReady;
 	}
 
 	@action
