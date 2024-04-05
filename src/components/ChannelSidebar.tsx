@@ -1,4 +1,4 @@
-import { useMediaQuery, useWindowSize } from "@uidotdev/usehooks";
+import { useWindowSize } from "@uidotdev/usehooks";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { isDesktop } from "react-device-detect";
@@ -17,7 +17,7 @@ const Wrapper = styled(Container)`
 
 function ChannelSidebar() {
 	const windowSize = useWindowSize();
-	const isSmallScreen = useMediaQuery("only screen and (max-width: 810px)");
+	//const isSmallScreen = useMediaQuery("only screen and (max-width: 810px)");
 	const [size, setSize] = useState<number | undefined>();
 
 	useEffect(() => {
@@ -29,7 +29,7 @@ function ChannelSidebar() {
 	return (
 		<Wrapper
 			style={
-				isSmallScreen && !isDesktop
+				!isDesktop
 					? {
 							width: size,
 					  }
