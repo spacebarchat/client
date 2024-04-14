@@ -18,6 +18,7 @@ iframe {
 .embedImage {
 	cursor: pointer;
 	border-radius: 8px;
+	max-width: 100%;
 }
 
 .website {
@@ -100,6 +101,7 @@ iframe {
 
 .embedDescription {
 	font-size: 14px;
+	line-height: 16px;
 	overflow: hidden;
 	display: -webkit-box;
 	white-space: pre-wrap;

@@ -128,7 +128,6 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 						className={styles.embedImage}
 						src={url}
 						loading="lazy"
-						style={{ width: "100%", height: "100%" }}
 						onClick={() => {
 							modalController.push({
 								type: "image_viewer",
@@ -145,7 +144,7 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 						className={thumbnail ? styles.embedThumbnail : styles.embedImage}
 						src={url}
 						loading="lazy"
-						style={{ width, height }}
+						style={{ width: thumbnail ? width : undefined, height }}
 						onClick={() => {
 							modalController.push({
 								type: "image_viewer",

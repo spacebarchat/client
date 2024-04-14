@@ -11,7 +11,7 @@ import styles from "./Embed.module.css";
 import EmbedMedia from "./EmbedMedia";
 import { MESSAGE_AREA_PADDING, MessageAreaWidthContext } from "./MessageList";
 
-const MAX_EMBED_WIDTH = 300;
+const MAX_EMBED_WIDTH = 400;
 const MAX_EMBED_HEIGHT = 640;
 const THUMBNAIL_MAX_WIDTH = 80;
 const CONTAINER_PADDING = 24;
@@ -108,7 +108,7 @@ function MessageEmbed({ embed }: Props) {
 										className={styles.embedAuthorIcon}
 										src={embed.author.icon_url}
 										draggable={false}
-										onError={(e) => (e.currentTarget.style.display = "none")}
+										// onError={(e) => (e.currentTarget.style.display = "none")}
 									/>
 								)}
 								{embed.author.url ? (
@@ -190,7 +190,7 @@ function MessageEmbed({ embed }: Props) {
 								className={styles.embedFooterIcon}
 								src={embed.footer.icon_url}
 								draggable={false}
-								onError={(e) => (e.currentTarget.style.display = "none")}
+								// onError={(e) => (e.currentTarget.style.display = "none")}
 							/>
 						)}
 						<span className={styles.embedFooterText}>
