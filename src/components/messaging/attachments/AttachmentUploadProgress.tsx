@@ -7,7 +7,8 @@ import Icon from "../../Icon";
 import IconButton from "../../IconButton";
 
 const Container = styled.div`
-	width: 100%;
+	width: 520px;
+	min-width: auto;
 	border: 1px solid transparent;
 	padding: 10px;
 	border-radius: 4px;
