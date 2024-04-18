@@ -30,7 +30,6 @@ iframe {
 	border-inline-start-style: solid;
 
 	padding: 12px;
-	width: fit-content;
 	background: var(--background-secondary);
 	border-radius: 4px;
 }
@@ -45,7 +44,6 @@ iframe {
 	font-size: 12px;
 	color: var(--text-secondary);
 	font-weight: var(--font-weight-regular);
-	width: fit-content;
 }
 
 .embedAuthor {
