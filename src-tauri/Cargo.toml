@@ -22,7 +22,7 @@ tauri-plugin-updater = "2.0.0-alpha"
 tauri-plugin-process = "2.0.0-alpha"
 tauri-plugin-log = "2.0.0-alpha"
 tauri-plugin-os = "2.0.0-alpha"
-reqwest = { version = "0.12.2", default-features = false, features = [
+reqwest = { version = "0.12.3", default-features = false, features = [
 	"json",
 	"rustls-tls",
 ] }
