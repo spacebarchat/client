@@ -12,7 +12,6 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	/* overflow: hidden; */
-	font-family: var(--font-family);
 }
 
 *,
@@ -21,9 +20,9 @@ body {
 	box-sizing: border-box;
 }
 
-/* html *:not(code) {
+html *:not(code) {
 	font-family: var(--font-family);
-} */
+}
 
 code {
 	font-family: "Source Code Pro", monospace;
