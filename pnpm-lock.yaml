@@ -221,8 +221,8 @@ devDependencies:
     specifier: ^29.5.12
     version: 29.5.12
   '@types/loadable__component':
-    specifier: ^5.13.8
-    version: 5.13.8
+    specifier: ^5.13.9
+    version: 5.13.9
   '@types/murmurhash-js':
     specifier: ^1.0.6
     version: 1.0.6
@@ -4509,8 +4509,8 @@ packages:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: true
 
-  /@types/loadable__component@5.13.8:
-    resolution: {integrity: sha512-0FF/WihuPkR5IFOHiBzC95bSACvgQNUQCuNy1WF8F/lCBBHgS2SxarIk4CTjWM10A72ovpmXZDRcuAXZNS+/kQ==}
+  /@types/loadable__component@5.13.9:
+    resolution: {integrity: sha512-QWOtIkwZqHNdQj3nixQ8oyihQiTMKZLk/DNuvNxMSbTfxf47w+kqcbnxlUeBgAxdOtW0Dh48dTAIp83iJKtnrQ==}
     dependencies:
       '@types/react': 18.2.79
     dev: true
