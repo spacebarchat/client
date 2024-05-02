@@ -75,8 +75,8 @@ dependencies:
     specifier: 2.0.0-beta.2
     version: 2.0.0-beta.2
   '@tauri-apps/plugin-stronghold':
-    specifier: 2.0.0-beta.1
-    version: 2.0.0-beta.1
+    specifier: 2.0.0-beta.3
+    version: 2.0.0-beta.3
   '@tauri-apps/plugin-updater':
     specifier: 2.0.0-beta.1
     version: 2.0.0-beta.1
@@ -3646,10 +3646,10 @@ packages:
       '@tauri-apps/api': 2.0.0-beta.4
     dev: false
 
-  /@tauri-apps/plugin-stronghold@2.0.0-beta.1:
-    resolution: {integrity: sha512-WGkJ9GmLZQzxxPGVvd4KhMQPJ85CoIZPCQvTlT8zCi/LucvUuc7G3aBTs/wFuEDqbNB/dhb9leK2hYAUpRu9kw==}
+  /@tauri-apps/plugin-stronghold@2.0.0-beta.3:
+    resolution: {integrity: sha512-MQrh83+035kHMIPeDZae7nbpQ0kCtAATNzDw7luBdk65+eYFKIlrMUQAtY1SnK5vtcpXhXYAgwVA6NviN2EFRw==}
     dependencies:
-      '@tauri-apps/api': 2.0.0-beta.2
+      '@tauri-apps/api': 2.0.0-beta.11
     dev: false
 
   /@tauri-apps/plugin-updater@2.0.0-beta.1:
