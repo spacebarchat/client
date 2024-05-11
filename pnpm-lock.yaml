@@ -132,8 +132,8 @@ dependencies:
     specifier: ^18.2.0
     version: 18.2.0
   react-advanced-cropper:
-    specifier: ^0.19.5
-    version: 0.19.5(react@18.2.0)
+    specifier: ^0.19.6
+    version: 0.19.6(react@18.2.0)
   react-colorful:
     specifier: ^5.6.1
     version: 5.6.1(react-dom@18.2.0)(react@18.2.0)
@@ -12819,8 +12819,8 @@ packages:
       '@types/node': 10.17.60
     dev: true
 
-  /react-advanced-cropper@0.19.5(react@18.2.0):
-    resolution: {integrity: sha512-Ra/qjS2MLqbn1FOzizm4pETHlqBxJUeZhrEO28mrNw2AOiPaX7jh2PZJqfWhORKCxkoSG7HsAe+pqXGlfC2nnw==}
+  /react-advanced-cropper@0.19.6(react@18.2.0):
+    resolution: {integrity: sha512-Qm690UgsrvUb2QGuJd2qP4x81B3OQo00wPncXyNGNnOQ/gGviCNZzQFa+FLWM9PetTahL53qjHZzTT21r0W3FA==}
     engines: {node: '>=8', npm: '>=5'}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
