@@ -8,5 +8,13 @@
 	"quoteProps": "as-needed",
 	"useTabs": true,
 	"singleQuote": false,
-	"printWidth": 120
+	"printWidth": 120,
+	"overrides": [
+		{
+			"files": ["*.yml", "*.yaml"],
+			"options": {
+				"tabWidth": 2
+			}
+		}
+	]
 }
