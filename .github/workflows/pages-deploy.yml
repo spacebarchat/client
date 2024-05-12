@@ -6,6 +6,8 @@ on:
 
 jobs:
   build:
+    # prevent running on forks
+    if: github.repository == 'spacebarchat/client'
     runs-on: ubuntu-latest
 
     steps:
