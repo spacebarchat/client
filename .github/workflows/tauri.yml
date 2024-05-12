@@ -47,4 +47,3 @@ jobs:
           includeDebug: true
           includeRelease: true
           includeUpdaterJson: true
-          buildIdAsVersion: true
