@@ -60,8 +60,8 @@ dependencies:
     specifier: 2.0.0-beta.2
     version: 2.0.0-beta.2
   '@tauri-apps/plugin-dialog':
-    specifier: 2.0.0-beta.2
-    version: 2.0.0-beta.2
+    specifier: 2.0.0-beta.3
+    version: 2.0.0-beta.3
   '@tauri-apps/plugin-log':
     specifier: 2.0.0-beta.3
     version: 2.0.0-beta.3
@@ -4206,10 +4206,10 @@ packages:
       '@tauri-apps/api': 2.0.0-beta.4
     dev: false
 
-  /@tauri-apps/plugin-dialog@2.0.0-beta.2:
-    resolution: {integrity: sha512-WugTn/8d5jYA0GL1JRIJgA1OSxG0h2V4PSZZzehgA3v7rPlIU6w9s2+dSRqj55aMj6hm3Az9YbQqC18nuaHkpw==}
+  /@tauri-apps/plugin-dialog@2.0.0-beta.3:
+    resolution: {integrity: sha512-B3KxLjFxCVB3AIYWN/xY9HM6tO7m4u6aQk1t0ZrBToXThowRU9f62527EO0oj0uNlyKlXx20up68NkpdlER0yg==}
     dependencies:
-      '@tauri-apps/api': 2.0.0-beta.4
+      '@tauri-apps/api': 2.0.0-beta.11
     dev: false
 
   /@tauri-apps/plugin-log@2.0.0-beta.3:
@@ -8471,7 +8471,7 @@ packages:
     dependencies:
       foreground-child: 3.1.1
       jackspeak: 2.3.6
-      minimatch: 9.0.3
+      minimatch: 9.0.4
       minipass: 7.0.4
       path-scurry: 1.10.1
     dev: true
