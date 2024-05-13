@@ -4145,15 +4145,16 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-updater"
-version = "2.0.0-beta.4"
+version = "2.0.0-beta.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3f34be6851c7e84ca99b3bddd57e033d55d8bfca1dd153d6e8d18e9f1fb95469"
+checksum = "0d1a632f5b0cc00911c3f379b0b69a4ccf5fd22eb10d022010dfb02717d5b6bc"
 dependencies = [
  "base64 0.22.0",
  "dirs-next",
  "flate2",
  "futures-util",
  "http",
+ "infer",
  "minisign-verify",
  "reqwest",
  "semver",
