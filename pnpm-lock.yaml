@@ -12,8 +12,8 @@ dependencies:
     specifier: ^11.11.0
     version: 11.11.0(@emotion/react@11.11.4)(@types/react@18.2.79)(react@18.2.0)
   '@floating-ui/react':
-    specifier: ^0.26.9
-    version: 0.26.9(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.26.13
+    version: 0.26.13(react-dom@18.2.0)(react@18.2.0)
   '@fontsource/roboto':
     specifier: ^5.0.8
     version: 5.0.8
@@ -2344,8 +2344,8 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@floating-ui/react@0.26.9(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-p86wynZJVEkEq2BBjY/8p2g3biQ6TlgT4o/3KgFKyTWoJLU1GZ8wpctwRqtkEl2tseYA+kw7dBAIDFcednfI5w==}
+  /@floating-ui/react@0.26.13(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-kBa9wntpugzrZ8t/4yWelvSmEKZdeTXTJzrxqyrLmcU/n1SM4nvse8yQh2e1b37rJGvtu0EplV9+IkBrCJ1vkw==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -8471,7 +8471,7 @@ packages:
     dependencies:
       foreground-child: 3.1.1
       jackspeak: 2.3.6
-      minimatch: 9.0.3
+      minimatch: 9.0.4
       minipass: 7.0.4
       path-scurry: 1.10.1
     dev: true
