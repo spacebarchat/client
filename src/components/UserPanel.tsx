@@ -70,6 +70,7 @@ const ActionsWrapper = styled.div`
 
 function UserPanel() {
 	const app = useAppStore();
+	const presence = app.presences.get(app.account!.id);
 
 	const openSettingsModal = () => {
 		modalController.push({
@@ -88,7 +89,7 @@ function UserPanel() {
 			<Section>
 				<Container>
 					<AvatarWrapper>
-						<Avatar popoutPlacement="top" onClick={null} />
+						<Avatar popoutPlacement="top" onClick={null} showPresence presence={presence} />
 						<Name>
 							<Username>{app.account?.username}</Username>
 							<Subtext>#{app.account?.discriminator}</Subtext>
