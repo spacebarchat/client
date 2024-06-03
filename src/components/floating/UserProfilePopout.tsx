@@ -184,11 +184,10 @@ function UserProfilePopout({ user, member }: Props) {
 					presence={presence}
 					statusDotStyle={{
 						size: 25,
-						left: 55,
-						bottom: 28,
+						borderThickness: 0.3,
 					}}
 					showPresence
-					innerWrapperSize={92}
+					isFloating
 				/>
 			</Top>
 			<Bottom>
