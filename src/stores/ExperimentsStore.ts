@@ -1,6 +1,6 @@
 import { action, computed, makeAutoObservable, ObservableMap } from "mobx";
 
-export type ExperimentType = "test" | "message_queue";
+export type ExperimentType = "test" | "message_queue" | "presence_rings";
 
 export interface ExperimentTreatment {
 	id: number;
@@ -56,6 +56,27 @@ export const EXPERIMENT_LIST: Experiment[] = [
 			},
 		],
 	},
+	{
+		id: "presence_rings",
+		name: "Presence Rings",
+		description: "Use rings for presence status instead of dots",
+		treatments: [
+			{
+				id: 0,
+				name: "Control",
+			},
+			{
+				id: 1,
+				name: "Treatment 1",
+				description: "Use presence dots",
+			},
+			{
+				id: 2,
+				name: "Treatment 2",
+				description: "Use presence rings",
+			},
+		],
+	},
 ];
 
 export interface Data {
@@ -76,7 +97,7 @@ export default class ExperimentsStore {
 	}
 
 	@computed
-	getTreatment(id: ExperimentType) {
+	getTreatment(id: ExperimentType): ExperimentTreatment | undefined {
 		const treatment = this.experiments.get(id);
 		const experiment = EXPERIMENT_LIST.find((x) => x.id === id);
 		return experiment?.treatments.find((x) => x.id === treatment);
