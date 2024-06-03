@@ -27,6 +27,7 @@ interface ModalProps {
 	disabled?: boolean;
 	withEmptyActionBar?: boolean;
 	withoutCloseButton?: boolean;
+	fullScreen?: boolean;
 }
 
 /**
@@ -48,7 +49,7 @@ export const ModalBase = styled.div<{ closing?: boolean }>`
 	animation-fill-mode: forwards;
 
 	display: grid;
-	overflow-y: auto;
+	overflow: hidden;
 	place-items: center;
 
 	color: var(--text);
@@ -72,12 +73,8 @@ export const ModalBase = styled.div<{ closing?: boolean }>`
  * Wrapper for modal content, handles the sizing and positioning
  */
 export const ModalWrapper = styled.div<
-	Pick<ModalProps, "transparent" | "maxWidth" | "maxHeight"> & { actions: boolean }
+	Pick<ModalProps, "transparent" | "maxWidth" | "maxHeight"> & { actions: boolean; fullScreen?: boolean }
 >`
-	min-height: 200px;
-	max-width: min(calc(100vw - 20px), ${(props) => props.maxWidth ?? "450px"});
-	max-height: min(calc(100vh - 20px), ${(props) => props.maxHeight ?? "650px"});
-
 	margin: 20px;
 	display: flex;
 	flex-direction: column;
@@ -86,17 +83,28 @@ export const ModalWrapper = styled.div<
 	animation-duration: 0.25s;
 	animation-timing-function: cubic-bezier(0.3, 0.3, 0.18, 1.1);
 
+	overflow: hidden;
+	background: var(--background-tertiary);
+
 	${(props) =>
-		!props.maxWidth &&
+		!props.fullScreen &&
+		css`
+			min-height: 200px;
+			max-width: min(calc(100vw - 20px), ${props.maxWidth ?? "450px"});
+			max-height: min(calc(100vh - 20px), ${props.maxHeight ?? "650px"});
+		`}
+
+	${(props) =>
+		props.fullScreen &&
 		css`
 			width: 100%;
+			height: 100%;
 		`}
 
 	${(props) =>
 		!props.transparent &&
+		!props.fullScreen &&
 		css`
-			overflow: hidden;
-			background: var(--background-primary);
 			border-radius: 8px;
 		`}
 `;
@@ -122,12 +130,6 @@ export const ModalContentContainer = styled.div<Pick<ModalProps, "transparent" |
 
 	overflow-y: auto;
 	font-size: 0.9375rem;
-
-	${(props) =>
-		!props.transparent &&
-		css`
-			background: var(--background-primary);
-		`}
 `;
 
 const Actions = styled.div`
