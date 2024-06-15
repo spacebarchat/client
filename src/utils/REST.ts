@@ -4,6 +4,12 @@ import { Globals } from "./Globals";
 import Logger from "./Logger";
 import { RouteSettings } from "./constants";
 
+const DEFAULT_HEADERS = {
+	mode: "cors",
+	"User-Agent": "Spacebar-Client/1.0",
+	accept: "application/json",
+};
+
 export default class REST {
 	private readonly logger = new Logger("REST");
 	private app: AppStore;
@@ -11,11 +17,7 @@ export default class REST {
 
 	constructor(app: AppStore) {
 		this.app = app;
-		this.headers = {
-			mode: "cors",
-			"User-Agent": "Spacebar-Client/1.0",
-			accept: "application/json",
-		};
+		this.headers = DEFAULT_HEADERS;
 	}
 
 	public setToken(token: string | null) {
@@ -34,7 +36,10 @@ export default class REST {
 		}
 
 		// get endpoints from .well-known
-		const wellKnown = await fetch(`${url.origin}/.well-known/spacebar`)
+		const wellKnown = await fetch(`${url.origin}/.well-known/spacebar`, {
+			method: "GET",
+			headers: DEFAULT_HEADERS,
+		})
 			.then((x) => x.json())
 			.then((x) => new URL(x.api));
 
@@ -45,6 +50,10 @@ export default class REST {
 	static async getInstanceDomains(url: URL, knownas: URL): Promise<RouteSettings> {
 		const endpoints = await fetch(
 			`${url.toString()}${url.pathname.includes("api") ? "" : "api"}/policies/instance/domains`,
+			{
+				method: "GET",
+				headers: DEFAULT_HEADERS,
+			},
 		).then((x) => x.json());
 		return {
 			api: endpoints.apiEndpoint,
