@@ -5,7 +5,6 @@ import Logger from "./Logger";
 import { RouteSettings } from "./constants";
 
 const DEFAULT_HEADERS = {
-	mode: "cors",
 	"User-Agent": "Spacebar-Client/1.0",
 	accept: "application/json",
 };
@@ -39,6 +38,7 @@ export default class REST {
 		const wellKnown = await fetch(`${url.origin}/.well-known/spacebar`, {
 			method: "GET",
 			headers: DEFAULT_HEADERS,
+			mode: "cors",
 		})
 			.then((x) => x.json())
 			.then((x) => new URL(x.api));
@@ -53,6 +53,7 @@ export default class REST {
 			{
 				method: "GET",
 				headers: DEFAULT_HEADERS,
+				mode: "cors",
 			},
 		).then((x) => x.json());
 		return {
@@ -98,6 +99,7 @@ export default class REST {
 			return fetch(url, {
 				method: "GET",
 				headers: this.headers,
+				mode: "cors",
 			})
 				.then(async (res) => {
 					if (res.headers.get("content-length") !== "0") {
@@ -132,6 +134,7 @@ export default class REST {
 					"Content-Type": "application/json",
 				},
 				body: body ? JSON.stringify(body) : undefined,
+				mode: "cors",
 			})
 				.then(async (res) => {
 					// handle json if content type is json
@@ -173,6 +176,7 @@ export default class REST {
 					"Content-Type": "application/json",
 				},
 				body: body ? JSON.stringify(body) : undefined,
+				mode: "cors",
 			})
 				.then(async (res) => {
 					// handle json if content type is json
@@ -257,6 +261,7 @@ export default class REST {
 						...headers,
 						...this.headers,
 					},
+					mode: "cors",
 				})
 					// .then((res) => res.json())
 					.then(() => resolve())
