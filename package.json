@@ -41,7 +41,7 @@
 		"framer-motion": "^11.1.3",
 		"marked-react": "^2.0.0",
 		"missing-native-js-functions": "^1.4.3",
-		"mobx": "^6.12.0",
+		"mobx": "^6.12.4",
 		"mobx-react-lite": "^4.0.7",
 		"murmurhash-js": "^1.0.0",
 		"prismjs": "^1.29.0",
