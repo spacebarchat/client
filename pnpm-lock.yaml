@@ -117,11 +117,15 @@ dependencies:
     specifier: ^1.4.3
     version: 1.4.3
   mobx:
-    specifier: ^6.12.0
-    version: 6.12.0
+    specifier: ^6.12.4
+    version: 6.12.4
   mobx-react-lite:
     specifier: ^4.0.7
+<<<<<<< HEAD
     version: 4.0.7(mobx@6.12.0)(react-dom@18.2.0)(react-native@0.74.2)(react@18.2.0)
+=======
+    version: 4.0.7(mobx@6.12.4)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)
+>>>>>>> 716d10a (Bump mobx from 6.12.0 to 6.12.4)
   murmurhash-js:
     specifier: ^1.0.0
     version: 1.0.0
@@ -11304,7 +11308,11 @@ packages:
     hasBin: true
     dev: false
 
+<<<<<<< HEAD
   /mobx-react-lite@4.0.7(mobx@6.12.0)(react-dom@18.2.0)(react-native@0.74.2)(react@18.2.0):
+=======
+  /mobx-react-lite@4.0.7(mobx@6.12.4)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0):
+>>>>>>> 716d10a (Bump mobx from 6.12.0 to 6.12.4)
     resolution: {integrity: sha512-RjwdseshK9Mg8On5tyJZHtGD+J78ZnCnRaxeQDSiciKVQDUbfZcXhmld0VMxAwvcTnPEHZySGGewm467Fcpreg==}
     peerDependencies:
       mobx: ^6.9.0
@@ -11317,15 +11325,15 @@ packages:
       react-native:
         optional: true
     dependencies:
-      mobx: 6.12.0
+      mobx: 6.12.4
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-native: 0.74.2(@babel/core@7.23.9)(@babel/preset-env@7.23.9)(@types/react@18.2.79)(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  /mobx@6.12.0:
-    resolution: {integrity: sha512-Mn6CN6meXEnMa0a5u6a5+RKrqRedHBhZGd15AWLk9O6uFY4KYHzImdt8JI8WODo1bjTSRnwXhJox+FCUZhCKCQ==}
+  /mobx@6.12.4:
+    resolution: {integrity: sha512-uIymg89x+HmItX1p3MG+d09irn2k63J6biftZ5Ok+UpNojS1I3NJPLfcmJT9ANnUltNlHi+HQqrVyxiAN8ISYg==}
     dev: false
 
   /ms@2.0.0:
