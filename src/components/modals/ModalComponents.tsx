@@ -89,7 +89,6 @@ export const ModalWrapper = styled.div<
 	${(props) =>
 		!props.fullScreen &&
 		css`
-			min-height: 200px;
 			max-width: min(calc(100vw - 20px), ${props.maxWidth ?? "450px"});
 			max-height: min(calc(100vh - 20px), ${props.maxHeight ?? "650px"});
 		`}
