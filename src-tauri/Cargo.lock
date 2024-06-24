@@ -2435,6 +2435,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "72ef4a56884ca558e5ddb05a1d1e7e1bfd9a68d9ed024c21704cc98872dae1bb"
 
 [[package]]
+name = "notify-rust"
+version = "4.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5312f837191c317644f313f7b2b39f9cb1496570c74f7c17152dd3961219551f"
+dependencies = [
+ "log",
+ "mac-notification-sys",
+ "serde",
+ "tauri-winrt-notification",
+ "zbus",
+]
+
+[[package]]
 name = "nu-ansi-term"
 version = "0.46.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4212,23 +4225,21 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-notification"
-version = "2.0.0-beta.7"
+version = "2.0.0-beta.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "39ac3fe3293a3646317fd2d62f5c67a96ed911346d2969261dbd0a755dae8b55"
+checksum = "0fcd28c525b74cdeb9015a60bfeef4b080e67de6ba4b3989f8d843578ba1870f"
 dependencies = [
  "log",
- "mac-notification-sys",
+ "notify-rust",
  "rand 0.8.5",
  "serde",
  "serde_json",
  "serde_repr",
  "tauri",
  "tauri-plugin",
- "tauri-winrt-notification",
  "thiserror",
  "time",
  "url",
- "zbus",
 ]
 
 [[package]]
@@ -4392,9 +4403,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-winrt-notification"
-version = "0.3.1"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "36778770f6c7f9a60ec08fcd2d923915a4e9015ea36d4dde80ba573345312f0a"
+checksum = "f89f5fb70d6f62381f5d9b2ba9008196150b40b75f3068eb24faeddf1c686871"
 dependencies = [
  "quick-xml",
  "windows 0.56.0",
