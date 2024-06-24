@@ -25,7 +25,7 @@ dependencies:
     version: 1.10.1(react-dom@18.2.0)(react@18.2.0)
   '@hookform/resolvers':
     specifier: ^3.3.4
-    version: 3.3.4(react-hook-form@7.51.3)
+    version: 3.3.4(react-hook-form@7.52.0)
   '@mattjennings/react-modal-stack':
     specifier: ^1.0.4
     version: 1.0.4(react@18.2.0)
@@ -147,8 +147,8 @@ dependencies:
     specifier: ^0.3.1
     version: 0.3.1(prop-types@15.8.1)(react@18.2.0)
   react-hook-form:
-    specifier: ^7.51.3
-    version: 7.51.3(react@18.2.0)
+    specifier: ^7.52.0
+    version: 7.52.0(react@18.2.0)
   react-infinite-scroll-component:
     specifier: ^6.1.0
     version: 6.1.0(react@18.2.0)
@@ -2422,12 +2422,12 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@hookform/resolvers@3.3.4(react-hook-form@7.51.3):
+  /@hookform/resolvers@3.3.4(react-hook-form@7.52.0):
     resolution: {integrity: sha512-o5cgpGOuJYrd+iMKvkttOclgwRW86EsWJZZRC23prf0uU2i48Htq4PuT73AVb9ionFyZrwYEITuOFGF+BydEtQ==}
     peerDependencies:
       react-hook-form: ^7.0.0
     dependencies:
-      react-hook-form: 7.51.3(react@18.2.0)
+      react-hook-form: 7.52.0(react@18.2.0)
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:
@@ -12990,11 +12990,11 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-hook-form@7.51.3(react@18.2.0):
-    resolution: {integrity: sha512-cvJ/wbHdhYx8aviSWh28w9ImjmVsb5Y05n1+FW786vEZQJV5STNM0pW6ujS+oiBecb0ARBxJFyAnXj9+GHXACQ==}
+  /react-hook-form@7.52.0(react@18.2.0):
+    resolution: {integrity: sha512-mJX506Xc6mirzLsmXUJyqlAI3Kj9Ph2RhplYhUVffeOQSnubK2uVqBFOBJmvKikvbFV91pxVXmDiR+QMF19x6A==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
-      react: ^16.8.0 || ^17 || ^18
+      react: ^16.8.0 || ^17 || ^18 || ^19
     dependencies:
       react: 18.2.0
     dev: false
@@ -15769,6 +15769,7 @@ packages:
 
   /workbox-google-analytics@6.6.0:
     resolution: {integrity: sha512-p4DJa6OldXWd6M9zRl0H6vB9lkrmqYFkRQ2xEiNdBFp9U0LhsGO7hsBscVEyH9H2/3eZZt8c97NB2FD9U2NJ+Q==}
+    deprecated: It is not compatible with newer versions of GA starting with v4, as long as you are using GAv3 it should be ok, but the package is not longer being maintained
     dependencies:
       workbox-background-sync: 6.6.0
       workbox-core: 6.6.0
