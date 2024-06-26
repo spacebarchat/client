@@ -13,7 +13,6 @@ import FloatingTrigger from "../floating/FloatingTrigger";
 const Container = styled.div`
 	font-size: 16px;
 	font-weight: var(--font-weight-medium);
-	user-select: none;
 
 	&:hover {
 		text-decoration: underline;

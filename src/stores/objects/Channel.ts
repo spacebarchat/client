@@ -3,7 +3,6 @@ import type {
 	APIChannel,
 	APIInvite,
 	APIOverwrite,
-	APIReadState,
 	APIUser,
 	APIWebhook,
 	GatewayVoiceState,
@@ -53,7 +52,7 @@ export default class Channel {
 	@observable retentionPolicyId?: string;
 	@observable messages: MessageStore;
 	@observable voiceStates?: GatewayVoiceState[];
-	@observable readStates?: APIReadState[];
+	// @observable readStates?: APIReadState[]; ????? this seems wrong
 	@observable webhooks?: APIWebhook[];
 	@observable flags: number;
 	@observable defaultThreadRateLimitPerUser: number;
@@ -89,7 +88,7 @@ export default class Channel {
 		this.invites = channel.invites;
 		this.retentionPolicyId = channel.retention_policy_id;
 		this.voiceStates = channel.voice_states;
-		this.readStates = channel.read_states;
+		// this.readStates = channel.read_states;
 		this.webhooks = channel.webhooks;
 		this.flags = channel.flags;
 		this.defaultThreadRateLimitPerUser = channel.default_thread_rate_limit_per_user;

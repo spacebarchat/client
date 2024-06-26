@@ -52,7 +52,6 @@
 		"react-dom": "^18.2.0",
 		"react-fps-stats": "^0.3.1",
 		"react-hook-form": "^7.51.3",
-		"react-infinite-scroll-component": "^6.1.0",
 		"react-loading-skeleton": "^3.4.0",
 		"react-markdown": "^9.0.1",
 		"react-measure": "^2.5.2",
@@ -71,6 +70,7 @@
 		"reoverlay": "^1.0.3",
 		"styled-components": "5.3.11",
 		"use-resize-observer": "^9.1.0",
+		"virtua": "^0.33.1",
 		"yup": "^1.4.0"
 	},
 	"devDependencies": {

@@ -107,8 +107,7 @@ export default class MessageStore {
 					});
 				}
 				return groups;
-			}, [] as MessageGroup[])
-			.reverse();
+			}, [] as MessageGroup[]);
 
 		return sortedGroups;
 	}

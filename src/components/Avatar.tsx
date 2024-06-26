@@ -12,6 +12,7 @@ const Wrapper = styled(Container)<{ size: number; hasClick?: boolean }>`
 	background-color: transparent;
 	display: flex;
 	flex-direction: column;
+	user-select: none;
 `;
 
 interface Props {
