@@ -42,7 +42,7 @@ function Message({ message, header }: Props) {
 		>
 			<MessageInfo>
 				{header ? (
-					<Avatar key={message.author.id} user={message.author} size={40} />
+					<Avatar key={message.author.id} user={message.author} size={32} />
 				) : (
 					<MessageDetails message={message} position="left" />
 				)}

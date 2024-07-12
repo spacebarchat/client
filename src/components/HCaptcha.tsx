@@ -1,36 +1,7 @@
 import HCaptchaLib from "@hcaptcha/react-hcaptcha";
 import React from "react";
 import styled from "styled-components";
-import Container from "./Container";
-
-export const Wrapper = styled(Container)`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
-	background-color: var(--background-secondary);
-`;
-
-export const AuthBox = styled(Container)`
-	background-color: var(--background-primary-alt);
-	padding: 32px;
-	font-size: 18px;
-	color: var(--text-muted);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
-
-	@media (max-width: 480px) {
-		width: 100%;
-		height: 100%;
-	}
-
-	@media (min-width: 480px) {
-		width: 480px;
-		border-radius: 18px;
-	}
-`;
+import { AuthContainer, Wrapper } from "./AuthComponents";
 
 export const HeaderContainer = styled.div`
 	width: 100%;
@@ -63,7 +34,7 @@ interface Props {
 function HCaptcha(props: Props) {
 	return (
 		<Wrapper>
-			<AuthBox>
+			<AuthContainer>
 				<HeaderContainer>
 					<Header>Welcome Back!</Header>
 					<SubHeader>Beep boop. Boop beep?</SubHeader>
@@ -79,7 +50,7 @@ function HCaptcha(props: Props) {
 						onExpire={props.onExpire}
 					/>
 				</HeaderContainer>
-			</AuthBox>
+			</AuthContainer>
 		</Wrapper>
 	);
 }

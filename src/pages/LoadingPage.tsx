@@ -11,8 +11,8 @@ const Wrapper = styled.div`
 	justify-content: center;
 	align-items: center;
 	display: flex;
-	height: 100vh;
 	flex-direction: column;
+	flex: 1;
 `;
 
 const SpacebarLogo = styled(SpacebarLogoBlue)`
@@ -29,7 +29,11 @@ function LoadingPage() {
 	const app = useAppStore();
 
 	return (
-		<Container>
+		<Container
+			style={{
+				flex: 1,
+			}}
+		>
 			<Wrapper>
 				<SpacebarLogo />
 				<PulseLoader color="var(--text)" />

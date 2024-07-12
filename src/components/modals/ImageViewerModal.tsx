@@ -26,7 +26,15 @@ export function ImageViewerModal(props: Props) {
 	const height = props.height ?? props.attachment.height ?? 0;
 
 	return (
-		<Modal {...props} transparent maxWidth="100vw" maxHeight="100vh" withoutCloseButton withEmptyActionBar>
+		<Modal
+			{...props}
+			transparent
+			maxWidth="100vw"
+			maxHeight="100vh"
+			withoutCloseButton
+			withEmptyActionBar
+			padding="0"
+		>
 			<Container>
 				{props.isVideo ? (
 					<video

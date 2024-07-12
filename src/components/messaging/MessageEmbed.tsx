@@ -9,13 +9,11 @@ import Markdown from "../markdown/Markdown";
 import MarkdownRenderer from "../markdown/MarkdownRenderer";
 import styles from "./Embed.module.css";
 import EmbedMedia from "./EmbedMedia";
-import { MESSAGE_AREA_PADDING, MessageAreaWidthContext } from "./MessageList";
+import { MessageAreaWidthContext } from "./MessageList";
 
-const MAX_EMBED_WIDTH = 300;
-const MAX_EMBED_HEIGHT = 640;
-const THUMBNAIL_MAX_WIDTH = 80;
+const LINK_EMBED_MAX_WIDTH = 516;
+const RICH_EMBED_MAX_WIDTH = 428;
 const CONTAINER_PADDING = 24;
-const MAX_PREVIEW_SIZE = 150;
 const EMBEDDABLE_PROVIDERS = ["Spotify" /*, "Bandcamp"*/];
 
 interface Props {
@@ -24,19 +22,19 @@ interface Props {
 
 function MessageEmbed({ embed }: Props) {
 	const c = React.useContext(MessageAreaWidthContext);
-	const maxWidth = Math.min(c - MESSAGE_AREA_PADDING, MAX_EMBED_WIDTH);
+	// const maxWidth = Math.min(c - MESSAGE_AREA_PADDING, MAX_EMBED_WIDTH);
 
-	function calculateSize(w: number, h: number): { width: number; height: number } {
-		const limitingWidth = Math.min(w, maxWidth);
-		const limitingHeight = Math.min(MAX_EMBED_HEIGHT, h);
+	// function calculateSize(w: number, h: number): { width: number; height: number } {
+	// 	const limitingWidth = Math.min(w, maxWidth);
+	// 	const limitingHeight = Math.min(MAX_EMBED_HEIGHT, h);
 
-		// Calculate smallest possible WxH.
-		const width = Math.min(limitingWidth, limitingHeight * (w / h));
+	// 	// Calculate smallest possible WxH.
+	// 	const width = Math.min(limitingWidth, limitingHeight * (w / h));
 
-		const height = Math.min(limitingHeight, limitingWidth * (h / w));
+	// 	const height = Math.min(limitingHeight, limitingWidth * (h / w));
 
-		return { width, height };
-	}
+	// 	return { width, height };
+	// }
 
 	// Determine special embed size.
 	let mw, mh;
@@ -47,42 +45,14 @@ function MessageEmbed({ embed }: Props) {
 		embed.type === EmbedType.GIFV ||
 		embed.type === EmbedType.Image;
 
-	if (embed.image) {
-		mw = embed.image?.width ?? MAX_EMBED_WIDTH;
-		mh = embed.image?.height ?? 0;
-	} else if (embed.thumbnail) {
-		mw = embed.thumbnail.width ?? MAX_EMBED_WIDTH;
-		mh = embed.thumbnail.height ?? 0;
-	} else {
-		switch (embed.provider?.name) {
-			case "YouTube":
-			case "Bandcamp": {
-				mw = embed.video?.width ?? 1280;
-				mh = embed.video?.height ?? 720;
-				break;
-			}
-			case "Twitch":
-			case "Lightspeed":
-			case "Streamable": {
-				mw = 1280;
-				mh = 720;
-				break;
-			}
-			default: {
-				mw = MAX_EMBED_WIDTH;
-				mh = 1;
-			}
-		}
-	}
-
-	const { width, height } = calculateSize(mw, mh);
+	// const { width, height } = calculateSize(mw, mh);
 	if (
 		embed.type === EmbedType.GIFV ||
 		embed.type === EmbedType.Image ||
-		embed.type === EmbedType.Video ||
+		(embed.type === EmbedType.Video && embed.provider?.name !== "YouTube") ||
 		EMBEDDABLE_PROVIDERS.includes(embed.provider?.name ?? "")
 	) {
-		return <EmbedMedia embed={embed} width={height} height={height} />;
+		return <EmbedMedia embed={embed} />;
 	}
 
 	return (
@@ -90,10 +60,15 @@ function MessageEmbed({ embed }: Props) {
 			className={classNames(styles.embed, styles.website)}
 			style={{
 				borderInlineStartColor: embed.color ? decimalColorToHex(embed.color) : "var(--background-tertiary)",
-				maxWidth: width + CONTAINER_PADDING,
+				maxWidth: 432,
 			}}
 		>
-			<div className={styles.embedGap}>
+			<div
+				className={styles.embedGap}
+				style={{
+					maxWidth: embed.type === EmbedType.Rich ? RICH_EMBED_MAX_WIDTH : LINK_EMBED_MAX_WIDTH,
+				}}
+			>
 				<div style={{ display: "flex" }}>
 					<div className={styles.embedGap}>
 						{embed.type !== EmbedType.Rich && embed.provider && (
@@ -108,7 +83,7 @@ function MessageEmbed({ embed }: Props) {
 										className={styles.embedAuthorIcon}
 										src={embed.author.icon_url}
 										draggable={false}
-										onError={(e) => (e.currentTarget.style.display = "none")}
+										// onError={(e) => (e.currentTarget.style.display = "none")}
 									/>
 								)}
 								{embed.author.url ? (
@@ -178,7 +153,7 @@ function MessageEmbed({ embed }: Props) {
 
 				{(largeMedia || embed.type === EmbedType.Rich) && (
 					<div>
-						<EmbedMedia embed={embed} width={width} />
+						<EmbedMedia embed={embed} width={embed.provider?.name === "YouTube" ? 400 : undefined} />
 					</div>
 				)}
 
@@ -190,7 +165,7 @@ function MessageEmbed({ embed }: Props) {
 								className={styles.embedFooterIcon}
 								src={embed.footer.icon_url}
 								draggable={false}
-								onError={(e) => (e.currentTarget.style.display = "none")}
+								// onError={(e) => (e.currentTarget.style.display = "none")}
 							/>
 						)}
 						<span className={styles.embedFooterText}>
