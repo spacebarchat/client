@@ -310,4 +310,14 @@ export default class Channel {
 
 		return listId;
 	}
+
+	hasUnread() {
+		const readState = this.app.readStateStore.get(this.id);
+		if (!readState) {
+			// this.logger.warn(`Failed to find readstate for channel ${this.id}`); // this just causes unnecessary spam
+			return false;
+		}
+
+		return readState.lastMessageId !== this.lastMessageId;
+	}
 }

@@ -54,9 +54,12 @@ interface Props2 {
 }
 
 function ChatContent({ channel, guild }: Props2) {
+	const app = useAppStore();
+	const readstate = app.readStateStore.get(channel.id);
+
 	return (
 		<Container>
-			<MessageList guild={guild} channel={channel} />
+			<MessageList guild={guild} channel={channel} before={readstate?.lastMessageId} />
 			<MessageInput channel={channel} guild={guild} />
 			<TypingIndicator channel={channel} />
 		</Container>

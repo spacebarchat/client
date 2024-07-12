@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
-import { PulseLoader } from "react-spinners";
 import styled from "styled-components";
 import useResizeObserver from "use-resize-observer";
 import { VList, VListHandle } from "virtua";
@@ -11,6 +10,7 @@ import Channel from "../../stores/objects/Channel";
 import Guild from "../../stores/objects/Guild";
 import { Permissions } from "../../utils/Permissions";
 import { HorizontalDivider } from "../Divider";
+import SkeletonLoader from "../SkeletonLoader.tsx";
 import MessageGroup from "./MessageGroup";
 
 export const MessageAreaWidthContext = React.createContext(0);
@@ -43,18 +43,35 @@ function MessageList({ guild, channel, before }: Props) {
 	const logger = useLogger("MessageList.tsx");
 	const [hasMore, setHasMore] = useState(true);
 	const [canView, setCanView] = useState(false);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const messageGroups = channel.messages.groups;
 	const wrapperRef = useRef<HTMLDivElement>(null);
 	const { width } = useResizeObserver<HTMLDivElement>({ ref: wrapperRef });
 	const ref = useRef<VListHandle>(null);
 
 	useEffect(() => {
-		ref.current?.scrollToIndex(
-			messageGroups.reduce((p, c) => p + c.messages.length, 0) +
-				1 /* +1 to account for the spacer that adds some margin to the bottom */,
-		);
-	}, [messageGroups]);
+		// if (before) {
+		// 	// find message group containing the message
+		// 	const group = messageGroups.find((x) => x.messages.some((y) => y.id === before));
+		// 	const index = group
+		// 		? messageGroups.indexOf(group) +
+		// 		  (hasMore
+		// 				? 10
+		// 				: 0) /** +10 to account for the "skeleton" divs used to add some padding for scrolling */
+		// 		: -1;
+		// 	if (index !== -1) {
+		// 		ref.current?.scrollToIndex(index);
+
+		// 		return;
+		// 	}
+		// }
+
+		// this is for switching to a channel with cached messages, it ensures that we correctly set hasMore to false if there are messages but its less than 50
+		if (channel.messages.count > 0 && channel.messages.count < 50) setHasMore(false);
+
+		const hasSkeleton = hasMore || loading;
+		ref.current?.scrollToIndex(channel.messages.count + (hasSkeleton ? 30 : 0));
+	}, [messageGroups, hasMore, loading]);
 
 	const fetchMore = React.useCallback(() => {
 		setLoading(true);
@@ -76,11 +93,9 @@ function MessageList({ guild, channel, before }: Props) {
 		const before = lastGroup.messages[0].id;
 		logger.debug(`Fetching 50 messages before ${before} for channel ${channel.id}`);
 		channel.getMessages(app, false, 50, before).then((r) => {
-			if (r < 50) {
-				setHasMore(false);
-			}
+			if (r < 50) setHasMore(false);
+			setLoading(false);
 		});
-		setLoading(false);
 	}, [channel, messageGroups]);
 
 	useEffect(() => {
@@ -94,15 +109,19 @@ function MessageList({ guild, channel, before }: Props) {
 		}
 
 		if (guild && channel && channel.messages.count === 0) {
-			channel.getMessages(app, true, 50, before).then((r) => {
-				if (r < 50) {
-					setHasMore(false);
-				}
+			logger.debug(`Fetching 50 messages for channel ${channel.id}`);
+			channel.getMessages(app, true).then((r) => {
+				if (r < 50) setHasMore(false);
+
+				setLoading(false);
 			});
+		} else if (channel.messages.count !== 0) {
+			setLoading(false);
 		}
 
 		return () => {
 			logger.debug("MessageList unmounted");
+			setLoading(true);
 			setHasMore(true);
 			setCanView(false);
 		};
@@ -126,7 +145,12 @@ function MessageList({ guild, channel, before }: Props) {
 						}}
 						reverse
 					>
-						{((messageGroups.length === 0 && !loading) || (!loading && !hasMore)) && (
+						{Array.from({
+							length: hasMore || loading ? 30 : 0,
+						}).map((_, i) => (
+							<SkeletonLoader />
+						))}
+						{!loading && !hasMore && (
 							<EndMessageContainer>
 								<h1 style={{ fontWeight: 700, margin: "8px 0" }}>Welcome to #{channel.name}!</h1>
 								<p style={{ color: "var(--text-secondary)" }}>
@@ -134,17 +158,6 @@ function MessageList({ guild, channel, before }: Props) {
 								</p>
 								<HorizontalDivider />
 							</EndMessageContainer>
-						)}
-						{loading && (
-							<PulseLoader
-								style={{
-									display: "flex",
-									justifyContent: "center",
-									alignContent: "center",
-									margin: 30,
-								}}
-								color="var(--primary)"
-							/>
 						)}
 						{messageGroups.map((group, index) => renderGroup(group))}
 						<Spacer />

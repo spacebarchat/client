@@ -70,7 +70,7 @@ function EmbedMedia({ embed, width, height, thumbnail }: Props) {
 		height = newHeight;
 	}
 
-	console.log(`Original size: ${originalWidth}x${originalHeight} - Scaled size: ${width}x${height}`);
+	// console.log(`Original size: ${originalWidth}x${originalHeight} - Scaled size: ${width}x${height}`);
 
 	switch (embed.provider?.name) {
 		case "YouTube": {

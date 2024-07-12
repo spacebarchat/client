@@ -13,6 +13,7 @@ import GuildStore from "./GuildStore";
 import MessageQueue from "./MessageQueue";
 import PresenceStore from "./PresenceStore";
 import PrivateChannelStore from "./PrivateChannelStore";
+import ReadStateStore from "./ReadStateStore";
 import RoleStore from "./RoleStore";
 import ThemeStore from "./ThemeStore";
 import UpdaterStore from "./UpdaterStore";
@@ -47,6 +48,7 @@ export default class AppStore {
 	@observable rest = new REST(this);
 	@observable experiments = new ExperimentsStore();
 	@observable presences = new PresenceStore(this);
+	@observable readStateStore = new ReadStateStore(this);
 	@observable queue = new MessageQueue(this);
 	@observable updaterStore: UpdaterStore | null = null;
 

@@ -18,7 +18,7 @@ function MessageGroup({ group }: Props) {
 		<>
 			{messages.map((message, index) => {
 				if (message.type === MessageType.Default || message.type === MessageType.Reply) {
-					return <Message key={message.id} message={message} header={index === messages.length - 1} />;
+					return <Message key={message.id} message={message} header={index === 0} />;
 				} else return <SystemMessage key={message.id} message={message} />;
 			})}
 		</>

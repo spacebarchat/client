@@ -469,7 +469,7 @@ export default class GatewayConnectionStore {
 	 */
 	private onReady = (data: GatewayReadyDispatchData) => {
 		this.logger.info(`[Ready] took ${Date.now() - this.connectionStartTime!}ms`);
-		const { session_id, guilds, users, user, private_channels, sessions } = data;
+		const { session_id, guilds, users, user, private_channels, sessions, read_state } = data;
 		this.sessionId = session_id;
 		this.session = (sessions as GatewaySession[]).find((x) => x.session_id === session_id);
 
@@ -480,8 +480,9 @@ export default class GatewayConnectionStore {
 		if (users) {
 			this.app.users.addAll(users);
 		}
+
 		// TODO: store relationships
-		// TODO: store readstates
+		this.app.readStateStore.addAll(read_state.entries);
 		this.app.privateChannels.addAll(private_channels);
 
 		if (data.merged_members) {

@@ -86,7 +86,7 @@ export default class MessageStore {
 
 		const sortedGroups = sortedMessages
 			.slice()
-			.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+			.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
 			.reduce((groups, message) => {
 				const lastGroup = groups[groups.length - 1];
 				const lastMessage = lastGroup?.messages[lastGroup.messages.length - 1];
@@ -95,7 +95,7 @@ export default class MessageStore {
 					lastMessage.author.id === message.author.id &&
 					lastMessage.type === message.type &&
 					message.type === MessageType.Default &&
-					message.timestamp.getTime() - lastMessage.timestamp.getTime() <= 10 * 60 * 1000
+					lastMessage.timestamp.getTime() - message.timestamp.getTime() <= 10 * 60 * 1000
 				) {
 					// add to last group
 					lastGroup.messages.unshift(message);
@@ -107,7 +107,8 @@ export default class MessageStore {
 					});
 				}
 				return groups;
-			}, [] as MessageGroup[]);
+			}, [] as MessageGroup[])
+			.reverse();
 
 		return sortedGroups;
 	}
