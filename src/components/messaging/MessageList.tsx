@@ -1,8 +1,9 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import PulseLoader from "react-spinners/PulseLoader";
 import styled from "styled-components";
 import useResizeObserver from "use-resize-observer";
-import { VList, VListHandle } from "virtua";
 import useLogger from "../../hooks/useLogger";
 import { useAppStore } from "../../stores/AppStore";
 import { MessageGroup as MessageGroupType } from "../../stores/MessageStore";
@@ -10,95 +11,40 @@ import Channel from "../../stores/objects/Channel";
 import Guild from "../../stores/objects/Guild";
 import { Permissions } from "../../utils/Permissions";
 import { HorizontalDivider } from "../Divider";
-import SkeletonLoader from "../SkeletonLoader.tsx";
 import MessageGroup from "./MessageGroup";
 
 export const MessageAreaWidthContext = React.createContext(0);
 export const MESSAGE_AREA_PADDING = 82;
 
 const Container = styled.div`
+	flex: 1 1 auto;
+	overflow-y: auto;
 	display: flex;
-	flex: 1;
+	flex-direction: column-reverse;
 `;
 
 const EndMessageContainer = styled.div`
 	margin: 16px 16px 0 16px;
 `;
 
-const Spacer = styled.div`
-	height: 20px;
-`;
-
 interface Props {
 	guild: Guild;
 	channel: Channel;
-	before?: string;
 }
 
 /**
  * Main component for rendering the messages list of a channel
  */
-function MessageList({ guild, channel, before }: Props) {
+function MessageList({ guild, channel }: Props) {
 	const app = useAppStore();
 	const logger = useLogger("MessageList.tsx");
-	const [hasMore, setHasMore] = useState(true);
-	const [canView, setCanView] = useState(false);
-	const [loading, setLoading] = useState(true);
+	const [hasMore, setHasMore] = React.useState(true);
+	const [canView, setCanView] = React.useState(false);
 	const messageGroups = channel.messages.groups;
-	const wrapperRef = useRef<HTMLDivElement>(null);
-	const { width } = useResizeObserver<HTMLDivElement>({ ref: wrapperRef });
-	const ref = useRef<VListHandle>(null);
+	const ref = React.useRef<HTMLDivElement>(null);
+	const { width } = useResizeObserver<HTMLDivElement>({ ref });
 
-	useEffect(() => {
-		// if (before) {
-		// 	// find message group containing the message
-		// 	const group = messageGroups.find((x) => x.messages.some((y) => y.id === before));
-		// 	const index = group
-		// 		? messageGroups.indexOf(group) +
-		// 		  (hasMore
-		// 				? 10
-		// 				: 0) /** +10 to account for the "skeleton" divs used to add some padding for scrolling */
-		// 		: -1;
-		// 	if (index !== -1) {
-		// 		ref.current?.scrollToIndex(index);
-
-		// 		return;
-		// 	}
-		// }
-
-		// this is for switching to a channel with cached messages, it ensures that we correctly set hasMore to false if there are messages but its less than 50
-		if (channel.messages.count > 0 && channel.messages.count < 50) setHasMore(false);
-
-		const hasSkeleton = hasMore || loading;
-		ref.current?.scrollToIndex(channel.messages.count + (hasSkeleton ? 30 : 0));
-	}, [messageGroups, hasMore, loading]);
-
-	const fetchMore = React.useCallback(() => {
-		setLoading(true);
-		if (!channel.messages.count) {
-			logger.warn("channel has no messages, aborting!");
-			setLoading(false);
-			return;
-		}
-		// get last group
-		const lastGroup = messageGroups[messageGroups.length - 1];
-		if (!lastGroup) {
-			logger.warn("No last group found, aborting fetchMore");
-			setLoading(false);
-			return;
-		}
-		// ignore queued messages
-		if ("status" in lastGroup.messages[0]) return;
-		// get first message in the group to use as before
-		const before = lastGroup.messages[0].id;
-		logger.debug(`Fetching 50 messages before ${before} for channel ${channel.id}`);
-		channel.getMessages(app, false, 50, before).then((r) => {
-			if (r < 50) setHasMore(false);
-			setLoading(false);
-		});
-	}, [channel, messageGroups]);
-
-	useEffect(() => {
+	React.useEffect(() => {
 		const permission = Permissions.getPermission(app.account!.id, guild, channel);
 		const hasPermission = permission.has("READ_MESSAGE_HISTORY");
 		setCanView(hasPermission);
@@ -109,23 +55,42 @@ function MessageList({ guild, channel, before }: Props) {
 		}
 
 		if (guild && channel && channel.messages.count === 0) {
-			logger.debug(`Fetching 50 messages for channel ${channel.id}`);
 			channel.getMessages(app, true).then((r) => {
-				if (r < 50) setHasMore(false);
-
-				setLoading(false);
+				if (r < 50) {
+					setHasMore(false);
+				}
 			});
-		} else if (channel.messages.count !== 0) {
-			setLoading(false);
 		}
 
 		return () => {
 			logger.debug("MessageList unmounted");
-			setLoading(true);
 			setHasMore(true);
 			setCanView(false);
 		};
 	}, [guild, channel]);
+
+	const fetchMore = React.useCallback(() => {
+		if (!channel.messages.count) {
+			logger.warn("channel has no messages, aborting!");
+			return;
+		}
+		// get last group
+		const lastGroup = messageGroups[messageGroups.length - 1];
+		if (!lastGroup) {
+			logger.warn("No last group found, aborting fetchMore");
+			return;
+		}
+		// ignore queued messages
+		if ("status" in lastGroup.messages[0]) return;
+		// get first message in the group to use as before
+		const before = lastGroup.messages[0].id;
+		logger.debug(`Fetching 50 messages before ${before} for channel ${channel.id}`);
+		channel.getMessages(app, false, 50, before).then((r) => {
+			if (r < 50) {
+				setHasMore(false);
+			}
+		});
+	}, [channel, messageGroups]);
 
 	const renderGroup = React.useCallback(
 		(group: MessageGroupType) => (
@@ -136,21 +101,34 @@ function MessageList({ guild, channel, before }: Props) {
 
 	return (
 		<MessageAreaWidthContext.Provider value={(width ?? 0) - MESSAGE_AREA_PADDING}>
-			<Container>
+			<Container id="scrollable-div" ref={ref}>
 				{canView ? (
-					<VList
-						ref={ref}
+					<InfiniteScroll
+						dataLength={messageGroups.length}
+						next={fetchMore}
 						style={{
-							flex: 1,
-						}}
-						reverse
-					>
-						{Array.from({
-							length: hasMore || loading ? 30 : 0,
-						}).map((_, i) => (
-							<SkeletonLoader />
-						))}
-						{!loading && !hasMore && (
+							display: "flex",
+							flexDirection: "column-reverse",
+							marginBottom: 30,
+							overflow: "hidden",
+						}} // to put endMessage and loader to the top.
+						hasMore={hasMore}
+						inverse={true}
+						loader={
+							<PulseLoader
+								style={{
+									display: "flex",
+									justifyContent: "center",
+									alignContent: "center",
+									margin: 30,
+								}}
+								color="var(--primary)"
+							/>
+						}
+						// FIXME: seems to be broken in react-infinite-scroll-component when using inverse
+						scrollThreshold={0.5}
+						scrollableTarget="scrollable-div"
+						endMessage={
 							<EndMessageContainer>
 								<h1 style={{ fontWeight: 700, margin: "8px 0" }}>Welcome to #{channel.name}!</h1>
 								<p style={{ color: "var(--text-secondary)" }}>
@@ -158,10 +136,10 @@ function MessageList({ guild, channel, before }: Props) {
 								</p>
 								<HorizontalDivider />
 							</EndMessageContainer>
-						)}
-						{messageGroups.map((group, index) => renderGroup(group))}
-						<Spacer />
-					</VList>
+						}
+					>
+						{messageGroups.map((group) => renderGroup(group))}
+					</InfiniteScroll>
 				) : (
 					<div
 						style={{

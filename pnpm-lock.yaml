@@ -137,9 +137,6 @@ dependencies:
   react-colorful:
     specifier: ^5.6.1
     version: 5.6.1(react-dom@18.2.0)(react@18.2.0)
-  react-content-loader:
-    specifier: ^7.0.2
-    version: 7.0.2(react@18.2.0)
   react-device-detect:
     specifier: ^2.2.3
     version: 2.2.3(react-dom@18.2.0)(react@18.2.0)
@@ -152,6 +149,9 @@ dependencies:
   react-hook-form:
     specifier: ^7.51.3
     version: 7.51.3(react@18.2.0)
+  react-infinite-scroll-component:
+    specifier: ^6.1.0
+    version: 6.1.0(react@18.2.0)
   react-loading-skeleton:
     specifier: ^3.4.0
     version: 3.4.0(react@18.2.0)
@@ -206,9 +206,6 @@ dependencies:
   use-resize-observer:
     specifier: ^9.1.0
     version: 9.1.0(react-dom@18.2.0)(react@18.2.0)
-  virtua:
-    specifier: ^0.33.1
-    version: 0.33.1(react-dom@18.2.0)(react@18.2.0)
   yup:
     specifier: ^1.4.0
     version: 1.4.0
@@ -12959,15 +12956,6 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /react-content-loader@7.0.2(react@18.2.0):
-    resolution: {integrity: sha512-773S98JTyC8VB2nu7LXUhpHx8tZMieGxMcx3qTe7IkohT6Br7d9AXnIXs/wQ6IhlUdKQcw6JLKk1QKigYCWDRA==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      react: '>=16.0.0'
-    dependencies:
-      react: 18.2.0
-    dev: false
-
   /react-dev-utils@12.0.1(eslint@8.57.0)(typescript@5.4.5)(webpack@5.90.3):
     resolution: {integrity: sha512-84Ivxmr17KjUupyqzFode6xKhjwuEJDROWKJy/BthkL7Wn6NJ8h4WE6k/exAv6ImS+0oZLRRW5j/aINMHyeGeQ==}
     engines: {node: '>=14'}
@@ -13062,6 +13050,15 @@ packages:
       react: ^16.8.0 || ^17 || ^18
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /react-infinite-scroll-component@6.1.0(react@18.2.0):
+    resolution: {integrity: sha512-SQu5nCqy8DxQWpnUVLx7V7b7LcA37aM7tvoWjTLZp1dk6EJibM5/4EJKzOnl07/BsM1Y40sKLuqjCwwH/xV0TQ==}
+    peerDependencies:
+      react: '>=16.0.0'
+    dependencies:
+      react: 18.2.0
+      throttle-debounce: 2.3.0
     dev: false
 
   /react-is@16.13.1:
@@ -14803,6 +14800,11 @@ packages:
   /throat@6.0.2:
     resolution: {integrity: sha512-WKexMoJj3vEuK0yFEapj8y64V0A6xcuPuK9Gt1d0R+dzCSJc0lHqQytAbSB4cDAK0dWh4T0E2ETkoLE2WZ41OQ==}
 
+  /throttle-debounce@2.3.0:
+    resolution: {integrity: sha512-H7oLPV0P7+jgvrk+6mwwwBDmxTaxnu9HMXmloNLXwnNO0ZxZ31Orah2n8lU1eMPvsaowP2CX+USCgyovXfdOFQ==}
+    engines: {node: '>=8'}
+    dev: false
+
   /through2@2.0.5:
     resolution: {integrity: sha512-/mrRod8xqpA+IHSLyGCQ2s8SPHiCDEeQJSep1jqLYeEUClOFG2Qsh+4FU6G9VeqpZnGW/Su8LQGc4YKni5rYSQ==}
     dependencies:
@@ -15287,30 +15289,6 @@ packages:
       '@types/unist': 3.0.2
       unist-util-stringify-position: 4.0.0
       vfile-message: 4.0.2
-    dev: false
-
-  /virtua@0.33.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-xOzF5J+4KN12w1k7rNbocxjLYrWmGP2gXEDXqcHz7zWkf2vrCrsP/N3M/m3RhME/f/bNc5X22cvpIPqQeOP2MA==}
-    peerDependencies:
-      react: '>=16.14.0'
-      react-dom: '>=16.14.0'
-      solid-js: '>=1.0'
-      svelte: '>=4.0'
-      vue: '>=3.2'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
-      solid-js:
-        optional: true
-      svelte:
-        optional: true
-      vue:
-        optional: true
-    dependencies:
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /vite-plugin-chunk-split@0.5.0(vite@5.2.7):
