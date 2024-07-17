@@ -51,7 +51,7 @@
 		"react-device-detect": "^2.2.3",
 		"react-dom": "^18.2.0",
 		"react-fps-stats": "^0.3.1",
-		"react-hook-form": "^7.51.3",
+		"react-hook-form": "^7.52.1",
 		"react-infinite-scroll-component": "^6.1.0",
 		"react-loading-skeleton": "^3.4.0",
 		"react-markdown": "^9.0.1",
