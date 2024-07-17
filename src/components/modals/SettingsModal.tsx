@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import styled, { css } from "styled-components";
-import { ModalProps } from "../../controllers/modals";
+import { ModalProps, modalController } from "../../controllers/modals";
 import { useAppStore } from "../../stores/AppStore";
 import { isTauri } from "../../utils/Utils";
 import { APP_VERSION, GIT_BRANCH, GIT_REVISION, REPO_URL } from "../../utils/revison";
@@ -247,11 +247,7 @@ export const SettingsModal = observer(({ ...props }: ModalProps<"settings">) => 
 						<CloseContainer>
 							<CloseContainerInner></CloseContainerInner>
 							<CloseContainerWrapper>
-								<CloseButtonWrapper
-									onClick={() => {
-										console.log("Close modal");
-									}}
-								>
+								<CloseButtonWrapper onClick={() => modalController.close()}>
 									<Icon icon="mdiClose" size="18px" />
 								</CloseButtonWrapper>
 							</CloseContainerWrapper>
