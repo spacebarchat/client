@@ -59,7 +59,7 @@ export default class Channel {
 	@observable channelIcon?: keyof typeof Icons;
 	@observable typingIds: ObservableMap<SnowflakeType, (...args: unknown[]) => void>;
 	@observable typing: number | null = null;
-	private hasFetchedInitialMessages = false;
+	@observable private hasFetchedInitialMessages = false;
 
 	constructor(app: AppStore, channel: APIChannel) {
 		this.app = app;

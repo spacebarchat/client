@@ -53,7 +53,7 @@ interface Props2 {
 	guild: Guild;
 }
 
-function ChatContent({ channel, guild }: Props2) {
+const ChatContent = observer(({ channel, guild }: Props2) => {
 	const app = useAppStore();
 	const readstate = app.readStateStore.get(channel.id);
 
@@ -64,7 +64,7 @@ function ChatContent({ channel, guild }: Props2) {
 			<TypingIndicator channel={channel} />
 		</Container>
 	);
-}
+});
 
 const Content = observer((props: Props2) => {
 	const { memberListVisible } = useAppStore();
