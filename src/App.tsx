@@ -17,11 +17,11 @@ import useLogger from "./hooks/useLogger";
 import AppPage from "./pages/AppPage";
 import LogoutPage from "./pages/LogoutPage";
 import ChannelPage from "./pages/subpages/ChannelPage";
-import { useAppStore } from "./stores/AppStore";
 import { Globals } from "./utils/Globals";
 // @ts-expect-error no types
 import FPSStats from "react-fps-stats";
 import { bannerController } from "./controllers/banners";
+import { useAppStore } from "./hooks/useAppStore";
 import { isTauri } from "./utils/Utils";
 
 function App() {

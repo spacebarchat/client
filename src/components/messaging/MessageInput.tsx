@@ -6,8 +6,8 @@ import React from "react";
 import styled from "styled-components";
 
 import { modalController } from "../../controllers/modals";
+import { useAppStore } from "../../hooks/useAppStore";
 import useLogger from "../../hooks/useLogger";
-import { useAppStore } from "../../stores/AppStore";
 import Guild from "../../stores/objects/Guild";
 import Snowflake from "../../utils/Snowflake";
 import { MAX_ATTACHMENTS } from "../../utils/constants";
@@ -197,7 +197,7 @@ function MessageInput({ channel }: Props) {
 										channel.type === ChannelType.DM
 											? channel.recipients?.[0].username
 											: "#" + channel.name
-									}`
+								  }`
 								: "You do not have permission to send messages in this channel."
 						}
 						disabled={!channel.hasPermission("SEND_MESSAGES")}

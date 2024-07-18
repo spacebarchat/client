@@ -9,7 +9,7 @@ import { HorizontalDivider } from "../Divider";
 import { CDNRoutes, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import dayjs from "dayjs";
 import SpacebarLogoBlue from "../../assets/images/logo/Spacebar_Icon.svg?react";
-import { useAppStore } from "../../stores/AppStore";
+import { useAppStore } from "../../hooks/useAppStore";
 import REST from "../../utils/REST";
 import Floating from "./Floating";
 import FloatingTrigger from "./FloatingTrigger";

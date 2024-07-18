@@ -1,9 +1,9 @@
 import { PresenceUpdateStatus } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
+import { useAppStore } from "../hooks/useAppStore";
 import AccountStore from "../stores/AccountStore";
-import { useAppStore } from "../stores/AppStore";
 import Presence from "../stores/objects/Presence";
 import User from "../stores/objects/User";
 import Container from "./Container";
@@ -33,7 +33,7 @@ interface Props {
 function Avatar(props: Props) {
 	const app = useAppStore();
 
-	const ref = React.useRef<HTMLDivElement>(null);
+	const ref = useRef<HTMLDivElement>(null);
 
 	const user = props.user ?? app.account;
 	if (!user) return null;

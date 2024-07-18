@@ -23,8 +23,9 @@ import {
 } from "../components/AuthComponents";
 import { TextDivider } from "../components/Divider";
 import HCaptcha, { HeaderContainer } from "../components/HCaptcha";
+import { useAppStore } from "../hooks/useAppStore";
 import useLogger from "../hooks/useLogger";
-import { AUTH_NO_BRANDING, useAppStore } from "../stores/AppStore";
+import { AUTH_NO_BRANDING } from "../stores/AppStore";
 import { Globals } from "../utils/Globals";
 import REST from "../utils/REST";
 import { RouteSettings } from "../utils/constants";

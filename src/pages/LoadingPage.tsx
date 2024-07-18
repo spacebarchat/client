@@ -5,7 +5,7 @@ import styled from "styled-components";
 import SpacebarLogoBlue from "../assets/images/logo/Logo-Blue.svg?react";
 import Button from "../components/Button";
 import Container from "../components/Container";
-import { useAppStore } from "../stores/AppStore";
+import { useAppStore } from "../hooks/useAppStore";
 
 const Wrapper = styled.div`
 	justify-content: center;

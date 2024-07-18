@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { memo, useContext } from "react";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
-import { useAppStore } from "../../stores/AppStore";
+import { useAppStore } from "../../hooks/useAppStore";
 import { MessageLike } from "../../stores/objects/Message";
 import { QueuedMessageStatus } from "../../stores/objects/QueuedMessage";
 import Avatar from "../Avatar";

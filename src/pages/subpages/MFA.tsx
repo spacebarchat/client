@@ -20,8 +20,8 @@ import {
 	Wrapper,
 } from "../../components/AuthComponents";
 import { TextDivider } from "../../components/Divider";
+import { useAppStore } from "../../hooks/useAppStore";
 import useLogger from "../../hooks/useLogger";
-import { useAppStore } from "../../stores/AppStore";
 import {
 	IAPIError,
 	IAPILoginResponseMFARequired,

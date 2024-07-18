@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useAppStore } from "../stores/AppStore";
+import { useAppStore } from "../hooks/useAppStore";
 import Icon, { IconProps } from "./Icon";
 import { SectionHeader } from "./SectionHeader";
 import Floating from "./floating/Floating";

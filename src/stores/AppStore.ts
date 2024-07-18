@@ -189,9 +189,3 @@ export default class AppStore {
 		this.loadUpdaterEnabled();
 	}
 }
-
-export const appStore = new AppStore();
-
-export function useAppStore() {
-	return appStore;
-}

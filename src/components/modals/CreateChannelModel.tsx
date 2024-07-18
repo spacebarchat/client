@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as yup from "yup";
 import { ModalProps, modalController } from "../../controllers/modals";
-import { useAppStore } from "../../stores/AppStore";
+import { useAppStore } from "../../hooks/useAppStore";
 import { messageFromFieldError } from "../../utils/messageFromFieldError";
 import { Input, InputErrorText } from "../AuthComponents";
 import { TextDivider } from "../Divider";

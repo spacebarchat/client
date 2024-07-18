@@ -728,5 +728,9 @@ export default class GatewayConnectionStore {
 
 	private onUserUpdate = (data: GatewayUserUpdateDispatchData) => {
 		this.app.users.update(data);
+
+		if (data.id === this.app.account!.id) {
+			this.app.setUser(data);
+		}
 	};
 }

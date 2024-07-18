@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
+import { useAppStore } from "../../hooks/useAppStore";
 import { LoadingSuspense } from "../../pages/LoadingPage";
-import { useAppStore } from "../../stores/AppStore";
 
 interface Props {
 	component: React.FC;

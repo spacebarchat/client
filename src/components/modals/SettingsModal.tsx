@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import styled, { css } from "styled-components";
 import { ModalProps, modalController } from "../../controllers/modals";
-import { useAppStore } from "../../stores/AppStore";
+import { useAppStore } from "../../hooks/useAppStore";
 import { isTauri } from "../../utils/Utils";
 import { APP_VERSION, GIT_BRANCH, GIT_REVISION, REPO_URL } from "../../utils/revison";
 import Icon from "../Icon";

@@ -2,8 +2,8 @@ import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ModalProps, modalController } from "../../controllers/modals";
+import { useAppStore } from "../../hooks/useAppStore";
 import useLogger from "../../hooks/useLogger";
-import { useAppStore } from "../../stores/AppStore";
 import { Modal } from "./ModalComponents";
 
 export function LeaveServerModal({ target, ...props }: ModalProps<"leave_server">) {

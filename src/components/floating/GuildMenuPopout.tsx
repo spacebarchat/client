@@ -3,7 +3,7 @@ import useLogger from "../../hooks/useLogger";
 
 import React, { useEffect } from "react";
 import { modalController } from "../../controllers/modals";
-import { useAppStore } from "../../stores/AppStore";
+import { useAppStore } from "../../hooks/useAppStore";
 import { Permissions } from "../../utils/Permissions";
 import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "../contextMenus/ContextMenu";
 

@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { modalController } from "../../controllers/modals";
-import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 import { Permissions } from "../../utils/Permissions";
 import Icon from "../Icon";
 import SidebarPill from "../SidebarPill";
 import Floating from "../floating/Floating";
 import FloatingTrigger from "../floating/FloatingTrigger";
+import { useAppStore } from "../../hooks/useAppStore";
 
 const ListItem = styled.div<{ isCategory?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};

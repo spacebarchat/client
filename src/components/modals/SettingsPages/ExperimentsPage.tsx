@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import styled from "styled-components";
-import { useAppStore } from "../../../stores/AppStore";
+import { useAppStore } from "../../../hooks/useAppStore";
 import { EXPERIMENT_LIST, Experiment as ExperimentType } from "../../../stores/ExperimentsStore";
 import SectionTitle from "../../SectionTitle";
 

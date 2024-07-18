@@ -19,7 +19,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { ErrorBoundaryContext } from "react-use-error-boundary";
 import App from "./App";
-import { ContextMenuContextProvider } from "./contexts/ContextMenuContext";
+import { ContextMenuContextProvider } from "./contexts/ContextMenuContextProvider";
 import Theme from "./contexts/Theme";
 import ModalRenderer from "./controllers/modals/ModalRenderer";
 import "./index.css";

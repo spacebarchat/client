@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useContext } from "react";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
-import { useAppStore } from "../../stores/AppStore";
+import { useAppStore } from "../../hooks/useAppStore";
 import GuildMember from "../../stores/objects/GuildMember";
 import Avatar from "../Avatar";
 import Floating from "../floating/Floating";

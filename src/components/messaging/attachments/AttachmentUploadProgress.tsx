@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
-import { useAppStore } from "../../../stores/AppStore";
+import { useAppStore } from "../../../hooks/useAppStore";
 import QueuedMessage from "../../../stores/objects/QueuedMessage";
 import { bytesToSize } from "../../../utils/Utils";
 import Icon from "../../Icon";

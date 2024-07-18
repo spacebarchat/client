@@ -2,8 +2,8 @@
 
 import { ChannelType } from "@spacebarchat/spacebar-api-types/v9";
 import { modalController } from "../../controllers/modals";
+import { useAppStore } from "../../hooks/useAppStore";
 import useLogger from "../../hooks/useLogger";
-import { useAppStore } from "../../stores/AppStore";
 import Guild from "../../stores/objects/Guild";
 import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "./ContextMenu";
 

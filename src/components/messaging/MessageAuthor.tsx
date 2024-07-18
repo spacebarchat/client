@@ -2,8 +2,8 @@ import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
+import { useAppStore } from "../../hooks/useAppStore";
 import useLogger from "../../hooks/useLogger";
-import { useAppStore } from "../../stores/AppStore";
 import Guild from "../../stores/objects/Guild";
 import GuildMember from "../../stores/objects/GuildMember";
 import { MessageLike } from "../../stores/objects/Message";
@@ -36,7 +36,7 @@ function MessageAuthor({ message, guild }: Props) {
 
 	React.useEffect(() => {
 		if (!eventData) return;
-		contextMenu.onContextMenu(eventData, { type: "user", user: message.author, member });
+		contextMenu?.onContextMenu(eventData, { type: "user", user: message.author, member });
 	}, [eventData, member]);
 
 	const onContextMenu = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -68,7 +68,7 @@ function MessageAuthor({ message, guild }: Props) {
 					style={{
 						color,
 					}}
-					ref={contextMenu.setReferenceElement}
+					ref={contextMenu?.setReferenceElement}
 					onContextMenu={onContextMenu}
 				>
 					{message.author.username}

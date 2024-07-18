@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppStore } from "../stores/AppStore";
+import { useAppStore } from "../hooks/useAppStore";
 
 function LogoutPage() {
 	const app = useAppStore();
