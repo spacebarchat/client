@@ -143,6 +143,8 @@ export default class GatewayConnectionStore {
 		this.dispatchHandlers.set(GatewayDispatchEvents.ChannelCreate, this.onChannelCreate);
 		this.dispatchHandlers.set(GatewayDispatchEvents.ChannelUpdate, this.onChannelUpdate);
 		this.dispatchHandlers.set(GatewayDispatchEvents.ChannelDelete, this.onChannelDelete);
+		// @ts-expect-error missing event in typings
+		this.dispatchHandlers.set("MESSAGE_ACK", this.onMessageAck);
 
 		this.dispatchHandlers.set(GatewayDispatchEvents.MessageCreate, this.onMessageCreate);
 		this.dispatchHandlers.set(GatewayDispatchEvents.MessageUpdate, this.onMessageUpdate);
@@ -631,6 +633,23 @@ export default class GatewayConnectionStore {
 			return;
 		}
 		guild.removeChannel(data.id);
+	};
+
+	private onMessageAck = (data: { channel_id: string; message_id: string; version: number }) => {
+		// get readstate for channel
+		const readstate = this.app.readStateStore.get(data.channel_id);
+		if (!readstate) {
+			this.logger.warn(`[MessageAck] Readstate not found for channel ${data.channel_id}`);
+			return;
+		}
+
+		runInAction(() => {
+			readstate.lastMessageId = data.message_id;
+		});
+
+		this.logger.debug(
+			`[MessageAck] Updated last message id for channel readstate ${data.channel_id} to ${data.message_id}`,
+		);
 	};
 
 	private onMessageCreate = (data: GatewayMessageCreateDispatchData) => {

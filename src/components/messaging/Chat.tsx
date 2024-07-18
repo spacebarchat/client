@@ -1,6 +1,6 @@
 import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useAppStore } from "../../hooks/useAppStore";
 import useLogger from "../../hooks/useLogger";
@@ -56,6 +56,10 @@ interface Props2 {
 function ChatContent({ channel, guild }: Props2) {
 	const app = useAppStore();
 	const readstate = app.readStateStore.get(channel.id);
+
+	useEffect(() => {
+		channel.markAsRead();
+	}, [channel, guild]);
 
 	return (
 		<Container>

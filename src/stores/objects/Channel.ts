@@ -311,7 +311,8 @@ export default class Channel {
 		return listId;
 	}
 
-	hasUnread() {
+	@computed
+	get unread() {
 		const readState = this.app.readStateStore.get(this.id);
 		if (!readState) {
 			// this.logger.warn(`Failed to find readstate for channel ${this.id}`); // this just causes unnecessary spam
@@ -319,5 +320,24 @@ export default class Channel {
 		}
 
 		return readState.lastMessageId !== this.lastMessageId;
+	}
+
+	markAsRead() {
+		const readState = this.app.readStateStore.get(this.id);
+		if (!readState) {
+			this.logger.warn(`Failed to find readstate for channel ${this.id}`); // this just causes unnecessary spam
+			return;
+		}
+
+		this.app.rest
+			.post(Routes.channelMessage(this.id, readState.lastMessageId) + "/ack", {
+				mention_count: readState.mentionCount,
+			})
+			.then((r) => {
+				this.logger.debug(`Acked ${this.lastMessageId} for channel ${this.id}`, r);
+			})
+			.catch((e) => {
+				this.logger.error(`Failed to ack ${this.lastMessageId} for channel ${this.id}`, e);
+			});
 	}
 }
