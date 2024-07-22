@@ -263,8 +263,8 @@ devDependencies:
     specifier: ^4.6.0
     version: 4.6.0(eslint@8.57.0)
   eslint-plugin-react-refresh:
-    specifier: ^0.4.6
-    version: 0.4.6(eslint@8.57.0)
+    specifier: ^0.4.9
+    version: 0.4.9(eslint@8.57.0)
   internal-ip:
     specifier: ^8.0.0
     version: 8.0.0
@@ -7831,8 +7831,8 @@ packages:
       eslint: 8.57.0
     dev: true
 
-  /eslint-plugin-react-refresh@0.4.6(eslint@8.57.0):
-    resolution: {integrity: sha512-NjGXdm7zgcKRkKMua34qVO9doI7VOxZ6ancSvBELJSSoX97jyndXcSoa8XBh69JoB31dNz3EEzlMcizZl7LaMA==}
+  /eslint-plugin-react-refresh@0.4.9(eslint@8.57.0):
+    resolution: {integrity: sha512-QK49YrBAo5CLNLseZ7sZgvgTy21E6NEw22eZqc4teZfH8pxV3yXc9XXOYfUI6JNpw7mfHNkAeWtBxrTyykB6HA==}
     peerDependencies:
       eslint: '>=7'
     dependencies:
@@ -15824,6 +15824,7 @@ packages:
 
   /workbox-google-analytics@6.6.0:
     resolution: {integrity: sha512-p4DJa6OldXWd6M9zRl0H6vB9lkrmqYFkRQ2xEiNdBFp9U0LhsGO7hsBscVEyH9H2/3eZZt8c97NB2FD9U2NJ+Q==}
+    deprecated: It is not compatible with newer versions of GA starting with v4, as long as you are using GAv3 it should be ok, but the package is not longer being maintained
     dependencies:
       workbox-background-sync: 6.6.0
       workbox-core: 6.6.0
