@@ -66,8 +66,8 @@ dependencies:
     specifier: 2.0.0-beta.3
     version: 2.0.0-beta.3
   '@tauri-apps/plugin-notification':
-    specifier: 2.0.0-beta.1
-    version: 2.0.0-beta.1
+    specifier: 2.0.0-rc.1
+    version: 2.0.0-rc.1
   '@tauri-apps/plugin-os':
     specifier: 2.0.0-beta.1
     version: 2.0.0-beta.1
@@ -4141,6 +4141,10 @@ packages:
     engines: {node: '>= 18', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
     dev: false
 
+  /@tauri-apps/api@2.0.0-rc.4:
+    resolution: {integrity: sha512-UNiIhhKG08j4ooss2oEEVexffmWkgkYlC2M3GcX3VPtNsqFgVNL8Mcw/4Y7rO9M9S+ffAMnLOF5ypzyuyb8tyg==}
+    dev: false
+
   /@tauri-apps/cli-darwin-arm64@2.0.0-beta.5:
     resolution: {integrity: sha512-xNMkg+uFJjIX1K4KK2AGxXRVn+gBE+lpmMjLPmOo+/5BO/qXeNCBeob1blOpAhI9yVIoU2HN/L6Bh+DONp690w==}
     engines: {node: '>= 10'}
@@ -4278,10 +4282,10 @@ packages:
       '@tauri-apps/api': 2.0.0-beta.8
     dev: false
 
-  /@tauri-apps/plugin-notification@2.0.0-beta.1:
-    resolution: {integrity: sha512-yFMRJt3AxUW7D4fcHy2l8WWVZW4s7Gb1aupk6YFVgnrHx4sqDDDoj/NAwjvEG7wxbLav7oxk7LwYvKKuT/OpFg==}
+  /@tauri-apps/plugin-notification@2.0.0-rc.1:
+    resolution: {integrity: sha512-ddDj7xM8XR7Zv2vdpofNXlLjcp49p/VjlL0D+/eBcMuyooaLNMor3jz/+H6s23iHerdxMWA50mzy26BRN1BySA==}
     dependencies:
-      '@tauri-apps/api': 2.0.0-beta.2
+      '@tauri-apps/api': 2.0.0-rc.4
     dev: false
 
   /@tauri-apps/plugin-os@2.0.0-beta.1:
@@ -15824,6 +15828,7 @@ packages:
 
   /workbox-google-analytics@6.6.0:
     resolution: {integrity: sha512-p4DJa6OldXWd6M9zRl0H6vB9lkrmqYFkRQ2xEiNdBFp9U0LhsGO7hsBscVEyH9H2/3eZZt8c97NB2FD9U2NJ+Q==}
+    deprecated: It is not compatible with newer versions of GA starting with v4, as long as you are using GAv3 it should be ok, but the package is not longer being maintained
     dependencies:
       workbox-background-sync: 6.6.0
       workbox-core: 6.6.0
