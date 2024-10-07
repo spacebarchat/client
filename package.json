@@ -16,7 +16,7 @@
 		"@mdi/react": "^1.6.1",
 		"@mui/material": "^5.15.14",
 		"@originjs/vite-plugin-commonjs": "^1.0.3",
-		"@rollup/plugin-replace": "^5.0.5",
+		"@rollup/plugin-replace": "^6.0.1",
 		"@spacebarchat/spacebar-api-types": "0.37.51",
 		"@tauri-apps/api": "2.0.0-beta.7",
 		"@tauri-apps/plugin-authenticator": "2.0.0-beta.2",
