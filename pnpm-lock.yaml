@@ -48,8 +48,8 @@ dependencies:
     specifier: 0.37.51
     version: 0.37.51
   '@tauri-apps/api':
-    specifier: 2.0.0-beta.7
-    version: 2.0.0-beta.7
+    specifier: 2.0.1
+    version: 2.0.1
   '@tauri-apps/plugin-authenticator':
     specifier: 2.0.0-beta.2
     version: 2.0.0-beta.2
@@ -4187,14 +4187,13 @@ packages:
     engines: {node: '>= 18', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
     dev: false
 
-  /@tauri-apps/api@2.0.0-beta.7:
-    resolution: {integrity: sha512-cM7SJQP4DBkLLMOdybLFYUURWn/tng2FEdAnXlu42f3NhFxKL4KVeeQTkuwlgC7ePwwwvDSqiXGiF+dKOadY7w==}
-    engines: {node: '>= 18', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
-    dev: false
-
   /@tauri-apps/api@2.0.0-beta.8:
     resolution: {integrity: sha512-fN5u+9HsSfhRaXGOdD2kPGbqDgyX+nkm1XF/4d/LNuM4WiNfvHjjRAqWQYBhQsg1aF9nsTPmSW+tmy+Yn5T5+A==}
     engines: {node: '>= 18', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
+    dev: false
+
+  /@tauri-apps/api@2.0.1:
+    resolution: {integrity: sha512-eoQWT+Tq1qSwQpHV+nw1eNYe5B/nm1PoRjQCRiEOS12I1b+X4PUcREfXVX8dPcBT6GrzWGDtaecY0+1p0Rfqlw==}
     dev: false
 
   /@tauri-apps/cli-darwin-arm64@2.0.0-beta.5:
