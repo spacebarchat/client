@@ -61,7 +61,7 @@
 		"react-secure-storage": "^1.3.2",
 		"react-select-search": "^4.1.7",
 		"react-spinners": "^0.13.8",
-		"react-spring": "^9.7.3",
+		"react-spring": "^9.7.4",
 		"react-string-replace": "^1.1.1",
 		"react-syntax-highlighter": "^15.5.0",
 		"react-use-error-boundary": "^3.0.0",
