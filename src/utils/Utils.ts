@@ -84,7 +84,9 @@ export const getFileDetails = (fileOrAttachment: File | APIAttachment) => {
 export const isTauri = !!window.__TAURI_INTERNALS__;
 
 export function rgbToHsl(r: number, g: number, b: number) {
-	(r /= 255), (g /= 255), (b /= 255);
+	r /= 255;
+	g /= 255;
+	b /= 255;
 
 	const max = Math.max(r, g, b),
 		min = Math.min(r, g, b);
