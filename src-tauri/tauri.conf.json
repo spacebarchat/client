@@ -30,7 +30,7 @@
 	},
 	"bundle": {
 		"active": true,
-		"targets": ["deb", "rpm", "appimage", "nsis", "app", "dmg", "updater"],
+		"targets": ["deb", "rpm", "appimage", "nsis", "app", "dmg"],
 		"icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
 		"publisher": "Spacebar",
 		"category": "SocialNetworking",
@@ -41,7 +41,8 @@
 				"sidebarImage": "./icons/sidebar.bmp",
 				"installerIcon": "./icons/icon.ico"
 			}
-		}
+		},
+		"createUpdaterArtifacts": true
 	},
 	"plugins": {
 		"shell": {

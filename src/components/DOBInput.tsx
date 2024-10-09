@@ -188,6 +188,8 @@ export class DOBInput extends Component<Props, State> {
 					onChange={(e) => this.setState({ ...this.state, month: e as string })}
 					value={this.state.month}
 					disabled={this.props.disabled}
+					onBlur={() => {}}
+					onFocus={() => {}}
 				/>
 				<CustomInput
 					placeholder="Day"

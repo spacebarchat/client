@@ -1,7 +1,6 @@
 import replace from "@rollup/plugin-replace";
 import react from "@vitejs/plugin-react";
 import fs, { readFileSync } from "fs";
-import { internalIpV4 } from "internal-ip";
 import path, { resolve } from "path";
 import type { Plugin } from "vite";
 import { defineConfig } from "vite";
@@ -44,7 +43,7 @@ function getVersion() {
 	return JSON.parse(readFileSync("package.json").toString()).version;
 }
 
-const mobile = !!/android|ios/.exec(process.env.TAURI_ENV_PLATFORM);
+const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
@@ -72,14 +71,14 @@ export default defineConfig(async () => ({
 	clearScreen: false,
 	// 2. tauri expects a fixed port, fail if that port is not available
 	server: {
-		host: mobile ? "0.0.0.0" : false,
+		host: host || false,
 		port: 1420,
-		hmr: mobile
+		hmr: host
 			? {
 					protocol: "ws",
-					host: await internalIpV4(),
-					port: 1421,
-				}
+					host: host,
+					port: 1430,
+			  }
 			: undefined,
 		strictPort: true,
 	},
