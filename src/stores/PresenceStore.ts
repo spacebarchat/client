@@ -1,7 +1,7 @@
 import type { GatewayPresenceUpdateDispatchData, Snowflake } from "@spacebarchat/spacebar-api-types/v9";
+import { Presence } from "@structures";
 import { action, computed, makeObservable, observable } from "mobx";
 import AppStore from "./AppStore";
-import Presence from "./objects/Presence";
 
 export default class PresenceStore {
 	private readonly app: AppStore;

@@ -1,13 +1,13 @@
+import useLogger from "@hooks/useLogger";
 import {
 	GatewayUserUpdateDispatchData,
 	Routes,
 	type APIUser,
 	type Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
+import { User } from "@structures";
 import { ObservableMap, action, computed, observable } from "mobx";
-import useLogger from "../hooks/useLogger";
 import AppStore from "./AppStore";
-import User from "./objects/User";
 
 export default class UserStore {
 	private readonly logger = useLogger("UserStore");

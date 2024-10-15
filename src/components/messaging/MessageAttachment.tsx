@@ -1,11 +1,9 @@
+import { modalController } from "@/controllers/modals";
+import { Audio, File, Video } from "@components/media";
+import useLogger from "@hooks/useLogger";
 import { APIAttachment } from "@spacebarchat/spacebar-api-types/v9";
+import { getFileDetails, zoomFit } from "@utils";
 import styled from "styled-components";
-import { modalController } from "../../controllers/modals";
-import useLogger from "../../hooks/useLogger";
-import { getFileDetails, zoomFit } from "../../utils/Utils";
-import Audio from "../media/Audio";
-import File from "../media/File";
-import Video from "../media/Video";
 
 const MAX_ATTACHMENT_HEIGHT = 350;
 

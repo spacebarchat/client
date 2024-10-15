@@ -7,6 +7,8 @@ export * from "./DeleteMessageModal";
 export * from "./ErrorModal";
 export * from "./ForgotPasswordModal";
 export * from "./ImageViewerModal";
+export * from "./InviteModal";
+export * from "./InviteUnauthedModal";
 export * from "./JoinServerModal";
 export * from "./KickMemberModal";
 export * from "./LeaveServerModal";

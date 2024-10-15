@@ -1,12 +1,11 @@
+import Container from "@components/Container";
+import { useAppStore } from "@hooks/useAppStore";
 import { PresenceUpdateStatus } from "@spacebarchat/spacebar-api-types/v9";
+import { AccountStore } from "@stores";
+import { Presence, User } from "@structures";
 import { observer } from "mobx-react-lite";
 import React, { useRef } from "react";
 import styled from "styled-components";
-import { useAppStore } from "../hooks/useAppStore";
-import AccountStore from "../stores/AccountStore";
-import Presence from "../stores/objects/Presence";
-import User from "../stores/objects/User";
-import Container from "./Container";
 
 const Wrapper = styled(Container)<{ size: number; hasClick?: boolean }>`
 	background-color: transparent;

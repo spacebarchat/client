@@ -1,7 +1,7 @@
 import type { APIChannel } from "@spacebarchat/spacebar-api-types/v9";
+import { Channel } from "@structures";
 import { action, computed, observable, ObservableMap } from "mobx";
 import AppStore from "./AppStore";
-import Channel from "./objects/Channel";
 
 export default class PrivateChannelStore {
 	private readonly app: AppStore;

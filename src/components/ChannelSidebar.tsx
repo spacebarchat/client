@@ -1,12 +1,12 @@
+import Container from "@components/Container";
 import { useWindowSize } from "@uidotdev/usehooks";
+import { isTouchscreenDevice } from "@utils";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { isDesktop } from "react-device-detect";
 import styled from "styled-components";
-import { isTouchscreenDevice } from "../utils/isTouchscreenDevice";
 import ChannelHeader from "./ChannelHeader";
 import ChannelList from "./ChannelList/ChannelList";
-import Container from "./Container";
 import UserPanel from "./UserPanel";
 
 const Wrapper = styled(Container)`

@@ -1,9 +1,8 @@
 // loosely based on https://github.com/revoltchat/frontend/blob/master/components/app/menus/UserContextMenu.tsx
 
-import { modalController } from "../../controllers/modals";
-import { useAppStore } from "../../hooks/useAppStore";
-import GuildMember from "../../stores/objects/GuildMember";
-import User from "../../stores/objects/User";
+import { modalController } from "@/controllers/modals";
+import { useAppStore } from "@hooks/useAppStore";
+import { GuildMember, User } from "@structures";
 import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "./ContextMenu";
 
 interface MenuProps {

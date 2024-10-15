@@ -1,6 +1,6 @@
+import { ModalProps, modalController } from "@/controllers/modals";
+import MarkdownRenderer from "@components/markdown/MarkdownRenderer";
 import styled from "styled-components";
-import { ModalProps, modalController } from "../../controllers/modals";
-import MarkdownRenderer from "../markdown/MarkdownRenderer";
 import { Modal } from "./ModalComponents";
 
 const PreviewContainer = styled.div`
@@ -12,7 +12,7 @@ const PreviewContainer = styled.div`
 	padding: 5px 6px;
 `;
 
-export function DeleteMessageModal({ target, ...props }: ModalProps<"delete_message">) {
+export  function DeleteMessageModal({ target, ...props }: ModalProps<"delete_message">) {
 	return (
 		<Modal
 			{...props}

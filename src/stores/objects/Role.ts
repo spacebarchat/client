@@ -1,6 +1,6 @@
 import type { APIRole, APIRoleTags } from "@spacebarchat/spacebar-api-types/v9";
+import { AppStore } from "@stores";
 import { action, observable } from "mobx";
-import AppStore from "../AppStore";
 
 export default class Role {
 	private readonly app: AppStore;

@@ -1,16 +1,15 @@
+import { HorizontalDivider } from "@components/Divider";
+import { useAppStore } from "@hooks/useAppStore";
+import useLogger from "@hooks/useLogger";
+import { MessageGroup as MessageGroupType } from "@stores/MessageStore";
+import { Channel, Guild } from "@structures";
+import { Permissions } from "@utils";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PulseLoader from "react-spinners/PulseLoader";
 import styled from "styled-components";
 import useResizeObserver from "use-resize-observer";
-import { useAppStore } from "../../hooks/useAppStore";
-import useLogger from "../../hooks/useLogger";
-import { MessageGroup as MessageGroupType } from "../../stores/MessageStore";
-import Channel from "../../stores/objects/Channel";
-import Guild from "../../stores/objects/Guild";
-import { Permissions } from "../../utils/Permissions";
-import { HorizontalDivider } from "../Divider";
 import MessageGroup from "./MessageGroup";
 
 export const MessageAreaWidthContext = React.createContext(0);

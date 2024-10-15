@@ -1,8 +1,8 @@
+import useLogger from "@hooks/useLogger";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
+import { Logger } from "@utils";
 import { action, makeAutoObservable, observable } from "mobx";
-import useLogger from "../hooks/useLogger";
-import Logger from "../utils/Logger";
 import AppStore from "./AppStore";
 
 export default class UpdaterStore {

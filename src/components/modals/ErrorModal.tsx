@@ -1,4 +1,4 @@
-import { ModalProps } from "../../controllers/modals/types";
+import { ModalProps } from "@/controllers/modals/types";
 import { Modal } from "./ModalComponents";
 
 export function ErrorModal({ error, ...props }: ModalProps<"error">) {

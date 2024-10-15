@@ -3,9 +3,9 @@ import {
 	GatewayGuildMemberListUpdateMember,
 	GuildMemberFlags,
 } from "@spacebarchat/spacebar-api-types/v9";
+import { AppStore } from "@stores";
+import { PermissionResolvable, Permissions } from "@utils";
 import { action, computed, observable } from "mobx";
-import { PermissionResolvable, Permissions } from "../../utils/Permissions";
-import AppStore from "../AppStore";
 import Guild from "./Guild";
 import Role from "./Role";
 import User from "./User";

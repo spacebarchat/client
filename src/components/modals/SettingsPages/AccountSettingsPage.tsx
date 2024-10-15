@@ -1,11 +1,11 @@
+import Avatar from "@components/Avatar";
+import Button from "@components/Button";
+import SectionTitle from "@components/SectionTitle";
+import { useAppStore } from "@hooks/useAppStore";
 import { RESTPatchAPICurrentUserJSONBody, Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
-import { useAppStore } from "../../../hooks/useAppStore";
-import Avatar from "../../Avatar";
-import Button from "../../Button";
-import SectionTitle from "../../SectionTitle";
 
 const Content = styled.div`
 	display: flex;

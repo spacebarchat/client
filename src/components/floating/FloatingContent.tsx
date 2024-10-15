@@ -1,7 +1,7 @@
 import { FloatingFocusManager, FloatingPortal, useMergeRefs } from "@floating-ui/react";
+import useFloatingContext from "@hooks/useFloatingContext";
 import { motion } from "framer-motion";
 import React from "react";
-import useFloatingContext from "../../hooks/useFloatingContext";
 
 export default React.forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(function PopoverContent(
 	{ style, ...props },

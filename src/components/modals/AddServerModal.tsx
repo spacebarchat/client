@@ -1,6 +1,6 @@
+import { ModalProps, modalController } from "@/controllers/modals";
+import Button from "@components/Button";
 import styled from "styled-components";
-import { ModalProps, modalController } from "../../controllers/modals";
-import Button from "../Button";
 import { Modal } from "./ModalComponents";
 
 const ActionWrapper = styled.div`

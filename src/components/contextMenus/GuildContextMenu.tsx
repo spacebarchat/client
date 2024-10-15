@@ -1,10 +1,10 @@
 // loosely based on https://github.com/revoltchat/frontend/blob/master/components/app/menus/UserContextMenu.tsx
 
+import { modalController } from "@/controllers/modals";
+import { useAppStore } from "@hooks/useAppStore";
+import useLogger from "@hooks/useLogger";
 import { ChannelType } from "@spacebarchat/spacebar-api-types/v9";
-import { modalController } from "../../controllers/modals";
-import { useAppStore } from "../../hooks/useAppStore";
-import useLogger from "../../hooks/useLogger";
-import Guild from "../../stores/objects/Guild";
+import { Guild } from "@structures";
 import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "./ContextMenu";
 
 interface MenuProps {

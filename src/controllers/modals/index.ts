@@ -1,3 +1,3 @@
 export * from "./ModalController";
-export * from "./ModalRenderer";
+export { default as ModalRenderer } from "./ModalRenderer";
 export * from "./types";

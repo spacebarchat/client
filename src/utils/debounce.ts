@@ -1,6 +1,6 @@
 // https://github.com/revoltchat/revite/blob/master/src/lib/debounce.ts#L5
 
-export function debounce(cb: (...args: unknown[]) => void, duration: number) {
+export default function debounce(cb: (...args: unknown[]) => void, duration: number) {
 	// Store the timer variable.
 	let timer: NodeJS.Timeout;
 	// This function is given to React.

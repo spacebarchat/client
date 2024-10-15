@@ -1,10 +1,10 @@
+import { HorizontalDivider } from "@components/Divider";
+import Icon from "@components/Icon";
+import IconButton from "@components/IconButton";
+import { bytesToSize, getFileDetails, getFileIcon } from "@utils";
 import { observer } from "mobx-react-lite";
 import React, { Fragment } from "react";
 import styled from "styled-components";
-import { bytesToSize, getFileDetails, getFileIcon } from "../../../utils/Utils";
-import { HorizontalDivider } from "../../Divider";
-import Icon from "../../Icon";
-import IconButton from "../../IconButton";
 const Container = styled.ul`
 	display: flex;
 	gap: 8px;

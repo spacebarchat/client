@@ -7,6 +7,7 @@
 		"skipLibCheck": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
+		"baseUrl": "./src",
 
 		/* Bundler mode */
 		"moduleResolution": "bundler",
@@ -20,7 +21,25 @@
 		"strict": true,
 		// "noUnusedLocals": true,
 		// "noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true
+		"noFallthroughCasesInSwitch": true,
+
+		/* Path aliases */
+		"paths": {
+			"@/*": ["./*"],
+			"@utils": ["utils/index.ts"],
+			"@utils/*": ["utils/*"],
+			"@components": ["components/index.ts"],
+			"@components/*": ["components/*"],
+			"@assets/*": ["assets/*"],
+			"@modals/*": ["modals/*"],
+			"@pages/*": ["pages/*"],
+			"@stores": ["stores/index.ts"],
+			"@stores/*": ["stores/*"],
+			"@hooks/*": ["hooks/*"],
+			"@contexts/*": ["contexts/*"],
+			"@structures": ["stores/objects/index.ts"],
+			"@structures/*": ["stores/objects/*"]
+		}
 	},
 	"include": ["src", "src/custom.d.ts"],
 	"references": [{ "path": "./tsconfig.node.json" }]

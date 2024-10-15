@@ -1,7 +1,7 @@
 import { type APIReadState } from "@spacebarchat/spacebar-api-types/v9";
+import { AppStore } from "@stores";
+import { Logger } from "@utils";
 import { action, observable } from "mobx";
-import Logger from "../../utils/Logger";
-import AppStore from "../AppStore";
 
 export default class ReadState {
 	private readonly logger: Logger;

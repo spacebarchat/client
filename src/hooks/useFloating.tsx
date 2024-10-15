@@ -1,3 +1,4 @@
+import { FloatingOptions } from "@components/floating/Floating";
 import {
 	arrow,
 	autoUpdate,
@@ -13,7 +14,6 @@ import {
 	useRole,
 } from "@floating-ui/react";
 import { useMemo, useRef, useState } from "react";
-import { FloatingOptions } from "../components/floating/Floating";
 
 export default function ({
 	type,

@@ -1,8 +1,7 @@
+import { Floating, FloatingTrigger } from "@components/floating";
 import dayjs from "dayjs";
 import { memo } from "react";
 import styled from "styled-components";
-import Floating from "../floating/Floating";
-import FloatingTrigger from "../floating/FloatingTrigger";
 
 const Container = styled.div`
 	background-color: hsl(var(--background-tertiary-hsl) / 0.3);

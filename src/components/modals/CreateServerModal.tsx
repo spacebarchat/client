@@ -1,14 +1,14 @@
+import { modalController, ModalProps } from "@/controllers/modals";
+import { Input, InputErrorText, InputLabel, InputWrapper, LabelWrapper } from "@components/AuthComponents";
+import { TextDivider } from "@components/Divider";
+import { useAppStore } from "@hooks/useAppStore";
+import useLogger from "@hooks/useLogger";
 import { APIGuild, Routes } from "@spacebarchat/spacebar-api-types/v9";
+import { messageFromFieldError } from "@utils";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { ModalProps, modalController } from "../../controllers/modals";
-import { useAppStore } from "../../hooks/useAppStore";
-import useLogger from "../../hooks/useLogger";
-import { messageFromFieldError } from "../../utils/messageFromFieldError";
-import { Input, InputErrorText, InputLabel, InputWrapper, LabelWrapper } from "../AuthComponents";
-import { TextDivider } from "../Divider";
 import { InputContainer, Modal } from "./ModalComponents";
 
 const UploadIcon = styled.div`

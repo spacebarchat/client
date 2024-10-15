@@ -1,7 +1,7 @@
+import { useAppStore } from "@hooks/useAppStore";
+import { rgbToHsl } from "@utils";
 import { observer } from "mobx-react-lite";
 import { createGlobalStyle } from "styled-components";
-import { useAppStore } from "../hooks/useAppStore";
-import { rgbToHsl } from "../utils/Utils";
 
 const font: ThemeFont["font"] = {
 	weight: {

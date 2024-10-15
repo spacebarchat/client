@@ -1,8 +1,8 @@
+import IconButton from "@components/IconButton";
+import { OfflineBanner } from "@components/banners";
 import { AnimatePresence, motion } from "framer-motion";
 import { action, computed, makeObservable, observable } from "mobx";
 import styled from "styled-components";
-import IconButton from "../../components/IconButton";
-import OfflineBanner from "../../components/banners/OfflineBanner";
 import { Banner } from "./types";
 
 const Container = styled(motion.div)`

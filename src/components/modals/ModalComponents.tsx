@@ -1,9 +1,9 @@
+import Button, { Props as ButtonProps } from "@components/Button";
+import { animationFadeIn, animationFadeOut, animationZoomIn, animationZoomOut } from "@components/common/animations";
+import Icon from "@components/Icon";
 import React, { useCallback, useEffect, useState } from "react";
 import { Portal } from "react-portal";
 import styled, { css } from "styled-components";
-import Button, { Props as ButtonProps } from "../Button";
-import Icon from "../Icon";
-import { animationFadeIn, animationFadeOut, animationZoomIn, animationZoomOut } from "../common/animations";
 
 export type ModalAction = Omit<React.HTMLAttributes<HTMLButtonElement>, "as"> &
 	Omit<ButtonProps, "onClick"> & {

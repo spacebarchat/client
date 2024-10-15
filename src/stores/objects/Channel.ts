@@ -13,14 +13,11 @@ import type {
 	Snowflake as SnowflakeType,
 } from "@spacebarchat/spacebar-api-types/v9";
 import { ChannelType, Routes } from "@spacebarchat/spacebar-api-types/v9";
+import { AppStore, MessageStore } from "@stores";
+import { APIError, PermissionResolvable, Permissions } from "@utils";
+import Logger from "@utils/Logger";
 import { ObservableMap, action, computed, makeObservable, observable } from "mobx";
 import murmur from "murmurhash-js/murmurhash3_gc";
-import Logger from "../../utils/Logger";
-import type { PermissionResolvable } from "../../utils/Permissions";
-import { Permissions } from "../../utils/Permissions";
-import { APIError } from "../../utils/interfaces/api";
-import AppStore from "../AppStore";
-import MessageStore from "../MessageStore";
 import QueuedMessage from "./QueuedMessage";
 import User from "./User";
 

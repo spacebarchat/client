@@ -1,21 +1,21 @@
+import { ModalProps, modalController } from "@/controllers/modals";
+import { Input, InputErrorText } from "@components/AuthComponents";
+import { TextDivider } from "@components/Divider";
+import Icon, { IconType } from "@components/Icon";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppStore } from "@hooks/useAppStore";
 import {
 	ChannelType,
 	RESTPostAPIGuildChannelJSONBody,
 	RESTPostAPIGuildChannelResult,
 	Routes,
 } from "@spacebarchat/spacebar-api-types/v9";
+import { messageFromFieldError } from "@utils";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as yup from "yup";
-import { ModalProps, modalController } from "../../controllers/modals";
-import { useAppStore } from "../../hooks/useAppStore";
-import { messageFromFieldError } from "../../utils/messageFromFieldError";
-import { Input, InputErrorText } from "../AuthComponents";
-import { TextDivider } from "../Divider";
-import Icon, { IconType } from "../Icon";
 import { Modal } from "./ModalComponents";
 
 const CHANNEL_OPTIONS: {

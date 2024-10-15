@@ -1,3 +1,4 @@
+import Link from "@components/Link";
 import { FormattingPatterns } from "@spacebarchat/spacebar-api-types/v9";
 import Marked, { ReactRenderer } from "marked-react";
 import React from "react";
@@ -5,12 +6,11 @@ import reactStringReplace from "react-string-replace";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import styled from "styled-components";
-import CodeBlock from "../Codeblock";
-import Link from "../Link";
-import Spoiler from "../Spoiler";
+import CodeBlock from "./components/Codeblock";
+import Mention from "./components/Mention";
+import Spoiler from "./components/Spoiler";
+import Timestamp from "./components/Timestamp";
 import { MarkdownProps } from "./Markdown";
-import Mention from "./Mention";
-import Timestamp from "./Timestamp";
 
 const Container = styled.div`
 	// remove the excessive left padding, and margin in lists

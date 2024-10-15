@@ -1,5 +1,5 @@
+import { FloatingContext } from "@contexts/FloatingContext";
 import React from "react";
-import { FloatingContext } from "../contexts/FloatingContext";
 
 export default () => {
 	const context = React.useContext(FloatingContext);

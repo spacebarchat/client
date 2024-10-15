@@ -1,6 +1,6 @@
-import { modalController } from "../../controllers/modals";
-import { useAppStore } from "../../hooks/useAppStore";
-import Message from "../../stores/objects/Message";
+import { modalController } from "@/controllers/modals";
+import { useAppStore } from "@hooks/useAppStore";
+import { Message } from "@structures";
 import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "./ContextMenu";
 
 interface MenuProps {

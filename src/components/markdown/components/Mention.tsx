@@ -1,14 +1,11 @@
+import { Floating, FloatingTrigger } from "@components/floating";
+import { ContextMenuContext } from "@contexts/ContextMenuContext";
+import { useAppStore } from "@hooks/useAppStore";
+import { Channel, Role, User } from "@structures";
+import { hexToRGB, rgbToHsl } from "@utils";
 import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { ContextMenuContext } from "../../contexts/ContextMenuContext";
-import { useAppStore } from "../../hooks/useAppStore";
-import Channel from "../../stores/objects/Channel";
-import Role from "../../stores/objects/Role";
-import User from "../../stores/objects/User";
-import { hexToRGB, rgbToHsl } from "../../utils/Utils";
-import Floating from "../floating/Floating";
-import FloatingTrigger from "../floating/FloatingTrigger";
 
 const MentionText = styled.span<{ color?: string; withHover?: boolean }>`
 	padding: 0 2px;

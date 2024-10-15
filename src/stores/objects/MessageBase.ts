@@ -2,9 +2,9 @@
 
 import { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
 import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
+import { AppStore } from "@stores";
+import { USER_JOIN_MESSAGES } from "@utils";
 import { observable } from "mobx";
-import { USER_JOIN_MESSAGES } from "../../utils/constants";
-import AppStore from "../AppStore";
 import { MessageLikeData } from "./Message";
 import User from "./User";
 
@@ -27,10 +27,7 @@ export default class MessageBase {
 	type: MessageType;
 	author: User;
 
-	constructor(
-		public readonly app: AppStore,
-		data: MessageLikeData,
-	) {
+	constructor(public readonly app: AppStore, data: MessageLikeData) {
 		this.id = data.id;
 		this.content = data.content;
 		this.timestamp = new Date(data.timestamp);

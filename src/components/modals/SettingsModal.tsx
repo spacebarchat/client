@@ -1,12 +1,11 @@
+import { ModalProps, modalController } from "@/controllers/modals";
+import Icon from "@components/Icon";
+import Link from "@components/Link";
+import { useAppStore } from "@hooks/useAppStore";
+import { APP_VERSION, GIT_BRANCH, GIT_REVISION, REPO_URL, isTauri } from "@utils";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import styled, { css } from "styled-components";
-import { ModalProps, modalController } from "../../controllers/modals";
-import { useAppStore } from "../../hooks/useAppStore";
-import { isTauri } from "../../utils/Utils";
-import { APP_VERSION, GIT_BRANCH, GIT_REVISION, REPO_URL } from "../../utils/revison";
-import Icon from "../Icon";
-import Link from "../Link";
 import { Modal } from "./ModalComponents";
 import AccountSettingsPage from "./SettingsPages/AccountSettingsPage";
 import DeveloperSettingsPage from "./SettingsPages/DeveloperSettingsPage";

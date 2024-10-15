@@ -1,18 +1,16 @@
+import Container from "@components/Container";
+import { Floating, FloatingTrigger } from "@components/floating";
+import { ContextMenuContext } from "@contexts/ContextMenuContext";
+import { useAppStore } from "@hooks/useAppStore";
+import useLogger from "@hooks/useLogger";
 import { CDNRoutes, ChannelType, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
+import { Guild } from "@structures";
+import { Permissions, REST } from "@utils";
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { ContextMenuContext } from "../contexts/ContextMenuContext";
-import { useAppStore } from "../hooks/useAppStore";
-import useLogger from "../hooks/useLogger";
-import Guild from "../stores/objects/Guild";
-import { Permissions } from "../utils/Permissions";
-import REST from "../utils/REST";
-import Container from "./Container";
 import SidebarPill, { PillType } from "./SidebarPill";
-import Floating from "./floating/Floating";
-import FloatingTrigger from "./floating/FloatingTrigger";
 
 export const GuildSidebarListItem = styled.div`
 	position: relative;

@@ -1,11 +1,10 @@
+import { Floating, FloatingTrigger } from "@components/floating";
+import { useAppStore } from "@hooks/useAppStore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useAppStore } from "../hooks/useAppStore";
 import Icon, { IconProps } from "./Icon";
 import { SectionHeader } from "./SectionHeader";
-import Floating from "./floating/Floating";
-import FloatingTrigger from "./floating/FloatingTrigger";
 
 const Wrapper = styled(SectionHeader)`
 	background-color: var(--background-secondary);

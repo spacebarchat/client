@@ -1,10 +1,10 @@
 // adapted from Revite
 // https://github.com/revoltchat/revite/blob/fe63c6633f32b54aa1989cb34627e72bb3377efd/src/components/markdown/plugins/Codeblock.tsx
 
+import Floating from "@components/floating/Floating";
+import FloatingTrigger from "@components/floating/FloatingTrigger";
 import React from "react";
 import styled from "styled-components";
-import Floating from "./floating/Floating";
-import FloatingTrigger from "./floating/FloatingTrigger";
 
 const Actions = styled.div`
 	position: absolute;
@@ -47,7 +47,7 @@ function CodeBlock(props: Props) {
 
 	const onCopy = React.useCallback(() => {
 		const text = ref.current?.querySelector("code")?.innerText;
-		text && navigator.clipboard.writeText(text);
+		if (text) navigator.clipboard.writeText(text);
 	}, [ref]);
 
 	return (
