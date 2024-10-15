@@ -4,8 +4,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import PulseLoader from "react-spinners/PulseLoader";
 import styled from "styled-components";
 import useResizeObserver from "use-resize-observer";
+import { useAppStore } from "../../hooks/useAppStore";
 import useLogger from "../../hooks/useLogger";
-import { useAppStore } from "../../stores/AppStore";
 import { MessageGroup as MessageGroupType } from "../../stores/MessageStore";
 import Channel from "../../stores/objects/Channel";
 import Guild from "../../stores/objects/Guild";
@@ -30,6 +30,7 @@ const EndMessageContainer = styled.div`
 interface Props {
 	guild: Guild;
 	channel: Channel;
+	before?: string;
 }
 
 /**

@@ -10,7 +10,7 @@ import GuildSidebar from "../../components/GuildSidebar";
 import SwipeableLayout from "../../components/SwipeableLayout";
 import Chat from "../../components/messaging/Chat";
 import BannerRenderer from "../../controllers/banners/BannerRenderer";
-import { useAppStore } from "../../stores/AppStore";
+import { useAppStore } from "../../hooks/useAppStore";
 
 const Container = styled(ContainerComponent)`
 	display: flex;

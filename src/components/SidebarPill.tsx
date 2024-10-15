@@ -5,7 +5,7 @@ export type PillType = "none" | "unread" | "hover" | "active";
 
 const Wrapper = styled(Container)`
 	position: absolute;
-	top: 0;
+	// top: 0;
 	left: 0;
 	width: 8px;
 	height: 48px;

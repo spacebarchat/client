@@ -1,6 +1,7 @@
 use reqwest;
 use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
+use tauri::Emitter;
 use tauri::{Manager, Runtime};
 use tauri_plugin_updater::{Update, UpdaterExt};
 use url::Url;
@@ -201,6 +202,7 @@ pub fn check_for_updates<R: Runtime>(ignore_prereleases: bool, window: tauri::Wi
                 return false;
             })
             .endpoints(vec![tauri_release_endpoint])
+			.unwrap()
             .header("User-Agent", "spacebar-client")
         {
             Ok(updater_builder) => updater_builder,

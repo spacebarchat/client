@@ -1,8 +1,8 @@
 import * as Icons from "@mdi/js";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
+import { useAppStore } from "../../hooks/useAppStore";
 import useLogger from "../../hooks/useLogger";
-import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 import Icon from "../Icon";
 import { SectionHeader } from "../SectionHeader";

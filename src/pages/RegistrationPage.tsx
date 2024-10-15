@@ -24,8 +24,9 @@ import {
 import DOBInput from "../components/DOBInput";
 import { TextDivider } from "../components/Divider";
 import HCaptcha from "../components/HCaptcha";
+import { useAppStore } from "../hooks/useAppStore";
 import useLogger from "../hooks/useLogger";
-import { AUTH_NO_BRANDING, useAppStore } from "../stores/AppStore";
+import { AUTH_NO_BRANDING } from "../stores/AppStore";
 import { IAPILoginResponseSuccess, IAPIRegisterRequest, IAPIRegisterResponseError } from "../utils/interfaces/api";
 import { messageFromFieldError } from "../utils/messageFromFieldError";
 

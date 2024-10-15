@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { createGlobalStyle } from "styled-components";
-import { useAppStore } from "../stores/AppStore";
+import { useAppStore } from "../hooks/useAppStore";
 import { rgbToHsl } from "../utils/Utils";
 
 const font: ThemeFont["font"] = {

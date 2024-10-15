@@ -1,12 +1,14 @@
+import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
 import { modalController } from "../../controllers/modals";
-import { useAppStore } from "../../stores/AppStore";
+import { useAppStore } from "../../hooks/useAppStore";
 import Channel from "../../stores/objects/Channel";
 import { Permissions } from "../../utils/Permissions";
 import Icon from "../Icon";
+import SidebarPill from "../SidebarPill";
 import Floating from "../floating/Floating";
 import FloatingTrigger from "../floating/FloatingTrigger";
 
@@ -88,6 +90,7 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 						alignItems: "center",
 					}}
 				>
+					<SidebarPill type={channel.unread ? "unread" : "none"} />
 					{channel.channelIcon && !isCategory && (
 						<Icon
 							icon={channel.channelIcon}
@@ -163,4 +166,4 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 	);
 }
 
-export default ChannelListItem;
+export default observer(ChannelListItem);

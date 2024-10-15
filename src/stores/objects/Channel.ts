@@ -3,7 +3,6 @@ import type {
 	APIChannel,
 	APIInvite,
 	APIOverwrite,
-	APIReadState,
 	APIUser,
 	APIWebhook,
 	GatewayVoiceState,
@@ -53,7 +52,7 @@ export default class Channel {
 	@observable retentionPolicyId?: string;
 	@observable messages: MessageStore;
 	@observable voiceStates?: GatewayVoiceState[];
-	@observable readStates?: APIReadState[];
+	// @observable readStates?: APIReadState[]; ????? this seems wrong
 	@observable webhooks?: APIWebhook[];
 	@observable flags: number;
 	@observable defaultThreadRateLimitPerUser: number;
@@ -89,7 +88,7 @@ export default class Channel {
 		this.invites = channel.invites;
 		this.retentionPolicyId = channel.retention_policy_id;
 		this.voiceStates = channel.voice_states;
-		this.readStates = channel.read_states;
+		// this.readStates = channel.read_states;
 		this.webhooks = channel.webhooks;
 		this.flags = channel.flags;
 		this.defaultThreadRateLimitPerUser = channel.default_thread_rate_limit_per_user;
@@ -310,5 +309,35 @@ export default class Channel {
 		}
 
 		return listId;
+	}
+
+	@computed
+	get unread() {
+		const readState = this.app.readStateStore.get(this.id);
+		if (!readState) {
+			// this.logger.warn(`Failed to find readstate for channel ${this.id}`); // this just causes unnecessary spam
+			return false;
+		}
+
+		return readState.lastMessageId !== this.lastMessageId;
+	}
+
+	markAsRead() {
+		const readState = this.app.readStateStore.get(this.id);
+		if (!readState) {
+			this.logger.warn(`Failed to find readstate for channel ${this.id}`); // this just causes unnecessary spam
+			return;
+		}
+
+		this.app.rest
+			.post(Routes.channelMessage(this.id, readState.lastMessageId) + "/ack", {
+				mention_count: readState.mentionCount,
+			})
+			.then((r) => {
+				this.logger.debug(`Acked ${this.lastMessageId} for channel ${this.id}`, r);
+			})
+			.catch((e) => {
+				this.logger.error(`Failed to ack ${this.lastMessageId} for channel ${this.id}`, e);
+			});
 	}
 }

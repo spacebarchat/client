@@ -1,5 +1,5 @@
 import { modalController } from "../../controllers/modals";
-import { useAppStore } from "../../stores/AppStore";
+import { useAppStore } from "../../hooks/useAppStore";
 import Message from "../../stores/objects/Message";
 import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "./ContextMenu";
 

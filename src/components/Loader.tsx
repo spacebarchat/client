@@ -1,8 +1,8 @@
 import { invoke } from "@tauri-apps/api/core";
 import { observer } from "mobx-react-lite";
 import React from "react";
+import { useAppStore } from "../hooks/useAppStore";
 import LoadingPage from "../pages/LoadingPage";
-import { useAppStore } from "../stores/AppStore";
 import { isTauri } from "../utils/Utils";
 
 interface Props {

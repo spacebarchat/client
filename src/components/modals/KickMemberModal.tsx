@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import * as yup from "yup";
 import { ModalProps, modalController } from "../../controllers/modals";
-import { useAppStore } from "../../stores/AppStore";
+import { useAppStore } from "../../hooks/useAppStore";
 import { Modal } from "./ModalComponents";
 
 const DescriptionText = styled.p`
@@ -54,7 +54,7 @@ export function KickMemberModal({ target, ...props }: ModalProps<"kick_member">)
 				data.reason
 					? {
 							"X-Audit-Log-Reason": data.reason,
-						}
+					  }
 					: undefined,
 			)
 			.then(() => {

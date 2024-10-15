@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 import { modalController } from "../controllers/modals";
-import { useAppStore } from "../stores/AppStore";
+import { useAppStore } from "../hooks/useAppStore";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
 import IconButton from "./IconButton";

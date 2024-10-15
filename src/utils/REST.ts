@@ -200,6 +200,48 @@ export default class REST {
 		});
 	}
 
+	public async patch<T, U>(
+		path: string,
+		body?: T,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		queryParams: Record<string, any> = {},
+		headers: Record<string, string> = {},
+	): Promise<U> {
+		return new Promise((resolve, reject) => {
+			const url = REST.makeAPIUrl(path, queryParams);
+			this.logger.debug(`PATCH ${url}; payload:`, body);
+			return fetch(url, {
+				method: "PATCH",
+				headers: {
+					...headers,
+					...this.headers,
+					"Content-Type": "application/json",
+				},
+				body: body ? JSON.stringify(body) : undefined,
+				mode: "cors",
+			})
+				.then(async (res) => {
+					// handle json if content type is json
+					if (res.headers.get("content-type")?.includes("application/json")) {
+						const data = await res.json();
+						if (res.ok) return resolve(data);
+						else return reject(data);
+					}
+
+					// if theres content, handle text
+					if (res.headers.get("content-length") !== "0") {
+						const data = await res.text();
+						if (res.ok) return resolve(data as U);
+						else return reject(data as U);
+					}
+
+					if (res.ok) return resolve(res.status as U);
+					else return reject(res.statusText);
+				})
+				.catch(reject);
+		});
+	}
+
 	public async postFormData<U>(
 		path: string,
 		body: FormData,

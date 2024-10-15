@@ -1,9 +1,9 @@
 import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { useAppStore } from "../../hooks/useAppStore";
 import useLogger from "../../hooks/useLogger";
-import { useAppStore } from "../../stores/AppStore";
 import Channel from "../../stores/objects/Channel";
 import Guild from "../../stores/objects/Guild";
 import MemberList from "../MemberList/MemberList";
@@ -54,9 +54,16 @@ interface Props2 {
 }
 
 function ChatContent({ channel, guild }: Props2) {
+	const app = useAppStore();
+	const readstate = app.readStateStore.get(channel.id);
+
+	useEffect(() => {
+		channel.markAsRead();
+	}, [channel, guild]);
+
 	return (
 		<Container>
-			<MessageList guild={guild} channel={channel} />
+			<MessageList guild={guild} channel={channel} before={readstate?.lastMessageId} />
 			<MessageInput channel={channel} guild={guild} />
 			<TypingIndicator channel={channel} />
 		</Container>

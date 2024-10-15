@@ -1,12 +1,17 @@
+import { RESTPatchAPICurrentUserJSONBody, Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
-import { useAppStore } from "../../../stores/AppStore";
+import { useAppStore } from "../../../hooks/useAppStore";
+import Avatar from "../../Avatar";
+import Button from "../../Button";
 import SectionTitle from "../../SectionTitle";
 
 const Content = styled.div`
 	display: flex;
 	flex-direction: column;
+
+	min-width: 30vw;
 `;
 
 const UserInfoContainer = styled.div`
@@ -77,25 +82,152 @@ const FieldValueToggle = styled.button`
 	text-rendering: optimizeLegibility;
 `;
 
+const IconContainer = styled.div`
+	position: relative;
+	display: inline-block;
+`;
+
+const IconInput = styled.input`
+	display: none;
+`;
+
+const FileInput = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	cursor: pointer;
+	font-size: 0px;
+`;
+
+const UnsavedChangesBar = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	background-color: var(--background-tertiary);
+	padding: 10px 16px;
+	border-radius: 8px;
+	margin-top: 24px;
+	align-items: center;
+`;
+
+const UnsavedChangedActions = styled.div`
+	display: flex;
+	gap: 10px;
+`;
+
+const Text = styled.p`
+	color: var(--text-secondary);
+	font-size: 16px;
+	font-weight: var(--font-weight-medium);
+	margin: 0;
+	padding: 0;
+`;
+
 function AccountSettingsPage() {
 	const app = useAppStore();
 	const [shouldRedactEmail, setShouldRedactEmail] = useState(true);
+	const [selectedFile, setSelectedFile] = useState<File>();
+	const fileInputRef = useRef<HTMLInputElement>(null);
+	const [hasUnsavedChangd, setHasUnsavedChanged] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const redactEmail = (email: string) => {
 		const [username, domain] = email.split("@");
 		return `${"*".repeat(username.length)}@${domain}`;
 	};
 
-	const refactPhoneNumber = (phoneNumber: string) => {
+	const redactPhoneNumber = (phoneNumber: string) => {
 		const lastFour = phoneNumber.slice(-4);
 		return "*".repeat(phoneNumber.length - 4) + lastFour;
 	};
+
+	const onAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (!event.target.files) return;
+		setSelectedFile(event.target.files[0]);
+	};
+
+	const discardChanges = () => {
+		setSelectedFile(undefined);
+	};
+
+	const save = async () => {
+		setLoading(true);
+		if (!selectedFile) return;
+		const reader = new FileReader();
+		reader.onload = async () => {
+			const payload: RESTPatchAPICurrentUserJSONBody = {
+				// @ts-expect-error broken types or whatever
+				avatar: reader.result,
+			};
+			app.rest
+				.patch<RESTPatchAPICurrentUserJSONBody, RESTPatchAPICurrentUserJSONBody>(Routes.user(), payload)
+				.then((r) => {
+					// runInAction(() => {
+					// 	if (r.username) app.account!.username = r.username;
+					// 	if (r.avatar) app.account!.avatar = r.avatar;
+					// });
+					setSelectedFile(undefined);
+					setLoading(false);
+				})
+				.catch((e) => {
+					console.error(e);
+					setLoading(false);
+				});
+		};
+		reader.readAsDataURL(selectedFile);
+	};
+
+	useEffect(() => {
+		// handle unsaved changes state
+		if (selectedFile) {
+			setHasUnsavedChanged(true);
+		} else {
+			// Reset state if there is nothing changed
+			setHasUnsavedChanged(false);
+		}
+	}, [selectedFile]);
 
 	return (
 		<div>
 			<SectionTitle>Account</SectionTitle>
 			<Content>
 				<UserInfoContainer>
+					<Field spacerBottom>
+						<IconContainer>
+							{selectedFile ? (
+								<img
+									src={URL.createObjectURL(selectedFile)}
+									alt="Avatar"
+									width="80px"
+									height="80px"
+									style={{
+										borderRadius: "50%",
+										pointerEvents: "none",
+										objectFit: "cover",
+									}}
+								/>
+							) : (
+								<Avatar user={app.account!} size={80} />
+							)}
+							<IconInput
+								ref={fileInputRef}
+								type="file"
+								name="avatar"
+								accept="image/*"
+								onChange={onAvatarChange}
+								disabled={loading}
+							/>
+							<FileInput
+								role="button"
+								onClick={() => fileInputRef.current?.click()}
+								aria-disabled={loading}
+							/>
+						</IconContainer>
+					</Field>
+
 					<Field spacerBottom>
 						<Row>
 							<FieldTitle>Username</FieldTitle>
@@ -138,6 +270,20 @@ function AccountSettingsPage() {
 						</Row>
 					</Field>
 				</UserInfoContainer>
+
+				{hasUnsavedChangd && (
+					<UnsavedChangesBar>
+						<Text>You have unsaved changes.</Text>
+						<UnsavedChangedActions>
+							<Button palette="link" onClick={discardChanges} disabled={loading}>
+								Discard
+							</Button>
+							<Button palette="primary" disabled={loading} onClick={save}>
+								{loading ? "Saving..." : "Save"}
+							</Button>
+						</UnsavedChangedActions>
+					</UnsavedChangesBar>
+				)}
 			</Content>
 		</div>
 	);

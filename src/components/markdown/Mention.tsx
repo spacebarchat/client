@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ContextMenuContext } from "../../contexts/ContextMenuContext";
-import { useAppStore } from "../../stores/AppStore";
+import { useAppStore } from "../../hooks/useAppStore";
 import Channel from "../../stores/objects/Channel";
 import Role from "../../stores/objects/Role";
 import User from "../../stores/objects/User";
