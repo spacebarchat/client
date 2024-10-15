@@ -1,11 +1,11 @@
+import Avatar from "@components/Avatar";
+import InviteEmbed from "@components/InviteEmbed";
+import Markdown from "@components/markdown/MarkdownRenderer";
+import { ContextMenuContext } from "@contexts/ContextMenuContext";
+import { useAppStore } from "@hooks/useAppStore";
+import { MessageLike, QueuedMessageStatus } from "@structures";
 import { observer } from "mobx-react-lite";
 import { memo, useContext } from "react";
-import { ContextMenuContext } from "../../contexts/ContextMenuContext";
-import { useAppStore } from "../../hooks/useAppStore";
-import { MessageLike } from "../../stores/objects/Message";
-import { QueuedMessageStatus } from "../../stores/objects/QueuedMessage";
-import Avatar from "../Avatar";
-import Markdown from "../markdown/MarkdownRenderer";
 import MessageAttachment from "./MessageAttachment";
 import MessageAuthor from "./MessageAuthor";
 import MessageBase, { MessageContent, MessageContentText, MessageDetails, MessageInfo } from "./MessageBase";
@@ -69,6 +69,10 @@ function Message({ message, header }: Props) {
 				{"embeds" in message &&
 					message.embeds?.map((embed, index) => <MessageEmbed key={index} embed={embed} />)}
 				{"files" in message && message.files?.length !== 0 && <AttachmentUploadProgress message={message} />}
+				{"invites" in message &&
+					message.invites.map((code, index) => (
+						<InviteEmbed key={index} code={code} isSelf={message.author.id === app.account!.id} />
+					))}
 			</MessageContent>
 		</MessageBase>
 	);

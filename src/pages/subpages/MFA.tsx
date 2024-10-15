@@ -1,8 +1,4 @@
-import { Routes } from "@spacebarchat/spacebar-api-types/v9";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import SpacebarLogoBlue from "../../assets/images/logo/Logo-Blue.svg?react";
+import SpacebarLogoBlue from "@assets/images/logo/Logo-Blue.svg?react";
 import {
 	AuthContainer,
 	FormContainer,
@@ -18,17 +14,21 @@ import {
 	SubHeader,
 	SubmitButton,
 	Wrapper,
-} from "../../components/AuthComponents";
-import { TextDivider } from "../../components/Divider";
-import { useAppStore } from "../../hooks/useAppStore";
-import useLogger from "../../hooks/useLogger";
+} from "@components/AuthComponents";
+import { TextDivider } from "@components/Divider";
+import { useAppStore } from "@hooks/useAppStore";
+import useLogger from "@hooks/useLogger";
+import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import {
 	IAPIError,
 	IAPILoginResponseMFARequired,
 	IAPILoginResponseSuccess,
 	IAPITOTPRequest,
-} from "../../utils/interfaces/api";
-import { messageFromFieldError } from "../../utils/messageFromFieldError";
+	messageFromFieldError,
+} from "@utils";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 type FormValues = {
 	code: string;

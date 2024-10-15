@@ -1,11 +1,9 @@
+import Tooltip from "@components/Tooltip";
+import { FloatingContext } from "@contexts/FloatingContext";
 import { FloatingArrow, FloatingPortal, Placement } from "@floating-ui/react";
+import useFloating from "@hooks/useFloating";
+import { Guild, GuildMember, User } from "@structures";
 import { motion } from "framer-motion";
-import { FloatingContext } from "../../contexts/FloatingContext";
-import useFloating from "../../hooks/useFloating";
-import Guild from "../../stores/objects/Guild";
-import GuildMember from "../../stores/objects/GuildMember";
-import User from "../../stores/objects/User";
-import Tooltip from "../Tooltip";
 import GuildMenuPopout from "./GuildMenuPopout";
 import UserProfilePopout from "./UserProfilePopout";
 

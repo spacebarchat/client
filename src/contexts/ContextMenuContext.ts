@@ -1,11 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useFloating } from "@floating-ui/react";
+import { Channel, Guild, GuildMember, MessageLike, User } from "@structures";
 import React from "react";
-import Channel from "../stores/objects/Channel";
-import Guild from "../stores/objects/Guild";
-import GuildMember from "../stores/objects/GuildMember";
-import { MessageLike } from "../stores/objects/Message";
-import User from "../stores/objects/User";
 
 export type ContextMenuProps =
 	| {

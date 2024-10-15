@@ -1,6 +1,6 @@
 import { FloatingPortal } from "@floating-ui/react";
+import useContextMenu, { ContextMenuComponents } from "@hooks/useContextMenu";
 import React from "react";
-import useContextMenu, { ContextMenuComponents } from "../hooks/useContextMenu";
 import { ContextMenuContext, ContextMenuProps } from "./ContextMenuContext";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

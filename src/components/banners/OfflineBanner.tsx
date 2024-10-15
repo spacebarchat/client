@@ -1,5 +1,5 @@
+import Icon from "@components/Icon";
 import styled from "styled-components";
-import Icon from "../Icon";
 
 const Wrapper = styled.div`
 	display: flex;

@@ -1,9 +1,9 @@
 // adapted from Revite
 // https://github.com/revoltchat/revite/blob/master/src/components/common/messaging/embed/Embed.tsx
 
+import { modalController } from "@/controllers/modals";
+import Icon from "@components/Icon";
 import { APIEmbed, EmbedType } from "@spacebarchat/spacebar-api-types/v9";
-import { modalController } from "../../controllers/modals";
-import Icon from "../Icon";
 import styles from "./Embed.module.css";
 
 function getScaledDimensions(originalWidth: number, originalHeight: number, maxWidth: number, maxHeight: number) {

@@ -1,9 +1,9 @@
 // modified from https://github.com/revoltchat/frontend/blob/master/components/app/menus/ContextMenu.tsx
 // changed some styling
 
+import Icon, { IconProps } from "@components/Icon";
 import { ComponentProps } from "react";
 import styled from "styled-components";
-import Icon, { IconProps } from "../Icon";
 
 export const ContextMenu = styled.div`
 	display: flex;

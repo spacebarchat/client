@@ -12,6 +12,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "@fontsource/roboto/900.css";
 
+import { ModalRenderer } from "@/controllers/modals";
 import dayjs from "dayjs";
 import calendar from "dayjs/plugin/calendar";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -21,9 +22,8 @@ import { ErrorBoundaryContext } from "react-use-error-boundary";
 import App from "./App";
 import { ContextMenuContextProvider } from "./contexts/ContextMenuContextProvider";
 import Theme from "./contexts/Theme";
-import ModalRenderer from "./controllers/modals/ModalRenderer";
 import "./index.css";
-import { calendarStrings } from "./utils/i18n";
+import { calendarStrings } from "./utils";
 
 dayjs.extend(relativeTime);
 dayjs.extend(calendar, calendarStrings);

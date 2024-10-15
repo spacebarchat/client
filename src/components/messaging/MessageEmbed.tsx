@@ -1,16 +1,14 @@
 // adapted from Revite
 // https://github.com/revoltchat/revite/blob/master/src/components/common/messaging/embed/Embed.tsx
 
+import { Markdown, MarkdownRenderer } from "@components/markdown";
 import { APIEmbed, EmbedType } from "@spacebarchat/spacebar-api-types/v9";
+import { decimalColorToHex } from "@utils";
 import classNames from "classnames";
 import React from "react";
-import { decimalColorToHex } from "../../utils/Utils";
-import Markdown from "../markdown/Markdown";
-import MarkdownRenderer from "../markdown/MarkdownRenderer";
 import styles from "./Embed.module.css";
 import EmbedMedia from "./EmbedMedia";
 import { MessageAreaWidthContext } from "./MessageList";
-
 const LINK_EMBED_MAX_WIDTH = 516;
 const RICH_EMBED_MAX_WIDTH = 428;
 const CONTAINER_PADDING = 24;
@@ -60,7 +58,7 @@ function MessageEmbed({ embed }: Props) {
 			className={classNames(styles.embed, styles.website)}
 			style={{
 				borderInlineStartColor: embed.color ? decimalColorToHex(embed.color) : "var(--background-tertiary)",
-				maxWidth: 432,
+				maxWidth: 430,
 			}}
 		>
 			<div

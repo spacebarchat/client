@@ -1,8 +1,8 @@
+import { Channel } from "@structures";
 import { observer } from "mobx-react-lite";
 import { Fragment } from "react";
 import { PulseLoader } from "react-spinners";
 import styled from "styled-components";
-import Channel from "../../stores/objects/Channel";
 
 const Container = styled.div`
 	overflow: visible;

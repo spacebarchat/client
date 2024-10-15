@@ -1,9 +1,9 @@
+import { useAppStore } from "@hooks/useAppStore";
+import LoadingPage from "@pages/LoadingPage";
 import { invoke } from "@tauri-apps/api/core";
+import { isTauri } from "@utils";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { useAppStore } from "../hooks/useAppStore";
-import LoadingPage from "../pages/LoadingPage";
-import { isTauri } from "../utils/Utils";
 
 interface Props {
 	children: React.ReactNode;

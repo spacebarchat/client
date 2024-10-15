@@ -1,11 +1,10 @@
+import Container from "@components/Container";
+import { Floating, FloatingTrigger } from "@components/floating";
+import { GuildSidebarListItem } from "@components/GuildItem";
+import Icon, { IconProps } from "@components/Icon";
+import SidebarPill, { PillType } from "@components/SidebarPill";
 import React from "react";
 import styled from "styled-components";
-import Container from "./Container";
-import { GuildSidebarListItem } from "./GuildItem";
-import Icon, { IconProps } from "./Icon";
-import SidebarPill, { PillType } from "./SidebarPill";
-import Floating from "./floating/Floating";
-import FloatingTrigger from "./floating/FloatingTrigger";
 
 const Wrapper = styled(Container)<{
 	margin?: boolean;

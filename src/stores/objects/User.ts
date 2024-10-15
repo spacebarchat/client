@@ -1,8 +1,8 @@
 import { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
 import type { APIUser, GatewayUserUpdateDispatchData, PublicUser } from "@spacebarchat/spacebar-api-types/v9";
 import { CDNRoutes, DefaultUserAvatarAssets, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
+import { REST } from "@utils";
 import { action, makeObservable, observable } from "mobx";
-import REST from "../../utils/REST";
 
 export default class User {
 	id: Snowflake;

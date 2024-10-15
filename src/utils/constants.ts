@@ -37,3 +37,9 @@ export const EMBEDDABLE_IMAGE_MIMES = ["png", "jpg", "jpeg", "gif", "webp"]; // 
 export const ARCHIVE_MIMES = ["zip", "tar", "tar.gz", "tar.xz", "tar.bz2", "rar", "7z"]; // list of mimetypes to associate with archives
 
 export const MAX_ATTACHMENTS = 15; // max number of attachments per message
+
+// matches discord.gg/:code and discordapp.com/invite/:code
+export const DISCORD_INVITE_REGEX =
+	/(?:^|\b)discord(?:(?:app)?\.com\/invite|\.gg(?:\/invite)?)\/(?<code>[\w-]{2,255})(?:$|\b)/gi;
+// matches :host/invite/:code
+export const SPACEBAR_INVITE_REGEX = /(?:^|\b)[\w\\.-]+(?:\/invite|\.gg(?:\/invite)?)\/(?<code>[\w-]{2,255})(?:$|\b)/gi;

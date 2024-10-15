@@ -19,8 +19,9 @@ import {
 	type MessageFlags,
 	type Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
+import { AppStore } from "@stores";
+import { extractInvites } from "@utils";
 import { action, makeObservable, observable } from "mobx";
-import AppStore from "../AppStore";
 import Channel from "./Channel";
 import MessageBase from "./MessageBase";
 import QueuedMessage, { QueuedMessageData } from "./QueuedMessage";
@@ -202,6 +203,7 @@ export default class Message extends MessageBase {
 	 */
 	position?: number;
 	guild_id?: Snowflake;
+	invites: string[];
 
 	constructor(app: AppStore, data: APIMessage & { guild_id?: Snowflake }) {
 		super(app, data);
@@ -240,6 +242,7 @@ export default class Message extends MessageBase {
 		if (data.guild_id) {
 			this.guild_id = data.guild_id;
 		}
+		this.invites = extractInvites(data.content);
 
 		makeObservable(this);
 	}

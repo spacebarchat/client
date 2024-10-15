@@ -1,12 +1,11 @@
+import MemberList from "@components/MemberList/MemberList";
+import { useAppStore } from "@hooks/useAppStore";
+import useLogger from "@hooks/useLogger";
+import { Channel, Guild } from "@structures";
 import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useAppStore } from "../../hooks/useAppStore";
-import useLogger from "../../hooks/useLogger";
-import Channel from "../../stores/objects/Channel";
-import Guild from "../../stores/objects/Guild";
-import MemberList from "../MemberList/MemberList";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageList from "./MessageList";

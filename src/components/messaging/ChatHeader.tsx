@@ -1,13 +1,12 @@
+import { Floating, FloatingTrigger } from "@components/floating";
+import Icon from "@components/Icon";
+import { SectionHeader } from "@components/SectionHeader";
+import { useAppStore } from "@hooks/useAppStore";
+import useLogger from "@hooks/useLogger";
 import * as Icons from "@mdi/js";
+import { Channel } from "@structures";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
-import { useAppStore } from "../../hooks/useAppStore";
-import useLogger from "../../hooks/useLogger";
-import Channel from "../../stores/objects/Channel";
-import Icon from "../Icon";
-import { SectionHeader } from "../SectionHeader";
-import Floating from "../floating/Floating";
-import FloatingTrigger from "../floating/FloatingTrigger";
 
 const IconButton = styled.button`
 	margin: 0;

@@ -1,8 +1,8 @@
 import { APIAttachment } from "@spacebarchat/spacebar-api-types/v9";
+import { calculateImageRatio, calculateScaledDimensions } from "@utils";
 import React from "react";
 import { PuffLoader } from "react-spinners";
 import styled from "styled-components";
-import { calculateImageRatio, calculateScaledDimensions } from "../../utils/Message";
 
 const Container = styled.div`
 	display: flex;
@@ -18,7 +18,7 @@ interface Props {
 	attachment: APIAttachment;
 }
 
-function Video({ attachment }: Props) {
+export function Video({ attachment }: Props) {
 	const ref = React.useRef<HTMLVideoElement>(null);
 	const [isLoading, setLoading] = React.useState(true);
 	const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
@@ -72,5 +72,3 @@ function Video({ attachment }: Props) {
 		</>
 	);
 }
-
-export default Video;

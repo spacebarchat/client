@@ -1,5 +1,5 @@
+import useFloating from "@hooks/useFloating";
 import React from "react";
-import useFloating from "../hooks/useFloating";
 
 type ContextType = ReturnType<typeof useFloating> | null;
 

@@ -6,8 +6,8 @@ import type {
 	PresenceUpdateStatus,
 	Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
+import { AppStore } from "@stores";
 import { action, observable } from "mobx";
-import AppStore from "../AppStore";
 import User from "./User";
 
 export default class Presence {

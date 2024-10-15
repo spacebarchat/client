@@ -1,10 +1,13 @@
 // adapted from https://github.com/revoltchat/revite/blob/master/src/controllers/modals/types.ts
 
-import { APIAttachment, APIEmbedImage, APIEmbedThumbnail, APIEmbedVideo } from "@spacebarchat/spacebar-api-types/v9";
-import Channel from "../../stores/objects/Channel";
-import Guild from "../../stores/objects/Guild";
-import GuildMember from "../../stores/objects/GuildMember";
-import Message from "../../stores/objects/Message";
+import {
+	APIAttachment,
+	APIEmbedImage,
+	APIEmbedThumbnail,
+	APIEmbedVideo,
+	APIInvite,
+} from "@spacebarchat/spacebar-api-types/v9";
+import { Channel, Guild, GuildMember, Message } from "@structures";
 
 export type Modal = {
 	key?: string;
@@ -54,6 +57,10 @@ export type Modal = {
 			type: "create_channel";
 			guild: Guild;
 			category?: Channel;
+	  }
+	| {
+			type: "invite";
+			inviteData: APIInvite;
 	  }
 );
 

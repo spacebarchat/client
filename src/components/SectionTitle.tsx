@@ -13,6 +13,7 @@ const Text = styled.h2`
 	flex: 1;
 `;
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface Props {}
 
 function SectionTitle({ children }: React.PropsWithChildren<Props>) {

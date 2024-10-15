@@ -1,8 +1,8 @@
 import type { GatewayGuild } from "@spacebarchat/spacebar-api-types/v9";
+import { Guild } from "@structures";
+import { Logger } from "@utils";
 import { action, computed, observable, ObservableMap } from "mobx";
-import Logger from "../utils/Logger";
 import AppStore from "./AppStore";
-import Guild from "./objects/Guild";
 
 export default class GuildStore {
 	private readonly logger: Logger = new Logger("GuildStore");

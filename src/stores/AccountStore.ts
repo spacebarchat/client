@@ -6,8 +6,8 @@ import {
 	UserFlags,
 	UserPremiumType,
 } from "@spacebarchat/spacebar-api-types/v9";
+import { REST } from "@utils";
 import { observable } from "mobx";
-import REST from "../utils/REST";
 
 export default class AccountStore {
 	id: string;

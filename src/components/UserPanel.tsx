@@ -1,12 +1,11 @@
+import { modalController } from "@/controllers/modals";
+import { Floating, FloatingTrigger } from "@components/floating";
+import { useAppStore } from "@hooks/useAppStore";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
-import { modalController } from "../controllers/modals";
-import { useAppStore } from "../hooks/useAppStore";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
 import IconButton from "./IconButton";
-import Floating from "./floating/Floating";
-import FloatingTrigger from "./floating/FloatingTrigger";
 
 const Section = styled.section`
 	flex: 0 0 auto;

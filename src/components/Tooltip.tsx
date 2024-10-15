@@ -1,5 +1,5 @@
+import { FloatingProps } from "@components/floating";
 import styled from "styled-components";
-import { FloatingProps } from "./floating/Floating";
 
 const Container = styled.div`
 	background-color: var(--background-tertiary);

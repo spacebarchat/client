@@ -1,16 +1,16 @@
+import BannerRenderer from "@/controllers/banners/BannerRenderer";
+import ChannelSidebar from "@components/ChannelSidebar";
+import ContainerComponent from "@components/Container";
+import ErrorBoundary from "@components/ErrorBoundary";
+import GuildSidebar from "@components/GuildSidebar";
+import Chat from "@components/messaging/Chat";
+import SwipeableLayout from "@components/SwipeableLayout";
+import { useAppStore } from "@hooks/useAppStore";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { isMobile } from "react-device-detect";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import ChannelSidebar from "../../components/ChannelSidebar";
-import ContainerComponent from "../../components/Container";
-import ErrorBoundary from "../../components/ErrorBoundary";
-import GuildSidebar from "../../components/GuildSidebar";
-import SwipeableLayout from "../../components/SwipeableLayout";
-import Chat from "../../components/messaging/Chat";
-import BannerRenderer from "../../controllers/banners/BannerRenderer";
-import { useAppStore } from "../../hooks/useAppStore";
 
 const Container = styled(ContainerComponent)`
 	display: flex;

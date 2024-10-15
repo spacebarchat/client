@@ -1,9 +1,4 @@
-import HCaptchaLib from "@hcaptcha/react-hcaptcha";
-import { Routes } from "@spacebarchat/spacebar-api-types/v9";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import SpacebarLogoBlue from "../assets/images/logo/Logo-Blue.svg?react";
+import SpacebarLogoBlue from "@assets/images/logo/Logo-Blue.svg?react";
 import {
 	AuthContainer,
 	AuthSwitchPageContainer,
@@ -20,22 +15,27 @@ import {
 	SubHeader,
 	SubmitButton,
 	Wrapper,
-} from "../components/AuthComponents";
-import { TextDivider } from "../components/Divider";
-import HCaptcha, { HeaderContainer } from "../components/HCaptcha";
-import { useAppStore } from "../hooks/useAppStore";
-import useLogger from "../hooks/useLogger";
-import { AUTH_NO_BRANDING } from "../stores/AppStore";
-import { Globals } from "../utils/Globals";
-import REST from "../utils/REST";
-import { RouteSettings } from "../utils/constants";
+} from "@components/AuthComponents";
+import { TextDivider } from "@components/Divider";
+import HCaptcha, { HeaderContainer } from "@components/HCaptcha";
+import HCaptchaLib from "@hcaptcha/react-hcaptcha";
+import { useAppStore } from "@hooks/useAppStore";
+import useLogger from "@hooks/useLogger";
+import { Routes } from "@spacebarchat/spacebar-api-types/v9";
+import { AUTH_NO_BRANDING } from "@stores/AppStore";
 import {
+	Globals,
 	IAPILoginRequest,
 	IAPILoginResponse,
 	IAPILoginResponseError,
 	IAPILoginResponseMFARequired,
-} from "../utils/interfaces/api";
-import { messageFromFieldError } from "../utils/messageFromFieldError";
+	messageFromFieldError,
+	REST,
+	RouteSettings,
+} from "@utils";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import MFA from "./subpages/MFA";
 
 type FormValues = {

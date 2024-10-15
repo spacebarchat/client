@@ -1,4 +1,4 @@
-import AppStore from "../stores/AppStore";
+import AppStore from "@stores/AppStore";
 
 export const appStore = new AppStore();
 

@@ -3,11 +3,10 @@ import {
 	GatewayGuildMemberListUpdateGroup,
 	GatewayGuildMemberListUpdateOperation,
 } from "@spacebarchat/spacebar-api-types/v9";
+import { Guild, GuildMember } from "@structures";
+import { Logger } from "@utils";
 import { action, observable } from "mobx";
-import Logger from "../utils/Logger";
 import AppStore from "./AppStore";
-import Guild from "./objects/Guild";
-import GuildMember from "./objects/GuildMember";
 
 export default class GuildMemberListStore {
 	private readonly logger: Logger = new Logger("GuildMemberListStore");

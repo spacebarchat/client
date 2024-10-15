@@ -1,7 +1,8 @@
-import { TextareaAutosize, TextareaAutosizeProps } from "@mui/material";
+// import { TextareaAutosize, TextareaAutosizeProps } from "@mui/material";
+import { isTouchscreenDevice } from "@utils";
 import React from "react";
 import styled from "styled-components";
-import { isTouchscreenDevice } from "../../utils/isTouchscreenDevice";
+import { TextareaAutosize, TextareaAutosizeProps } from "./TextareaAutosize";
 
 const Container = styled.div`
 	flex: 1;
@@ -34,7 +35,7 @@ function MessageTextArea(props: TextareaAutosizeProps) {
 
 	React.useEffect(() => {
 		if (isTouchscreenDevice) return;
-		ref.current && ref.current.focus();
+		if (ref.current) ref.current.focus();
 	}, [props.value]);
 
 	const inputSelected = () => ["TEXTAREA", "INPUT"].includes(document.activeElement?.nodeName ?? "");

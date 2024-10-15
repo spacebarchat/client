@@ -1,10 +1,10 @@
+import Icon from "@components/Icon";
+import IconButton from "@components/IconButton";
+import { useAppStore } from "@hooks/useAppStore";
+import { QueuedMessage } from "@structures";
+import { bytesToSize } from "@utils";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
-import { useAppStore } from "../../../hooks/useAppStore";
-import QueuedMessage from "../../../stores/objects/QueuedMessage";
-import { bytesToSize } from "../../../utils/Utils";
-import Icon from "../../Icon";
-import IconButton from "../../IconButton";
 
 const Container = styled.div`
 	width: 520px;

@@ -36,9 +36,8 @@ import {
 	PresenceUpdateStatus,
 	Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
+import { debounce, Logger } from "@utils";
 import { action, makeObservable, observable, runInAction } from "mobx";
-import Logger from "../utils/Logger";
-import { debounce } from "../utils/debounce";
 import AppStore from "./AppStore";
 
 const GATEWAY_VERSION = "9";
@@ -69,7 +68,7 @@ export default class GatewayConnectionStore {
 	private heartbeatInterval: number | null = null;
 	private heartbeater: NodeJS.Timeout | null = null;
 	private initialHeartbeatTimeout: NodeJS.Timeout | null = null;
-	// eslint-disable-next-line @typescript-eslint/ban-types
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 	private dispatchHandlers: Map<GatewayDispatchEvents, Function> = new Map();
 	private connectionStartTime?: number;
 	private identifyStartTime?: number;

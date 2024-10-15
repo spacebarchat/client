@@ -1,7 +1,7 @@
 // loosely based on https://github.com/revoltchat/frontend/blob/master/components/app/menus/UserContextMenu.tsx
 
-import { modalController } from "../../controllers/modals";
-import Channel from "../../stores/objects/Channel";
+import { modalController } from "@/controllers/modals";
+import Channel from "@structures/Channel";
 import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "./ContextMenu";
 
 interface MenuProps {

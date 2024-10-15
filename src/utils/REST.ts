@@ -1,5 +1,5 @@
-import AppStore from "../stores/AppStore";
-import QueuedMessage from "../stores/objects/QueuedMessage";
+import { AppStore } from "@stores";
+import { QueuedMessage } from "@structures";
 import { Globals } from "./Globals";
 import Logger from "./Logger";
 import { RouteSettings } from "./constants";

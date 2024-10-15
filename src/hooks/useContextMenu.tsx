@@ -1,11 +1,13 @@
+import {
+	ChannelMentionContextMenu,
+	GuildContextMenu,
+	MessageContextMenu,
+	UserContextMenu,
+} from "@components/contextMenus";
+import ChannelContextMenu from "@components/contextMenus/ChannelContextMenu";
+import { ContextMenuProps } from "@contexts/ContextMenuContext";
 import { autoUpdate, flip, offset, shift, useDismiss, useFloating, useInteractions, useRole } from "@floating-ui/react";
 import { useMemo, useState } from "react";
-import ChannelContextMenu from "../components/contextMenus/ChannelContextMenu";
-import ChannelMentionContextMenu from "../components/contextMenus/ChannelMentionContextMenu";
-import GuildContextMenu from "../components/contextMenus/GuildContextMenu";
-import MessageContextMenu from "../components/contextMenus/MessageContextMenu";
-import UserContextMenu from "../components/contextMenus/UserContextMenu";
-import { ContextMenuProps } from "../contexts/ContextMenuContext";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Components = Record<string, React.FC<any>>;
