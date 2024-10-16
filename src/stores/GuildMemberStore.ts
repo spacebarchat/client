@@ -2,20 +2,21 @@ import type { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
 import { type APIGuildMember } from "@spacebarchat/spacebar-api-types/v9";
 import { Guild, GuildMember } from "@structures";
 import { APIUserProfile } from "@utils/interfaces/api";
-import { ObservableMap, action, computed, makeObservable, observable } from "mobx";
+import { ObservableMap, action, computed, makeAutoObservable, observable } from "mobx";
 import AppStore from "./AppStore";
 
 export default class GuildMemberStore {
 	private readonly app: AppStore;
 	private readonly guild: Guild;
 
-	@observable private readonly members = new ObservableMap<Snowflake, GuildMember>();
+	@observable private readonly members: ObservableMap<Snowflake, GuildMember>;
 
 	constructor(app: AppStore, guild: Guild) {
 		this.app = app;
 		this.guild = guild;
+		this.members = observable.map();
 
-		makeObservable(this);
+		makeAutoObservable(this);
 	}
 
 	@action

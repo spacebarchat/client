@@ -12,7 +12,7 @@ const PreviewContainer = styled.div`
 	padding: 5px 6px;
 `;
 
-export  function DeleteMessageModal({ target, ...props }: ModalProps<"delete_message">) {
+export function DeleteMessageModal({ target, ...props }: ModalProps<"delete_message">) {
 	return (
 		<Modal
 			{...props}

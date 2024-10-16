@@ -59,8 +59,6 @@ export default class AppStore {
 	@observable memberListVisible: boolean = true;
 
 	constructor() {
-		makeAutoObservable(this);
-
 		if (isTauri) {
 			this.updaterStore = new UpdaterStore(this);
 		}
@@ -70,6 +68,8 @@ export default class AppStore {
 		// bind this in windowToggleFps
 		this.windowToggleFps = this.windowToggleFps.bind(this);
 		window.windowToggleFps = this.windowToggleFps;
+
+		makeAutoObservable(this);
 	}
 
 	@action

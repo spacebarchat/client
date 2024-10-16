@@ -1,17 +1,18 @@
 import type { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
 import type { APIRole } from "@spacebarchat/spacebar-api-types/v9";
 import { Role } from "@structures";
-import { action, computed, makeObservable, observable, ObservableMap } from "mobx";
+import { action, computed, makeAutoObservable, observable, ObservableMap } from "mobx";
 import AppStore from "./AppStore";
 
 export default class RoleStore {
 	private readonly app: AppStore;
-	@observable private readonly roles = new ObservableMap<Snowflake, Role>();
+	@observable private readonly roles: ObservableMap<Snowflake, Role>;
 
 	constructor(app: AppStore) {
 		this.app = app;
+		this.roles = observable.map();
 
-		makeObservable(this);
+		makeAutoObservable(this);
 	}
 
 	@action

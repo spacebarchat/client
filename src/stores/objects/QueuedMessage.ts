@@ -1,6 +1,6 @@
 import { APIUser, MessageType } from "@spacebarchat/spacebar-api-types/v9";
 import { AppStore } from "@stores";
-import { action, makeObservable, observable } from "mobx";
+import { action, observable } from "mobx";
 import MessageBase from "./MessageBase";
 
 export enum QueuedMessageStatus {
@@ -35,8 +35,6 @@ export default class QueuedMessage extends MessageBase {
 		this.guild_id = data.guild_id;
 		this.files = data.files;
 		this.status = QueuedMessageStatus.SENDING;
-
-		makeObservable(this);
 	}
 
 	@action
