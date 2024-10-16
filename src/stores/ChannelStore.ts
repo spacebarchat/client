@@ -5,10 +5,11 @@ import AppStore from "./AppStore";
 
 export default class ChannelStore {
 	private readonly app: AppStore;
-	@observable readonly channels = new ObservableMap<string, Channel>();
+	@observable readonly channels: ObservableMap<string, Channel>;
 
 	constructor(app: AppStore) {
 		this.app = app;
+		this.channels = observable.map();
 	}
 
 	@action

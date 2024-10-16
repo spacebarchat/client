@@ -5,7 +5,7 @@ import {
 } from "@spacebarchat/spacebar-api-types/v9";
 import { AppStore } from "@stores";
 import { PermissionResolvable, Permissions } from "@utils";
-import { action, computed, observable } from "mobx";
+import { action, computed, makeAutoObservable, observable } from "mobx";
 import Guild from "./Guild";
 import Role from "./Role";
 import User from "./User";
@@ -43,6 +43,8 @@ export default class GuildMember {
 		this.flags = data.flags;
 		this.pending = data.pending;
 		this.communication_disabled_until = data.communication_disabled_until;
+
+		makeAutoObservable(this);
 	}
 
 	@computed

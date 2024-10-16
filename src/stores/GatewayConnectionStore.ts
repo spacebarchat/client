@@ -37,7 +37,7 @@ import {
 	Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
 import { debounce, Logger } from "@utils";
-import { action, makeObservable, observable, runInAction } from "mobx";
+import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import AppStore from "./AppStore";
 
 const GATEWAY_VERSION = "9";
@@ -80,7 +80,7 @@ export default class GatewayConnectionStore {
 	constructor(app: AppStore) {
 		this.app = app;
 
-		makeObservable(this);
+		makeAutoObservable(this);
 	}
 
 	/**

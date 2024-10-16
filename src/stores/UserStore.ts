@@ -6,14 +6,17 @@ import {
 	type Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
 import { User } from "@structures";
-import { ObservableMap, action, computed, observable } from "mobx";
+import { ObservableMap, action, computed, makeAutoObservable, observable } from "mobx";
 import AppStore from "./AppStore";
 
 export default class UserStore {
 	private readonly logger = useLogger("UserStore");
-	@observable readonly users = new ObservableMap<string, User>();
+	@observable readonly users: ObservableMap<string, User>;
 
-	constructor(private readonly app: AppStore) {}
+	constructor(private readonly app: AppStore) {
+		this.users = observable.map();
+		makeAutoObservable(this);
+	}
 
 	@action
 	add(user: APIUser): User {

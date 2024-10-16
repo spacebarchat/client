@@ -1,17 +1,20 @@
 import type { GatewayGuild } from "@spacebarchat/spacebar-api-types/v9";
 import { Guild } from "@structures";
 import { Logger } from "@utils";
-import { action, computed, observable, ObservableMap } from "mobx";
+import { action, computed, makeAutoObservable, observable, ObservableMap } from "mobx";
 import AppStore from "./AppStore";
 
 export default class GuildStore {
 	private readonly logger: Logger = new Logger("GuildStore");
 	private readonly app: AppStore;
 	@observable initialGuildsLoaded = false;
-	@observable readonly guilds = new ObservableMap<string, Guild>();
+	@observable readonly guilds: ObservableMap<string, Guild>;
 
 	constructor(app: AppStore) {
 		this.app = app;
+		this.guilds = observable.map();
+
+		makeAutoObservable(this);
 	}
 
 	@action

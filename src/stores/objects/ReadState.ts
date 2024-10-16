@@ -1,7 +1,7 @@
 import { type APIReadState } from "@spacebarchat/spacebar-api-types/v9";
 import { AppStore } from "@stores";
 import { Logger } from "@utils";
-import { action, observable } from "mobx";
+import { action, makeAutoObservable, observable } from "mobx";
 
 export default class ReadState {
 	private readonly logger: Logger;
@@ -20,6 +20,8 @@ export default class ReadState {
 		this.lastMessageId = data.last_message_id;
 		this.lastPinTimestamp = data.last_pin_timestamp;
 		this.mentionCount = data.mention_count;
+
+		makeAutoObservable(this);
 	}
 
 	@action

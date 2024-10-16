@@ -2,7 +2,7 @@ import { Snowflake } from "@spacebarchat/spacebar-api-types/globals";
 import type { APIUser, GatewayUserUpdateDispatchData, PublicUser } from "@spacebarchat/spacebar-api-types/v9";
 import { CDNRoutes, DefaultUserAvatarAssets, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import { REST } from "@utils";
-import { action, makeObservable, observable } from "mobx";
+import { action, makeAutoObservable, observable } from "mobx";
 
 export default class User {
 	id: Snowflake;
@@ -45,7 +45,7 @@ export default class User {
 		this.theme_colors = user.theme_colors;
 		this.accent_color = user.accent_color;
 
-		makeObservable(this);
+		makeAutoObservable(this);
 	}
 
 	@action

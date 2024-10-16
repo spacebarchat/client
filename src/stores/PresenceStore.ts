@@ -1,16 +1,17 @@
 import type { GatewayPresenceUpdateDispatchData, Snowflake } from "@spacebarchat/spacebar-api-types/v9";
 import { Presence } from "@structures";
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, makeAutoObservable, observable, ObservableMap } from "mobx";
 import AppStore from "./AppStore";
 
 export default class PresenceStore {
 	private readonly app: AppStore;
-	@observable presences = observable.map<Snowflake, Presence>();
+	@observable presences: ObservableMap<Snowflake, Presence>;
 
 	constructor(app: AppStore) {
 		this.app = app;
+		this.presences = observable.map<Snowflake, Presence>();
 
-		makeObservable(this);
+		makeAutoObservable(this);
 	}
 
 	@action

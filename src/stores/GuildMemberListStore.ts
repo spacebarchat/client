@@ -5,7 +5,7 @@ import {
 } from "@spacebarchat/spacebar-api-types/v9";
 import { Guild, GuildMember } from "@structures";
 import { Logger } from "@utils";
-import { action, observable } from "mobx";
+import { action, makeAutoObservable, observable } from "mobx";
 import AppStore from "./AppStore";
 
 export default class GuildMemberListStore {
@@ -30,6 +30,8 @@ export default class GuildMemberListStore {
 		this.member_count = member_count;
 		this.online_count = online_count;
 		this.computeListData(data.ops);
+
+		makeAutoObservable(this);
 	}
 
 	@action
