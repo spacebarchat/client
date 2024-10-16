@@ -89,7 +89,7 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 						alignItems: "center",
 					}}
 				>
-					<SidebarPill type={channel.unread ? "unread" : "none"} />
+					<SidebarPill type={channel.hasUnread ? "unread" : "none"} />
 					{channel.channelIcon && !isCategory && (
 						<Icon
 							icon={channel.channelIcon}
