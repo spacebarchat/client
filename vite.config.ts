@@ -109,7 +109,7 @@ export default defineConfig({
 					host: host,
 					port: 1430,
 			  }
-			: false,
+			: undefined,
 		// Tauri expects a fixed port, fail if that port is not available
 		strictPort: true,
 	},
