@@ -116,10 +116,10 @@ export default class GatewayConnectionStore {
 	}
 	reconnecting=false;
 	startReconnect() {
-		if(reconnecting)return;
-		reconnecting=true;
+		if(this.reconnecting)return;
+		this.reconnecting=true;
 		setTimeout(() => {
-			reconnecting=false;
+			this.reconnecting=false;
 			this.logger.debug("Starting reconnect...");
 			this.connect(this.url!);
 		}, this.reconnectTimeout);
