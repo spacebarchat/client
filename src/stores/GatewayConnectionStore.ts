@@ -114,9 +114,12 @@ export default class GatewayConnectionStore {
 		this.logger.debug(`[Disconnect] ${this.url}`);
 		this.socket?.close(code, reason);
 	}
-
+	reconnecting=false;
 	startReconnect() {
+		if(reconnecting)return;
+		reconnecting=true;
 		setTimeout(() => {
+			reconnecting=false;
 			this.logger.debug("Starting reconnect...");
 			this.connect(this.url!);
 		}, this.reconnectTimeout);
