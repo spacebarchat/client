@@ -124,5 +124,8 @@
 		"tauri:android:build": "pnpm run ci:prebuild && tauri android build"
 	},
 	"type": "module",
-	"version": "0.1.2"
+	"version": "0.1.2",
+	"engines": {
+		"pnpm": ">=9.0.0"
+	}
 }
