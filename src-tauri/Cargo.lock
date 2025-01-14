@@ -1182,9 +1182,9 @@ dependencies = [
 
 [[package]]
 name = "fern"
-version = "0.6.2"
+version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d9f0c14694cbd524c8720dd69b0e3179344f04ebb5f90f2e4a440c6ea3b2f1ee"
+checksum = "4316185f709b23713e41e3195f90edef7fb00c3ed4adc79769cf09cc762a3b29"
 dependencies = [
  "log",
 ]
@@ -4287,9 +4287,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-log"
-version = "2.0.1"
+version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9a49f2c05d15e6375ab7f7e528b3049150ba4dfafdf61f85e5178d0aef18e3f5"
+checksum = "eddd784c138c08a43954bc3e735402e6b2b2ee8d8c254a7391f4e77c01273dd5"
 dependencies = [
  "android_logger",
  "byte-unit",
@@ -4303,7 +4303,7 @@ dependencies = [
  "swift-rs",
  "tauri",
  "tauri-plugin",
- "thiserror 1.0.64",
+ "thiserror 2.0.3",
  "time",
 ]
 
