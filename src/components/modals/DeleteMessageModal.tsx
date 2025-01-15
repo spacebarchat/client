@@ -1,6 +1,6 @@
+import { ModalProps, modalController } from "@/controllers/modals";
+import MarkdownRenderer from "@components/markdown/MarkdownRenderer";
 import styled from "styled-components";
-import { ModalProps, modalController } from "../../controllers/modals";
-import MarkdownRenderer from "../markdown/MarkdownRenderer";
 import { Modal } from "./ModalComponents";
 
 const PreviewContainer = styled.div`

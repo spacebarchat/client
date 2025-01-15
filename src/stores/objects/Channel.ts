@@ -13,14 +13,11 @@ import type {
 	Snowflake as SnowflakeType,
 } from "@spacebarchat/spacebar-api-types/v9";
 import { ChannelType, Routes } from "@spacebarchat/spacebar-api-types/v9";
-import { ObservableMap, action, computed, makeObservable, observable } from "mobx";
+import { AppStore, MessageStore } from "@stores";
+import { APIError, PermissionResolvable, Permissions } from "@utils";
+import Logger from "@utils/Logger";
+import { ObservableMap, action, computed, makeAutoObservable, observable } from "mobx";
 import murmur from "murmurhash-js/murmurhash3_gc";
-import Logger from "../../utils/Logger";
-import type { PermissionResolvable } from "../../utils/Permissions";
-import { Permissions } from "../../utils/Permissions";
-import { APIError } from "../../utils/interfaces/api";
-import AppStore from "../AppStore";
-import MessageStore from "../MessageStore";
 import QueuedMessage from "./QueuedMessage";
 import User from "./User";
 
@@ -142,7 +139,7 @@ export default class Channel {
 				break;
 		}
 
-		makeObservable(this);
+		makeAutoObservable(this);
 	}
 
 	@action
@@ -312,8 +309,10 @@ export default class Channel {
 	}
 
 	@computed
-	get unread() {
-		const readState = this.app.readStateStore.get(this.id);
+	get hasUnread() {
+		const { readstates } = this.app.readStateStore;
+		const readState = readstates.get(this.id);
+
 		if (!readState) {
 			// this.logger.warn(`Failed to find readstate for channel ${this.id}`); // this just causes unnecessary spam
 			return false;
@@ -325,12 +324,16 @@ export default class Channel {
 	markAsRead() {
 		const readState = this.app.readStateStore.get(this.id);
 		if (!readState) {
-			this.logger.warn(`Failed to find readstate for channel ${this.id}`); // this just causes unnecessary spam
+			// this.logger.warn(`Failed to find readstate for channel ${this.id}`); // this just causes unnecessary spam
+			return;
+		}
+		if (!this.lastMessageId) {
+			this.logger.warn(`No last message for channel ${this.id}`);
 			return;
 		}
 
 		this.app.rest
-			.post(Routes.channelMessage(this.id, readState.lastMessageId) + "/ack", {
+			.post(Routes.channelMessage(this.id, this.lastMessageId) + "/ack", {
 				mention_count: readState.mentionCount,
 			})
 			.then((r) => {

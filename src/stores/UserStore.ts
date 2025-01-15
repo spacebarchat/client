@@ -1,19 +1,22 @@
+import useLogger from "@hooks/useLogger";
 import {
 	GatewayUserUpdateDispatchData,
 	Routes,
 	type APIUser,
 	type Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
-import { ObservableMap, action, computed, observable } from "mobx";
-import useLogger from "../hooks/useLogger";
+import { User } from "@structures";
+import { ObservableMap, action, computed, makeAutoObservable, observable } from "mobx";
 import AppStore from "./AppStore";
-import User from "./objects/User";
 
 export default class UserStore {
 	private readonly logger = useLogger("UserStore");
-	@observable readonly users = new ObservableMap<string, User>();
+	@observable readonly users: ObservableMap<string, User>;
 
-	constructor(private readonly app: AppStore) {}
+	constructor(private readonly app: AppStore) {
+		this.users = observable.map();
+		makeAutoObservable(this);
+	}
 
 	@action
 	add(user: APIUser): User {

@@ -1,6 +1,6 @@
 import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
+import { MessageGroup as MessageGroupType } from "@stores/MessageStore";
 import { observer } from "mobx-react-lite";
-import { MessageGroup as MessageGroupType } from "../../stores/MessageStore";
 import Message from "./Message";
 import SystemMessage from "./SystemMessage";
 

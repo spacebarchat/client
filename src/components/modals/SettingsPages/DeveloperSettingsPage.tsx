@@ -1,6 +1,6 @@
+import SectionTitle from "@components/SectionTitle";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
-import SectionTitle from "../../SectionTitle";
 
 const Content = styled.div`
 	display: flex;

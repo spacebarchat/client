@@ -1,10 +1,10 @@
+import { ModalProps, modalController } from "@/controllers/modals";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppStore } from "@hooks/useAppStore";
 import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import * as yup from "yup";
-import { ModalProps, modalController } from "../../controllers/modals";
-import { useAppStore } from "../../hooks/useAppStore";
 import { Modal } from "./ModalComponents";
 
 const DescriptionText = styled.p`

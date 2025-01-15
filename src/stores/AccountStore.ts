@@ -6,8 +6,8 @@ import {
 	UserFlags,
 	UserPremiumType,
 } from "@spacebarchat/spacebar-api-types/v9";
-import { observable } from "mobx";
-import REST from "../utils/REST";
+import { REST } from "@utils";
+import { makeAutoObservable, observable } from "mobx";
 
 export default class AccountStore {
 	id: string;
@@ -61,6 +61,8 @@ export default class AccountStore {
 		}
 		// this.phone = user.phone;
 		// this.nsfwAllowed = user.nsfw_allowed;
+
+		makeAutoObservable(this);
 	}
 
 	/**

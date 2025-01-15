@@ -1,9 +1,9 @@
+import SectionTitle from "@components/SectionTitle";
+import { useAppStore } from "@hooks/useAppStore";
+import { EXPERIMENT_LIST, Experiment as ExperimentType } from "@stores/ExperimentsStore";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import styled from "styled-components";
-import { useAppStore } from "../../../hooks/useAppStore";
-import { EXPERIMENT_LIST, Experiment as ExperimentType } from "../../../stores/ExperimentsStore";
-import SectionTitle from "../../SectionTitle";
 
 const Content = styled.div`
 	display: flex;

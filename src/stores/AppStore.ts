@@ -1,25 +1,25 @@
+import { modalController } from "@/controllers/modals";
 import type { APIUser, Snowflake } from "@spacebarchat/spacebar-api-types/v9";
+import { Logger, REST, isTauri } from "@utils";
 import { action, computed, makeAutoObservable, observable } from "mobx";
 import secureLocalStorage from "react-secure-storage";
-import { modalController } from "../controllers/modals";
-import Logger from "../utils/Logger";
-import REST from "../utils/REST";
-import { isTauri } from "../utils/Utils";
-import AccountStore from "./AccountStore";
-import ChannelStore from "./ChannelStore";
-import ExperimentsStore from "./ExperimentsStore";
-import GatewayConnectionStore from "./GatewayConnectionStore";
-import GuildStore from "./GuildStore";
-import MessageQueue from "./MessageQueue";
-import PresenceStore from "./PresenceStore";
-import PrivateChannelStore from "./PrivateChannelStore";
-import ReadStateStore from "./ReadStateStore";
-import RoleStore from "./RoleStore";
-import ThemeStore from "./ThemeStore";
-import UpdaterStore from "./UpdaterStore";
-import UserStore from "./UserStore";
-import Channel from "./objects/Channel";
-import Guild from "./objects/Guild";
+
+import {
+	AccountStore,
+	ChannelStore,
+	ExperimentsStore,
+	GatewayConnectionStore,
+	GuildStore,
+	MessageQueue,
+	PresenceStore,
+	PrivateChannelStore,
+	ReadStateStore,
+	RoleStore,
+	ThemeStore,
+	UpdaterStore,
+	UserStore,
+} from "@stores";
+import { Channel, Guild } from "@structures";
 
 // dev thing to force toggle branding on auth pages for testing.
 export const AUTH_NO_BRANDING = false;
@@ -59,8 +59,6 @@ export default class AppStore {
 	@observable memberListVisible: boolean = true;
 
 	constructor() {
-		makeAutoObservable(this);
-
 		if (isTauri) {
 			this.updaterStore = new UpdaterStore(this);
 		}
@@ -70,6 +68,8 @@ export default class AppStore {
 		// bind this in windowToggleFps
 		this.windowToggleFps = this.windowToggleFps.bind(this);
 		window.windowToggleFps = this.windowToggleFps;
+
+		makeAutoObservable(this);
 	}
 
 	@action

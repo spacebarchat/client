@@ -1,10 +1,10 @@
+import { modalController } from "@/controllers/modals";
+import { useAppStore } from "@hooks/useAppStore";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { AutoSizer, List, ListRowProps } from "react-virtualized";
 import styled from "styled-components";
-import { modalController } from "../controllers/modals";
-import { useAppStore } from "../hooks/useAppStore";
 import GuildItem, { GuildSidebarListItem } from "./GuildItem";
 import SidebarAction from "./SidebarAction";
 

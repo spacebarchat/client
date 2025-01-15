@@ -1,13 +1,12 @@
+import Avatar from "@components/Avatar";
+import { Floating, FloatingTrigger } from "@components/floating";
+import { ContextMenuContext } from "@contexts/ContextMenuContext";
+import { useAppStore } from "@hooks/useAppStore";
 import { PresenceUpdateStatus } from "@spacebarchat/spacebar-api-types/v9";
+import { GuildMember } from "@structures";
 import { observer } from "mobx-react-lite";
 import { useContext } from "react";
 import styled from "styled-components";
-import { ContextMenuContext } from "../../contexts/ContextMenuContext";
-import { useAppStore } from "../../hooks/useAppStore";
-import GuildMember from "../../stores/objects/GuildMember";
-import Avatar from "../Avatar";
-import Floating from "../floating/Floating";
-import FloatingTrigger from "../floating/FloatingTrigger";
 
 const ListItem = styled(FloatingTrigger)<{ isCategory?: boolean }>`
 	padding: ${(props) => (props.isCategory ? "16px 8px 0 0" : "1px 8px 0 0")};

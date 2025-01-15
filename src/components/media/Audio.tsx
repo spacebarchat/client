@@ -1,8 +1,8 @@
+import Icon from "@components/Icon";
+import Link from "@components/Link";
 import { APIAttachment } from "@spacebarchat/spacebar-api-types/v9";
+import { bytesToSize } from "@utils";
 import styled from "styled-components";
-import { bytesToSize } from "../../utils/Utils";
-import Icon from "../Icon";
-import Link from "../Link";
 
 const Container = styled.div`
 	margin-top: 10px;
@@ -48,7 +48,7 @@ interface Props {
 	attachment: APIAttachment;
 }
 
-function Audio({ attachment }: Props) {
+export function Audio({ attachment }: Props) {
 	const url = attachment.proxy_url && attachment.proxy_url.length > 0 ? attachment.proxy_url : attachment.url;
 
 	return (
@@ -68,5 +68,3 @@ function Audio({ attachment }: Props) {
 		</Container>
 	);
 }
-
-export default Audio;

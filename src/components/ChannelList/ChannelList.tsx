@@ -1,8 +1,8 @@
+import { useAppStore } from "@hooks/useAppStore";
 import { ChannelType } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import { AutoSizer, List, ListRowProps } from "react-virtualized";
 import styled from "styled-components";
-import { useAppStore } from "../../hooks/useAppStore";
 import ChannelListItem from "./ChannelListItem";
 
 const Container = styled.div`

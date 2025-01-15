@@ -6,8 +6,8 @@ import type {
 	PresenceUpdateStatus,
 	Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
-import { action, observable } from "mobx";
-import AppStore from "../AppStore";
+import { AppStore } from "@stores";
+import { action, makeAutoObservable, observable } from "mobx";
 import User from "./User";
 
 export default class Presence {
@@ -27,6 +27,8 @@ export default class Presence {
 		this.status = data.status;
 		this.activities = data.activities;
 		this.clientStatus = data.client_status;
+
+		makeAutoObservable(this);
 	}
 
 	@action

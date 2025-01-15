@@ -1,14 +1,17 @@
 import type { APIReadState } from "@spacebarchat/spacebar-api-types/v9";
-import { ObservableMap, action, computed, observable } from "mobx";
+import { ReadState } from "@structures";
+import { ObservableMap, action, computed, makeAutoObservable, observable } from "mobx";
 import AppStore from "./AppStore";
-import ReadState from "./objects/ReadState";
 
 export default class ReadStateStore {
 	private readonly app: AppStore;
-	@observable readonly readstates = new ObservableMap<string, ReadState>();
+	@observable readonly readstates: ObservableMap<string, ReadState>;
 
 	constructor(app: AppStore) {
 		this.app = app;
+		this.readstates = observable.map();
+
+		makeAutoObservable(this);
 	}
 
 	@action

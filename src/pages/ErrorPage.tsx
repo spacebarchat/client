@@ -1,5 +1,5 @@
-import Container from "../components/Container";
-import Text from "../components/Text";
+import Container from "@components/Container";
+import Text from "@components/Text";
 
 interface Props {
 	error: Error;

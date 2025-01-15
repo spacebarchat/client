@@ -1,8 +1,8 @@
+import useLogger from "@hooks/useLogger";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
+import { Logger } from "@utils";
 import { action, makeAutoObservable, observable } from "mobx";
-import useLogger from "../hooks/useLogger";
-import Logger from "../utils/Logger";
 import AppStore from "./AppStore";
 
 export default class UpdaterStore {
@@ -17,7 +17,6 @@ export default class UpdaterStore {
 
 	constructor(private readonly app: AppStore) {
 		this.logger.info("Initializing UpdaterStore");
-		makeAutoObservable(this);
 
 		const setupListeners = async () => {
 			await listen("CHECKING_FOR_UPDATE", () => {
@@ -81,6 +80,8 @@ export default class UpdaterStore {
 			quitAndInstall: this.quitAndInstall.bind(this),
 			clearUpdateCache: this.clearCache.bind(this),
 		};
+
+		makeAutoObservable(this);
 	}
 
 	@action

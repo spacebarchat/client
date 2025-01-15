@@ -1,6 +1,6 @@
 import type { APIRole, APIRoleTags } from "@spacebarchat/spacebar-api-types/v9";
-import { action, observable } from "mobx";
-import AppStore from "../AppStore";
+import { AppStore } from "@stores";
+import { action, makeAutoObservable, observable } from "mobx";
 
 export default class Role {
 	private readonly app: AppStore;
@@ -31,6 +31,8 @@ export default class Role {
 		this.managed = data.managed;
 		this.mentionable = data.mentionable;
 		this.tags = data.tags;
+
+		makeAutoObservable(this);
 	}
 
 	@action

@@ -1,6 +1,5 @@
 // adapted from https://github.com/revoltchat/revite/blob/master/src/controllers/modals/ModalController.tsx
 
-import { action, computed, makeObservable, observable } from "mobx";
 import {
 	AddServerModal,
 	BanMemberModal,
@@ -14,7 +13,8 @@ import {
 	KickMemberModal,
 	LeaveServerModal,
 	SettingsModal,
-} from "../../components/modals";
+} from "@components/modals";
+import { action, computed, makeObservable, observable } from "mobx";
 import { Modal } from "./types";
 
 function randomUUID() {
@@ -102,10 +102,10 @@ class ModalController<T extends Modal> {
 	get rendered() {
 		return (
 			<>
-				{this.stack.map((modal) => {
-					const Component = this.components[modal.type];
+				{this.stack.map(({ key, ...rest }) => {
+					const Component = this.components[rest.type];
 					if (!Component) return null;
-					return <Component {...modal} onClose={() => this.remove(modal.key!)} />;
+					return <Component key={key} {...rest} onClose={() => this.remove(key!)} />;
 				})}
 			</>
 		);

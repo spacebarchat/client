@@ -1,18 +1,18 @@
+import { ModalProps } from "@/controllers/modals/types";
+import { Input, InputErrorText, InputLabel, LabelWrapper } from "@components/AuthComponents";
+import Button from "@components/Button";
+import { TextDivider } from "@components/Divider";
+import { InputSelect, InputSelectOption } from "@components/FormComponents";
+import Icon from "@components/Icon";
+import IconButton from "@components/IconButton";
+import { useAppStore } from "@hooks/useAppStore";
+import useLogger from "@hooks/useLogger";
 import { APIInvite, Routes } from "@spacebarchat/spacebar-api-types/v9";
+import { messageFromFieldError } from "@utils";
 import dayjs from "dayjs";
 import React from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { ModalProps } from "../../controllers/modals/types";
-import { useAppStore } from "../../hooks/useAppStore";
-import useLogger from "../../hooks/useLogger";
-import { messageFromFieldError } from "../../utils/messageFromFieldError";
-import { Input, InputErrorText, InputLabel, LabelWrapper } from "../AuthComponents";
-import Button from "../Button";
-import { TextDivider } from "../Divider";
-import { InputSelect, InputSelectOption } from "../FormComponents";
-import Icon from "../Icon";
-import IconButton from "../IconButton";
 import { InputContainer, Modal } from "./ModalComponents";
 
 // TODO: refactor the layout of this modal when we have dms and friends, and move settings to a separate modal

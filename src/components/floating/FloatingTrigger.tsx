@@ -1,6 +1,6 @@
 import { useMergeRefs } from "@floating-ui/react";
+import useFloatingContext from "@hooks/useFloatingContext";
 import React from "react";
-import useFloatingContext from "../../hooks/useFloatingContext";
 
 interface PopoverTriggerProps {
 	children: React.ReactNode;

@@ -1,11 +1,11 @@
+import Icon from "@components/Icon";
 import * as Icons from "@mdi/js";
 import { MessageType } from "@spacebarchat/spacebar-api-types/v9";
+import { MessageLike } from "@structures";
 import { observer } from "mobx-react-lite";
 import ReactMarkdown from "react-markdown";
 import reactStringReplace from "react-string-replace";
 import styled from "styled-components";
-import { MessageLike } from "../../stores/objects/Message";
-import Icon from "../Icon";
 import MessageBase, { MessageDetails, MessageInfo } from "./MessageBase";
 
 const SystemContent = styled.div`

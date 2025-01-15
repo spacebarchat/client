@@ -36,9 +36,8 @@ import {
 	PresenceUpdateStatus,
 	Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
-import { action, makeObservable, observable, runInAction } from "mobx";
-import Logger from "../utils/Logger";
-import { debounce } from "../utils/debounce";
+import { debounce, Logger } from "@utils";
+import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import AppStore from "./AppStore";
 
 const GATEWAY_VERSION = "9";
@@ -69,7 +68,7 @@ export default class GatewayConnectionStore {
 	private heartbeatInterval: number | null = null;
 	private heartbeater: NodeJS.Timeout | null = null;
 	private initialHeartbeatTimeout: NodeJS.Timeout | null = null;
-	// eslint-disable-next-line @typescript-eslint/ban-types
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 	private dispatchHandlers: Map<GatewayDispatchEvents, Function> = new Map();
 	private connectionStartTime?: number;
 	private identifyStartTime?: number;
@@ -81,7 +80,7 @@ export default class GatewayConnectionStore {
 	constructor(app: AppStore) {
 		this.app = app;
 
-		makeObservable(this);
+		makeAutoObservable(this);
 	}
 
 	/**
@@ -114,12 +113,12 @@ export default class GatewayConnectionStore {
 		this.logger.debug(`[Disconnect] ${this.url}`);
 		this.socket?.close(code, reason);
 	}
-	reconnecting=false;
+	reconnecting = false;
 	startReconnect() {
-		if(this.reconnecting)return;
-		this.reconnecting=true;
+		if (this.reconnecting) return;
+		this.reconnecting = true;
 		setTimeout(() => {
-			this.reconnecting=false;
+			this.reconnecting = false;
 			this.logger.debug("Starting reconnect...");
 			this.connect(this.url!);
 		}, this.reconnectTimeout);
@@ -340,16 +339,18 @@ export default class GatewayConnectionStore {
 		// dont reconnect on "going away"
 		if (code === 1001) return;
 
-		if (this.reconnectTimeout === 0) this.reconnectTimeout = RECONNECT_TIMEOUT;
-		else this.reconnectTimeout += RECONNECT_TIMEOUT;
+		// if (this.reconnectTimeout === 0) this.reconnectTimeout = RECONNECT_TIMEOUT;
+		// else this.reconnectTimeout += RECONNECT_TIMEOUT;
 
-		this.logger.debug(
-			`Websocket closed with code ${code}; Will reconnect in ${(this.reconnectTimeout / 1000).toFixed(
-				2,
-			)} seconds.`,
-		);
+		// this.logger.debug(
+		// 	`Websocket closed with code ${code}; Will reconnect in ${(this.reconnectTimeout / 1000).toFixed(
+		// 		2,
+		// 	)} seconds.`,
+		// );
 
-		this.startReconnect();
+		alert(`Gateway connection closed with code ${code}, please refresh the page`);
+
+		// this.startReconnect();
 	};
 
 	/**

@@ -1,11 +1,10 @@
+import { modalController } from "@/controllers/modals/ModalController";
+import Icon from "@components/Icon";
+import useLogger from "@hooks/useLogger";
+import { MAX_UPLOAD_SIZE, bytesToSize } from "@utils";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import styled from "styled-components";
-import { modalController } from "../../../controllers/modals/ModalController";
-import useLogger from "../../../hooks/useLogger";
-import { bytesToSize } from "../../../utils/Utils";
-import { MAX_UPLOAD_SIZE } from "../../../utils/constants";
-import Icon from "../../Icon";
 
 const Container = styled.button`
 	height: 45px;

@@ -1,4 +1,4 @@
-import { action, computed, makeAutoObservable, ObservableMap } from "mobx";
+import { action, computed, makeAutoObservable, observable, ObservableMap } from "mobx";
 
 export type ExperimentType = "test" | "message_queue" | "presence_rings";
 
@@ -87,7 +87,7 @@ export default class ExperimentsStore {
 	private experiments: ObservableMap<string, number>;
 
 	constructor() {
-		this.experiments = new ObservableMap();
+		this.experiments = observable.map();
 		makeAutoObservable(this);
 	}
 

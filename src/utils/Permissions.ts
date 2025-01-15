@@ -3,11 +3,8 @@
 // @fc-license-skip
 
 import { APIOverwrite } from "@spacebarchat/spacebar-api-types/v9";
+import { Channel, Guild, GuildMember, Role } from "@structures";
 import "missing-native-js-functions";
-import Channel from "../stores/objects/Channel";
-import Guild from "../stores/objects/Guild";
-import GuildMember from "../stores/objects/GuildMember";
-import Role from "../stores/objects/Role";
 import { BitField, BitFieldResolvable, BitFlag } from "./BitField";
 
 export type PermissionResolvable = bigint | number | Permissions | PermissionResolvable[] | PermissionString;
@@ -100,19 +97,16 @@ export class Permissions extends BitField {
 
 	static channelPermission(overwrites: APIOverwrite[], init?: bigint) {
 		// TODO: do not deny any permissions if admin
-		return overwrites.reduce(
-			(permission, overwrite) => {
-				// apply disallowed permission
-				// * permission: current calculated permission (e.g. 010)
-				// * deny contains all denied permissions (e.g. 011)
-				// * allow contains all explicitly allowed permisions (e.g. 100)
-				return (permission & ~BigInt(overwrite.deny)) | BigInt(overwrite.allow);
-				// ~ operator inverts deny (e.g. 011 -> 100)
-				// & operator only allows 1 for both ~deny and permission (e.g. 010 & 100 -> 000)
-				// | operators adds both together (e.g. 000 + 100 -> 100)
-			},
-			init || BigInt(0),
-		);
+		return overwrites.reduce((permission, overwrite) => {
+			// apply disallowed permission
+			// * permission: current calculated permission (e.g. 010)
+			// * deny contains all denied permissions (e.g. 011)
+			// * allow contains all explicitly allowed permisions (e.g. 100)
+			return (permission & ~BigInt(overwrite.deny)) | BigInt(overwrite.allow);
+			// ~ operator inverts deny (e.g. 011 -> 100)
+			// & operator only allows 1 for both ~deny and permission (e.g. 010 & 100 -> 000)
+			// | operators adds both together (e.g. 000 + 100 -> 100)
+		}, init || BigInt(0));
 	}
 
 	static rolePermission(roles: Role[]) {

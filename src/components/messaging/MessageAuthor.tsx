@@ -1,14 +1,11 @@
+import { Floating, FloatingTrigger } from "@components/floating";
+import { ContextMenuContext } from "@contexts/ContextMenuContext";
+import { useAppStore } from "@hooks/useAppStore";
+import useLogger from "@hooks/useLogger";
+import { Guild, GuildMember, MessageLike } from "@structures";
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { ContextMenuContext } from "../../contexts/ContextMenuContext";
-import { useAppStore } from "../../hooks/useAppStore";
-import useLogger from "../../hooks/useLogger";
-import Guild from "../../stores/objects/Guild";
-import GuildMember from "../../stores/objects/GuildMember";
-import { MessageLike } from "../../stores/objects/Message";
-import Floating from "../floating/Floating";
-import FloatingTrigger from "../floating/FloatingTrigger";
 
 const Container = styled.div`
 	font-size: 16px;

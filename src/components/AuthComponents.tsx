@@ -1,6 +1,6 @@
+import Container from "@components/Container";
 import styled from "styled-components";
 import Button from "./Button";
-import Container from "./Container";
 
 export const Wrapper = styled(Container)`
 	display: flex;

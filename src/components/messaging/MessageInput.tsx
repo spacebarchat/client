@@ -1,17 +1,16 @@
-import Channel from "../../stores/objects/Channel";
+import Channel from "@structures/Channel";
 
 import { ChannelType, MessageType, RESTPostAPIChannelMessageJSONBody } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import styled from "styled-components";
 
-import { modalController } from "../../controllers/modals";
-import { useAppStore } from "../../hooks/useAppStore";
-import useLogger from "../../hooks/useLogger";
-import Guild from "../../stores/objects/Guild";
-import Snowflake from "../../utils/Snowflake";
-import { MAX_ATTACHMENTS } from "../../utils/constants";
-import { debounce } from "../../utils/debounce";
+import { modalController } from "@/controllers/modals";
+import { useAppStore } from "@hooks/useAppStore";
+import useLogger from "@hooks/useLogger";
+import Guild from "@structures/Guild";
+import { MAX_ATTACHMENTS, Snowflake } from "@utils";
+import debounce from "@utils/debounce";
 import MessageTextArea from "./MessageTextArea";
 import AttachmentUpload from "./attachments/AttachmentUpload";
 import AttachmentUploadList from "./attachments/AttachmentUploadPreview";

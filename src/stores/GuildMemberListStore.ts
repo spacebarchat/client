@@ -3,11 +3,10 @@ import {
 	GatewayGuildMemberListUpdateGroup,
 	GatewayGuildMemberListUpdateOperation,
 } from "@spacebarchat/spacebar-api-types/v9";
-import { action, observable } from "mobx";
-import Logger from "../utils/Logger";
+import { Guild, GuildMember } from "@structures";
+import { Logger } from "@utils";
+import { action, makeAutoObservable, observable } from "mobx";
 import AppStore from "./AppStore";
-import Guild from "./objects/Guild";
-import GuildMember from "./objects/GuildMember";
 
 export default class GuildMemberListStore {
 	private readonly logger: Logger = new Logger("GuildMemberListStore");
@@ -31,6 +30,8 @@ export default class GuildMemberListStore {
 		this.member_count = member_count;
 		this.online_count = online_count;
 		this.computeListData(data.ops);
+
+		makeAutoObservable(this);
 	}
 
 	@action

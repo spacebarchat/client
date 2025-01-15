@@ -1,11 +1,9 @@
+import useLogger from "@hooks/useLogger";
 import { MessageType, type APIMessage } from "@spacebarchat/spacebar-api-types/v9";
-import type { IObservableArray } from "mobx";
-import { action, computed, makeObservable, observable } from "mobx";
-import useLogger from "../hooks/useLogger";
-import Logger from "../utils/Logger";
+import { Message, MessageLike, User } from "@structures";
+import { Logger } from "@utils";
+import { action, computed, makeAutoObservable, observable, type IObservableArray } from "mobx";
 import AppStore from "./AppStore";
-import Message, { MessageLike } from "./objects/Message";
-import User from "./objects/User";
 
 export interface MessageGroup {
 	author: User;
@@ -27,7 +25,7 @@ export default class MessageStore {
 
 		this.messages = observable.array([]);
 
-		makeObservable(this);
+		makeAutoObservable(this);
 	}
 
 	@action

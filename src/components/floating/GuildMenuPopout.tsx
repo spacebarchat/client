@@ -1,11 +1,11 @@
+import useLogger from "@hooks/useLogger";
 import styled from "styled-components";
-import useLogger from "../../hooks/useLogger";
 
+import { modalController } from "@/controllers/modals";
+import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "@components/contextMenus/ContextMenu";
+import { useAppStore } from "@hooks/useAppStore";
+import { Permissions } from "@utils";
 import React, { useEffect } from "react";
-import { modalController } from "../../controllers/modals";
-import { useAppStore } from "../../hooks/useAppStore";
-import { Permissions } from "../../utils/Permissions";
-import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "../contextMenus/ContextMenu";
 
 const CustomContextMenu = styled(ContextMenu)`
 	width: 200px;

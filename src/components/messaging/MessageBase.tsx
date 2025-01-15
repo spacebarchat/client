@@ -1,10 +1,9 @@
+import { Floating, FloatingTrigger } from "@components/floating";
+import { Message, MessageLike } from "@structures";
+import { calendarStrings } from "@utils";
 import dayjs from "dayjs";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
-import Message, { MessageLike } from "../../stores/objects/Message";
-import { calendarStrings } from "../../utils/i18n";
-import Floating from "../floating/Floating";
-import FloatingTrigger from "../floating/FloatingTrigger";
 
 interface Props {
 	header?: boolean;
@@ -71,6 +70,7 @@ export const MessageContent = styled.div`
 	justify-content: center;
 	padding-right: 48px;
 	word-wrap: anywhere;
+	flex: 1;
 `;
 
 export const MessageContentText = styled.div<{ sending?: boolean; failed?: boolean }>`

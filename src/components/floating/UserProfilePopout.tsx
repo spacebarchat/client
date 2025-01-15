@@ -1,16 +1,14 @@
+import Avatar from "@components/Avatar";
+import { HorizontalDivider } from "@components/Divider";
+import useLogger from "@hooks/useLogger";
+import { GuildMember, User } from "@structures";
+import { REST, Snowflake } from "@utils";
 import styled from "styled-components";
-import useLogger from "../../hooks/useLogger";
-import GuildMember from "../../stores/objects/GuildMember";
-import User from "../../stores/objects/User";
-import Snowflake from "../../utils/Snowflake";
-import Avatar from "../Avatar";
-import { HorizontalDivider } from "../Divider";
 
+import SpacebarLogoBlue from "@assets/images/logo/Spacebar_Icon.svg?react";
+import { useAppStore } from "@hooks/useAppStore";
 import { CDNRoutes, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import dayjs from "dayjs";
-import SpacebarLogoBlue from "../../assets/images/logo/Spacebar_Icon.svg?react";
-import { useAppStore } from "../../hooks/useAppStore";
-import REST from "../../utils/REST";
 import Floating from "./Floating";
 import FloatingTrigger from "./FloatingTrigger";
 

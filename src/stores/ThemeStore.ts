@@ -1,7 +1,6 @@
+import { ThemePresets, type Theme } from "@contexts/Theme";
 import { PresenceUpdateStatus } from "@spacebarchat/spacebar-api-types/v9";
 import { computed, makeAutoObservable } from "mobx";
-import type { Theme } from "../contexts/Theme";
-import { ThemePresets } from "../contexts/Theme";
 
 export default class ThemeStore {
 	constructor() {

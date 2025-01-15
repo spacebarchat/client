@@ -1,11 +1,9 @@
 import type { APIMessage } from "@spacebarchat/spacebar-api-types/v9";
-import { action, computed, makeAutoObservable, observable } from "mobx";
+import { action, computed, makeAutoObservable, observable, type IObservableArray } from "mobx";
 
-import type { IObservableArray } from "mobx";
-import Snowflake from "../utils/Snowflake";
+import { QueuedMessage, QueuedMessageStatus, type QueuedMessageData } from "@structures";
+import Snowflake from "@utils/Snowflake";
 import AppStore from "./AppStore";
-import type { QueuedMessageData } from "./objects/QueuedMessage";
-import QueuedMessage, { QueuedMessageStatus } from "./objects/QueuedMessage";
 
 export default class MessageQueue {
 	@observable readonly messages: IObservableArray<QueuedMessage>;

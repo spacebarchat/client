@@ -9,11 +9,9 @@ import {
 	type GatewayGuild,
 	type GatewayGuildMemberListUpdateDispatchData,
 } from "@spacebarchat/spacebar-api-types/v9";
-import { ObservableMap, ObservableSet, action, computed, makeObservable, observable } from "mobx";
-import { compareChannels } from "../../utils/Utils";
-import AppStore from "../AppStore";
-import GuildMemberListStore from "../GuildMemberListStore";
-import GuildMemberStore from "../GuildMemberStore";
+import { AppStore, GuildMemberListStore, GuildMemberStore } from "@stores";
+import { asAcronym, compareChannels } from "@utils";
+import { ObservableMap, ObservableSet, action, computed, makeAutoObservable, observable } from "mobx";
 
 export default class Guild {
 	private readonly app: AppStore;
@@ -110,7 +108,7 @@ export default class Guild {
 		data.roles.forEach((role) => this.roles_.add(role.id));
 		data.channels?.forEach((channel) => this.channels_.add(channel.id));
 
-		makeObservable(this);
+		makeAutoObservable(this);
 	}
 
 	@action
@@ -139,10 +137,7 @@ export default class Guild {
 
 	@computed
 	get acronym() {
-		return this.name
-			.split(" ")
-			.map((word) => word.substring(0, 1))
-			.join("");
+		return asAcronym(this.name);
 	}
 
 	@computed

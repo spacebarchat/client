@@ -1,14 +1,15 @@
 import type { APIChannel } from "@spacebarchat/spacebar-api-types/v9";
+import { Channel } from "@structures";
 import { action, computed, observable, ObservableMap } from "mobx";
 import AppStore from "./AppStore";
-import Channel from "./objects/Channel";
 
 export default class ChannelStore {
 	private readonly app: AppStore;
-	@observable readonly channels = new ObservableMap<string, Channel>();
+	@observable readonly channels: ObservableMap<string, Channel>;
 
 	constructor(app: AppStore) {
 		this.app = app;
+		this.channels = observable.map();
 	}
 
 	@action

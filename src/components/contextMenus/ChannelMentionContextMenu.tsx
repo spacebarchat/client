@@ -1,6 +1,6 @@
 // loosely based on https://github.com/revoltchat/frontend/blob/master/components/app/menus/UserContextMenu.tsx
 
-import Channel from "../../stores/objects/Channel";
+import Channel from "@structures/Channel";
 import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "./ContextMenu";
 
 interface MenuProps {
