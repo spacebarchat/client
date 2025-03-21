@@ -58,9 +58,10 @@ export function fileUpload(cb: (files: File[]) => void, onFileTooLarge: () => vo
 
 interface Props {
 	append: (files: File[]) => void;
+	clearInput: () => void;
 }
 
-function AttachmentUpload({ append }: Props) {
+function AttachmentUpload({ append, clearInput }: Props) {
 	const logger = useLogger("AttachmentUpload");
 
 	const fileTooLarge = () => {
@@ -90,9 +91,24 @@ function AttachmentUpload({ append }: Props) {
 							fileTooLarge();
 							continue;
 						}
-
+						//console.log(blob); //TODO: DELETE LINE
 						files.push(blob);
 					}
+				}
+				else if (item.kind === "string") {
+					
+					console.log(item) // TODO: DELETE LINE
+					item.getAsString((s) => {
+						if (s.length > 4000) { // TODO: Get this character limit from server (if it's there)
+							e.preventDefault();
+							console.log("Pasted text exceeds character limit") // TODO:DELETE LINE
+							const blob = new File([s], "message.txt", {type: "text/plain"});
+							//console.log(blob); TODO:DELETE LINE
+							append([blob]);
+							clearInput()
+							// TODO: Clear the MessageInput element after this
+						}
+					})
 				}
 			}
 
