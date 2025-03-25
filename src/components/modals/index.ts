@@ -7,6 +7,7 @@ export * from "./DeleteMessageModal";
 export * from "./ErrorModal";
 export * from "./ForgotPasswordModal";
 export * from "./ImageViewerModal";
+export * from "./TextAttachmentViewerModal";
 export * from "./InviteModal";
 export * from "./InviteUnauthedModal";
 export * from "./JoinServerModal";
