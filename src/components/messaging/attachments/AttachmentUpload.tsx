@@ -58,9 +58,10 @@ export function fileUpload(cb: (files: File[]) => void, onFileTooLarge: () => vo
 
 interface Props {
 	append: (files: File[]) => void;
+	clearInput: () => void;
 }
 
-function AttachmentUpload({ append }: Props) {
+function AttachmentUpload({ append, clearInput }: Props) {
 	const logger = useLogger("AttachmentUpload");
 
 	const fileTooLarge = () => {
@@ -90,9 +91,18 @@ function AttachmentUpload({ append }: Props) {
 							fileTooLarge();
 							continue;
 						}
-
 						files.push(blob);
 					}
+				}
+				else if (item.kind === "string") {
+					item.getAsString((s) => {
+						if (s.length > 4000) { // TODO: Get this character limit from server (if it's there)
+							e.preventDefault();
+							const blob = new File([s], "message.txt", {type: "text/plain"});
+							append([blob]);
+							clearInput()
+						}
+					})
 				}
 			}
 

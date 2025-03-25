@@ -34,6 +34,7 @@ export const MAX_UPLOAD_SIZE = 1024 * 1024 * 1024; // 1GB, taken from spacebar s
 export const EMBEDDABLE_VIDEO_MIMES = ["webm", "ogg", "mp4"]; // list of the mimetypes that can be used in a video element
 export const EMBEDDABLE_AUDIO_MIMES = ["mp3", "wav", "ogg", "x-wav", "mpeg", "mp4"]; // list of the mimetypes that can be used in an audio element
 export const EMBEDDABLE_IMAGE_MIMES = ["png", "jpg", "jpeg", "gif", "webp"]; // list of mimetypes that can be used in an image element
+export const EMBEDDABLE_TEXT_MIMES = ["plain", "txt", "css", "csv", "html", "js"]; // list of mimetypes that can be used in a text element
 export const ARCHIVE_MIMES = ["zip", "tar", "tar.gz", "tar.xz", "tar.bz2", "rar", "7z"]; // list of mimetypes to associate with archives
 
 export const MAX_ATTACHMENTS = 15; // max number of attachments per message

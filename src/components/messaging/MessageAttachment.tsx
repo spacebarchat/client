@@ -1,5 +1,5 @@
 import { modalController } from "@/controllers/modals";
-import { Audio, File, Video } from "@components/media";
+import { Audio, File, Video, Text } from "@components/media";
 import useLogger from "@hooks/useLogger";
 import { APIAttachment } from "@spacebarchat/spacebar-api-types/v9";
 import { getFileDetails, zoomFit } from "@utils";
@@ -62,7 +62,10 @@ export default function MessageAttachment({ attachment }: AttachmentProps) {
 		finalElement = <Video attachment={attachment} />;
 	} else if (details.isAudio && details.isEmbeddable) {
 		finalElement = <Audio attachment={attachment} />;
-	} else {
+	} else if (details.isText && details.isEmbeddable) {
+		finalElement = <Text attachment={attachment} />;
+	}
+	else {
 		finalElement = <File attachment={attachment} />;
 	}
 
