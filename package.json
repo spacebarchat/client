@@ -44,7 +44,7 @@
 		"mobx": "^6.13.3",
 		"mobx-react-lite": "^4.0.7",
 		"murmurhash-js": "^1.0.0",
-		"prismjs": "^1.29.0",
+		"prismjs": "^1.30.0",
 		"react": "^18.3.1",
 		"react-advanced-cropper": "^0.20.0",
 		"react-colorful": "^5.6.1",
