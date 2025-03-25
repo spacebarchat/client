@@ -7,13 +7,15 @@ const Container = styled.div`
 	flex-direction: column;
 	max-width: 90vw;
 	max-height: 75vh;
-    overflow-x: scroll;
-    overflow-y: scroll;
-    user-select: text;
+	overflow-x: scroll;
+	overflow-y: scroll;
+	user-select: text;
+	padding: 16px;
+	white-space: pre-wrap;
 `;
 
 interface Props {
-    fullText: string;
+	text: string;
 }
 
 export function TextAttachmentViewerModal(props: Props) {
@@ -26,9 +28,12 @@ export function TextAttachmentViewerModal(props: Props) {
 			withoutCloseButton
 			withEmptyActionBar
 			padding="0"
+			wrapperStyle={{
+				borderRadius: "10px",
+			}}
 		>
 			<Container>
-				<code>{props.fullText}</code>
+				<code>{props.text}</code>
 			</Container>
 		</Modal>
 	);

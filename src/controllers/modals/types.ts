@@ -62,6 +62,10 @@ export type Modal = {
 			type: "invite";
 			inviteData: APIInvite;
 	  }
+	| {
+			type: "text_viewer";
+			text: string;
+	  }
 );
 
 export type ModalProps<T extends Modal["type"]> = Modal & { type: T } & {

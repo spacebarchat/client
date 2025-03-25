@@ -7,8 +7,8 @@ import {
 	DISCORD_INVITE_REGEX,
 	EMBEDDABLE_AUDIO_MIMES,
 	EMBEDDABLE_IMAGE_MIMES,
-	EMBEDDABLE_VIDEO_MIMES,
 	EMBEDDABLE_TEXT_MIMES,
+	EMBEDDABLE_VIDEO_MIMES,
 	SPACEBAR_INVITE_REGEX,
 } from "./constants";
 
@@ -27,7 +27,7 @@ export const decimalColorToHex = (decimal: number) => {
  */
 export const bytesToSize = (bytes: number) => {
 	const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-	if (bytes === 0) return "0 Byte";
+	if (bytes === 0) return "0 Bytes";
 	const i = Math.floor(Math.log(bytes) / Math.log(1024));
 	return `${Math.round(bytes / Math.pow(1024, i))} ${sizes[i]}`;
 };

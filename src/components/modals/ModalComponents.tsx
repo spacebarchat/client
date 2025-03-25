@@ -28,6 +28,7 @@ interface ModalProps {
 	withEmptyActionBar?: boolean;
 	withoutCloseButton?: boolean;
 	fullScreen?: boolean;
+	wrapperStyle?: React.CSSProperties;
 }
 
 /**
@@ -206,7 +207,12 @@ export function Modal({ title, description, ...props }: ModalProps) {
 	return (
 		<Portal>
 			<ModalBase closing={closing} onClick={() => !props.nonDismissable && closeModal()}>
-				<ModalWrapper {...props} onClick={(e) => e.stopPropagation()} actions={false}>
+				<ModalWrapper
+					{...props}
+					style={{ ...props.wrapperStyle }}
+					onClick={(e) => e.stopPropagation()}
+					actions={false}
+				>
 					{!props.withoutCloseButton && (
 						<div style={{ position: "relative" }}>
 							{!props.nonDismissable && (
