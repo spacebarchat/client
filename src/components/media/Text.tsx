@@ -130,7 +130,6 @@ export function Text({ attachment }: Props) {
     const [expanded, setExpanded] = useState(false);
 
     const url = attachment.proxy_url && attachment.proxy_url.length > 0 ? attachment.proxy_url : attachment.url;
-    //console.log(url);
 
 	const countLines = (fullText) => {
 		const lineList = fullText.split(/\r?\n/);
@@ -138,7 +137,6 @@ export function Text({ attachment }: Props) {
 	}
 
 	const selectLines = (fullText, lineCount) => {
-		console.log("Full Text is",fullText);
 		const lineList = fullText.split(/\r?\n/);
 		if (lineList.length > lineCount) {
 			const previewLines = lineList.slice(0,lineCount);
@@ -176,16 +174,13 @@ export function Text({ attachment }: Props) {
 	}
 
     useEffect(() => {
-        console.log("Fetching text lines for preview from: ",url);
         fetch(attachment.proxy_url)
             .then((response) => response.text())
             .then((data) => {
 				if (typeof(data) === "string") {
 					setTextLines(data);
-					console.log("New text lines: ", textLines);
 					setTextPreview(selectLines(data,5));
 					setTextLineCount(countLines(data));
-					console.log(textLineCount);
 				}
             })
             .catch((error) => {
