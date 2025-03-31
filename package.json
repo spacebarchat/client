@@ -76,7 +76,7 @@
 	"devDependencies": {
 		"@craco/craco": "^7.1.0",
 		"@swc/plugin-styled-components": "^7.1.0",
-		"@tauri-apps/cli": "2.1.0",
+		"@tauri-apps/cli": "2.4.0",
 		"@types/jest": "^29.5.14",
 		"@types/loadable__component": "^5.13.9",
 		"@types/murmurhash-js": "^1.0.6",
