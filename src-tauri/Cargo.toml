@@ -18,7 +18,7 @@ tauri-build = { version = "2.0.3", features = [] }
 
 [dependencies]
 tauri = { version = "2.1.1", features = ["devtools", "tray-icon"] }
-tauri-plugin-updater = "2.0.2"
+tauri-plugin-updater = "2.7.0"
 tauri-plugin-process = "2.2.0"
 tauri-plugin-log = "2.2.0"
 tauri-plugin-os = "2.2.1"
