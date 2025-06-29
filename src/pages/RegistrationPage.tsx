@@ -1,3 +1,4 @@
+import { useInstanceValidation } from "@/hooks/useInstanceValidation";
 import SpacebarLogoBlue from "@assets/images/logo/Logo-Blue.svg?react";
 import {
 	AuthContainer,
@@ -16,8 +17,8 @@ import {
 	SubmitButton,
 	Wrapper,
 } from "@components/AuthComponents";
-import DOBInput from "@components/DOBInput";
 import { TextDivider } from "@components/Divider";
+import DOBInput from "@components/DOBInput";
 import HCaptcha from "@components/HCaptcha";
 import HCaptchaLib from "@hcaptcha/react-hcaptcha";
 import { useAppStore } from "@hooks/useAppStore";
@@ -25,6 +26,7 @@ import useLogger from "@hooks/useLogger";
 import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { AUTH_NO_BRANDING } from "@stores/AppStore";
 import {
+	Globals,
 	IAPILoginResponseSuccess,
 	IAPIRegisterRequest,
 	IAPIRegisterResponseError,
@@ -35,6 +37,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 type FormValues = {
+	instance: string;
 	email: string;
 	username: string;
 	password: string;
@@ -70,6 +73,12 @@ function RegistrationPage() {
 		setValue("captcha_key", undefined);
 	};
 
+	const { handleInstanceChange, isCheckingInstance } = useInstanceValidation<FormValues>(
+		setError,
+		clearErrors,
+		"instance",
+	);
+
 	const onSubmit = handleSubmit((data) => {
 		if (errors.date_of_birth) return;
 
@@ -77,9 +86,11 @@ function RegistrationPage() {
 		setCaptchaSiteKey(undefined);
 		setValue("captcha_key", undefined);
 
+		const { instance, ...rest } = data;
+
 		app.rest
 			.post<IAPIRegisterRequest, IAPILoginResponseSuccess>(Routes.register(), {
-				...data,
+				...rest,
 				consent: true,
 			})
 			.then((r) => {
@@ -179,6 +190,40 @@ function RegistrationPage() {
 				)}
 
 				<FormContainer onSubmit={onSubmit}>
+					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
+						<LabelWrapper error={!!errors.instance}>
+							<InputLabel>Instance</InputLabel>
+							{isCheckingInstance != false && (
+								<InputErrorText>
+									<>
+										<TextDivider>-</TextDivider>
+										Checking
+									</>
+								</InputErrorText>
+							)}
+							{errors.instance && (
+								<InputErrorText>
+									<>
+										<TextDivider>-</TextDivider>
+										{errors.instance.message}
+									</>
+								</InputErrorText>
+							)}
+						</LabelWrapper>
+						<InputWrapper>
+							<Input
+								type="url"
+								{...register("instance", {
+									required: true,
+									value: Globals.routeSettings.wellknown,
+								})}
+								placeholder="Instance Root URL"
+								onChange={handleInstanceChange}
+								error={!!errors.instance}
+								disabled={loading}
+							/>
+						</InputWrapper>
+					</InputContainer>
 					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
 						<LabelWrapper error={!!errors.email}>
 							<InputLabel>Email</InputLabel>
