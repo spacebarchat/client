@@ -48,6 +48,11 @@ export default class GuildMember {
 	}
 
 	@computed
+	get displayRoles() {
+		return this.roles.filter((role) => role.id !== this.guild.id);
+	}
+
+	@computed
 	get roleColor() {
 		const highestRole = this.roles.reduce((prev, role) => {
 			if (role.position > prev.position) return role;

@@ -273,9 +273,9 @@ function UserProfilePopout({ user, member }: Props) {
 
 				{member && (
 					<Section>
-						<Heading>{member.roles.length ? "Roles" : "No Roles"}</Heading>
+						<Heading>{member.displayRoles.length ? "Roles" : "No Roles"}</Heading>
 						<RoleList>
-							{member.roles.map((x, i) => (
+							{member.displayRoles.map((x, i) => (
 								<RolePill key={i}>
 									<RolePillDot color={x.color} />
 									<RoleName>{x.name}</RoleName>
