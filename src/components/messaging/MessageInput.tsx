@@ -6,16 +6,16 @@ import Channel from "@structures/Channel";
 import Guild from "@structures/Guild";
 import { MAX_ATTACHMENTS, Snowflake } from "@utils";
 import debounce from "@utils/debounce";
-import EmojiPicker, { EmojiClickData, EmojiStyle, Theme } from "emoji-picker-react";
+import { EmojiClickData } from "emoji-picker-react";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Icon from "../Icon";
 import IconButton from "../IconButton";
-import MessageTextArea from "./MessageTextArea";
 import AttachmentUpload from "./attachments/AttachmentUpload";
 import AttachmentUploadList from "./attachments/AttachmentUploadPreview";
+import MessagePickerPopup from "./MessagePickerPopup";
+import MessageTextArea from "./MessageTextArea";
 
 const Container = styled.div`
 	padding: 0 16px;
@@ -28,17 +28,6 @@ const InnerWrapper = styled.div`
 	border-radius: 10px;
 	display: flex;
 	flex-direction: column;
-`;
-
-const EmojiPopup = styled.div`
-	position: absolute;
-	bottom: 52px;
-	right: 0;
-	z-index: 1;
-`;
-
-const EmojiPopupWrapper = styled.div`
-	position: relative;
 `;
 
 const InnerInnerWrapper = styled.div`
@@ -72,8 +61,7 @@ function MessageInput({ channel }: Props) {
 	const [content, setContent] = useState("");
 	const [attachments, setAttachments] = useState<File[]>([]);
 	const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
-	const buttonRef = useRef<HTMLButtonElement>(null);
-	const [buttonRect, setButtonRect] = useState<DOMRect | null>(null);
+	const emoteButtonRef = useRef<HTMLButtonElement>(null);
 
 	/**
 	 * Debounced stopTyping
@@ -185,10 +173,6 @@ function MessageInput({ channel }: Props) {
 	};
 
 	const onEmojiButtonClick = () => {
-		if (buttonRef.current) {
-			setButtonRect(buttonRef.current.getBoundingClientRect());
-		}
-
 		setIsEmojiPickerOpen((prev) => !prev);
 	};
 
@@ -200,17 +184,6 @@ function MessageInput({ channel }: Props) {
 		setIsEmojiPickerOpen(false);
 		channel.startTyping();
 	};
-
-	useEffect(() => {
-		const handleResize = () => {
-			if (isEmojiPickerOpen && buttonRef.current) {
-				setButtonRect(buttonRef.current.getBoundingClientRect());
-			}
-		};
-
-		window.addEventListener("resize", handleResize);
-		return () => window.removeEventListener("resize", handleResize);
-	}, [isEmojiPickerOpen]);
 
 	return (
 		<Container>
@@ -249,33 +222,21 @@ function MessageInput({ channel }: Props) {
 					/>
 
 					{channel.hasPermission("SEND_MESSAGES") && (
-						<ButtonWrapper>
-							<IconButton ref={buttonRef} onClick={onEmojiButtonClick}>
-								<Icon icon="mdiStickerEmoji" size="24px" color="var(--text)" />
-							</IconButton>
-						</ButtonWrapper>
+						<>
+							<ButtonWrapper>
+								<IconButton ref={emoteButtonRef} onClick={onEmojiButtonClick}>
+									<Icon icon="mdiStickerEmoji" size="24px" color="var(--text)" />
+								</IconButton>
+							</ButtonWrapper>
+							{/* Emoji picker popup */}
+							<MessagePickerPopup
+								isOpen={isEmojiPickerOpen}
+								onClose={() => setIsEmojiPickerOpen(false)}
+								buttonRef={emoteButtonRef}
+								onEmojiSelect={onEmojiSelect}
+							/>
+						</>
 					)}
-
-					{isEmojiPickerOpen &&
-						buttonRect &&
-						createPortal(
-							<EmojiPopup
-								style={{
-									position: "fixed",
-									bottom: window.innerHeight - buttonRect.top + 8,
-									right: window.innerWidth - buttonRect.right,
-								}}
-							>
-								<EmojiPicker
-									theme={Theme.DARK}
-									emojiStyle={EmojiStyle.TWITTER}
-									onEmojiClick={(e) => {
-										onEmojiSelect(e);
-									}}
-								/>
-							</EmojiPopup>,
-							document.body,
-						)}
 				</InnerInnerWrapper>
 			</InnerWrapper>
 		</Container>
