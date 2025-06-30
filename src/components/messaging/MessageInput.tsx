@@ -2,9 +2,10 @@ import Channel from "@structures/Channel";
 
 import { ChannelType, MessageType, RESTPostAPIChannelMessageJSONBody } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
 import { modalController } from "@/controllers/modals";
 import { useAppStore } from "@hooks/useAppStore";
 import useLogger from "@hooks/useLogger";
@@ -14,6 +15,8 @@ import debounce from "@utils/debounce";
 import MessageTextArea from "./MessageTextArea";
 import AttachmentUpload from "./attachments/AttachmentUpload";
 import AttachmentUploadList from "./attachments/AttachmentUploadPreview";
+import IconButton from "../IconButton";
+import Icon from "../Icon";
 
 const Container = styled.div`
 	padding: 0 16px;
@@ -26,6 +29,17 @@ const InnerWrapper = styled.div`
 	border-radius: 10px;
 	display: flex;
 	flex-direction: column;
+`;
+
+const EmojiPopup = styled.div`
+	position: absolute;
+	bottom: 52px;
+	right: 0;
+	z-index: 1;
+`;
+
+const EmojiPopupWrapper = styled.div`
+	position: relative;
 `;
 
 const InnerInnerWrapper = styled.div`
@@ -56,8 +70,9 @@ interface Props {
 function MessageInput({ channel }: Props) {
 	const app = useAppStore();
 	const logger = useLogger("MessageInput");
-	const [content, setContent] = React.useState("");
-	const [attachments, setAttachments] = React.useState<File[]>([]);
+	const [content, setContent] = useState("");
+	const [attachments, setAttachments] = useState<File[]>([]);
+	const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
 
 	/**
 	 * Debounced stopTyping
@@ -168,6 +183,15 @@ function MessageInput({ channel }: Props) {
 		setAttachments((prev) => [...prev, ...files]);
 	};
 
+	const onEmojiSelect = (e: any) => {
+		if (!e) return;
+		const emoji = e.native || e.id;
+		setContent((prev) => prev + emoji);
+		document.getElementById("messageinput")?.focus();
+		setIsEmojiPickerOpen(false);
+		channel.startTyping();
+	};
+
 	return (
 		<Container>
 			<InnerWrapper>
@@ -196,18 +220,29 @@ function MessageInput({ channel }: Props) {
 										channel.type === ChannelType.DM
 											? channel.recipients?.[0].username
 											: "#" + channel.name
-								  }`
+									}`
 								: "You do not have permission to send messages in this channel."
 						}
 						disabled={!channel.hasPermission("SEND_MESSAGES")}
 						onChange={onChange}
 						onKeyDown={onKeyDown}
 					/>
-					<ButtonWrapper>
-						{/* <IconButton>
-						<Icon icon="mdiStickerEmoji" size="24px" color="var(--text)" />
-					</IconButton> */}
-					</ButtonWrapper>
+
+					{channel.hasPermission("SEND_MESSAGES") && (
+						<ButtonWrapper>
+							<IconButton onClick={() => setIsEmojiPickerOpen((prev) => !prev)}>
+								<Icon icon="mdiStickerEmoji" size="24px" color="var(--text)" />
+							</IconButton>
+						</ButtonWrapper>
+					)}
+
+					{isEmojiPickerOpen && (
+						<EmojiPopupWrapper>
+							<EmojiPopup>
+								<Picker data={data} onEmojiSelect={onEmojiSelect} />
+							</EmojiPopup>
+						</EmojiPopupWrapper>
+					)}
 				</InnerInnerWrapper>
 			</InnerWrapper>
 		</Container>
