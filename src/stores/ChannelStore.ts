@@ -1,5 +1,6 @@
 import { ChannelType, type APIChannel } from "@spacebarchat/spacebar-api-types/v9";
 import { Channel } from "@structures";
+import debounce from "@utils/debounce";
 import { action, computed, observable, ObservableMap } from "mobx";
 import AppStore from "./AppStore";
 
@@ -151,11 +152,5 @@ export default class ChannelStore {
 		}
 	}
 
-	private saveCollapsedStateDebounced = (() => {
-		let timeoutId: NodeJS.Timeout;
-		return () => {
-			clearTimeout(timeoutId);
-			timeoutId = setTimeout(() => this.saveCollapsedState(), 500);
-		};
-	})();
+	private saveCollapsedStateDebounced = debounce(() => this.saveCollapsedState(), 500);
 }
