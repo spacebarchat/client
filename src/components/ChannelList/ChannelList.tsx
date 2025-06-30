@@ -14,17 +14,29 @@ function ChannelList() {
 	const app = useAppStore();
 
 	if (!app.activeGuild || !app.activeChannel) return <Container />;
-	const { channels } = app.activeGuild;
+	const guildId = app.activeGuild.id;
+
+	const visibleChannels = app.channels.getVisibleChannelsForGuild(guildId);
+
+	const toggleCategory = (categoryId: string) => {
+		app.channels.toggleCategoryCollapse(guildId, categoryId);
+	};
 
 	const rowRenderer = ({ index, key, style }: ListRowProps) => {
-		const item = channels[index];
-
+		const item = visibleChannels[index];
 		const active = app.activeChannelId === item.id;
 		const isCategory = item.type === ChannelType.GuildCategory;
 
 		return (
 			<div style={style}>
-				<ChannelListItem key={key} isCategory={isCategory} active={active} channel={item} />
+				<ChannelListItem
+					key={key}
+					isCategory={isCategory}
+					active={active}
+					channel={item}
+					isCollapsed={app.channels.isCategoryCollapsed(guildId, item.id)}
+					onToggleCollapse={isCategory ? () => toggleCategory(item.id) : undefined}
+				/>
 			</div>
 		);
 	};
@@ -36,9 +48,9 @@ function ChannelList() {
 					<List
 						height={height}
 						overscanRowCount={2}
-						rowCount={channels.length}
+						rowCount={visibleChannels.length}
 						rowHeight={({ index }) => {
-							const item = channels[index];
+							const item = visibleChannels[index];
 							if (item.type === ChannelType.GuildCategory) {
 								return 44;
 							}
