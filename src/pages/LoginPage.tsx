@@ -37,6 +37,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import MFA from "./subpages/MFA";
+import { useInstanceValidation } from "@/hooks/useInstanceValidation";
 
 type FormValues = {
 	login: string;
@@ -53,8 +54,6 @@ function LoginPage() {
 	const [captchaSiteKey, setCaptchaSiteKey] = React.useState<string>();
 	const [mfaData, setMfaData] = React.useState<IAPILoginResponseMFARequired>();
 	const captchaRef = React.useRef<HCaptchaLib>(null);
-	const [debounce, setDebounce] = React.useState<NodeJS.Timeout | null>(null);
-	const [isCheckingInstance, setCheckingInstance] = React.useState(false);
 
 	const {
 		register,
@@ -70,13 +69,11 @@ function LoginPage() {
 		setValue("captcha_key", undefined);
 	};
 
-	const getValidURL = (url: string) => {
-		try {
-			return new URL(url);
-		} catch (e) {
-			return undefined;
-		}
-	};
+	const { handleInstanceChange, isCheckingInstance } = useInstanceValidation<FormValues>(
+		setError,
+		clearErrors,
+		"instance",
+	);
 
 	const onSubmit = handleSubmit((data) => {
 		setLoading(true);
@@ -171,38 +168,6 @@ function LoginPage() {
 	const onCaptchaVerify = (token: string) => {
 		setValue("captcha_key", token);
 		onSubmit();
-	};
-
-	const handleInstanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		clearErrors("instance");
-		setCheckingInstance(false);
-
-		// set as validating
-		if (debounce) clearTimeout(debounce);
-
-		const doRequest = async () => {
-			const url = getValidURL(e.target.value);
-			if (!url) return;
-			setCheckingInstance(true);
-
-			let endpoints: RouteSettings;
-			try {
-				endpoints = await REST.getEndpointsFromDomain(url);
-			} catch (e) {
-				setCheckingInstance(false);
-				return setError("instance", {
-					type: "manual",
-					message: (e instanceof Error && e.message) || "Instance could not be resolved",
-				});
-			}
-
-			logger.debug(`Instance lookup has set routes to`, endpoints);
-			Globals.routeSettings = endpoints; // hmm
-			Globals.save();
-			setCheckingInstance(false);
-		};
-
-		setDebounce(setTimeout(doRequest, 500));
 	};
 
 	const forgotPassword = () => {
