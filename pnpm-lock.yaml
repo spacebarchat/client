@@ -8,12 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@emoji-mart/data':
-        specifier: ^1.2.1
-        version: 1.2.1
-      '@emoji-mart/react':
-        specifier: ^1.1.1
-        version: 1.1.1(emoji-mart@5.6.0)(react@18.3.1)
       '@emotion/react':
         specifier: ^11.13.3
         version: 11.14.0(@types/react@18.3.23)(react@18.3.1)
@@ -116,9 +110,9 @@ importers:
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
-      emoji-mart:
-        specifier: ^5.6.0
-        version: 5.6.0
+      emoji-picker-react:
+        specifier: ^4.12.3
+        version: 4.12.3(react@18.3.1)
       framer-motion:
         specifier: ^11.17.0
         version: 11.18.2(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1138,15 +1132,6 @@ packages:
     engines: {node: ^14 || ^16 || >=18}
     peerDependencies:
       postcss-selector-parser: ^6.0.10
-
-  '@emoji-mart/data@1.2.1':
-    resolution: {integrity: sha512-no2pQMWiBy6gpBEiqGeU77/bFejDqUTRY7KX+0+iur13op3bqUsXdnwoZs6Xb1zbv0gAj5VvS1PWoUUckSr5Dw==}
-
-  '@emoji-mart/react@1.1.1':
-    resolution: {integrity: sha512-NMlFNeWgv1//uPsvLxvGQoIerPuVdXwK/EUek8OOkJ6wVOWPUizRBJU0hDqWZCOROVpfBgCemaC3m6jDOXi03g==}
-    peerDependencies:
-      emoji-mart: ^5.2
-      react: ^16.8 || ^17 || ^18
 
   '@emotion/babel-plugin@11.13.5':
     resolution: {integrity: sha512-pxHCpT2ex+0q+HH91/zsdHkw/lXd468DIN2zvfvLtPKLLMo6gQj7oLObq8PhkrxOZb/gGCq03S3Z7PDhS8pduQ==}
@@ -3798,8 +3783,11 @@ packages:
     resolution: {integrity: sha512-uDfvUjVrfGJJhymx/kz6prltenw1u7WrCg1oa94zYY8xxVpLLUu045LAT0dhDZdXG58/EpPL/5kA180fQ/qudg==}
     engines: {node: '>=10'}
 
-  emoji-mart@5.6.0:
-    resolution: {integrity: sha512-eJp3QRe79pjwa+duv+n7+5YsNhRcMl812EcFVwrnRvYKoNPoQb5qxU8DG6Bgwji0akHdp6D4Ln6tYLG58MFSow==}
+  emoji-picker-react@4.12.3:
+    resolution: {integrity: sha512-Pf+pTenW/uM+Juw197dbCtcB45uqvl9Y5/BzK44L72Aqvavt4UPmCqb+w0UKzUJkzh0Tp1rThfHVwoQXXbOZvQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -4324,6 +4312,9 @@ packages:
   find-up@5.0.0:
     resolution: {integrity: sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng==}
     engines: {node: '>=10'}
+
+  flairup@1.0.0:
+    resolution: {integrity: sha512-IKlE+pNvL2R+kVL1kEhUYqRxVqeFnjiIvHWDMLFXNaqyUdFXQM2wte44EfMYJNHkW16X991t2Zg8apKkhv7OBA==}
 
   flat-cache@3.2.0:
     resolution: {integrity: sha512-CYcENa+FtcUKLmhhqyctpclsq7QF38pKjZHsGNiSQF5r4FtoKDWabFDl3hzaEQMvT1LHEysw5twgLvpYYb4vbw==}
@@ -9221,13 +9212,6 @@ snapshots:
     dependencies:
       postcss-selector-parser: 6.1.2
 
-  '@emoji-mart/data@1.2.1': {}
-
-  '@emoji-mart/react@1.1.1(emoji-mart@5.6.0)(react@18.3.1)':
-    dependencies:
-      emoji-mart: 5.6.0
-      react: 18.3.1
-
   '@emotion/babel-plugin@11.13.5':
     dependencies:
       '@babel/helper-module-imports': 7.27.1(supports-color@5.5.0)
@@ -12139,7 +12123,10 @@ snapshots:
 
   emittery@0.8.1: {}
 
-  emoji-mart@5.6.0: {}
+  emoji-picker-react@4.12.3(react@18.3.1):
+    dependencies:
+      flairup: 1.0.0
+      react: 18.3.1
 
   emoji-regex@8.0.0: {}
 
@@ -12835,6 +12822,8 @@ snapshots:
     dependencies:
       locate-path: 6.0.0
       path-exists: 4.0.0
+
+  flairup@1.0.0: {}
 
   flat-cache@3.2.0:
     dependencies:

@@ -1,22 +1,20 @@
-import Channel from "@structures/Channel";
-
-import { ChannelType, MessageType, RESTPostAPIChannelMessageJSONBody } from "@spacebarchat/spacebar-api-types/v9";
-import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
-import styled from "styled-components";
-import Picker from "@emoji-mart/react";
-import data from "@emoji-mart/data";
 import { modalController } from "@/controllers/modals";
 import { useAppStore } from "@hooks/useAppStore";
 import useLogger from "@hooks/useLogger";
+import { ChannelType, MessageType, RESTPostAPIChannelMessageJSONBody } from "@spacebarchat/spacebar-api-types/v9";
+import Channel from "@structures/Channel";
 import Guild from "@structures/Guild";
 import { MAX_ATTACHMENTS, Snowflake } from "@utils";
 import debounce from "@utils/debounce";
+import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
+import { observer } from "mobx-react-lite";
+import React, { useState } from "react";
+import styled from "styled-components";
+import Icon from "../Icon";
+import IconButton from "../IconButton";
 import MessageTextArea from "./MessageTextArea";
 import AttachmentUpload from "./attachments/AttachmentUpload";
 import AttachmentUploadList from "./attachments/AttachmentUploadPreview";
-import IconButton from "../IconButton";
-import Icon from "../Icon";
 
 const Container = styled.div`
 	padding: 0 16px;
@@ -183,9 +181,9 @@ function MessageInput({ channel }: Props) {
 		setAttachments((prev) => [...prev, ...files]);
 	};
 
-	const onEmojiSelect = (e: any) => {
+	const onEmojiSelect = (e: EmojiClickData) => {
 		if (!e) return;
-		const emoji = e.native || e.id;
+		const emoji = e.emoji;
 		setContent((prev) => prev + emoji);
 		document.getElementById("messageinput")?.focus();
 		setIsEmojiPickerOpen(false);
@@ -239,7 +237,12 @@ function MessageInput({ channel }: Props) {
 					{isEmojiPickerOpen && (
 						<EmojiPopupWrapper>
 							<EmojiPopup>
-								<Picker data={data} onEmojiSelect={onEmojiSelect} />
+								<EmojiPicker
+									theme={Theme.DARK}
+									onEmojiClick={(e) => {
+										onEmojiSelect(e);
+									}}
+								/>
 							</EmojiPopup>
 						</EmojiPopupWrapper>
 					)}
