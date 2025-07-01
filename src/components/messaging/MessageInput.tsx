@@ -178,8 +178,16 @@ function MessageInput({ channel }: Props) {
 
 	const onEmojiSelect = (e: EmojiClickData) => {
 		if (!e) return;
-		const emoji = e.emoji;
-		setContent((prev) => prev + emoji);
+		let emojiToInsert: string;
+
+		if (e.isCustom && e.imageUrl) {
+			// TODO: Handle animated case <a:name:id>
+			emojiToInsert = `<:${e.names[0]}:${e.emoji}>`;
+		} else {
+			emojiToInsert = e.emoji;
+		}
+
+		setContent((prev) => prev + emojiToInsert);
 		document.getElementById("messageinput")?.focus();
 		setIsEmojiPickerOpen(false);
 		channel.startTyping();
