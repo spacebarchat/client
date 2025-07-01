@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  emoji-picker-react: link:../../../../.local/share/pnpm/global/5/node_modules/emoji-picker-react
-
 importers:
 
   .:
@@ -114,8 +111,8 @@ importers:
         specifier: ^1.11.13
         version: 1.11.13
       emoji-picker-react:
-        specifier: link:../../../../.local/share/pnpm/global/5/node_modules/emoji-picker-react
-        version: link:../../../../.local/share/pnpm/global/5/node_modules/emoji-picker-react
+        specifier: git+https://github.com/spacebarchat/emoji-picker-react.git#main
+        version: https://codeload.github.com/spacebarchat/emoji-picker-react/tar.gz/d43614b86d7fcb996c06303a6bbd81243a7c5267(react@18.3.1)
       framer-motion:
         specifier: ^11.17.0
         version: 11.18.2(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3781,6 +3778,13 @@ packages:
     resolution: {integrity: sha512-uDfvUjVrfGJJhymx/kz6prltenw1u7WrCg1oa94zYY8xxVpLLUu045LAT0dhDZdXG58/EpPL/5kA180fQ/qudg==}
     engines: {node: '>=10'}
 
+  emoji-picker-react@https://codeload.github.com/spacebarchat/emoji-picker-react/tar.gz/d43614b86d7fcb996c06303a6bbd81243a7c5267:
+    resolution: {tarball: https://codeload.github.com/spacebarchat/emoji-picker-react/tar.gz/d43614b86d7fcb996c06303a6bbd81243a7c5267}
+    version: 4.12.3
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
 
@@ -4304,6 +4308,9 @@ packages:
   find-up@5.0.0:
     resolution: {integrity: sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng==}
     engines: {node: '>=10'}
+
+  flairup@1.0.0:
+    resolution: {integrity: sha512-IKlE+pNvL2R+kVL1kEhUYqRxVqeFnjiIvHWDMLFXNaqyUdFXQM2wte44EfMYJNHkW16X991t2Zg8apKkhv7OBA==}
 
   flat-cache@3.2.0:
     resolution: {integrity: sha512-CYcENa+FtcUKLmhhqyctpclsq7QF38pKjZHsGNiSQF5r4FtoKDWabFDl3hzaEQMvT1LHEysw5twgLvpYYb4vbw==}
@@ -12109,6 +12116,11 @@ snapshots:
 
   emittery@0.8.1: {}
 
+  emoji-picker-react@https://codeload.github.com/spacebarchat/emoji-picker-react/tar.gz/d43614b86d7fcb996c06303a6bbd81243a7c5267(react@18.3.1):
+    dependencies:
+      flairup: 1.0.0
+      react: 18.3.1
+
   emoji-regex@8.0.0: {}
 
   emoji-regex@9.2.2: {}
@@ -12803,6 +12815,8 @@ snapshots:
     dependencies:
       locate-path: 6.0.0
       path-exists: 4.0.0
+
+  flairup@1.0.0: {}
 
   flat-cache@3.2.0:
     dependencies:
