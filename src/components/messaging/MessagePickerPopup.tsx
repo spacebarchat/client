@@ -1,5 +1,8 @@
-import EmojiPicker, { EmojiClickData, EmojiStyle, Theme } from "emoji-picker-react";
-import React, { useEffect, useState } from "react";
+import { useAppStore } from "@/hooks/useAppStore";
+import { REST } from "@/utils";
+import { CDNRoutes, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
+import EmojiPicker, { baseCategoriesConfig, EmojiClickData, EmojiStyle, Theme } from "emoji-picker-react";
+import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 
@@ -27,6 +30,7 @@ interface Props {
 
 function MessagePickerPopup({ isOpen, onClose, buttonRef, onEmojiSelect }: Props) {
 	const [buttonRect, setButtonRect] = useState<DOMRect | null>(null);
+	const { guilds, emojis } = useAppStore();
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -41,15 +45,45 @@ function MessagePickerPopup({ isOpen, onClose, buttonRef, onEmojiSelect }: Props
 		return () => window.removeEventListener("resize", handleResize);
 	}, [isOpen]);
 
+	const { customEmojis, categories } = useMemo(() => {
+		const customEmojis: any[] = [];
+		const categories: any[] = [];
+
+		// Process each guild's emojis
+		guilds.all.forEach((guild) => {
+			const guildEmojis = guild.emojis;
+
+			if (guildEmojis.length > 0) {
+				guildEmojis.forEach((emoji) => {
+					customEmojis.push({
+						names: [emoji.name],
+						imgUrl: emoji.imageUrl,
+						id: emoji.id,
+						categoryId: guild.id,
+					});
+				});
+
+				categories.push({
+					name: guild.name,
+					category: `custom_${guild.id}`,
+					imageUrl: REST.makeCDNUrl(CDNRoutes.guildIcon(guild.id, guild?.icon as string, ImageFormat.PNG)),
+				});
+			}
+		});
+
+		// Add default categories
+		categories.push(...baseCategoriesConfig());
+
+		return { customEmojis, categories };
+	}, [emojis.all, guilds.all]);
+
 	return (
 		isOpen &&
 		buttonRect &&
 		createPortal(
 			<ClickTrap onClick={onClose}>
 				<PopupContainer
-					onClick={(e) => {
-						e.stopPropagation();
-					}}
+					onClick={(e) => e.stopPropagation()}
 					style={{
 						position: "fixed",
 						bottom: window.innerHeight - buttonRect.top + 8,
@@ -60,6 +94,8 @@ function MessagePickerPopup({ isOpen, onClose, buttonRef, onEmojiSelect }: Props
 						theme={Theme.DARK}
 						emojiStyle={EmojiStyle.TWITTER}
 						lazyLoadEmojis={true}
+						customEmojis={customEmojis}
+						categories={categories}
 						onEmojiClick={(e) => {
 							onEmojiSelect(e);
 						}}
