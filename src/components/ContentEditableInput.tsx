@@ -63,7 +63,6 @@ export function ContentEditableInput({
 	const app = useAppStore();
 	const lastValueRef = useRef(value);
 
-	// Convert plain text with emoji syntax to rich HTML
 	const convertTextToHtml = useCallback(
 		(text: string): string => {
 			const emojiRegex = /:(\w+):/g;
@@ -77,7 +76,6 @@ export function ContentEditableInput({
 					return `<img class="emoji" src="${customEmoji.imageUrl}" alt="${emojiName}" title="${emojiName}" data-emoji-name="${emojiName}" data-emoji-id="${customEmoji.id}" />`;
 				}
 
-				// If no custom emoji found, leave as text
 				return match;
 			});
 
@@ -89,7 +87,6 @@ export function ContentEditableInput({
 		[app.emojis],
 	);
 
-	// Convert rich HTML back to plain text with emoji syntax
 	const convertHtmlToText = useCallback((html: string): string => {
 		const tempDiv = document.createElement("div");
 		tempDiv.innerHTML = html;
@@ -109,7 +106,6 @@ export function ContentEditableInput({
 		return tempDiv.textContent || "";
 	}, []);
 
-	// Update the div content when value prop changes
 	useEffect(() => {
 		if (!divRef.current) return;
 
