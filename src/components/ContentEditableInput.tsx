@@ -22,8 +22,9 @@ const ContentEditableDiv = styled.div`
 
 	&:empty:before {
 		content: attr(data-placeholder);
-		color: var(--text-muted);
+		color: var(--text-disabled);
 		pointer-events: none;
+		font-size: 0.875rem;
 	}
 
 	&:disabled {
