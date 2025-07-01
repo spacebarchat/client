@@ -43,9 +43,11 @@ interface Props {
 	channel: Channel;
 	isCategory: boolean;
 	active: boolean;
+	isCollapsed?: boolean;
+	onToggleCollapse?: (channelId: string) => void;
 }
 
-function ChannelListItem({ channel, isCategory, active }: Props) {
+function ChannelListItem({ channel, isCategory, active, isCollapsed, onToggleCollapse }: Props) {
 	const app = useAppStore();
 	const navigate = useNavigate();
 	const contextMenu = useContext(ContextMenuContext);
@@ -68,6 +70,11 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 			key={channel.id}
 			isCategory={isCategory}
 			onClick={() => {
+				if (isCategory && onToggleCollapse) {
+					onToggleCollapse(channel.id);
+					return;
+				}
+
 				// prevent navigating to non-text channels
 				if (!channel.isTextChannel) return;
 
@@ -102,7 +109,7 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 					)}
 					{isCategory && (
 						<Icon
-							icon="mdiChevronDown"
+							icon={isCollapsed ? "mdiChevronRight" : "mdiChevronDown"}
 							size="12px"
 							color={wrapperHovered ? "var(--text)" : "var(--text-secondary)"}
 							style={{
@@ -152,8 +159,8 @@ function ChannelListItem({ channel, isCategory, active }: Props) {
 										createChannelDown
 											? "var(--text-header)"
 											: createChannelHovered
-											? "var(--text)"
-											: "var(--text-secondary)"
+												? "var(--text)"
+												: "var(--text-secondary)"
 									}
 								/>
 							</span>
