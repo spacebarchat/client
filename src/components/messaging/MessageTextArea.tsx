@@ -1,46 +1,34 @@
-// import { TextareaAutosize, TextareaAutosizeProps } from "@mui/material";
 import { isTouchscreenDevice } from "@utils";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { TextareaAutosize, TextareaAutosizeProps } from "./TextareaAutosize";
+import ContentEditableInput from "../ContentEditableInput";
 
 const Container = styled.div`
 	flex: 1;
 	display: flex;
 `;
 
-const TextArea = styled(TextareaAutosize)`
-	resize: none;
-	border: none;
-	outline: none;
-	background-color: transparent;
-	color: var(--text);
-	// border-radius: 10px;
-	overflow-wrap: break-word;
-	word-break: break-word;
-	white-space: break-spaces;
-	font-size: 16px;
-	font-family: var(--font-family);
-	flex: 1;
-	padding: 13px 10px;
+interface Props {
+	id: string;
+	value: string;
+	onChange: (value: string) => void;
+	onKeyDown?: (e: React.KeyboardEvent) => void;
+	placeholder?: string;
+	disabled?: boolean;
+	maxLength?: number;
+}
 
-	&:disabled {
-		cursor: not-allowed;
-		color: var(--text-disabled);
-	}
-`;
+function MessageTextArea({ id, value, onChange, onKeyDown, placeholder, disabled, maxLength }: Props) {
+	const ref = React.useRef<HTMLDivElement | null>(null);
 
-function MessageTextArea(props: TextareaAutosizeProps) {
-	const ref = React.useRef<HTMLTextAreaElement | null>(null);
-
-	React.useEffect(() => {
+	useEffect(() => {
 		if (isTouchscreenDevice) return;
 		if (ref.current) ref.current.focus();
-	}, [props.value]);
+	}, [value]);
 
-	const inputSelected = () => ["TEXTAREA", "INPUT"].includes(document.activeElement?.nodeName ?? "");
+	const inputSelected = () => ["TEXTAREA", "INPUT", "DIV"].includes(document.activeElement?.nodeName ?? "");
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (!ref.current) return;
 
 		if (isTouchscreenDevice) return;
@@ -58,17 +46,18 @@ function MessageTextArea(props: TextareaAutosizeProps) {
 
 		document.body.addEventListener("keydown", keyDown);
 		return () => document.body.removeEventListener("keydown", keyDown);
-	}, [ref, props.value]);
+	}, [ref, value]);
 
 	return (
 		<Container>
-			<TextArea
-				ref={ref}
-				{...props}
-				maxRows={
-					// 50vh
-					Math.floor((window.innerHeight * 0.5) / 20)
-				}
+			<ContentEditableInput
+				id={id}
+				value={value}
+				onChange={onChange}
+				onKeyDown={onKeyDown}
+				placeholder={placeholder}
+				disabled={disabled}
+				maxLength={maxLength}
 			/>
 		</Container>
 	);
