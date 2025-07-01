@@ -8,7 +8,7 @@ import { MAX_ATTACHMENTS, Snowflake } from "@utils";
 import debounce from "@utils/debounce";
 import { EmojiClickData } from "emoji-picker-react";
 import { observer } from "mobx-react-lite";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
 import Icon from "../Icon";
 import IconButton from "../IconButton";
@@ -62,11 +62,17 @@ function MessageInput({ channel }: Props) {
 	const [attachments, setAttachments] = useState<File[]>([]);
 	const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
 	const emoteButtonRef = useRef<HTMLButtonElement>(null);
+	const [savedSelection, setSavedSelection] = useState<{
+		startContainer: Node;
+		startOffset: number;
+		endContainer: Node;
+		endOffset: number;
+	} | null>(null);
 
 	/**
 	 * Debounced stopTyping
 	 */
-	const debouncedStopTyping = React.useCallback(
+	const debouncedStopTyping = useCallback(
 		debounce(() => channel.stopTyping(), 10_000),
 		[channel],
 	);
@@ -74,7 +80,7 @@ function MessageInput({ channel }: Props) {
 	/**
 	 * @returns Whether or not a message can be sent given the current state
 	 */
-	const canSendMessage = React.useCallback(() => {
+	const canSendMessage = useCallback(() => {
 		if (!attachments.length && (!content || !content.trim() || !content.replace(/\r?\n|\r/g, ""))) {
 			return false;
 		}
@@ -82,14 +88,33 @@ function MessageInput({ channel }: Props) {
 		return true;
 	}, [attachments, content]);
 
-	const sendMessage = React.useCallback(async () => {
+	const convertCustomEmojisForSending = useCallback(
+		(text: string): string => {
+			const emojiRegex = /:(\w+):/g;
+
+			return text.replace(emojiRegex, (match, emojiName) => {
+				const customEmoji = Array.from(app.emojis.all.values()).find((emoji) => emoji.name === emojiName);
+
+				if (customEmoji) {
+					return `<:${emojiName}:${customEmoji.id}>`;
+				}
+
+				// TODO: Replace with Twemoji for consistency
+				return match;
+			});
+		},
+		[app.emojis],
+	);
+
+	const sendMessage = useCallback(async () => {
 		channel.stopTyping();
 		const shouldFail = app.experiments.isTreatmentEnabled("message_queue", 2);
 		const shouldSend = !app.experiments.isTreatmentEnabled("message_queue", 1);
 
 		if (!canSendMessage() && !shouldFail) return;
 
-		const contentCopy = content;
+		const contentForSending = convertCustomEmojisForSending(content);
+		const contentCopy = contentForSending;
 		const attachmentsCopy = attachments;
 
 		setContent("");
@@ -114,13 +139,13 @@ function MessageInput({ channel }: Props) {
 				let body: RESTPostAPIChannelMessageJSONBody | FormData;
 				if (attachmentsCopy.length > 0) {
 					const data = new FormData();
-					data.append("payload_json", JSON.stringify({ content, nonce }));
+					data.append("payload_json", JSON.stringify({ contentForSending, nonce }));
 					attachmentsCopy.forEach((file, index) => {
 						data.append(`files[${index}]`, file);
 					});
 					body = data;
 				} else {
-					body = { content, nonce };
+					body = { content: contentForSending, nonce };
 				}
 				await channel.sendMessage(body, msg);
 			} catch (e) {
@@ -132,17 +157,17 @@ function MessageInput({ channel }: Props) {
 		}
 	}, [content, attachments, channel, canSendMessage]);
 
-	const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+	const onKeyDown = (e: React.KeyboardEvent) => {
 		if (e.ctrlKey && e.key === "Enter") {
 			e.preventDefault();
-			return sendMessage();
+			sendMessage();
 		}
 
 		// TODO: handle editing last message
 
 		if (!e.shiftKey && e.key === "Enter") {
 			e.preventDefault();
-			return sendMessage();
+			sendMessage();
 		}
 
 		if (e.key === "Escape") {
@@ -154,8 +179,8 @@ function MessageInput({ channel }: Props) {
 		debouncedStopTyping(true);
 	};
 
-	const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-		setContent(e.target.value);
+	const onChange = (value: string) => {
+		setContent(value);
 		channel.startTyping();
 	};
 
@@ -173,24 +198,154 @@ function MessageInput({ channel }: Props) {
 	};
 
 	const onEmojiButtonClick = () => {
+		const textArea = document.querySelector('[contenteditable="true"]') as HTMLDivElement;
+		if (textArea) {
+			textArea.focus();
+			const selection = window.getSelection();
+			if (selection && selection.rangeCount > 0) {
+				const range = selection.getRangeAt(0);
+				setSavedSelection({
+					startContainer: range.startContainer,
+					startOffset: range.startOffset,
+					endContainer: range.endContainer,
+					endOffset: range.endOffset,
+				});
+			}
+		}
+
 		setIsEmojiPickerOpen((prev) => !prev);
 	};
 
 	const onEmojiSelect = (e: EmojiClickData) => {
 		if (!e) return;
-		let emojiToInsert: string;
+
+		const textArea = document.querySelector('[contenteditable="true"]') as HTMLDivElement;
+		if (!textArea) return;
 
 		if (e.isCustom && e.imageUrl) {
-			// TODO: Handle animated case <a:name:id>
-			emojiToInsert = `<:${e.names[0]}:${e.emoji}>`;
+			// For custom emojis, find the emoji data and insert HTML directly
+			const customEmoji = Array.from(app.emojis.all.values()).find((emoji) => emoji.name === e.names[0]);
+
+			if (customEmoji) {
+				const emojiImg = document.createElement("img");
+				emojiImg.className = "emoji";
+				emojiImg.src = customEmoji.imageUrl;
+				emojiImg.alt = customEmoji.name;
+				emojiImg.title = customEmoji.name;
+				emojiImg.setAttribute("data-emoji-name", customEmoji.name);
+				emojiImg.setAttribute("data-emoji-id", customEmoji.id);
+
+				insertElementAtCursor(textArea, emojiImg);
+			}
 		} else {
-			emojiToInsert = e.emoji;
+			// For unicode emojis, insert as text
+			// TODO: Map to Twemoji for consistency
+			insertTextAtCursor(textArea, e.emoji);
 		}
 
-		setContent((prev) => prev + emojiToInsert);
-		document.getElementById("messageinput")?.focus();
+		const newContent = convertHtmlToText(textArea.innerHTML);
+		setContent(newContent);
+
 		setIsEmojiPickerOpen(false);
 		channel.startTyping();
+	};
+
+	const insertElementAtCursor = (element: HTMLDivElement, nodeToInsert: Node) => {
+		element.focus();
+
+		const selection = window.getSelection();
+
+		// Try to restore saved cursor position first
+		if (savedSelection && selection) {
+			try {
+				const range = document.createRange();
+				range.setStart(savedSelection.startContainer, savedSelection.startOffset);
+				range.setEnd(savedSelection.endContainer, savedSelection.endOffset);
+				selection.removeAllRanges();
+				selection.addRange(range);
+			} catch (e) {
+				// Fallback
+				logger.warn("Failed to restore saved selection:", e);
+
+				const range = document.createRange();
+				range.selectNodeContents(element);
+				range.collapse(false);
+				selection.removeAllRanges();
+				selection.addRange(range);
+			}
+		}
+
+		if (selection && selection.rangeCount > 0) {
+			const range = selection.getRangeAt(0);
+			range.deleteContents();
+			range.insertNode(nodeToInsert);
+
+			// Position cursor after the inserted element
+			range.setStartAfter(nodeToInsert);
+			range.collapse(true);
+			selection.removeAllRanges();
+			selection.addRange(range);
+
+			setSavedSelection(null);
+			return true;
+		}
+
+		return false;
+	};
+
+	const insertTextAtCursor = (element: HTMLDivElement, text: string) => {
+		element.focus();
+
+		const selection = window.getSelection();
+
+		if (savedSelection && selection) {
+			try {
+				const range = document.createRange();
+				range.setStart(savedSelection.startContainer, savedSelection.startOffset);
+				range.setEnd(savedSelection.endContainer, savedSelection.endOffset);
+				selection.removeAllRanges();
+				selection.addRange(range);
+			} catch (e) {
+				logger.warn("Failed to restore saved selection:", e);
+				const range = document.createRange();
+				range.selectNodeContents(element);
+				range.collapse(false);
+				selection.removeAllRanges();
+				selection.addRange(range);
+			}
+		}
+
+		if (selection && selection.rangeCount > 0) {
+			const range = selection.getRangeAt(0);
+			range.deleteContents();
+			const textNode = document.createTextNode(text);
+			range.insertNode(textNode);
+			range.collapse(false);
+			selection.removeAllRanges();
+			selection.addRange(range);
+
+			setSavedSelection(null);
+			return true;
+		}
+
+		return false;
+	};
+
+	const convertHtmlToText = (html: string): string => {
+		const tempDiv = document.createElement("div");
+		tempDiv.innerHTML = html;
+
+		const emojiImages = tempDiv.querySelectorAll("img.emoji");
+		emojiImages.forEach((img) => {
+			const emojiName = img.getAttribute("data-emoji-name");
+			if (emojiName) {
+				const textNode = document.createTextNode(`:${emojiName}:`);
+				img.parentNode?.replaceChild(textNode, img);
+			}
+		});
+
+		tempDiv.innerHTML = tempDiv.innerHTML.replace(/<br>/g, "\n");
+		return tempDiv.textContent || "";
 	};
 
 	return (
