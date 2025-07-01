@@ -1,4 +1,5 @@
-import type { APIEmoji, APIUser } from "@spacebarchat/spacebar-api-types/v9";
+import { REST } from "@/utils";
+import { CDNRoutes, ImageFormat, type APIEmoji, type APIUser } from "@spacebarchat/spacebar-api-types/v9";
 import { makeAutoObservable, observable } from "mobx";
 
 export default class Emoji {
@@ -25,6 +26,6 @@ export default class Emoji {
 	}
 
 	get imageUrl() {
-		return `https://github.com/spacebarchat/spacebarchat/blob/master/branding/png/Spacebar__Icon-Discord.png?raw=true`;
+		return REST.makeCDNUrl(CDNRoutes.emoji(this.id, ImageFormat.PNG));
 	}
 }
