@@ -10,14 +10,13 @@ function EmojiRenderer({ emoji, size = 22 }: Props) {
 	const app = useAppStore();
 
 	if (emoji.type === "custom" && emoji.id) {
-		// Find the custom emoji by ID
 		const customEmoji = app.emojis.get(emoji.id);
 		if (customEmoji) {
 			return (
 				<img
 					src={customEmoji.imageUrl}
-					alt={`:${emoji.name}:`}
-					title={`:${emoji.name}:`}
+					alt={emoji.name}
+					title={emoji.name}
 					style={{
 						width: size,
 						height: size,
@@ -30,7 +29,6 @@ function EmojiRenderer({ emoji, size = 22 }: Props) {
 		}
 	}
 
-	// Fallback to text
 	return <span>:{emoji.name}:</span>;
 }
 
