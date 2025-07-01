@@ -1,7 +1,6 @@
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback, useState } from "react";
 import styled from "styled-components";
 import { useAppStore } from "@hooks/useAppStore";
-import useLogger from "@/hooks/useLogger";
 
 const ContentEditableDiv = styled.div`
 	resize: none;
@@ -20,13 +19,6 @@ const ContentEditableDiv = styled.div`
 	max-height: 50vh;
 	overflow-y: auto;
 
-	&:empty:before {
-		content: attr(data-placeholder);
-		color: var(--text-disabled);
-		pointer-events: none;
-		font-size: 0.875rem;
-	}
-
 	&:disabled {
 		cursor: not-allowed;
 		color: var(--text-disabled);
@@ -37,6 +29,13 @@ const ContentEditableDiv = styled.div`
 		height: 22px;
 		vertical-align: middle;
 		margin: 0 1px;
+	}
+
+	&:empty:before {
+		content: attr(data-placeholder);
+		color: var(--text-disabled);
+		pointer-events: none;
+		font-size: 0.875rem;
 	}
 `;
 
@@ -60,39 +59,14 @@ export function ContentEditableInput({
 	maxLength,
 }: Props) {
 	const divRef = useRef<HTMLDivElement>(null);
-	const logger = useLogger("ContentEditableInput");
 	const app = useAppStore();
-	const lastValueRef = useRef(value);
-
-	const convertTextToHtml = useCallback(
-		(text: string): string => {
-			const emojiRegex = /:(\w+):/g;
-			let html = text;
-
-			html = html.replace(emojiRegex, (match, emojiName) => {
-				// First check custom emojis
-				const customEmoji = Array.from(app.emojis.all.values()).find((emoji) => emoji.name === emojiName);
-
-				if (customEmoji) {
-					return `<img class="emoji" src="${customEmoji.imageUrl}" alt="${emojiName}" title="${emojiName}" data-emoji-name="${emojiName}" data-emoji-id="${customEmoji.id}" />`;
-				}
-
-				return match;
-			});
-
-			// Escape other HTML and preserve line breaks
-			html = html.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>");
-
-			return html;
-		},
-		[app.emojis],
-	);
+	const [isTypingEmoji, setIsTypingEmoji] = useState(false);
+	const [emojiStartPos, setEmojiStartPos] = useState<number>(-1);
 
 	const convertHtmlToText = useCallback((html: string): string => {
 		const tempDiv = document.createElement("div");
 		tempDiv.innerHTML = html;
 
-		// Replace emoji images with text syntax
 		const emojiImages = tempDiv.querySelectorAll("img.emoji");
 		emojiImages.forEach((img) => {
 			const emojiName = img.getAttribute("data-emoji-name");
@@ -102,10 +76,31 @@ export function ContentEditableInput({
 			}
 		});
 
-		// Convert <br> back to newlines and get text content
 		tempDiv.innerHTML = tempDiv.innerHTML.replace(/<br>/g, "\n");
 		return tempDiv.textContent || "";
 	}, []);
+
+	const convertTextToHtml = useCallback(
+		(text: string): string => {
+			const emojiRegex = /:(\w+):/g;
+			let html = text;
+
+			html = html.replace(emojiRegex, (match, emojiName) => {
+				const customEmoji = Array.from(app.emojis.all.values()).find((emoji) => emoji.name === emojiName);
+
+				if (customEmoji) {
+					return `<img class="emoji" src="${customEmoji.imageUrl}" alt="${emojiName}" title="${emojiName}" data-emoji-name="${emojiName}" data-emoji-id="${customEmoji.id}" />`;
+				}
+
+				return match;
+			});
+
+			html = html.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>");
+
+			return html;
+		},
+		[app.emojis],
+	);
 
 	useEffect(() => {
 		if (!divRef.current) return;
@@ -114,140 +109,159 @@ export function ContentEditableInput({
 		if (currentText !== value) {
 			const html = convertTextToHtml(value);
 			divRef.current.innerHTML = html;
-			lastValueRef.current = value;
 		}
 	}, [value, convertTextToHtml, convertHtmlToText]);
 
-	const handleInput = useCallback(() => {
+	const insertEmojiImage = useCallback(
+		(emojiName: string) => {
+			if (!divRef.current) return;
+
+			const customEmoji = Array.from(app.emojis.all.values()).find((emoji) => emoji.name === emojiName);
+			if (!customEmoji) return;
+
+			const selection = window.getSelection();
+			if (!selection || selection.rangeCount === 0) return;
+
+			const range = selection.getRangeAt(0);
+
+			const emojiImg = document.createElement("img");
+			emojiImg.className = "emoji";
+			emojiImg.src = customEmoji.imageUrl;
+			emojiImg.alt = emojiName;
+			emojiImg.title = emojiName;
+			emojiImg.setAttribute("data-emoji-name", emojiName);
+			emojiImg.setAttribute("data-emoji-id", customEmoji.id);
+
+			range.deleteContents();
+			range.insertNode(emojiImg);
+
+			range.setStartAfter(emojiImg);
+			range.collapse(true);
+			selection.removeAllRanges();
+			selection.addRange(range);
+
+			const newText = convertHtmlToText(divRef.current.innerHTML);
+			onChange(newText);
+		},
+		[app.emojis, onChange, convertHtmlToText],
+	);
+
+	const handleInput = useCallback(
+		(e: React.FormEvent<HTMLDivElement>) => {
+			if (!divRef.current) return;
+
+			const inputEvent = e.nativeEvent as InputEvent;
+			const inputType = inputEvent.inputType;
+
+			if (inputType === "insertText" || inputType === "insertCompositionText") {
+				const data = inputEvent.data;
+
+				if (data === ":") {
+					if (!isTypingEmoji) {
+						setIsTypingEmoji(true);
+						const selection = window.getSelection();
+						if (selection && selection.rangeCount > 0) {
+							const range = selection.getRangeAt(0);
+							const tempRange = document.createRange();
+							tempRange.selectNodeContents(divRef.current);
+							tempRange.setEnd(range.startContainer, range.startOffset);
+							setEmojiStartPos(tempRange.toString().length - 1);
+						}
+					} else {
+						if (emojiStartPos >= 0) {
+							const currentText = convertHtmlToText(divRef.current.innerHTML);
+							const emojiText = currentText.substring(emojiStartPos);
+							const match = emojiText.match(/^:(\w+):$/);
+
+							if (match) {
+								const emojiName = match[1];
+								const customEmoji = Array.from(app.emojis.all.values()).find(
+									(emoji) => emoji.name === emojiName,
+								);
+
+								if (customEmoji) {
+									const selection = window.getSelection();
+									if (selection && selection.rangeCount > 0) {
+										const range = selection.getRangeAt(0);
+
+										const startRange = document.createRange();
+										startRange.selectNodeContents(divRef.current);
+
+										let currentPos = 0;
+										let startNode = null;
+										let startOffset = 0;
+
+										const walker = document.createTreeWalker(divRef.current, NodeFilter.SHOW_TEXT);
+										let node;
+										while ((node = walker.nextNode())) {
+											const nodeLength = node.textContent?.length || 0;
+											if (currentPos + nodeLength > emojiStartPos) {
+												startNode = node;
+												startOffset = emojiStartPos - currentPos;
+												break;
+											}
+											currentPos += nodeLength;
+										}
+
+										if (startNode) {
+											range.setStart(startNode, startOffset);
+											range.deleteContents();
+
+											const emojiImg = document.createElement("img");
+											emojiImg.className = "emoji";
+											emojiImg.src = customEmoji.imageUrl;
+											emojiImg.alt = emojiName;
+											emojiImg.title = emojiName;
+											emojiImg.setAttribute("data-emoji-name", emojiName);
+											emojiImg.setAttribute("data-emoji-id", customEmoji.id);
+
+											range.insertNode(emojiImg);
+											range.setStartAfter(emojiImg);
+											range.collapse(true);
+											selection.removeAllRanges();
+											selection.addRange(range);
+										}
+									}
+
+									setIsTypingEmoji(false);
+									setEmojiStartPos(-1);
+
+									const newText = convertHtmlToText(divRef.current.innerHTML);
+									onChange(newText);
+									return;
+								}
+							}
+						}
+						setIsTypingEmoji(false);
+						setEmojiStartPos(-1);
+					}
+				} else if (isTypingEmoji && data && !/\w/.test(data)) {
+					setIsTypingEmoji(false);
+					setEmojiStartPos(-1);
+				}
+			} else if (inputType === "deleteContentBackward" || inputType === "deleteContentForward") {
+				setIsTypingEmoji(false);
+				setEmojiStartPos(-1);
+			}
+
+			const currentText = convertHtmlToText(divRef.current.innerHTML);
+			if (!currentText.trim()) {
+				divRef.current.innerHTML = "";
+			}
+
+			onChange(currentText);
+		},
+		[convertHtmlToText, onChange, app.emojis, isTypingEmoji, emojiStartPos],
+	);
+
+	useEffect(() => {
 		if (!divRef.current) return;
 
-		const selection = window.getSelection();
-		let savedRange = null;
-		let cursorOffset = 0;
-
-		// Save current cursor position before any changes
-		if (selection && selection.rangeCount > 0) {
-			savedRange = selection.getRangeAt(0).cloneRange();
-			// Calculate how far we are from the start
-			const tempRange = document.createRange();
-			tempRange.selectNodeContents(divRef.current);
-			tempRange.setEnd(savedRange.startContainer, savedRange.startOffset);
-			cursorOffset = tempRange.toString().length;
+		const currentText = convertHtmlToText(divRef.current.innerHTML);
+		if (!currentText.trim() && divRef.current.innerHTML !== "") {
+			divRef.current.innerHTML = "";
 		}
-
-		const currentHtml = divRef.current.innerHTML;
-		const plainText = convertHtmlToText(currentHtml);
-
-		// Check if we need to process emoji replacements
-		const emojiRegex = /:(\w+):/g;
-		let hasChanges = false;
-		let newHtml = currentHtml;
-		let offsetAdjustment = 0; // Track how much we've changed the content length
-
-		// Find recently typed emoji patterns and replace them
-		const matches = Array.from(plainText.matchAll(emojiRegex));
-
-		for (const match of matches) {
-			const emojiName = match[1];
-			const customEmoji = Array.from(app.emojis.all.values()).find((emoji) => emoji.name === emojiName);
-
-			if (customEmoji) {
-				const existingImages = divRef.current.querySelectorAll(`img[data-emoji-name="${emojiName}"]`);
-				const textMatches = (plainText.match(new RegExp(`:${emojiName}:`, "g")) || []).length;
-
-				if (textMatches > existingImages.length) {
-					const emojiHtml = `<img class="emoji" src="${customEmoji.imageUrl}" alt="${emojiName}" title="${emojiName}" data-emoji-name="${emojiName}" data-emoji-id="${customEmoji.id}" />`;
-					const originalText = `:${emojiName}:`;
-
-					if (match.index !== undefined && match.index === cursorOffset - originalText.length) {
-						// Special case: we just typed this emoji (cursor is right after it)
-						// Don't adjust offset, just position cursor after the new image
-						newHtml = newHtml.replace(originalText, emojiHtml);
-						hasChanges = true;
-
-						// Set a flag to position cursor after this specific emoji
-						setTimeout(() => {
-							const newImages = divRef.current?.querySelectorAll(`img[data-emoji-name="${emojiName}"]`);
-							if (newImages && newImages.length > 0) {
-								const lastImage = newImages[newImages.length - 1];
-								const range = document.createRange();
-								range.setStartAfter(lastImage);
-								range.collapse(true);
-								const sel = window.getSelection();
-								sel?.removeAllRanges();
-								sel?.addRange(range);
-							}
-						}, 0);
-						continue;
-					} else if (match.index !== undefined && match.index < cursorOffset) {
-						// This replacement affects our cursor position
-						const lengthDifference = emojiHtml.length - originalText.length;
-						offsetAdjustment += lengthDifference;
-					}
-
-					newHtml = newHtml.replace(originalText, emojiHtml);
-					hasChanges = true;
-				}
-			}
-		}
-
-		if (hasChanges) {
-			divRef.current.innerHTML = newHtml;
-
-			// Only do complex cursor positioning if we're not handling a just-typed emoji
-			if (offsetAdjustment !== 0) {
-				// Restore cursor position with adjustment
-				try {
-					const adjustedOffset = cursorOffset + offsetAdjustment;
-
-					const newPlainText = convertHtmlToText(divRef.current.innerHTML);
-					const targetPosition = Math.min(adjustedOffset, newPlainText.length);
-
-					// Walk through the DOM to find the position
-					let currentPos = 0;
-					let targetNode = null;
-					let targetOffset = 0;
-
-					const walker = document.createTreeWalker(divRef.current, NodeFilter.SHOW_TEXT, null);
-
-					let node;
-					while ((node = walker.nextNode())) {
-						const nodeLength = node.textContent?.length || 0;
-						if (currentPos + nodeLength >= targetPosition) {
-							targetNode = node;
-							targetOffset = targetPosition - currentPos;
-							break;
-						}
-						currentPos += nodeLength;
-					}
-
-					if (targetNode) {
-						const newRange = document.createRange();
-						newRange.setStart(targetNode, targetOffset);
-						newRange.collapse(true);
-						selection?.removeAllRanges();
-						selection?.addRange(newRange);
-					} else {
-						// Fallback: position at end
-						const newRange = document.createRange();
-						newRange.selectNodeContents(divRef.current);
-						newRange.collapse(false);
-						selection?.removeAllRanges();
-						selection?.addRange(newRange);
-					}
-				} catch (e) {
-					divRef.current.focus();
-				}
-			}
-		}
-
-		const finalText = convertHtmlToText(divRef.current.innerHTML);
-
-		if (finalText !== lastValueRef.current) {
-			lastValueRef.current = finalText;
-			onChange(finalText);
-		}
-	}, [convertHtmlToText, app.emojis, onChange]);
+	}, [value, convertHtmlToText]);
 
 	const handleKeyDown = useCallback(
 		(e: React.KeyboardEvent<HTMLDivElement>) => {
