@@ -38,7 +38,7 @@
 		"classnames": "^2.5.1",
 		"csstype": "^3.1.3",
 		"dayjs": "^1.11.13",
-		"emoji-picker-react": "git+https://github.com/ZaneH/emoji-picker-react.git#main",
+		"emoji-picker-react": "git+https://github.com/spacebarchat/emoji-picker-react.git#main",
 		"framer-motion": "^11.17.0",
 		"marked-react": "^2.0.0",
 		"missing-native-js-functions": "^1.4.3",

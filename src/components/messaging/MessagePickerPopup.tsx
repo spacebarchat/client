@@ -66,7 +66,10 @@ function MessagePickerPopup({ isOpen, onClose, buttonRef, onEmojiSelect }: Props
 				categories.push({
 					name: guild.name,
 					category: `custom_${guild.id}`,
-					imageUrl: REST.makeCDNUrl(CDNRoutes.guildIcon(guild.id, guild?.icon as string, ImageFormat.PNG)),
+					imageUrl: guild.icon
+						? REST.makeCDNUrl(CDNRoutes.guildIcon(guild.id, guild.icon, ImageFormat.PNG))
+						: null,
+					acronym: guild.acronym,
 				});
 			}
 		});
