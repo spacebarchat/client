@@ -22,11 +22,11 @@ export default class Guild {
 	@observable stickers: unknown[]; // TODO:
 	@observable stageInstances: unknown[]; // TODO:
 	@observable roles_: ObservableSet<Snowflake>;
+	@observable emojis_: ObservableSet<Snowflake>;
 	@observable memberCount: number;
 	@observable lazy: boolean;
 	@observable large: boolean;
 	@observable guildScheduledEvents: unknown[]; // TODO:
-	@observable emojis: unknown[]; // TODO:
 	@observable channels_: ObservableSet<Snowflake>;
 	@observable name: string;
 	@observable description: string | null = null;
@@ -61,6 +61,7 @@ export default class Guild {
 	constructor(app: AppStore, data: GatewayGuild) {
 		this.app = app;
 		this.roles_ = new ObservableSet();
+		this.emojis_ = new ObservableSet();
 		this.channels_ = new ObservableSet();
 		this.members = new GuildMemberStore(app, this);
 
@@ -73,7 +74,6 @@ export default class Guild {
 		this.lazy = data.lazy;
 		this.large = data.large;
 		this.guildScheduledEvents = data.guild_scheduled_events;
-		this.emojis = data.emojis;
 		this.name = data.properties.name;
 		this.description = data.properties.description;
 		this.icon = data.properties.icon;
@@ -103,9 +103,11 @@ export default class Guild {
 		this.hubType = data.properties.hub_type;
 
 		app.roles.addAll(data.roles);
+		app.emojis.addAll(data.emojis);
 		app.channels.addAll(data.channels);
 
 		data.roles.forEach((role) => this.roles_.add(role.id));
+		data.emojis.forEach((emoji) => emoji.id && this.emojis_?.add(emoji.id));
 		data.channels?.forEach((channel) => this.channels_.add(channel.id));
 
 		makeAutoObservable(this);
@@ -168,6 +170,11 @@ export default class Guild {
 		return this.app.roles.all.filter((role) => this.roles_.has(role.id));
 	}
 
+	@computed
+	get emojis() {
+		return this.app.emojis.all.filter((emoji) => this.emojis_.has(emoji.id));
+	}
+
 	@action
 	addChannel(data: APIChannel) {
 		this.app.channels.add(data);
@@ -193,7 +200,7 @@ export default class Guild {
 			reason
 				? {
 						"X-Audit-Log-Reason": reason,
-				  }
+					}
 				: {},
 		);
 	}
@@ -209,7 +216,7 @@ export default class Guild {
 			reason
 				? {
 						"X-Audit-Log-Reason": reason,
-				  }
+					}
 				: {},
 		);
 	}

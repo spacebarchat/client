@@ -20,6 +20,7 @@ import {
 	UserStore,
 } from "@stores";
 import { Channel, Guild } from "@structures";
+import EmojiStore from "./EmojiStore";
 
 // dev thing to force toggle branding on auth pages for testing.
 export const AUTH_NO_BRANDING = false;
@@ -42,6 +43,7 @@ export default class AppStore {
 	@observable gateway = new GatewayConnectionStore(this);
 	@observable guilds = new GuildStore(this);
 	@observable roles = new RoleStore(this);
+	@observable emojis = new EmojiStore(this);
 	@observable channels = new ChannelStore(this);
 	@observable users = new UserStore(this);
 	@observable privateChannels = new PrivateChannelStore(this);
