@@ -131,36 +131,45 @@ export function ContentEditableInput({
 							const tempRange = document.createRange();
 							tempRange.selectNodeContents(divRef.current);
 							tempRange.setEnd(range.startContainer, range.startOffset);
-							setEmojiStartPos(tempRange.toString().length - 1); // -1 because we just typed ':'
+							const textBeforeCursor = tempRange.toString();
+							setEmojiStartPos(textBeforeCursor.length - 1); // -1 because we just typed ':'
 						}
 					} else {
 						if (emojiStartPos >= 0) {
-							const currentText = convertHtmlToText(divRef.current.innerHTML);
-							const textFromStart = currentText.substring(emojiStartPos);
-							const match = textFromStart.match(/^:(\w+):$/);
+							const selection = window.getSelection();
+							if (selection && selection.rangeCount > 0) {
+								const range = selection.getRangeAt(0);
 
-							if (match) {
-								const emojiName = match[1];
-								const customEmoji = Array.from(app.emojis.all.values()).find(
-									(emoji) => emoji.name === emojiName,
-								);
+								const tempRange = document.createRange();
+								tempRange.selectNodeContents(divRef.current);
+								tempRange.setEnd(range.startContainer, range.startOffset);
+								const currentDomText = tempRange.toString();
 
-								if (customEmoji) {
-									const selection = window.getSelection();
-									if (selection && selection.rangeCount > 0) {
-										const range = selection.getRangeAt(0);
+								const emojiText = currentDomText.substring(emojiStartPos);
+								const match = emojiText.match(/^:(\w+):$/);
 
-										const startRange = document.createRange();
-										startRange.selectNodeContents(divRef.current);
+								if (match) {
+									const emojiName = match[1];
+									const customEmoji = Array.from(app.emojis.all.values()).find(
+										(emoji) => emoji.name === emojiName,
+									);
 
+									if (customEmoji) {
 										let currentPos = 0;
 										let startNode = null;
 										let startOffset = 0;
 
-										const walker = document.createTreeWalker(divRef.current, NodeFilter.SHOW_TEXT);
+										const walker = document.createTreeWalker(
+											divRef.current,
+											NodeFilter.SHOW_TEXT,
+											null,
+										);
+
 										let node;
 										while ((node = walker.nextNode())) {
-											const nodeLength = node.textContent?.length || 0;
+											const nodeText = node.textContent || "";
+											const nodeLength = nodeText.length;
+
 											if (currentPos + nodeLength > emojiStartPos) {
 												startNode = node;
 												startOffset = emojiStartPos - currentPos;
@@ -170,8 +179,10 @@ export function ContentEditableInput({
 										}
 
 										if (startNode) {
-											range.setStart(startNode, startOffset);
-											range.deleteContents();
+											const deleteRange = document.createRange();
+											deleteRange.setStart(startNode, startOffset);
+											deleteRange.setEnd(range.startContainer, range.startOffset);
+											deleteRange.deleteContents();
 
 											const emojiImg = document.createElement("img");
 											emojiImg.className = "emoji";
@@ -181,20 +192,20 @@ export function ContentEditableInput({
 											emojiImg.setAttribute("data-emoji-name", emojiName);
 											emojiImg.setAttribute("data-emoji-id", customEmoji.id);
 
-											range.insertNode(emojiImg);
-											range.setStartAfter(emojiImg);
-											range.collapse(true);
+											deleteRange.insertNode(emojiImg);
+											deleteRange.setStartAfter(emojiImg);
+											deleteRange.collapse(true);
 											selection.removeAllRanges();
-											selection.addRange(range);
+											selection.addRange(deleteRange);
 										}
+
+										setIsTypingEmoji(false);
+										setEmojiStartPos(-1);
+
+										const newText = convertHtmlToText(divRef.current.innerHTML);
+										onChange(newText);
+										return;
 									}
-
-									setIsTypingEmoji(false);
-									setEmojiStartPos(-1);
-
-									const newText = convertHtmlToText(divRef.current.innerHTML);
-									onChange(newText);
-									return;
 								}
 							}
 						}
