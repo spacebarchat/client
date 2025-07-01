@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, useCallback, useState } from "react";
-import styled from "styled-components";
 import { useAppStore } from "@hooks/useAppStore";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import styled from "styled-components";
 
 const ContentEditableDiv = styled.div`
 	resize: none;
@@ -112,40 +112,6 @@ export function ContentEditableInput({
 		}
 	}, [value, convertTextToHtml, convertHtmlToText]);
 
-	const insertEmojiImage = useCallback(
-		(emojiName: string) => {
-			if (!divRef.current) return;
-
-			const customEmoji = Array.from(app.emojis.all.values()).find((emoji) => emoji.name === emojiName);
-			if (!customEmoji) return;
-
-			const selection = window.getSelection();
-			if (!selection || selection.rangeCount === 0) return;
-
-			const range = selection.getRangeAt(0);
-
-			const emojiImg = document.createElement("img");
-			emojiImg.className = "emoji";
-			emojiImg.src = customEmoji.imageUrl;
-			emojiImg.alt = emojiName;
-			emojiImg.title = emojiName;
-			emojiImg.setAttribute("data-emoji-name", emojiName);
-			emojiImg.setAttribute("data-emoji-id", customEmoji.id);
-
-			range.deleteContents();
-			range.insertNode(emojiImg);
-
-			range.setStartAfter(emojiImg);
-			range.collapse(true);
-			selection.removeAllRanges();
-			selection.addRange(range);
-
-			const newText = convertHtmlToText(divRef.current.innerHTML);
-			onChange(newText);
-		},
-		[app.emojis, onChange, convertHtmlToText],
-	);
-
 	const handleInput = useCallback(
 		(e: React.FormEvent<HTMLDivElement>) => {
 			if (!divRef.current) return;
@@ -165,13 +131,13 @@ export function ContentEditableInput({
 							const tempRange = document.createRange();
 							tempRange.selectNodeContents(divRef.current);
 							tempRange.setEnd(range.startContainer, range.startOffset);
-							setEmojiStartPos(tempRange.toString().length - 1);
+							setEmojiStartPos(tempRange.toString().length - 1); // -1 because we just typed ':'
 						}
 					} else {
 						if (emojiStartPos >= 0) {
 							const currentText = convertHtmlToText(divRef.current.innerHTML);
-							const emojiText = currentText.substring(emojiStartPos);
-							const match = emojiText.match(/^:(\w+):$/);
+							const textFromStart = currentText.substring(emojiStartPos);
+							const match = textFromStart.match(/^:(\w+):$/);
 
 							if (match) {
 								const emojiName = match[1];
