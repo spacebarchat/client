@@ -6,7 +6,7 @@ import Channel from "@structures/Channel";
 import Guild from "@structures/Guild";
 import { MAX_ATTACHMENTS, Snowflake } from "@utils";
 import debounce from "@utils/debounce";
-import { EmojiClickData } from "emoji-picker-react";
+import { EmojiClickData } from "@spacebarchat/emoji-picker-react";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useRef, useState } from "react";
 import styled from "styled-components";

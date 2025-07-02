@@ -1,7 +1,7 @@
 import { useAppStore } from "@/hooks/useAppStore";
 import { REST } from "@/utils";
 import { CDNRoutes, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
-import EmojiPicker, { baseCategoriesConfig, EmojiClickData, EmojiStyle, Theme } from "emoji-picker-react";
+import EmojiPicker, { baseCategoriesConfig, EmojiClickData, EmojiStyle, Theme } from "@spacebarchat/emoji-picker-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";

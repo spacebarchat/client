@@ -44,6 +44,9 @@ importers:
       '@rollup/plugin-replace':
         specifier: ^6.0.2
         version: 6.0.2(rollup@2.79.2)
+      '@spacebarchat/emoji-picker-react':
+        specifier: ^4.12.3
+        version: 4.12.3(react@18.3.1)
       '@spacebarchat/spacebar-api-types':
         specifier: 0.37.51
         version: 0.37.51
@@ -110,9 +113,6 @@ importers:
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
-      emoji-picker-react:
-        specifier: git+https://github.com/spacebarchat/emoji-picker-react.git
-        version: https://codeload.github.com/spacebarchat/emoji-picker-react/tar.gz/d43614b86d7fcb996c06303a6bbd81243a7c5267(react@18.3.1)
       framer-motion:
         specifier: ^11.18.2
         version: 11.18.2(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1920,6 +1920,12 @@ packages:
 
   '@sinonjs/fake-timers@8.1.0':
     resolution: {integrity: sha512-OAPJUAtgeINhh/TAlUID4QTs53Njm7xzddaVlEs/SXwgtiD1tW22zAB/W1wdqfrpmikgaWQ9Fw6Ws+hsiRm5Vg==}
+
+  '@spacebarchat/emoji-picker-react@4.12.3':
+    resolution: {integrity: sha512-J1s+SpZR8IkmQi/pOp4UPAIeiVw1Xp8Noj5b/v8t6Q1vB8NgooA2JVHspjy0Tn0M33Rl/EWKEVkTxeIqonQrRg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
 
   '@spacebarchat/spacebar-api-types@0.37.51':
     resolution: {integrity: sha512-aHLt4ug9+suizxhswG84p3rIX6kM0LhA1MPu1otQVdEDkzCA1VgnQ3Bp+xob20j+1T7Xb6SyfRXLodFE9yL/JA==}
@@ -3777,13 +3783,6 @@ packages:
   emittery@0.8.1:
     resolution: {integrity: sha512-uDfvUjVrfGJJhymx/kz6prltenw1u7WrCg1oa94zYY8xxVpLLUu045LAT0dhDZdXG58/EpPL/5kA180fQ/qudg==}
     engines: {node: '>=10'}
-
-  emoji-picker-react@https://codeload.github.com/spacebarchat/emoji-picker-react/tar.gz/d43614b86d7fcb996c06303a6bbd81243a7c5267:
-    resolution: {tarball: https://codeload.github.com/spacebarchat/emoji-picker-react/tar.gz/d43614b86d7fcb996c06303a6bbd81243a7c5267}
-    version: 4.12.3
-    engines: {node: '>=10'}
-    peerDependencies:
-      react: '>=16'
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -10081,6 +10080,11 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 1.8.6
 
+  '@spacebarchat/emoji-picker-react@4.12.3(react@18.3.1)':
+    dependencies:
+      flairup: 1.0.0
+      react: 18.3.1
+
   '@spacebarchat/spacebar-api-types@0.37.51': {}
 
   '@surma/rollup-plugin-off-main-thread@2.2.3':
@@ -12121,11 +12125,6 @@ snapshots:
   emittery@0.10.2: {}
 
   emittery@0.8.1: {}
-
-  emoji-picker-react@https://codeload.github.com/spacebarchat/emoji-picker-react/tar.gz/d43614b86d7fcb996c06303a6bbd81243a7c5267(react@18.3.1):
-    dependencies:
-      flairup: 1.0.0
-      react: 18.3.1
 
   emoji-regex@8.0.0: {}
 
