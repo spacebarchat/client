@@ -196,6 +196,10 @@ function MessageInput({ channel }: Props) {
 		}
 		setAttachments((prev) => [...prev, ...files]);
 	};
+	
+	const clearInput = () => {
+		setContent("");
+	};
 
 	const onEmojiButtonClick = () => {
 		const textArea = document.querySelector('[contenteditable="true"]') as HTMLDivElement;
@@ -363,7 +367,7 @@ function MessageInput({ channel }: Props) {
 				<InnerInnerWrapper>
 					<UploadWrapper>
 						{channel.hasPermission("ATTACH_FILES") && channel.hasPermission("SEND_MESSAGES") && (
-							<AttachmentUpload append={appendAttachment} />
+							<AttachmentUpload append={appendAttachment} clearInput={clearInput}/>
 						)}
 					</UploadWrapper>
 					<MessageTextArea

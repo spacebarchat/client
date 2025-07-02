@@ -7,6 +7,7 @@ import {
 	DISCORD_INVITE_REGEX,
 	EMBEDDABLE_AUDIO_MIMES,
 	EMBEDDABLE_IMAGE_MIMES,
+	EMBEDDABLE_TEXT_MIMES,
 	EMBEDDABLE_VIDEO_MIMES,
 	SPACEBAR_INVITE_REGEX,
 } from "./constants";
@@ -26,7 +27,7 @@ export const decimalColorToHex = (decimal: number) => {
  */
 export const bytesToSize = (bytes: number) => {
 	const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-	if (bytes === 0) return "0 Byte";
+	if (bytes === 0) return "0 Bytes";
 	const i = Math.floor(Math.log(bytes) / Math.log(1024));
 	return `${Math.round(bytes / Math.pow(1024, i))} ${sizes[i]}`;
 };
@@ -66,6 +67,15 @@ export const isAudio = (fileOrAttachment: File | APIAttachment) => {
 
 /**
  * @param fileOrAttachment
+ * @returns True if the file is text
+ */
+export const isText = (fileOrAttachment: File | APIAttachment) => {
+	const contentType = "type" in fileOrAttachment ? fileOrAttachment.type : fileOrAttachment.content_type;
+	return contentType?.startsWith("text/");
+};
+
+/**
+ * @param fileOrAttachment
  * @returns True if the file is an archive
  */
 export const isArchive = (fileOrAttachment: File | APIAttachment) => {
@@ -101,10 +111,12 @@ export const isFileEmbeddable = (fileOrAttachment: File | APIAttachment) => {
 		contentType === EmbedType.Video ||
 		EMBEDDABLE_VIDEO_MIMES.includes(contentType?.toLowerCase().split("/").pop() || "");
 	const audio = EMBEDDABLE_AUDIO_MIMES.includes(contentType?.toLowerCase().split("/").pop() || "");
+	const text = EMBEDDABLE_TEXT_MIMES.includes(contentType?.toLowerCase().split("/").pop() || "");
 	return (
 		(isImage(fileOrAttachment) && image) ||
 		(isVideo(fileOrAttachment) && video) ||
-		(isAudio(fileOrAttachment) && audio)
+		(isAudio(fileOrAttachment) && audio) ||
+		(isText(fileOrAttachment) && text)
 	);
 };
 
@@ -115,6 +127,7 @@ export const getFileDetails = (fileOrAttachment: File | APIAttachment) => {
 		isVideo: isVideo(fileOrAttachment),
 		isImage: isImage(fileOrAttachment),
 		isAudio: isAudio(fileOrAttachment),
+		isText: isText(fileOrAttachment),
 		isArchive: isArchive(fileOrAttachment),
 	};
 };

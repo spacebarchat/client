@@ -128,7 +128,7 @@ export default defineConfig({
 			process.env.TAURI_ENV_PLATFORM !== undefined
 				? process.env.TAURI_ENV_PLATFORM == "windows"
 					? "chrome105"
-					: "safari13"
+					: "safari15"
 				: "modules",
 		rollupOptions: {
 			input: {
