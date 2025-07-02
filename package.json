@@ -26,7 +26,7 @@
 		"@tauri-apps/plugin-notification": "2.0.0",
 		"@tauri-apps/plugin-os": "2.0.0",
 		"@tauri-apps/plugin-process": "2.0.0",
-		"@tauri-apps/plugin-stronghold": "2.0.0",
+		"@tauri-apps/plugin-stronghold": "2.3.0",
 		"@tauri-apps/plugin-updater": "2.0.0",
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/react": "^16.2.0",
