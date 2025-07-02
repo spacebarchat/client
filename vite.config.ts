@@ -80,7 +80,7 @@ export default defineConfig({
 	plugins: [
 		cleanPlugin(),
 		reactVirtualized(),
-		react({ tsDecorators: true, plugins: [["@swc/plugin-styled-components", {}]] }),
+		react({ tsDecorators: true /*, plugins: [["@swc/plugin-styled-components", {}]]*/ }),
 		svgr(),
 		chunkSplitPlugin({
 			strategy: "unbundle",
