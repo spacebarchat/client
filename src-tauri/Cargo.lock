@@ -1000,7 +1000,7 @@ dependencies = [
  "libc",
  "option-ext",
  "redox_users 0.5.0",
- "windows-sys 0.59.0",
+ "windows-sys 0.60.2",
 ]
 
 [[package]]
@@ -4374,9 +4374,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-autostart"
-version = "2.2.0"
+version = "2.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a9c13f843e5e5df3eed270fc42b02923cc1a6b5c7e56b0f3ac1d858ab2c8b5fb"
+checksum = "8a9641831518c56775a364a8750e0eed8852adee87e0f11006d043b9ebba0bf5"
 dependencies = [
  "auto-launch",
  "serde",
