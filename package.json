@@ -98,7 +98,7 @@
 		"typescript": "^5.8.2",
 		"vite": "^6.1.6",
 		"vite-plugin-chunk-split": "^0.5.0",
-		"vite-plugin-clean": "^1.0.0",
+		"vite-plugin-clean": "^2.0.1",
 		"vite-plugin-html": "^3.2.2",
 		"vite-plugin-progress": "^0.0.7",
 		"vite-plugin-svgr": "^4.3.0"
