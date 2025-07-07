@@ -18,7 +18,7 @@
 		"@rollup/plugin-replace": "^6.0.2",
 		"@spacebarchat/emoji-picker-react": "^4.12.3",
 		"@spacebarchat/spacebar-api-types": "0.37.51",
-		"@tauri-apps/api": "2.0.2",
+		"@tauri-apps/api": "2.6.0",
 		"@tauri-apps/plugin-authenticator": "2.0.0-rc.1",
 		"@tauri-apps/plugin-autostart": "2.0.0",
 		"@tauri-apps/plugin-clipboard-manager": "2.0.0",
