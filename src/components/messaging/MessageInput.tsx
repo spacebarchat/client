@@ -1,12 +1,12 @@
 import { modalController } from "@/controllers/modals";
 import { useAppStore } from "@hooks/useAppStore";
 import useLogger from "@hooks/useLogger";
+import { EmojiClickData } from "@spacebarchat/emoji-picker-react";
 import { ChannelType, MessageType, RESTPostAPIChannelMessageJSONBody } from "@spacebarchat/spacebar-api-types/v9";
 import Channel from "@structures/Channel";
 import Guild from "@structures/Guild";
 import { MAX_ATTACHMENTS, Snowflake } from "@utils";
 import debounce from "@utils/debounce";
-import { EmojiClickData } from "@spacebarchat/emoji-picker-react";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
@@ -139,7 +139,7 @@ function MessageInput({ channel }: Props) {
 				let body: RESTPostAPIChannelMessageJSONBody | FormData;
 				if (attachmentsCopy.length > 0) {
 					const data = new FormData();
-					data.append("payload_json", JSON.stringify({ contentForSending, nonce }));
+					data.append("payload_json", JSON.stringify({ content: contentForSending, nonce }));
 					attachmentsCopy.forEach((file, index) => {
 						data.append(`files[${index}]`, file);
 					});
@@ -196,7 +196,7 @@ function MessageInput({ channel }: Props) {
 		}
 		setAttachments((prev) => [...prev, ...files]);
 	};
-	
+
 	const clearInput = () => {
 		setContent("");
 	};
@@ -367,7 +367,7 @@ function MessageInput({ channel }: Props) {
 				<InnerInnerWrapper>
 					<UploadWrapper>
 						{channel.hasPermission("ATTACH_FILES") && channel.hasPermission("SEND_MESSAGES") && (
-							<AttachmentUpload append={appendAttachment} clearInput={clearInput}/>
+							<AttachmentUpload append={appendAttachment} clearInput={clearInput} />
 						)}
 					</UploadWrapper>
 					<MessageTextArea
@@ -380,7 +380,7 @@ function MessageInput({ channel }: Props) {
 										channel.type === ChannelType.DM
 											? channel.recipients?.[0].username
 											: "#" + channel.name
-									}`
+								  }`
 								: "You do not have permission to send messages in this channel."
 						}
 						disabled={!channel.hasPermission("SEND_MESSAGES")}
