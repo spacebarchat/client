@@ -14,7 +14,7 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "2.0.3", features = [] }
+tauri-build = { version = "2.0.4", features = [] }
 
 [dependencies]
 tauri = { version = "2.1.1", features = ["devtools", "tray-icon"] }
@@ -23,9 +23,9 @@ tauri-plugin-process = "2.2.0"
 tauri-plugin-log = "2.5.1"
 tauri-plugin-os = "2.2.1"
 tauri-plugin-notification = "2.2.2"
-tauri-plugin-single-instance = "2.0.1"
+tauri-plugin-single-instance = "2.2.0"
 tauri-plugin-autostart = "2.2.0"
-reqwest = { version = "0.12.12", default-features = false, features = [
+reqwest = { version = "0.12.23", default-features = false, features = [
 	"json",
 	"rustls-tls",
 ] }
