@@ -133,7 +133,8 @@
 		"onlyBuiltDependencies": [
 			"@swc/core",
 			"core-js",
-			"core-js-pure"
+			"core-js-pure",
+			"esbuild"
 		]
 	}
 }
