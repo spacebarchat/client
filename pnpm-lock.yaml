@@ -103,7 +103,7 @@ importers:
         version: 2.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@vitejs/plugin-react-swc':
         specifier: ^3.11.0
-        version: 3.11.0(vite@6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))
+        version: 3.11.0(vite@7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -260,7 +260,7 @@ importers:
         version: 8.46.0(eslint@8.57.1)(typescript@5.9.3)
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.7.0(vite@6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))
+        version: 4.7.0(vite@7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -280,23 +280,23 @@ importers:
         specifier: ^5.8.2
         version: 5.9.3
       vite:
-        specifier: ^6.3.6
-        version: 6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)
+        specifier: ^7.0.7
+        version: 7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)
       vite-plugin-chunk-split:
         specifier: ^0.5.0
-        version: 0.5.0(vite@6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))
+        version: 0.5.0(vite@7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))
       vite-plugin-clean:
         specifier: ^1.0.0
         version: 1.0.0
       vite-plugin-html:
         specifier: ^3.2.2
-        version: 3.2.2(vite@6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))
+        version: 3.2.2(vite@7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))
       vite-plugin-progress:
         specifier: ^0.0.7
-        version: 0.0.7(vite@6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))
+        version: 0.0.7(vite@7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))
       vite-plugin-svgr:
         specifier: ^4.3.0
-        version: 4.5.0(rollup@2.79.2)(typescript@5.9.3)(vite@6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))
+        version: 4.5.0(rollup@2.79.2)(typescript@5.9.3)(vite@7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))
 
 packages:
 
@@ -7888,19 +7888,19 @@ packages:
       stylus:
         optional: true
 
-  vite@6.3.6:
-    resolution: {integrity: sha512-0msEVHJEScQbhkbVTb/4iHZdJ6SXp/AvxL2sjwYQFfBqleHtnCqv1J3sa9zbWz/6kW1m9Tfzn92vW+kZ1WV6QA==}
-    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
+  vite@7.0.7:
+    resolution: {integrity: sha512-hc6LujN/EkJHmxeiDJMs0qBontZ1cdBvvoCbWhVjzUFTU329VRyOC46gHNSA8NcOC5yzCeXpwI40tieI3DEZqg==}
+    engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
-      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
+      '@types/node': ^20.19.0 || >=22.12.0
       jiti: '>=1.21.0'
-      less: '*'
+      less: ^4.0.0
       lightningcss: ^1.21.0
-      sass: '*'
-      sass-embedded: '*'
-      stylus: '*'
-      sugarss: '*'
+      sass: ^1.70.0
+      sass-embedded: ^1.70.0
+      stylus: '>=0.54.8'
+      sugarss: ^5.0.0
       terser: ^5.16.0
       tsx: ^4.8.1
       yaml: ^2.4.2
@@ -10956,15 +10956,15 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
-  '@vitejs/plugin-react-swc@3.11.0(vite@6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))':
+  '@vitejs/plugin-react-swc@3.11.0(vite@7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-beta.27
       '@swc/core': 1.13.5
-      vite: 6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)
+      vite: 7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)
     transitivePeerDependencies:
       - '@swc/helpers'
 
-  '@vitejs/plugin-react@4.7.0(vite@6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))':
+  '@vitejs/plugin-react@4.7.0(vite@7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1))':
     dependencies:
       '@babel/core': 7.28.4
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.4)
@@ -10972,7 +10972,7 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-beta.27
       '@types/babel__core': 7.20.5
       react-refresh: 0.17.0
-      vite: 6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)
+      vite: 7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -17334,12 +17334,12 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite-plugin-chunk-split@0.5.0(vite@6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)):
+  vite-plugin-chunk-split@0.5.0(vite@7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)):
     dependencies:
       es-module-lexer: 1.7.0
       import-meta-resolve: 4.2.0
       magic-string: 0.30.19
-      vite: 6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)
+      vite: 7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)
 
   vite-plugin-clean@1.0.0:
     dependencies:
@@ -17350,7 +17350,7 @@ snapshots:
       - sass
       - stylus
 
-  vite-plugin-html@3.2.2(vite@6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)):
+  vite-plugin-html@3.2.2(vite@7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)):
     dependencies:
       '@rollup/pluginutils': 4.2.1
       colorette: 2.0.20
@@ -17364,21 +17364,21 @@ snapshots:
       html-minifier-terser: 6.1.0
       node-html-parser: 5.4.2
       pathe: 0.2.0
-      vite: 6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)
+      vite: 7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)
 
-  vite-plugin-progress@0.0.7(vite@6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)):
+  vite-plugin-progress@0.0.7(vite@7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)):
     dependencies:
       picocolors: 1.1.1
       progress: 2.0.3
       rd: 2.0.1
-      vite: 6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)
+      vite: 7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)
 
-  vite-plugin-svgr@4.5.0(rollup@2.79.2)(typescript@5.9.3)(vite@6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)):
+  vite-plugin-svgr@4.5.0(rollup@2.79.2)(typescript@5.9.3)(vite@7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)):
     dependencies:
       '@rollup/pluginutils': 5.3.0(rollup@2.79.2)
       '@svgr/core': 8.1.0(typescript@5.9.3)
       '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@5.9.3))
-      vite: 6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)
+      vite: 7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1)
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -17393,7 +17393,7 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  vite@6.3.6(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1):
+  vite@7.0.7(@types/node@22.18.8)(jiti@1.21.7)(terser@5.44.0)(yaml@2.8.1):
     dependencies:
       esbuild: 0.25.10
       fdir: 6.5.0(picomatch@4.0.3)
