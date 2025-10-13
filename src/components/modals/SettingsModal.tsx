@@ -183,7 +183,7 @@ export const SettingsModal = observer(({ ...props }: ModalProps<"settings">) => 
 									Experiments
 								</Item>
 								<Divider />
-								<Item onClick={app.logout}>
+								<Item onClick={() => app.logout()}>
 									<div
 										style={{
 											display: "flex",
